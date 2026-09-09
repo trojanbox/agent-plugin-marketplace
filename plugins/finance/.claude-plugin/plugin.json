@@ -1,0 +1,11 @@
+{
+  "name": "finance",
+  "displayName": "Finance",
+  "version": "1.0.0",
+  "description": "用于股票/上市公司研究、财报、估值、投资组合风险、个人财务规划与宏观市场分析。通过 Group metadata 按 investing / personal-finance / macro 做软分组；所有时效敏感市场数据必须核验当前来源并标注 as-of。行业/论文的一般研究进入 research，纯数据集统计进入 data，商业竞争战略进入 business。",
+  "author": {
+    "name": "trojanbox",
+    "url": "https://github.com/trojanbox"
+  },
+  "repository": "https://github.com/trojanbox/agent-plugin-marketplace"
+}

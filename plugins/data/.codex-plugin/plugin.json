@@ -1,0 +1,24 @@
+{
+  "name": "data",
+  "version": "1.0.0",
+  "description": "用于数据集探索、统计分析、分析结果 QA 与数据可视化。包含 data-exploration、statistical-analysis、data-validation、data-visualization；处理 CSV/Excel/数据库时遵循当前宿主的文件和数据工具规则，不假设存在特定 MCP 或数据仓库。",
+  "author": {
+    "name": "trojanbox",
+    "url": "https://github.com/trojanbox"
+  },
+  "repository": "https://github.com/trojanbox/agent-plugin-marketplace",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Data",
+    "shortDescription": "用于数据集探索、统计分析、分析结果 QA 与数据可视化。包含 data-exploration、statistical-analysis、data-validation、data-visua…",
+    "longDescription": "用于数据集探索、统计分析、分析结果 QA 与数据可视化。包含 data-exploration、statistical-analysis、data-validation、data-visualization；处理 CSV/Excel/数据库时遵循当前宿主的文件和数据工具规则，不假设存在特定 MCP 或数据仓库。",
+    "developerName": "trojanbox",
+    "category": "Data",
+    "capabilities": [
+      "Interactive"
+    ],
+    "defaultPrompt": [
+      "使用 Data 插件帮助我完成当前任务。"
+    ]
+  }
+}

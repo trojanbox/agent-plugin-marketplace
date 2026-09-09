@@ -51,7 +51,7 @@ visibility: internal
 
 Composition 引用只使用稳定逻辑 ID：`<plugin>/<skill>`。本 Runtime 的 Plugin 名沿用原 Category 名，因此历史 ID 不变。
 
-- 物理目录固定为 `plugins/<plugin>/skills/<skill>/SKILL.md`；
+- Public Skill 物理目录固定为 `plugins/<plugin>/skills/<skill>/SKILL.md`；`visibility: internal` 的内部组合能力固定在 `plugins/<plugin>/internal-skills/<skill>/SKILL.md`，逻辑 ID 不变；
 - Group 只存在于 `plugin.json` metadata，不进入 `uses / optional_uses`；
 - 调整 Group metadata 不需要迁移 Composition 引用；
 - 同一 Plugin 内不得出现同名 Skill，`doctor` 会报告重复；

@@ -13,6 +13,13 @@ PLUGINS = ROOT / "plugins"
 RUNTIME = ROOT / "skill-runtime.js"
 
 
+def all_skill_paths() -> list[Path]:
+    return sorted(
+        list(PLUGINS.glob("*/skills/*/SKILL.md"))
+        + list(PLUGINS.glob("*/internal-skills/*/SKILL.md"))
+    )
+
+
 def frontmatter(path: Path) -> str:
     text = path.read_text(encoding="utf-8")
     if not text.startswith("---\n"):
@@ -129,7 +136,7 @@ class RuntimeContractTests(unittest.TestCase):
 
     def test_every_skill_has_explicit_phase(self) -> None:
         missing: list[str] = []
-        for path in sorted(PLUGINS.glob("*/skills/*/SKILL.md")):
+        for path in all_skill_paths():
             if not re.search(r"^phase\s*:\s*\S+", frontmatter(path), re.MULTILINE):
                 missing.append(str(path.relative_to(ROOT)))
         self.assertEqual(missing, [])
@@ -140,7 +147,7 @@ class RuntimeContractTests(unittest.TestCase):
             r"^#{1,6}\s+.*(?:Composition|能力组合)",
             re.IGNORECASE | re.MULTILINE,
         )
-        for path in sorted(PLUGINS.glob("*/skills/*/SKILL.md")):
+        for path in all_skill_paths():
             metadata = frontmatter(path)
             if re.search(r"^optional_uses\s*:", metadata, re.MULTILINE):
                 text = path.read_text(encoding="utf-8")
@@ -176,6 +183,8 @@ class ProgressiveDisclosureContractTests(unittest.TestCase):
                 oversized.append(str(path.relative_to(ROOT)))
             self.assertEqual(data["schemaVersion"], 1)
             self.assertEqual(data["skills"], "./skills")
+            if "internalSkills" in data:
+                self.assertEqual(data["internalSkills"], "./internal-skills")
             self.assertTrue(data["name"])
             self.assertTrue(data["version"])
             self.assertTrue(data["description"])
@@ -185,8 +194,11 @@ class ProgressiveDisclosureContractTests(unittest.TestCase):
         for manifest_path in sorted(PLUGINS.glob("*/plugin.json")):
             data = json.loads(manifest_path.read_text(encoding="utf-8"))
             skill_root = manifest_path.parent / "skills"
+            internal_root = manifest_path.parent / "internal-skills"
             physical = {p.parent.name for p in skill_root.glob("*/SKILL.md")}
+            physical.update(p.parent.name for p in internal_root.glob("*/SKILL.md"))
             nested = list(skill_root.glob("*/*/SKILL.md"))
+            nested.extend(internal_root.glob("*/*/SKILL.md"))
             self.assertEqual(nested, [])
             grouped: set[str] = set()
             for members in data.get("groups", {}).values():
@@ -195,7 +207,7 @@ class ProgressiveDisclosureContractTests(unittest.TestCase):
 
     def test_skill_files_stay_within_progressive_disclosure_budget(self) -> None:
         violations: list[tuple[str, int, int]] = []
-        for path in sorted(PLUGINS.glob("*/skills/*/SKILL.md")):
+        for path in all_skill_paths():
             text = path.read_text(encoding="utf-8")
             chars = len(text)
             lines = len(text.splitlines())
@@ -215,7 +227,7 @@ class ProgressiveDisclosureContractTests(unittest.TestCase):
         missing: list[str] = []
         nested: list[str] = []
         pattern = re.compile(r"`references/([^`]+)`")
-        for skill in sorted(PLUGINS.glob("*/skills/*/SKILL.md")):
+        for skill in all_skill_paths():
             text = skill.read_text(encoding="utf-8")
             for target in pattern.findall(text):
                 if "<" in target or ">" in target:
@@ -245,6 +257,99 @@ class ProgressiveDisclosureContractTests(unittest.TestCase):
         self.assertIn("AI_USAGE.md", rules)
         self.assertIn("plugin.json", rules)
         self.assertIn("marketplace.json", rules)
+
+
+class HostManifestContractTests(unittest.TestCase):
+    def test_host_manifest_generator_and_validator_are_idempotent(self) -> None:
+        first = subprocess.run(
+            ["node", str(ROOT / "scripts/generate-host-manifests.mjs")],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        generated = json.loads(first.stdout)
+        self.assertEqual(generated["pluginCount"], 10)
+        self.assertEqual(generated["artifactCount"], 22)
+        self.assertEqual(generated["written"], 0)
+        self.assertEqual(generated["removed"], 0)
+
+        validated = subprocess.run(
+            ["node", str(ROOT / "scripts/validate-host-manifests.mjs")],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        result = json.loads(validated.stdout)
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["artifactCount"], 22)
+
+    def test_claude_and_codex_marketplaces_cover_all_canonical_plugins(self) -> None:
+        canonical = json.loads((ROOT / "marketplace.json").read_text(encoding="utf-8"))
+        claude = json.loads(
+            (ROOT / ".claude-plugin/marketplace.json").read_text(encoding="utf-8")
+        )
+        codex = json.loads(
+            (ROOT / ".agents/plugins/marketplace.json").read_text(encoding="utf-8")
+        )
+        canonical_names = [item["name"] for item in canonical["plugins"]]
+        self.assertEqual([item["name"] for item in claude["plugins"]], canonical_names)
+        self.assertEqual([item["name"] for item in codex["plugins"]], canonical_names)
+        self.assertEqual(claude["owner"], canonical["owner"])
+        self.assertEqual(codex["interface"]["displayName"], "Agent Plugin Marketplace")
+
+        for entry in codex["plugins"]:
+            self.assertEqual(entry["source"]["source"], "local")
+            self.assertEqual(entry["source"]["path"], f"./plugins/{entry['name']}")
+            self.assertEqual(entry["policy"]["installation"], "AVAILABLE")
+            self.assertEqual(entry["policy"]["authentication"], "ON_INSTALL")
+            self.assertTrue(entry["category"])
+
+    def test_generated_plugin_manifests_match_canonical_versions(self) -> None:
+        required_interface = {
+            "displayName",
+            "shortDescription",
+            "longDescription",
+            "developerName",
+            "category",
+            "capabilities",
+            "defaultPrompt",
+        }
+        for canonical_path in sorted(PLUGINS.glob("*/plugin.json")):
+            canonical = json.loads(canonical_path.read_text(encoding="utf-8"))
+            plugin_root = canonical_path.parent
+            claude = json.loads(
+                (plugin_root / ".claude-plugin/plugin.json").read_text(encoding="utf-8")
+            )
+            codex = json.loads(
+                (plugin_root / ".codex-plugin/plugin.json").read_text(encoding="utf-8")
+            )
+            for generated in (claude, codex):
+                self.assertEqual(generated["name"], canonical["name"])
+                self.assertEqual(generated["version"], canonical["version"])
+                self.assertEqual(generated["description"], canonical["description"])
+                self.assertEqual(generated["author"]["name"], "trojanbox")
+            self.assertEqual(codex["skills"], "./skills/")
+            self.assertTrue(required_interface <= set(codex["interface"]))
+            self.assertTrue(codex["interface"]["capabilities"])
+            self.assertTrue(codex["interface"]["defaultPrompt"])
+
+    def test_internal_skills_are_physically_excluded_from_host_discovery(self) -> None:
+        internal_root = PLUGINS / "development/internal-skills"
+        internal = internal_root / "github-incidental-bug-capture/SKILL.md"
+        self.assertTrue(internal.is_file())
+        self.assertFalse(
+            (PLUGINS / "development/skills/github-incidental-bug-capture").exists()
+        )
+        for path in [
+            ROOT / ".claude-plugin/marketplace.json",
+            ROOT / ".agents/plugins/marketplace.json",
+            *PLUGINS.glob("*/.claude-plugin/plugin.json"),
+            *PLUGINS.glob("*/.codex-plugin/plugin.json"),
+        ]:
+            self.assertNotIn("internal-skills", path.read_text(encoding="utf-8"))
+
 
 
 class DevelopmentWorkflowContractTests(unittest.TestCase):
@@ -298,6 +403,14 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
         self.assertEqual(
             internal[0]["uses"],
             ["development/github-issue-triage", "development/github-issue-manager"],
+        )
+        self.assertEqual(internal[0]["rootKind"], "internal")
+        self.assertIn(
+            "plugins/development/internal-skills/github-incidental-bug-capture/SKILL.md",
+            internal[0]["path"].replace("\\", "/"),
+        )
+        self.assertFalse(
+            (PLUGINS / "development/skills/github-incidental-bug-capture").exists()
         )
 
         expected_consumers = {

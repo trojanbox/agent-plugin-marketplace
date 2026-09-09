@@ -283,6 +283,22 @@ function loadPluginFromEntry(entry, marketplace) {
 
   const pluginReal = fs.realpathSync(pluginDir);
   const skillsRoot = resolveLocalDirectory(pluginDir, manifest.skills, pluginReal, `${entry.name} skills`);
+  let internalSkillsRoot = null;
+  if (manifest.internalSkills !== undefined) {
+    if (manifest.internalSkills !== "./internal-skills") {
+      fail("Plugin internalSkills 根目录必须固定为 ./internal-skills", {
+        plugin: entry.name,
+        actual: manifest.internalSkills,
+        expected: "./internal-skills",
+      });
+    }
+    internalSkillsRoot = resolveLocalDirectory(
+      pluginDir,
+      manifest.internalSkills,
+      pluginReal,
+      `${entry.name} internal skills`,
+    );
+  }
   let sharedRoot = null;
   if (manifest.shared !== undefined) {
     if (manifest.shared !== "./shared") {
@@ -298,38 +314,54 @@ function loadPluginFromEntry(entry, marketplace) {
   const groupInfo = parseGroups(manifest, entry.name);
   const locations = [];
   const structureIssues = [...groupInfo.issues];
-
-  for (const skillPath of walkSkillMarkdownFiles(skillsRoot)) {
-    const relativePath = path.relative(skillsRoot, skillPath);
-    const parts = relativePath.split(path.sep);
-    if (parts.length !== 2) {
-      structureIssues.push({
-        plugin: entry.name,
-        issue: "skill-path-invalid",
-        path: skillPath,
-        relativePath,
-        expected: "<skill>/SKILL.md",
-        message: "Group 只允许存在于 plugin.json metadata，不进入物理 Skill 路径。",
-      });
-      continue;
-    }
-    const skillDirectory = parts[0];
-    if (!SAFE_NAME.test(skillDirectory)) {
-      structureIssues.push({
-        plugin: entry.name,
-        issue: "invalid-skill-directory-name",
-        path: skillPath,
-        directory: skillDirectory,
-      });
-      continue;
-    }
-    locations.push({
-      plugin: entry.name,
-      category: entry.name,
-      group: groupInfo.groupBySkill.get(skillDirectory) || null,
-      directory: skillDirectory,
-      path: skillPath,
+  const skillRoots = [
+    { root: skillsRoot, rootKind: "public", expected: "skills/<skill>/SKILL.md" },
+  ];
+  if (internalSkillsRoot) {
+    skillRoots.push({
+      root: internalSkillsRoot,
+      rootKind: "internal",
+      expected: "internal-skills/<skill>/SKILL.md",
     });
+  }
+
+  for (const skillRoot of skillRoots) {
+    for (const skillPath of walkSkillMarkdownFiles(skillRoot.root)) {
+      const relativePath = path.relative(skillRoot.root, skillPath);
+      const parts = relativePath.split(path.sep);
+      if (parts.length !== 2) {
+        structureIssues.push({
+          plugin: entry.name,
+          issue: "skill-path-invalid",
+          path: skillPath,
+          relativePath,
+          rootKind: skillRoot.rootKind,
+          expected: "<skill>/SKILL.md",
+          message: "Group 只允许存在于 plugin.json metadata，不进入物理 Skill 路径。",
+        });
+        continue;
+      }
+      const skillDirectory = parts[0];
+      if (!SAFE_NAME.test(skillDirectory)) {
+        structureIssues.push({
+          plugin: entry.name,
+          issue: "invalid-skill-directory-name",
+          path: skillPath,
+          directory: skillDirectory,
+          rootKind: skillRoot.rootKind,
+        });
+        continue;
+      }
+      locations.push({
+        plugin: entry.name,
+        category: entry.name,
+        group: groupInfo.groupBySkill.get(skillDirectory) || null,
+        directory: skillDirectory,
+        path: skillPath,
+        root: skillRoot.root,
+        rootKind: skillRoot.rootKind,
+      });
+    }
   }
 
   const knownSkills = new Set(locations.map((item) => item.directory));
@@ -357,6 +389,7 @@ function loadPluginFromEntry(entry, marketplace) {
     path: fs.realpathSync(manifestPath),
     directory: pluginReal,
     skillsRoot,
+    internalSkillsRoot,
     sharedRoot,
     skillCount: locations.length,
     groupCount: groups.length,
@@ -388,7 +421,7 @@ function getPluginByName(name) {
 
 function loadSkillFromLocation(plugin, location) {
   const skillReal = fs.realpathSync(location.path);
-  assertWithin(skillReal, plugin.skillsRoot, "Skill");
+  assertWithin(skillReal, location.root, "Skill");
   const metadata = parseFrontmatter(skillReal, { visibility: "workflow", phase: "unspecified" });
 
   if (metadata.name !== location.directory) {
@@ -410,6 +443,7 @@ function loadSkillFromLocation(plugin, location) {
     name: metadata.name,
     description: metadata.description,
     visibility: metadata.visibility,
+    rootKind: location.rootKind,
     phase: metadata.phase,
     uses: metadata.uses,
     optionalUses: metadata.optionalUses,
@@ -436,7 +470,9 @@ function scanRegistry() {
     structureIssues.push(...plugin.structureIssues);
   }
   if (skills.length === 0) {
-    fail("Marketplace 中没有找到 Skill", { expected: "plugins/<plugin>/skills/<skill>/SKILL.md" });
+    fail("Marketplace 中没有找到 Skill", {
+      expected: "plugins/<plugin>/{skills|internal-skills}/<skill>/SKILL.md",
+    });
   }
   return { marketplace, plugins, categories: plugins, skills, structureIssues };
 }
@@ -481,6 +517,12 @@ function validateSkillContracts(registry) {
     const frontmatter = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/.exec(text);
     if (!frontmatter || !/^phase:\s*["']?\S+/m.test(frontmatter[1])) {
       issues.push({ source, field: "phase", issue: "missing-explicit-phase" });
+    }
+    if (skill.rootKind === "internal" && skill.visibility !== "internal") {
+      issues.push({ source, field: "visibility", issue: "internal-root-requires-internal-visibility" });
+    }
+    if (skill.rootKind === "public" && skill.visibility === "internal") {
+      issues.push({ source, field: "visibility", issue: "internal-skill-in-public-root" });
     }
     if ((skill.optionalUses || []).length > 0 && !compositionHeading.test(text)) {
       issues.push({ source, field: "optional_uses", issue: "missing-composition-rules" });
@@ -574,7 +616,7 @@ function loadSkillDirect(skillId) {
     fail("多个物理 Skill 映射到同一逻辑 Skill ID", {
       skill: skillId,
       paths: matches.map((item) => item.path),
-      action: "每个 Plugin 的 skills/ 下只能有一个同名 Skill；Group 只存在于 plugin.json metadata。",
+      action: "每个 Plugin 的 public/internal Skill roots 下只能有一个同名逻辑 Skill；Group 只存在于 plugin.json metadata。",
     });
   }
   return loadSkillFromLocation(plugin, matches[0]);
@@ -663,6 +705,7 @@ function diagnosticPlugin(plugin) {
     skillsRoot: plugin.skillsRoot,
     skillCount: plugin.skillCount,
   };
+  if (plugin.internalSkillsRoot) item.internalSkillsRoot = plugin.internalSkillsRoot;
   if (plugin.sharedRoot) item.sharedRoot = plugin.sharedRoot;
   if (plugin.category) item.marketplaceCategory = plugin.category;
   if (plugin.groupCount > 0) {
@@ -861,7 +904,7 @@ function main() {
           "Runtime 根目录由 skill-runtime.js 自身位置自动确定，整个目录可搬迁。",
           "AI_USAGE.md 仍是稳定 bootstrap 入口；Marketplace/Plugin 细节由 Runtime CLI 负责发现。",
           "marketplace.json 只负责本地已安装 Plugin 的 Catalog/分组/来源元数据；Runtime 执行不回查远程市场。",
-          "每个 Plugin 使用 plugins/<plugin>/plugin.json + skills/<skill>/SKILL.md；Plugin 是 namespace/version/共享资源边界。",
+          "每个 Plugin 使用 plugins/<plugin>/plugin.json + skills/<skill>/SKILL.md；仅内部组合能力可放 internal-skills/<skill>/SKILL.md。",
           "Group 只存在于 plugin.json metadata，不进入物理目录和稳定 Skill ID。",
           "稳定逻辑 Skill ID 为 <plugin>/<skill>；原 <category>/<skill> ID 因 Plugin 名沿用旧 Category 名而保持兼容。",
           "Plugin 共享资源放 shared/；Skill 自有 references/scripts/assets 仍按需加载。",

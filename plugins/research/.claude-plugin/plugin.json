@@ -1,0 +1,11 @@
+{
+  "name": "research",
+  "displayName": "Research",
+  "version": "1.0.0",
+  "description": "用于外部资料/互联网/论文/行业/社区的系统检索、多份已有材料的证据综合，以及用户进入陌生领域时建立可用于实际决策并可持续更新的领域认知模型。当前项目源码的跨模块实现调研、完整调用链、能力盘点和实现成熟度分析进入 development/github-research-document-generator；普通事实查询和单一短材料摘要无需进入本分类。",
+  "author": {
+    "name": "trojanbox",
+    "url": "https://github.com/trojanbox"
+  },
+  "repository": "https://github.com/trojanbox/agent-plugin-marketplace"
+}

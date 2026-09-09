@@ -1,17 +1,47 @@
 # Agent Plugin Marketplace
 
-一个可搬迁的 Agent Plugin / Skill 能力仓库，采用：
+一个可搬迁、可直接被 Claude Code / Codex 安装的 Agent Plugin / Skill Marketplace，同时保留独立的 `AI_USAGE.md + skill-runtime.js` 自用 Runtime。
 
 ```text
 Marketplace
   → Plugin
-      → Skills
-          → references / scripts / assets
+      → Public Skills
+      → Internal Skills / shared resources
 ```
 
-`AI_USAGE.md` 是稳定的 Agent bootstrap 入口。宿主只需要先读取它，再通过 `skill-runtime.js` 动态发现 Marketplace、Plugin 和 Skill；具体 Skill 内容按需加载。
+## Claude Code 安装
 
-## 快速使用
+```bash
+claude plugin marketplace add trojanbox/agent-plugin-marketplace
+claude plugin install development@agent-plugin-marketplace
+```
+
+其它 Plugin 把 `development` 替换为 `research`、`writing`、`data` 等名称即可。
+
+Claude 原生分发文件：
+
+```text
+.claude-plugin/marketplace.json
+plugins/<plugin>/.claude-plugin/plugin.json
+```
+
+## Codex 安装
+
+```bash
+codex plugin marketplace add trojanbox/agent-plugin-marketplace
+codex plugin add development@agent-plugin-marketplace
+```
+
+Codex 原生分发文件：
+
+```text
+.agents/plugins/marketplace.json
+plugins/<plugin>/.codex-plugin/plugin.json
+```
+
+## 自用 Runtime
+
+`AI_USAGE.md` 是稳定 bootstrap 入口。这个入口与 Claude / Codex 的原生安装链互不依赖：宿主安装后直接发现 Public Skills；自用 Runtime 继续通过 `skill-runtime.js` 提供完整 Catalog、Routing、Composition 与 internal Skill 能力。
 
 ```bash
 node skill-runtime.js list
@@ -21,32 +51,69 @@ node skill-runtime.js skill development/github-bug-investigation
 node skill-runtime.js doctor
 ```
 
+## Canonical Source 与生成文件
+
+唯一事实源仍然是：
+
+```text
+marketplace.json
+plugins/<plugin>/plugin.json
+```
+
+Claude / Codex manifest 都由它们确定性生成，禁止手工维护生成文件：
+
+```bash
+node scripts/generate-host-manifests.mjs
+node scripts/validate-host-manifests.mjs
+node skill-runtime.js doctor
+```
+
+CI 会重新生成 Host manifests，并通过 `git diff --exit-code` 阻止生成产物与 Canonical Source 漂移。
+
 ## 目录
 
 ```text
 AI_USAGE.md
 skill-runtime.js
 marketplace.json
+scripts/
+  generate-host-manifests.mjs
+  validate-host-manifests.mjs
+  host-manifest-lib.mjs
+.claude-plugin/
+  marketplace.json
+.agents/plugins/
+  marketplace.json
 plugins/
   <plugin>/
     plugin.json
+    .claude-plugin/
+      plugin.json
+    .codex-plugin/
+      plugin.json
     skills/
-      <skill>/
+      <public-skill>/
         SKILL.md
         references/
         scripts/
         assets/
+    internal-skills/
+      <internal-skill>/
+        SKILL.md
     shared/
 tests/
 vendor/
 ```
 
+`internal-skills/` 仅在确有内部组合能力时存在。该目录由自用 Runtime 扫描，不进入 Claude / Codex 默认 Skill discovery。
+
 ## 设计原则
 
-- Marketplace 负责 Catalog、分类和 Plugin 来源元数据。
-- Plugin 是 namespace、版本、共享资源和能力组织边界。
-- Skill 描述具体任务能力与路由合同。
-- `AI_USAGE.md` 保持为薄 bootstrap，不复制 Plugin/Skill 全量清单。
-- Runtime 使用相对路径发现资源，整个仓库可以移动到其他目录使用。
+- 根 `marketplace.json` 负责 Canonical Catalog、分类、Plugin 来源与 Marketplace identity。
+- `plugins/<plugin>/plugin.json` 负责 Plugin identity、版本、Public/Internal Skill roots、shared resources 和 Group metadata。
+- `skills/` 只包含宿主可发现的 Public Skills。
+- `internal-skills/` 只包含自用 Runtime 的内部组合能力。
+- Claude / Codex Host Adapter 只负责分发，不复制 `uses / optional_uses / groups / phase / visibility` Composition Engine。
+- `AI_USAGE.md + skill-runtime.js` 保留为独立自用入口，不参与宿主安装链。
 
 更多设计约束见 [`PLUGIN_MODEL.md`](./PLUGIN_MODEL.md) 与 [`SKILL_COMPOSITION.md`](./SKILL_COMPOSITION.md)。

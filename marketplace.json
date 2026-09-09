@@ -3,6 +3,11 @@
   "name": "agent-plugin-marketplace",
   "version": "1.0.0",
   "description": "Portable Agent Plugin Marketplace. AI_USAGE.md remains the stable bootstrap entry.",
+  "owner": {
+    "name": "trojanbox",
+    "url": "https://github.com/trojanbox"
+  },
+  "repository": "https://github.com/trojanbox/agent-plugin-marketplace",
   "plugins": [
     {
       "name": "ai-workflow",

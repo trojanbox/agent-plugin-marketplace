@@ -1,0 +1,27 @@
+name: Host manifests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Regenerate host manifests
+        run: node scripts/generate-host-manifests.mjs
+      - name: Reject generated drift
+        run: git diff --exit-code -- .claude-plugin .agents plugins
+      - name: Validate host manifests
+        run: node scripts/validate-host-manifests.mjs
+      - name: Runtime doctor
+        run: node skill-runtime.js doctor
+      - name: Unit tests
+        run: python -m unittest discover -s tests -p 'test_*.py'

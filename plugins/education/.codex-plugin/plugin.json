@@ -1,0 +1,24 @@
+{
+  "name": "education",
+  "version": "1.0.0",
+  "description": "用于 K-12 教师教学设计。当前包含 k12-lesson-planning（从零创建新课）与 k12-lesson-differentiation（对已有课程做分层/支架适配）。不处理单独评分、rubric、作业反馈、quiz 或纯标准查询。",
+  "author": {
+    "name": "trojanbox",
+    "url": "https://github.com/trojanbox"
+  },
+  "repository": "https://github.com/trojanbox/agent-plugin-marketplace",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Education",
+    "shortDescription": "用于 K-12 教师教学设计。当前包含 k12-lesson-planning（从零创建新课）与 k12-lesson-differentiation（对已有课程做分层/支架适配）。不处理单…",
+    "longDescription": "用于 K-12 教师教学设计。当前包含 k12-lesson-planning（从零创建新课）与 k12-lesson-differentiation（对已有课程做分层/支架适配）。不处理单独评分、rubric、作业反馈、quiz 或纯标准查询。",
+    "developerName": "trojanbox",
+    "category": "Education",
+    "capabilities": [
+      "Interactive"
+    ],
+    "defaultPrompt": [
+      "使用 Education 插件帮助我完成当前任务。"
+    ]
+  }
+}

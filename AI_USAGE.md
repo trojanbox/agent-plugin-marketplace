@@ -15,7 +15,8 @@
 
 - `marketplace.json`：Catalog / 分组 / 已安装 Plugin 来源元数据；不承载 Skill 执行知识。
 - `plugins/<plugin>/plugin.json`：Plugin identity、version、namespace、skills root、shared root 与 Group metadata。
-- `plugins/<plugin>/skills/<skill>/SKILL.md`：具体能力与路由合同。
+- `plugins/<plugin>/skills/<skill>/SKILL.md`：宿主可发现的 Public Skill 与路由合同。
+- `plugins/<plugin>/internal-skills/<skill>/SKILL.md`：仅自用 Runtime 发现的内部组合能力；不存在内部能力时不创建。
 - `plugins/<plugin>/shared/`：同一 Plugin 下多个 Skills 共用的 references / scripts / schemas / assets。
 - Group 只存在于 `plugin.json` metadata，不进入物理 Skill 路径和稳定逻辑 ID。
 
@@ -25,12 +26,15 @@
 - `catalog` 只在跨 Plugin、路由不确定或当前 Plugin 无匹配时使用。
 - 当前 Skill 已足够完成任务时，不为了“可能有用”继续加载其它 Skill。
 - Marketplace 负责发现与分发元数据；已安装 Plugin 的执行不依赖远程 Marketplace 在线可用。
+- Claude / Codex 原生 manifest 是 Canonical metadata 的生成产物；`AI_USAGE.md + skill-runtime.js` 只服务自用 Runtime，不参与宿主安装链。
 
 ## Runtime 维护
 
 修改 Marketplace / Plugin / Skill / Group metadata / 路由 / Composition 后运行：
 
 ```bash
+node scripts/generate-host-manifests.mjs
+node scripts/validate-host-manifests.mjs
 node skill-runtime.js doctor
 ```
 
