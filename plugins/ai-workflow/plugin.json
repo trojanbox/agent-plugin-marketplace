@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "name": "ai-workflow",
+  "version": "1.0.0",
+  "description": "用于设计和维护 AI Skill Runtime、Skill 路由与组合规则，以及为 Codex、Browser/Test Agent、Research Agent 等自主执行模型编写可执行、可审计的目标提示词。当前包含 skill-system-design 与 agent-prompt-design；研发需求/计划/测试设计进入 development，真实 Coding/Test 执行由下游 Agent 完成，普通文字润色进入 writing。",
+  "skills": "./skills",
+  "compatibility": {
+    "legacyCategory": "ai-workflow",
+    "stableSkillIdPrefix": "ai-workflow"
+  }
+}

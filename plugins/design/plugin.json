@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "name": "design",
+  "version": "1.0.0",
+  "description": "用于创建与维护视觉设计产物：高保真 UI、交互原型、线框图、演示稿、移动端界面，以及设计系统/UI Kit。普通数据图表、纯文本写作、外部调研和生产代码实现继续由各自 Plugin/领域能力保留主路由。",
+  "skills": "./skills",
+  "compatibility": {
+    "legacyCategory": "design",
+    "stableSkillIdPrefix": "design"
+  }
+}

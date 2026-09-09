@@ -1,0 +1,16 @@
+{
+  "name": "baoyu-design",
+  "repository": "JimLiu/baoyu-design",
+  "repositoryUrl": "https://github.com/JimLiu/baoyu-design",
+  "branch": "main",
+  "commit": "026d4ea012bdd5cada72ac8cc13f21ba4edf2245",
+  "rootTreeSha": "67aa475c82fac3419fd1e42ae13dd4123946c4ae",
+  "subtreePath": "skills/baoyu-design",
+  "subtreeSha": "6021a026f87d3aefe957e924b173108c24275ea1",
+  "releaseBaseline": "v1.2.0",
+  "verifiedAt": "2026-09-07",
+  "license": "MIT",
+  "notes": "Pinned to current main after the path-validation security fix merged in PR #15. The runtime adapter stays separate from the third-party upstream tree.",
+  "hydratedInBundle": false,
+  "hydrateCommand": "node vendor/baoyu-design/materialize-upstream.mjs"
+}

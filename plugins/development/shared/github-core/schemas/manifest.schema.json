@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/github-handoff-manifest.schema.json",
+  "title": "GitHub handoff manifest",
+  "type": "object",
+  "required": ["schema_version", "bundle_id", "target_repository", "mode", "status", "entries", "relations"],
+  "properties": {
+    "schema_version": {"const": "2.0"},
+    "bundle_id": {"type": "string", "minLength": 1},
+    "target_repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+    "mode": {"enum": ["offline", "read-only"]},
+    "status": {"enum": ["pending_sync", "partially_synced", "synced", "conflict", "failed"]},
+    "created_at": {"type": "string"},
+    "updated_at": {"type": "string"},
+    "entries": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/entry"}
+    },
+    "relations": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/relation"}
+    },
+    "sync_batches": {"type": "array", "items": {"type": "object"}}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "required": ["handoff_id", "kind", "path", "title", "depends_on", "intended_operation", "dedupe_status", "sync_status", "sha256"],
+      "properties": {
+        "handoff_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]*-[0-9]{3}(?:-[A-Z0-9-]+)?$"},
+        "kind": {"enum": ["triage", "issue", "comment", "operation", "review", "artifact"]},
+        "path": {"type": "string", "minLength": 1},
+        "title": {"type": "string"},
+        "parent_id": {"type": ["string", "null"]},
+        "depends_on": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "intended_operation": {"type": "string"},
+        "dedupe_status": {"enum": ["pending", "unique", "duplicate_open", "duplicate_closed", "not_required"]},
+        "sync_status": {"enum": ["blocked_by_triage", "pending_sync", "synced", "partially_synced", "conflict", "skipped", "failed"]},
+        "remote_issue_number": {"type": ["integer", "null"], "minimum": 1},
+        "remote_url": {"type": ["string", "null"]},
+        "last_sync_batch": {"type": ["string", "null"]},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "created_at": {"type": "string"},
+        "updated_at": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "relation": {
+      "type": "object",
+      "required": ["source", "type", "target"],
+      "properties": {
+        "source": {"type": "string"},
+        "type": {"enum": ["related_to", "duplicates", "blocks", "blocked_by", "supersedes", "implements"]},
+        "target": {"type": "string"},
+        "note": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

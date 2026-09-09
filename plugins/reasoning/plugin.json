@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "name": "reasoning",
+  "version": "1.0.0",
+  "description": "用于跨领域的科学推理：从事实与现象出发，区分观察和解释，建立竞争性假设，分析机制，生成可区分预测，主动寻找证伪证据与反例，并随新证据更新当前模型。适合‘背后的规律/还有什么解释/怎么验证这个猜测/相关还是因果/什么能推翻这个判断/底层机制是什么’。外部资料调查进入 research，量化统计检验进入 data，软件 Bug 根因调查仍以 development 为主。",
+  "skills": "./skills",
+  "compatibility": {
+    "legacyCategory": "reasoning",
+    "stableSkillIdPrefix": "reasoning"
+  }
+}

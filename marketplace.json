@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "name": "agent-plugin-marketplace",
+  "version": "1.0.0",
+  "description": "Portable Agent Plugin Marketplace. AI_USAGE.md remains the stable bootstrap entry.",
+  "plugins": [
+    {
+      "name": "ai-workflow",
+      "source": "./plugins/ai-workflow",
+      "category": "Development"
+    },
+    {
+      "name": "business",
+      "source": "./plugins/business",
+      "category": "Business"
+    },
+    {
+      "name": "data",
+      "source": "./plugins/data",
+      "category": "Data"
+    },
+    {
+      "name": "design",
+      "source": "./plugins/design",
+      "category": "Design"
+    },
+    {
+      "name": "development",
+      "source": "./plugins/development",
+      "category": "Development"
+    },
+    {
+      "name": "education",
+      "source": "./plugins/education",
+      "category": "Education"
+    },
+    {
+      "name": "finance",
+      "source": "./plugins/finance",
+      "category": "Finance"
+    },
+    {
+      "name": "reasoning",
+      "source": "./plugins/reasoning",
+      "category": "Research"
+    },
+    {
+      "name": "research",
+      "source": "./plugins/research",
+      "category": "Research"
+    },
+    {
+      "name": "writing",
+      "source": "./plugins/writing",
+      "category": "Documents"
+    }
+  ]
+}

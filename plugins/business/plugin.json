@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "name": "business",
+  "version": "1.0.0",
+  "description": "用于商业与产品经营相关的长期业务上下文和竞争战略分析。当前包含 product-marketing-context 与 competitive-analysis；资料检索和已有材料综合仍进入 research。",
+  "skills": "./skills",
+  "compatibility": {
+    "legacyCategory": "business",
+    "stableSkillIdPrefix": "business"
+  }
+}

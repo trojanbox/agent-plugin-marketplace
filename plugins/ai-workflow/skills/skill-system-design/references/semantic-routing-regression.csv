@@ -1,0 +1,239 @@
+id,bucket,prompt,expected
+B001,baseline-regression,调研一下 vcp-dev.zip 的站点发布功能：能否发布子站、会不会和 VCP 自身工作流冲突？,调研
+B002,baseline-regression,创建一份调研记录，把刚才的源码分析留档。,调研-持久化
+B003,baseline-regression,发布弹窗目前实现到什么程度了，完整梳理一下。,调研
+B004,baseline-regression,页面删除功能有没有潜在问题？先从源码把相关调用链和风险系统梳理出来。,调研
+B005,baseline-regression,基于刚才的调研创建一个讨论，咱们聊怎么解决。,讨论
+B006,baseline-regression,工作流不管部署状态，到部署节点再等待队列，这种方式可以吗？,讨论
+B007,baseline-regression,这个架构方案是否合理？还有哪些关键决策没定？,讨论
+B008,baseline-regression,继续上一个讨论，把这轮方案收口。,讨论
+B009,baseline-regression,已经沟通定稿了，给我生成规格说明。,结论/Spec
+B010,baseline-regression,把接口、状态生命周期、失败恢复的最终合同冻结成结论。,结论/Spec
+B011,baseline-regression,讨论结束了，整理最终目标、非目标和验收边界。,结论/Spec
+B012,baseline-regression,方案已经确认，给后续开发留一个权威结论。,结论/Spec
+B013,baseline-regression,已经有当前有效结论了，给我拆一份开发计划。,实施计划
+B014,baseline-regression,Bug 根因和永久修复方向已经明确，拆成小模型能执行的任务。,实施计划
+B015,baseline-regression,这是局部 UI 展示修改，目标明确，给我 Task DAG 和修改范围。,实施计划
+B016,baseline-regression,接口合同已经冻结，列出 Read Before Edit、Write Set、Stop Conditions 和实施步骤。,实施计划
+B017,baseline-regression,我点击添加区块后报错了，结合截图和源码查一下什么原因。,缺陷调查
+B018,baseline-regression,网站发布弹窗报错，这里有日志，帮我找根因。,缺陷调查
+B019,baseline-regression,域名绑定通了，但 GSC 绑定一直不通，分析代码看是不是有 Bug。,缺陷调查
+B020,baseline-regression,Step2 点击下一步出现 Lock 问题，看看什么情况下会触发。,缺陷调查
+B021,baseline-regression,给我业务测试方案，按真实用户流程验证页面删除不会带坏导航。,业务测试
+B022,baseline-regression,这个功能业务上怎么测？把状态组合和非目标对象不变量列出来。,业务测试
+B023,baseline-regression,先回显 AI 对业务的理解，再给 Scenario 和 Gherkin。,业务测试
+B024,baseline-regression,页面删除要做业务回归，重点覆盖刷新、重新进入和其它页面不受影响。,业务测试
+B025,baseline-regression,给我技术测试方案，设计 Unit/Integration/E2E 层级和 Harness/Reset。,技术测试
+B026,baseline-regression,新版设计工具怎么做稳定可回测的 E2E 环境？,技术测试
+B027,baseline-regression,针对并发、重试、恢复设计故障注入和可重复自动化回归。,技术测试
+B028,baseline-regression,已确认目标后，哪些旧测试该 retain/extend/migrate/replace，Fresh Run 怎么做？,技术测试
+B029,baseline-regression,data-site-block-id 这些字段是从哪里来的？,局部源码事实，直接回答
+B030,baseline-regression,这个接口到底返回什么？请求头、鉴权、schema 和 OpenAPI 是否一致？,API 合同审计
+B031,baseline-regression,这份业务测试计划有没有问题？覆盖了哪部分、漏了哪部分？,测试方案审计
+B032,baseline-regression,现有新版 E2E 方案是否可行？现有脚本能不能复用，哪些测试建议迁移？,技术测试方案审计
+B033,baseline-regression,给我一个 Codex goal，目的是合并补丁然后做测试。,Agent Prompt
+B034,baseline-regression,直接给我生成一个 .patch 修掉这个问题。,先走缺陷调查/复杂度 Gate；只有根因确认且 S + Patch Fast Lane eligible 才进入 development/source-patch-implementation
+B035,baseline-regression,给我一份测试方案，确保这个功能没问题。,业务测试 vs 技术测试未明确
+B036,baseline-regression,这个接口字段错了，顺便把整个发布链路完整调研一下。,缺陷调查 + 系统调研两个主目标
+B037,baseline-regression,测试方案里既要定义用户成功/失败语义，也要把 Harness、Fixture、故障注入设计完。,业务测试 + 技术测试两个主目标
+B038,baseline-regression,跨服务发布工作流目标已经明确，但还没有【结论】，直接给我开发计划。,应有唯一 Gate 所有权
+B039,baseline-regression,涉及状态生命周期和跨对象合同，还没有【结论】，直接给我业务测试方案。,应有唯一 Gate 所有权
+B040,baseline-regression,涉及跨服务并发、幂等和恢复合同，还没有【结论】，直接给我技术测试方案。,应有唯一 Gate 所有权
+P001,breadth-positive,我这套 Skill 分类越来越多了，帮我审计一下路由、组合和重复能力。,ai-workflow/skill-system-design
+P002,breadth-positive,把 agent-plugin-marketplace 里职责重叠的 Skill 合并掉，修改后跑 doctor 并重新打包。,ai-workflow/skill-system-design
+P003,breadth-positive,分析我们和 Notion AI 的竞争差异，比较定位、价格、客户体验和替代方案。,business/competitive-analysis
+P004,breadth-positive,这个市场真正的直接竞争对手、间接竞争对手和 status quo 分别是谁？我们应该怎么差异化？,business/competitive-analysis
+P005,breadth-positive,给这个产品建立一份长期复用的产品营销上下文，把 ICP、痛点、差异化和异议都整理好。,business/product-marketing-context
+P006,breadth-positive,更新现有 product marketing context：目标客户变了，新增客户原话和新的业务目标。,business/product-marketing-context
+P007,breadth-positive,第一次拿到这份 CSV，先帮我看 grain、主键、缺失率、重复和异常值。,data/data-exploration
+P008,breadth-positive,先理解这张订单表：时间范围、字段角色、基数和可能的数据质量问题是什么？,data/data-exploration
+P009,breadth-positive,帮我检查这份 SQL 分析能不能对外分享，重点看 join、分母、时间窗口和结论有没有站不住脚。,data/data-validation
+P010,breadth-positive,审查这份分析报告和图表，判断 Ready to share、需要 caveat，还是必须返工。,data/data-validation
+P011,breadth-positive,把这组月活趋势做成合适的可视化，并检查坐标轴和可读性。,data/data-visualization
+P012,breadth-positive,帮我 review 这张图有没有视觉误导，应该换成什么图更合适？,data/data-visualization
+P013,breadth-positive,分析这次 A/B 实验有没有显著差异，给效应量和置信区间。,data/statistical-analysis
+P014,breadth-positive,比较上线前后两组数据的差异，说明统计显著性和实际意义。,data/statistical-analysis
+P015,breadth-positive,分析 feature 分支相对目标分支的分叉基线，给我 origin.zip 和 content.patch。,development/git-branch-patch-bundle-export
+P016,breadth-positive,我要指定分支的基线源码包和差异 Patch，两份都导出来并校验。,development/git-branch-patch-bundle-export
+P017,breadth-positive,把这个仓库的 release 分支浅克隆下来，去掉 Git 历史后打成 ZIP。,development/git-shallow-zip-export
+P018,breadth-positive,给我下载指定分支的源码 ZIP，不要 .git 和历史记录。,development/git-shallow-zip-export
+P019,breadth-positive,现在模型已经有 GitHub Issues 权限了，把 github-handoff 目录里的离线交接同步上去。,development/github-issue-handoff-sync
+P020,breadth-positive,校验这批 handoff 文件，重新查重后按依赖顺序幂等同步到 GitHub。,development/github-issue-handoff-sync
+P021,breadth-positive,给目标仓库现有的 Issue #123 追加这段评论并添加已有的 bug 标签。,development/github-issue-manager
+P022,breadth-positive,把 Issue #88 按已经确认的关闭理由关闭，执行后核对真实状态。,development/github-issue-manager
+P023,breadth-positive,先查一下目标仓库有没有同根因 Issue，开放和已关闭的都要看。,development/github-issue-triage
+P024,breadth-positive,这个问题和历史 Issue 很像，帮我判断是补充、重开还是应该新建。,development/github-issue-triage
+P025,breadth-positive,从零设计一节八年级科学课，主题是光合作用，要有目标、活动和检查理解。,education/k12-lesson-planning
+P026,breadth-positive,给五年级设计一节新的小数乘法 mini-lesson。,education/k12-lesson-planning
+P027,breadth-positive,把我现有的七年级科学课分成三个 proficiency 层级，但保持同一个标准和 essential question。,education/k12-lesson-differentiation
+P028,breadth-positive,这份 ELA 课已经有了，帮我给 ELL 学生加支架，同时给高水平学生 extension。,education/k12-lesson-differentiation
+P029,breadth-positive,英伟达这次最新财报到底是 beat 还是 miss？指引和利润率有什么变化？,finance/earnings-analysis
+P030,breadth-positive,财报发布前帮我梳理 consensus、guidance 和最值得盯的几个指标。,finance/earnings-analysis
+P031,breadth-positive,完整分析一下腾讯的长期投资逻辑、竞争优势、资本配置、催化剂和风险。,finance/equity-research
+P032,breadth-positive,帮我建立这只股票的多空 thesis，哪些证据会推翻当前长期逻辑？,finance/equity-research
+P033,breadth-positive,帮我看看这组持仓是不是过度集中，行业、地区、货币和相关性风险怎么样。,finance/portfolio-analysis
+P034,breadth-positive,如果科技股回撤 25% 或开始降息，我这套组合的情景风险会怎么样？,finance/portfolio-analysis
+P035,breadth-positive,给这家公司做一套完整 DCF，列清楚 WACC、终值和敏感性。,finance/valuation-analysis
+P036,breadth-positive,用 SOTP 和可比公司两种方法给出 Bear/Base/Bull 估值区间。,finance/valuation-analysis
+P037,breadth-positive,现在属于什么宏观 regime？增长、通胀、利率、美元和流动性怎么组合起来看？,finance/macro-analysis
+P038,breadth-positive,通胀重新上行通常会通过哪些渠道影响成长股和长久期资产？,finance/macro-analysis
+P039,breadth-positive,帮我做一次家庭财务体检，看看现金流、应急金、债务和长期储蓄怎么安排。,finance/financial-planning
+P040,breadth-positive,我现在应该先还高息债还是投资？顺便帮我规划未来三年的资金安排。,finance/financial-planning
+P041,breadth-positive,这个现象可能有哪些竞争性解释？每种解释分别能预测什么？,reasoning/scientific-reasoning
+P042,breadth-positive,我现在有一个因果猜测，什么证据最能推翻它？还有哪些反例必须主动找？,reasoning/scientific-reasoning
+P043,breadth-positive,研究最近 30 天 Reddit 和 Hacker News 对这个 AI 编码工具的真实评价和高频抱怨。,research/community-research
+P044,breadth-positive,看看最近 GitHub、YouTube 和社区里大家实际怎么用这个产品，有没有新趋势。,research/community-research
+P045,breadth-positive,全面研究一下 Agent Skills 生态、主要实现、标准、趋势和争议，要求多来源可追溯。,research/deep-research
+P046,breadth-positive,深度比较这三套 Agent 框架，从架构、生态、维护性和实际采用情况给结论。,research/deep-research
+P047,breadth-positive,把我给你的五份报告综合成一个去重结论，标出共识、分歧和来源。,research/knowledge-synthesis
+P048,breadth-positive,综合这些会议记录、聊天和搜索结果，整理成按主题组织的最终认知。,research/knowledge-synthesis
+P049,breadth-positive,把这份说明写得更清楚、简洁一点，信息不要丢。,writing/clear-writing
+P050,breadth-positive,帮我润色这段报告，让结构更容易扫读，删掉空话。,writing/clear-writing
+P051,breadth-positive,给 CEO 写一份项目延期升级说明，要结论优先、说明取舍并提出明确决策请求。,writing/executive-communication
+P052,breadth-positive,把这份材料整理成董事会 review，突出经营影响、风险和需要拍板的事项。,writing/executive-communication
+P053,breadth-positive,这段文字太像 ChatGPT 了，帮我去 AI 味，事实和观点别改。,writing/humanizer
+P054,breadth-positive,Humanize 这篇文章，让语气更自然，但保留作者原来的声音。,writing/humanizer
+P055,breadth-positive,给非技术读者解释 Transformer 为什么能处理上下文，从直观现象讲到最小模型。,writing/popular-science-explainer
+P056,breadth-positive,写一篇量子隧穿的科普文章，让普通人能理解机制和现实约束。,writing/popular-science-explainer
+P057,breadth-positive,给团队写一份这套 Skill 平时到底怎么用的指南，重点写什么时候直接怎么说。,writing/practical-usage-guide
+P058,breadth-positive,把这个复杂工作流整理成新人照着就能操作的实操说明，不要只列功能。,writing/practical-usage-guide
+A001,adversarial,对这份 A/B 数据做显著性分析，并直接画出带置信区间的结果图。,理想：data/statistical-analysis 为主 + data/data-visualization 作为呈现组合
+A002,adversarial,第一次看这份 CSV，帮我做字段、缺失、异常探索，并把关键分布直接画出来。,理想：data/data-exploration 为主 + data/data-visualization 作为呈现组合
+A003,adversarial,把这段董事会汇报去 AI 味，但要保留高层决策结构和明确 ask。,理想：writing/executive-communication 为主 + writing/humanizer 作为风格组合
+A004,adversarial,给非技术管理层写一篇 AI Agent 科普，同时写得自然一点，别像 ChatGPT。,理想：writing/popular-science-explainer 为主 + writing/humanizer 作为风格组合
+A005,adversarial,全面分析 NVDA 的长期投资逻辑，并做一套完整 DCF 估值。,finance/equity-research 与 finance/valuation-analysis 是两个实质交付物，应识别主 Skill 冲突
+A006,adversarial,分析特斯拉 Q2 财报，同时重做一遍长期投资 thesis。,finance/earnings-analysis 与 finance/equity-research 是两个实质交付物，应识别冲突
+A007,adversarial,根据这五份报告综合共识，缺的地方再联网补证据。,research/knowledge-synthesis 为主 + optional research/deep-research
+A008,adversarial,解释为什么这个现象相关但不一定因果，并用现有数据做统计检验。,reasoning/scientific-reasoning 为主 + optional data/statistical-analysis
+A009,adversarial,做一份竞品分析，需要先补最新定价、产品变化和用户评价。,business/competitive-analysis 为主 + research 组合
+A010,adversarial,帮我建立产品营销上下文，同时再输出一份完整竞争战略和机会威胁分析。,product-marketing-context 与 competitive-analysis 两个实质交付物，应识别冲突
+A011,adversarial,给我一份这套 Skill 日常怎么用的指南，文字也要清楚简洁。,writing/practical-usage-guide 为主 + uses writing/clear-writing
+A012,adversarial,给八年级学生设计一节课，目标是把黑洞讲明白。,education/k12-lesson-planning
+A013,adversarial,写一篇给八年级学生看的黑洞科普文章，不是课堂教案。,writing/popular-science-explainer
+A014,adversarial,这个 Bug 已经有完整根因报告了，直接创建 GitHub 缺陷 Issue。,理想：github-issue-manager 承接明确写操作，并把 triage 作为创建 Gate
+A015,adversarial,这个 Bug 已经确认了。先查重，再根据查重结果创建或重开 Issue。,先 github-issue-triage；完成后顺序进入 github-issue-manager
+A016,adversarial,已有【结论】，给我开发计划，并同时写一份 Codex 执行 Prompt。,development/github-development-plan-generator 与 ai-workflow/agent-prompt-design 是两个交付物，应识别冲突
+A017,adversarial,给我业务测试方案，并把其中高风险场景的 Harness、Fixture 和故障注入也设计好。,业务测试与技术测试两个主交付物，应识别冲突
+A018,adversarial,全面调研发布链路，过程中如果确认独立 Bug 就顺手查重留痕。,development/github-research-document-generator 为主 + incidental bug capture
+A019,adversarial,这个系统偶发失败。建立几个竞争性假设，但最终目标是结合源码定位软件根因。,development/github-bug-investigation 为主 + optional reasoning/scientific-reasoning
+A020,adversarial,研究最近 30 天社区对这个 AI 编码工具的评价，同时核对官方定价和发布说明。,research/community-research（社区评价是主目标，官方事实为辅助核对）
+A021,adversarial,全面研究某 AI 编码工具生态，官方、论文、GitHub、Reddit 都要覆盖。,research/deep-research
+A022,adversarial,检查这份统计分析是否正确，并顺便重新跑一遍显著性检验。,理想：data/data-validation 为主 + data/statistical-analysis 作为验证组合
+T001,targeted-data,对这组 A/B 转化率做显著性检验，并画一张带 95% 置信区间的结果图。,data/statistical-analysis 为主 + data/data-visualization 组合
+T002,targeted-data,第一次打开这个 CSV，先看字段、缺失和异常值，再把关键分布画出来。,data/data-exploration 为主 + data/data-visualization 组合
+T003,targeted-data,检查这份统计报告能不能发，关键 p-value 请你独立重跑一遍。,data/data-validation 为主 + data/statistical-analysis 组合
+T004,targeted-data,审查这张图有没有误导；如果有，直接重画一个正确版本。,data/data-validation 为主 + data/data-visualization 组合
+T005,targeted-data,这些月度收入数字已经算好了，帮我选合适的图并画出来。,data/data-visualization
+T006,targeted-data,比较实验组和对照组差异是否显著，不需要画图。,data/statistical-analysis
+T007,targeted-data,刚拿到这份 Parquet，告诉我一行代表什么、主键是否唯一、缺失和异常在哪里。,data/data-exploration
+T008,targeted-data,这份 SQL 分析准备发给老板了，检查 Join、分母、时间窗口和结论有没有问题。,data/data-validation
+T009,targeted-data,看看这份交易数据有没有异常点，并把关键异常分布用箱线图表现出来。,data/data-exploration 为主 + data/data-visualization 组合
+T010,targeted-data,分析这些指标的相关关系，并把相关矩阵画成热力图。,data/statistical-analysis 为主 + data/data-visualization 组合
+T011,targeted-data,数字和结论都不用你验，只审这张双轴图是不是会误导读者。,data/data-visualization
+T012,targeted-data,审核整个统计分析；必要时重跑显著性检验，并把误导图重新画掉。,data/data-validation 为主 + statistical-analysis + data-visualization 组合
+T013,targeted-writing,给董事会写一份项目延期决策说明，同时去 AI 味，保留明确 ask。,writing/executive-communication 为主 + writing/humanizer 组合
+T014,targeted-writing,给普通管理者写一篇 RAG 原理科普，写得自然点，别像 ChatGPT。,writing/popular-science-explainer 为主 + writing/humanizer 组合
+T015,targeted-writing,写一份这套 Runtime 的新人实操指南，要求清楚而且别有 AI 腔。,writing/practical-usage-guide 为主 + uses clear-writing + optional humanizer
+T016,targeted-writing,这段文章已经写完了，只帮我 humanize，事实和立场都别动。,writing/humanizer
+T017,targeted-writing,把这段说明压短一点、写具体一点，不需要改风格。,writing/clear-writing
+T018,targeted-writing,把这段产品说明写清楚一点，也去掉 AI 味。,writing/humanizer 为主 + writing/clear-writing 组合
+T019,targeted-writing,给 CEO 写一封风险升级邮件，别像机器人写的。,writing/executive-communication 为主 + writing/humanizer 组合
+T020,targeted-writing,写一个 8 分钟量子计算科普视频稿，语气自然，不要 AI 套话。,writing/popular-science-explainer 为主 + writing/humanizer 组合
+T021,targeted-writing,给团队写一份工作流怎么用的操作手册，重点是步骤清楚。,writing/practical-usage-guide + uses writing/clear-writing
+T022,targeted-writing,这篇科普稿内容已经没问题，只帮我精简 20%，不要重做解释结构。,writing/clear-writing
+T023,targeted-writing,把这段技术说明去 AI 味，但别重构章节，也别新增事实。,writing/humanizer
+T024,targeted-writing,我要一份面向董事会的决策简报，同时还要一篇完整原理科普文章。,executive-communication 与 popular-science-explainer 两个独立主交付物，识别冲突
+T025,targeted-issue,根因报告已经完整了，直接把它创建成 GitHub 缺陷 Issue。,github-issue-manager 为主 → triage Gate → 创建
+T026,targeted-issue,先查一下这个问题有没有重复 Issue，告诉我应该复用、重开还是新建，先不要写。,github-issue-triage
+T027,targeted-issue,查重，如果没有重复就直接创建；如果是复发就重开原 Issue。,github-issue-manager 为主 → github-issue-triage Gate → 写操作
+T028,targeted-issue,先查重，把候选和判断给我，我看完再决定要不要创建。,github-issue-triage
+T029,targeted-issue,给现有 #123 追加这段新证据。,github-issue-manager；已知现有 Issue，不重复 triage
+T030,targeted-issue,把 #123 关闭，关闭理由就用我给的这段。,github-issue-manager；已知现有 Issue，不重复 triage
+T031,targeted-issue,结合源码把这个偶发 Bug 根因查清楚，并创建缺陷 Issue。,development/github-bug-investigation 为主；Issue 写入是领域工作流副作用
+T032,targeted-issue,创建一个【讨论】Issue，咱们围绕这个架构冲突正式讨论。,development/github-discussion-facilitator 为主
+T033,targeted-issue,完整调研发布链路，并把调研结果记录成【调研】Issue。,development/github-research-document-generator 为主
+T034,targeted-issue,已有【结论】，给我拆实施计划并创建对应【实施计划】Issue。,development/github-development-plan-generator 为主
+T035,targeted-issue,这份实施计划正文已经完成，不要再规划，只把它作为一个新 Issue 写到仓库。,github-issue-manager 为主 → triage Gate → 创建
+T036,targeted-issue,把这个 github-handoff 包按 manifest 同步到目标仓库。,development/github-issue-handoff-sync
+T037,skill-system-behavior,这两个 Skill 路由总打架，帮我修好、回归测试，然后打包最新版 Runtime。,ai-workflow/skill-system-design；修路由 + semantic eval + doctor + package
+T038,skill-system-behavior,我感觉以后可能会需要一个“万能研究 Skill”，先帮我加上。,skill-system-design 必须执行 New Skill Gate；无独立重复目标时优先拒绝新增/复用现有能力
+T039,skill-system-behavior,把这个 Skill 的 description 和 optional_uses 调整一下。,skill-system-design；因为改路由/组合，交付前必须 semantic routing eval + doctor
+T040,skill-system-behavior,把这个 Skill 删除掉，别考虑兼容。,skill-system-design；先查引用/uses/optional_uses/文档入口，再删除并验证
+T041,skill-system-behavior,帮我审计当前 Runtime 有哪些 Skill，但我没有给你 Runtime 文件。,skill-system-design 必须说明缺少事实源，不能凭记忆构造当前 Catalog
+T042,skill-system-behavior,你单次跑了 180 条都过了，直接写路由准确率 100%。,skill-system-design 必须拒绝伪统计；只能称当前样本语义回归通过
+T043,skill-system-behavior,基于这份开发计划，给另一个 Codex 写一个可直接执行的 Goal Prompt。,ai-workflow/agent-prompt-design，不由 skill-system-design 抢路由
+T044,skill-system-behavior,我们产品源码里有个叫 Skill 的功能坏了，结合源码查根因。,development/github-bug-investigation；“Skill”只是产品概念，不触发 Runtime 设计 Skill
+T045,cross-category,做一份竞品分析，最新定价、发布变化和用户评价都要补齐。,business/competitive-analysis 为主 + research/deep-research 组合
+T046,cross-category,根据现有五份报告先综合共识和冲突，缺失事实再联网补。,research/knowledge-synthesis 为主 + research/deep-research 组合
+T047,cross-category,给这个现象建立竞争性假设，再用现有数据检验哪个预测更符合。,reasoning/scientific-reasoning 为主 + data/statistical-analysis 组合
+T048,cross-category,全面做这家公司的长期投资研究，并另外给我一套完整 DCF 模型。,finance/equity-research 与 finance/valuation-analysis 两个独立主交付物，识别冲突
+T049,cross-category,分析我的持仓组合风险，并对收益序列做波动、相关性和尾部统计。,finance/portfolio-analysis 为主 + data/statistical-analysis 组合
+T050,cross-category,给八年级设计一节关于黑洞的课堂课，包含活动和分层材料。,education/k12-lesson-planning / differentiation 按课堂目标路由，不进入 popular-science 主路由
+T051,cross-category,写一篇给普通青少年看的黑洞科普文章，不是课堂教案。,writing/popular-science-explainer
+T052,cross-category,建立一份长期产品营销上下文，同时再输出完整竞品战略分析。,business/product-marketing-context 与 business/competitive-analysis 两个独立主交付物，识别冲突
+T053,multi-turn,上下文：上一轮已经完成调研，确认只是局部修正、Spec Gate=not_required。当前：现在给我实施计划。,development/github-development-plan-generator，直接消费 spec_not_required 理由
+T054,multi-turn,上下文：上一轮讨论已经定稿，并生成当前有效【结论】。当前：现在给我业务测试方案。,development/github-business-test-plan-generator；Spec Gate 已满足
+T055,multi-turn,上下文：刚才 Triage 结论是“新建”。当前：现在创建这个 Issue。,development/github-issue-manager；复用已有 triage 结论，不重复全仓查重
+T056,multi-turn,上下文：刚才 Triage 结论是复用 #123。当前：把这批新证据补到 #123。,development/github-issue-manager；更新已知现有 Issue
+T057,multi-turn,上下文：刚才只完成查重，我还没授权写入。当前：先别创建，把候选差异再解释清楚。,development/github-issue-triage 继续主导
+T058,multi-turn,上下文：刚才已经写好一份 CEO 风险升级汇报。当前：现在帮我去 AI 味，但决策结构和 ask 别动。,writing/executive-communication 为主 + writing/humanizer 组合
+T059,multi-turn,上下文：刚才显著性检验和置信区间已经算完。当前：现在只把结果画成 CI 图。,data/data-visualization；统计工作已完成，当前主要交付物是图
+T060,multi-turn,上下文：图表和统计结果都已经有了。当前：检查整个分析能不能发给管理层。,data/data-validation
+T061,targeted-patch,上下文：根因已经确认，属于局部低传播 S 级修改，没有合同或数据语义变化。当前：那直接给我一个 .patch。,development/source-patch-implementation
+T062,targeted-patch,这个只读勾选反显问题已经定位到单个组件读取错字段，目标行为也明确，直接改源码给我 patch。,development/source-patch-implementation；S 级 Fast Lane
+T063,targeted-patch,根因确认是本地空值判断写反了，不改接口合同、不改数据库，给我一个可回放补丁。,development/source-patch-implementation；S 级 Fast Lane
+T064,targeted-patch,这个接口偶发报错，我还没查原因，你别分析了直接给 patch。,development/github-bug-investigation；根因未明，不能用交付物要求绕过 Gate
+T065,targeted-patch,跨两个服务的事件推进顺序要改，状态归属还没定，但我想直接要 patch。,development/github-discussion-facilitator；DECISION_REQUIRED，Fast Lane blocked
+T066,targeted-patch,需要新增数据库字段并迁移历史数据，目标大体明确，直接 patch 就行。,Fast Lane blocked；数据模型/迁移属于 M/L，进入 Spec/实施计划
+T067,targeted-patch,把对外 API 的错误结构和 schema 一起改掉，已经知道改哪里了，直接出 patch。,Fast Lane blocked；外部 contract 变化需要完整流程，不进入 source-patch-implementation
+T068,targeted-patch,这个并发重试状态机有竞态，根因确认了，直接给我 patch。,Fast Lane blocked；复杂状态机/并发属于 L，进入实施计划
+T069,targeted-patch,这个按钮失败时到底自动重试还是提示用户还没定，你先按你觉得合理的直接 patch。,development/github-discussion-facilitator；用户可见失败语义未定，不能代替决策
+T070,targeted-patch,根因已经确认，但修复要同时改前端、API 层和持久化适配，属于常规跨层修改，直接给 patch。,development/github-development-plan-generator；M 级不走 Patch Fast Lane
+T071,targeted-patch,根因确认是跨服务职责划分错误，需要重排调用链，给我 patch。,Fast Lane blocked；L 级职责变化应走讨论/Spec/实施计划
+T072,targeted-patch,这是局部文案条件判断修正，根因和目标都确定；可以顺手补现有单测，然后给 patch。,development/source-patch-implementation；允许必要局部回归测试
+T073,multi-turn,上下文：上一轮缺陷调查已经 confirmed root cause，并判定 S + patch_fast_lane_eligible。当前：好，那直接 patch。,development/source-patch-implementation；继承上一轮 Gate 结果
+T074,multi-turn,上下文：上一轮只有两个竞争性根因假设，还没拿到区分证据。当前：不用查了，直接 patch。,development/github-bug-investigation；hypothesis 不能跳到 implementation
+T075,multi-turn,上下文：刚才 S 级 Patch 已经交付。当前：把这个问题创建成 Bug Issue 吧。,development/github-issue-manager；必要时先执行 github-issue-triage Gate
+T076,multi-turn,上下文：上一轮已经确认根因，但复杂度是 L，涉及跨服务状态生命周期。当前：我还是想直接 patch。,继续完整流程，Fast Lane blocked；按决策状态进入 discussion/spec/development plan，不降级成 S
+D001,design-integration,帮我设计一个 Reader Mac App 的三个高保真方案。,design/visual-artifact-design
+D002,design-integration,把这份 PRD 做成 10 页产品发布演示稿，要求有完整视觉层级。,design/visual-artifact-design
+D003,design-integration,给移动端 onboarding 做一个可以真实点击切换步骤的原型。,design/visual-artifact-design
+D004,design-integration,先画一套低保真 wireframe，探索三个导航布局。,design/visual-artifact-design
+D005,design-integration,用我们现有的 Fluent 2 设计系统做一个设置页面。,design/visual-artifact-design；消费已有设计系统，不进入 authoring
+D006,design-integration,把这个本地 Figma .fig 导成一套可复用设计系统，包含 tokens 和组件。,design/design-system-authoring
+D007,design-integration,给品牌从零创建 Design System、UI Kit、tokens 和组件预览。,design/design-system-authoring
+D008,design-integration,从这个 GitHub 前端仓库提取现有视觉规范，整理成可消费的设计系统。,design/design-system-authoring
+D009,design-integration,分析这个 CSV 并画出最近 12 个月的收入趋势图。,data/data-exploration 为主；按需组合 data/data-visualization，不进入 design
+D010,design-integration,联网深度研究最近一个月 Agent 框架的发展和主要争议。,research/deep-research，不进入 design
+D011,design-integration,把这段项目说明改得更清晰、更简洁。,writing/clear-writing，不进入 design
+D012,design-integration,研究最新竞品定位，然后做一份给投资人的视觉 deck。,design/visual-artifact-design 为主；组合 research/deep-research
+D013,design-integration,综合这 5 份已有报告，最后设计一份高管汇报演示稿。,design/visual-artifact-design 为主；组合 research/knowledge-synthesis
+D014,design-integration,建立完整 Design System，同时另外设计一套不依赖它的 SaaS Dashboard 原型。,主 Skill 冲突：design/design-system-authoring + design/visual-artifact-design；拆成两个可独立验收任务
+T077,multi-turn,上下文：创建讨论 Issue 时 shell 报 gh: not found，但 ~/.local/bin/gh 存在。当前：继续创建，不要生成 handoff。,development/github-discussion-facilitator；先恢复 gh 路径并使用 body-file 写入，不能仅因 PATH 问题降级 handoff
+T078,multi-turn,上下文：Triage 已完成且 GitHub 读取正常；长 gh issue create 命令被执行宿主拒绝。当前：再试一次创建。,development/github-issue-manager；使用绝对 gh 路径并拆分正文文件与远端写入，恢复 Gate 失败后才允许 handoff
+K001,domain-learning,我准备进入企业销售领域，没有经验，帮我建立领域地图，先让我具备能做关键决策的基本判断力。,research/domain-knowledge-builder
+K002,domain-learning,我做了十多年开发，现在要学市场推广，别给教材目录，帮我建立一套能不断更新的认知模型。,research/domain-knowledge-builder
+K003,domain-learning,我对供应链完全陌生，先梳理参与者、关键决策、高杠杆变量和未知项。,research/domain-knowledge-builder
+K004,domain-learning,我想一个月切入 B2B 销售，按真实决策缺口安排学习和实践验证。,research/domain-knowledge-builder
+K005,domain-learning,深度研究 2026 年 SaaS SEO 的主要变化、证据和争议，给我一份完整报告。,research/deep-research；单一有边界研究任务，不进入 domain-knowledge-builder
+K006,domain-learning,综合我上传的 12 份营销报告，把共识、冲突和证据强弱整理出来。,research/knowledge-synthesis；已有材料综合，不进入 domain-knowledge-builder
+K007,domain-learning,最近一个月 Reddit 和 Hacker News 上独立开发者怎么评价冷启动获客？,research/community-research；近期社区观点为主
+K008,domain-learning,为什么有些 PLG 产品激活高但留存低？给我建立竞争性假设并设计证伪路径。,reasoning/scientific-reasoning；单一机制与假设问题
+K009,domain-learning,把我这个产品的 ICP、定位、竞争差异、客户原话长期维护成营销上下文。,business/product-marketing-context；具体产品 Context 为主
+K010,domain-learning,我想快速进入企业销售领域，用公开资料建立领域地图、关键决策和判断框架。,research/domain-knowledge-builder 为主 + research/deep-research 组合
+K011,domain-learning,这些书、课程笔记和行业报告是我现有材料，用它们帮我建立一套销售领域认知模型。,research/domain-knowledge-builder 为主 + research/knowledge-synthesis 组合
+K012,domain-learning,我想进入 DevRel，尤其需要吸收最近真实从业者怎么做和踩过什么坑，最后沉淀成我的判断模型。,research/domain-knowledge-builder 为主 + research/community-research 组合
+K013,domain-learning,我在学习增长时对“激活是否会直接改善留存”有几个解释，把它纳入领域模型并设计能推翻当前判断的证据。,research/domain-knowledge-builder 为主 + reasoning/scientific-reasoning 组合
+K014,domain-learning,帮我建立营销领域的长期认知模型，同时另外输出一份完整的竞品战略分析。,主 Skill 冲突：research/domain-knowledge-builder + business/competitive-analysis；两个独立可验收交付物
+K015,multi-turn,上下文：上一轮已经完成销售领域地图。当前：继续，把关键决策按重要度排出来，标出哪些我现在还不会做。,research/domain-knowledge-builder；继续 Decision Catalogue 阶段
+K016,multi-turn,上下文：领域模型已经达到 Decision Ready。当前：现在只对 SEO 这个单点做一次深度研究并出报告。,research/deep-research；当前主要交付物已切换为有边界研究报告
+K017,domain-learning,CAC 是什么意思？,普通事实解释；无需 domain-knowledge-builder
+K018,domain-learning,给八年级学生设计一节供应链主题课程，要有活动和分层材料。,education/k12-lesson-planning；课堂目标不进入 domain-knowledge-builder
+K019,domain-learning,我想系统建立市场营销认知，同时把我当前产品的 ICP 和定位长期文件也建好。,主 Skill 冲突：research/domain-knowledge-builder + business/product-marketing-context；两个独立持久化目标
+K020,domain-learning,基于已经完成的领域认知模型，直接给我的产品制定未来 90 天完整市场推广执行方案。,domain-knowledge-builder 停止；当前 Catalog 无通用市场推广执行主 Skill 时明确能力缺口，不由学习 Skill 冒充执行能力
+PM001,plugin-architecture,把 agent-plugin-marketplace 改成 Marketplace → Plugin → 多 Skills，但 AI_USAGE.md 的入口和原来的 Skill ID 都要保留。,ai-workflow/skill-system-design；Runtime 架构迁移 + 兼容性合同 + doctor/semantic eval
+PM002,plugin-architecture,development 里 testing 和 repo-ops 要不要拆成独立 Plugin？先按安装、版本、权限和生命周期帮我判断。,ai-workflow/skill-system-design；Plugin 粒度与边界审计
+PM003,plugin-architecture,把 development 下的 Group 从物理目录改成 plugin.json 里的 metadata，Skill ID 不要变。,ai-workflow/skill-system-design；Group metadata/物理结构迁移
+PM004,plugin-architecture,给 Runtime 加一个 marketplace.json，只负责发现本地已安装 Plugin，远程安装器先不要实现。,ai-workflow/skill-system-design；Marketplace/Runtime 职责边界设计
+PM005,plugin-architecture,基于刚才这个 Plugin 架构，给另一个 Codex 写一个执行改造的 Goal Prompt。,ai-workflow/agent-prompt-design；当前交付物是下游 Agent 执行 Prompt
+PM006,plugin-architecture,我们产品里的插件市场页面点安装会报 500，结合源码帮我查根因。,development/github-bug-investigation；产品中的 Plugin/Marketplace 概念不触发 Runtime 设计 Skill
