@@ -237,3 +237,4 @@ PM003,plugin-architecture,把 development 下的 Group 从物理目录改成 plu
 PM004,plugin-architecture,给 Runtime 加一个 marketplace.json，只负责发现本地已安装 Plugin，远程安装器先不要实现。,ai-workflow/skill-system-design；Marketplace/Runtime 职责边界设计
 PM005,plugin-architecture,基于刚才这个 Plugin 架构，给另一个 Codex 写一个执行改造的 Goal Prompt。,ai-workflow/agent-prompt-design；当前交付物是下游 Agent 执行 Prompt
 PM006,plugin-architecture,我们产品里的插件市场页面点安装会报 500，结合源码帮我查根因。,development/github-bug-investigation；产品中的 Plugin/Marketplace 概念不触发 Runtime 设计 Skill
+T079,multi-turn,上下文：上一轮已经完成 VCP OIDC 源码调研。当前：创建一份调研文档到 Issue 吧。,development/github-research-document-generator；进入 documented_research，Issue 写入是调研工作流持久化步骤

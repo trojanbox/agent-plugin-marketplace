@@ -680,7 +680,7 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
         self.assertTrue(corpus.exists())
         with corpus.open(encoding="utf-8", newline="") as handle:
             rows = list(csv.DictReader(handle))
-        self.assertEqual(len(rows), 238)
+        self.assertEqual(len(rows), 239)
         buckets = {row["bucket"] for row in rows}
         for bucket in (
             "baseline-regression",
@@ -693,6 +693,26 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
         ):
             self.assertIn(bucket, buckets)
         self.assertTrue(all(row["prompt"].strip() and row["expected"].strip() for row in rows))
+        research_issue_case = next(row for row in rows if row["id"] == "T079")
+        self.assertIn("创建一份调研文档到 Issue", research_issue_case["prompt"])
+        self.assertIn(
+            "development/github-research-document-generator",
+            research_issue_case["expected"],
+        )
+
+    def test_research_document_route_is_visible_at_plugin_and_skill_levels(self) -> None:
+        plugin = json.loads(
+            (PLUGINS / "development/plugin.json").read_text(encoding="utf-8")
+        )
+        self.assertIn("调研文档/【调研】Issue", plugin["description"])
+        self.assertIn("把刚才调研留档到 Issue", plugin["description"])
+
+        skill = (
+            PLUGINS / "development/skills/github-research-document-generator/SKILL.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn("创建/生成调研文档", skill)
+        self.assertIn("【调研】Issue", skill)
+        self.assertIn("Issue 创建/更新属于持久化步骤", skill)
 
     def test_spec_side_bug_uses_incidental_capture(self) -> None:
         spec = (

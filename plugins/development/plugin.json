@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "development",
   "version": "1.0.1",
-  "description": "用于软件研发协作中的需求与源码事实梳理、缺陷根因调查、S 级局部源码 Patch、讨论/结论冻结、开发计划、技术测试方案、业务测试方案与测试方案审计，以及必要的 GitHub/Git 支撑操作。仅 Patch Fast Lane 允许对根因/目标已确认的低传播 S 级修改直接实施；M/L 级实际开发和完整真实环境验证仍由下游 Coding/Test Agent 在完整流程后完成。",
+  "description": "用于软件研发协作中的源码调研、调研文档/【调研】Issue、需求与源码事实梳理、缺陷根因调查、S 级局部源码 Patch、讨论/结论冻结、开发计划、技术测试方案、业务测试方案与测试方案审计，以及必要的 GitHub/Git 支撑操作。当前项目的跨模块实现梳理、完整调用链、能力盘点，以及‘把刚才调研留档到 Issue’均进入 development 内对应调研 Skill；外部资料/互联网/论文研究进入 research。仅 Patch Fast Lane 允许对根因/目标已确认的低传播 S 级修改直接实施；M/L 级实际开发和完整真实环境验证仍由下游 Coding/Test Agent 在完整流程后完成。",
   "skills": "./skills",
   "internalSkills": "./internal-skills",
   "shared": "./shared",

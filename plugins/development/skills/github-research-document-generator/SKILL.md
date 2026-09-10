@@ -1,6 +1,6 @@
 ---
 name: github-research-document-generator
-description: "用于对当前软件项目、模块、服务、Agent、Workflow、API 或完整调用链做系统性源码调研，建立可复用的当前实现事实基线。即使用户没有明确说“调研文档/报告”，只要请求表现为完整梳理、盘点现状、分析实现到什么程度、说明系统怎么工作、梳理现有能力与缺口，并且需要跨多个源码证据形成系统认知，也应优先列为主 Skill 候选；单点事实、独立缺陷、未定方案讨论和已经明确的开发计划/测试方案请求进入对应 Skill。默认可直接在当前对话交付完整调研结论；只有用户明确要求调研报告、Markdown、调查记录、Wiki 或 GitHub 留痕时才进入文档持久化模式。"
+description: "用于对当前软件项目、模块、服务、Agent、Workflow、API 或完整调用链做系统性源码调研，建立可复用的当前实现事实基线。即使用户没有明确说“调研文档/报告”，只要请求表现为完整梳理、盘点现状、分析实现到什么程度、说明系统怎么工作、梳理现有能力与缺口，并且需要跨多个源码证据形成系统认知，也应优先列为主 Skill 候选；单点事实、独立缺陷、未定方案讨论和已经明确的开发计划/测试方案请求进入对应 Skill。默认可直接在当前对话交付完整调研结论；用户明确要求创建/生成调研文档、调研报告、【调研】Issue、把刚才的源码分析/调研留档到 GitHub，或其它 Markdown/Wiki/GitHub 留痕时，仍由本 Skill 主导并进入文档持久化模式，Issue 写入只是调研工作流的持久化步骤。"
 phase: research
 optional_uses: "development/github-incidental-bug-capture"
 ---
@@ -22,7 +22,7 @@ optional_uses: "development/github-incidental-bug-capture"
 ## 交付模式
 
 - `analysis_only`（默认）：在当前对话完整交付结论，不因为“调研”两个字自动创建文件或 Issue。
-- `documented_research`：用户明确要求报告、Markdown、Wiki、调查记录或 GitHub 留痕时启用持久化。
+- `documented_research`：用户明确要求报告、Markdown、Wiki、调查记录、【调研】Issue，或“把刚才的源码分析/调研留档到 GitHub”时启用持久化；这些表达仍由本 Skill 主导，Issue 创建/更新属于持久化步骤，不切换到 `github-issue-manager`。
 
 ## 核心流程
 
