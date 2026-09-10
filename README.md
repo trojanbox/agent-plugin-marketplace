@@ -16,7 +16,7 @@ claude plugin marketplace add trojanbox/agent-plugin-marketplace
 claude plugin install development@agent-plugin-marketplace
 ```
 
-其它 Plugin 把 `development` 替换为 `research`、`writing`、`data` 等名称即可。
+其它 Plugin 把 `development` 替换为 `research`、`writing`、`data`、`web-app-scaffolding` 等名称即可。
 
 Claude 原生分发文件：
 

@@ -103,6 +103,27 @@ class RuntimeContractTests(unittest.TestCase):
             "plugins/development/skills/github-bug-investigation/SKILL.md"
         ))
 
+    def test_web_app_scaffolding_has_three_stack_specific_public_skills(self) -> None:
+        plugin = runtime_json("list", "web-app-scaffolding")
+        self.assertEqual(plugin["publicSkillCount"], 3)
+        self.assertEqual(plugin["internalSkillCount"], 0)
+        self.assertEqual(
+            {group["name"] for group in plugin["groups"]},
+            {"frontend", "backend", "fullstack"},
+        )
+
+        fullstack = runtime_json(
+            "skill", "web-app-scaffolding/react-nestjs-fullstack-scaffold"
+        )["skill"]
+        self.assertEqual(
+            fullstack["uses"],
+            [
+                "web-app-scaffolding/react-typescript-frontend-scaffold",
+                "web-app-scaffolding/node-nestjs-backend-scaffold",
+            ],
+        )
+        self.assertEqual(fullstack["group"], "fullstack")
+
     def test_runtime_is_relocatable_as_a_directory(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             relocated = Path(td) / ("runtime-moved-" + "x" * 96)
@@ -174,7 +195,13 @@ class ProgressiveDisclosureContractTests(unittest.TestCase):
         marketplace = json.loads(marketplace_path.read_text(encoding="utf-8"))
         self.assertEqual(marketplace["schemaVersion"], 1)
         self.assertLessEqual(marketplace_path.stat().st_size, 8192)
-        self.assertEqual(len(marketplace["plugins"]), 10)
+        manifest_names = {
+            path.parent.name for path in PLUGINS.glob("*/plugin.json")
+        }
+        self.assertEqual(
+            {entry["name"] for entry in marketplace["plugins"]},
+            manifest_names,
+        )
 
         oversized: list[str] = []
         for path in sorted(PLUGINS.glob("*/plugin.json")):
@@ -261,6 +288,9 @@ class ProgressiveDisclosureContractTests(unittest.TestCase):
 
 class HostManifestContractTests(unittest.TestCase):
     def test_host_manifest_generator_and_validator_are_idempotent(self) -> None:
+        canonical = json.loads((ROOT / "marketplace.json").read_text(encoding="utf-8"))
+        expected_plugin_count = len(canonical["plugins"])
+        expected_artifact_count = 2 + 2 * expected_plugin_count
         first = subprocess.run(
             ["node", str(ROOT / "scripts/generate-host-manifests.mjs")],
             cwd=ROOT,
@@ -269,8 +299,8 @@ class HostManifestContractTests(unittest.TestCase):
             text=True,
         )
         generated = json.loads(first.stdout)
-        self.assertEqual(generated["pluginCount"], 10)
-        self.assertEqual(generated["artifactCount"], 22)
+        self.assertEqual(generated["pluginCount"], expected_plugin_count)
+        self.assertEqual(generated["artifactCount"], expected_artifact_count)
         self.assertEqual(generated["written"], 0)
         self.assertEqual(generated["removed"], 0)
 
@@ -283,7 +313,7 @@ class HostManifestContractTests(unittest.TestCase):
         )
         result = json.loads(validated.stdout)
         self.assertTrue(result["ok"])
-        self.assertEqual(result["artifactCount"], 22)
+        self.assertEqual(result["artifactCount"], expected_artifact_count)
 
     def test_claude_and_codex_marketplaces_cover_all_canonical_plugins(self) -> None:
         canonical = json.loads((ROOT / "marketplace.json").read_text(encoding="utf-8"))

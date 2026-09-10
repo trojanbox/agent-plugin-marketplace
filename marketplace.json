@@ -58,6 +58,11 @@
       "name": "writing",
       "source": "./plugins/writing",
       "category": "Documents"
+    },
+    {
+      "name": "web-app-scaffolding",
+      "source": "./plugins/web-app-scaffolding",
+      "category": "Development"
     }
   ]
 }

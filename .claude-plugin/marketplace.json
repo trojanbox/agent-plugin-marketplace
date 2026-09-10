@@ -126,6 +126,18 @@
       },
       "repository": "https://github.com/trojanbox/agent-plugin-marketplace",
       "category": "Documents"
+    },
+    {
+      "name": "web-app-scaffolding",
+      "source": "./plugins/web-app-scaffolding",
+      "description": "用于按明确前后端技术栈创建、迁移、扩展或审查 Web 应用工程脚手架。每个 Skill identity 绑定具体前端、后端或全栈技术栈；frontend/backend/fullstack 只作为 Group 软分组。当前覆盖 React+TypeScript 前端、Node+NestJS 后端及其组合；未来其他 Web 前端与 Java/Python/Go 服务端框架通过新增同级 Skill 扩展，不增加语言物理目录层级。",
+      "version": "1.0.0",
+      "author": {
+        "name": "trojanbox",
+        "url": "https://github.com/trojanbox"
+      },
+      "repository": "https://github.com/trojanbox/agent-plugin-marketplace",
+      "category": "Development"
     }
   ]
 }
