@@ -48,7 +48,7 @@ snake_case 不泄漏到 Service/Controller；raw DB row 不是公共 Application
 物理 schema 集中：
 
 ```text
-apps/api/src/database/schema/
+apps/api/src/modules/infrastructure/database/schema/
 ├── auth.schema.ts
 ├── website.schema.ts
 └── index.ts
@@ -102,7 +102,7 @@ Service 定义原子边界，Repository 使用当前 transaction executor。
 ```text
 apps/api/drizzle.config.ts
 apps/api/drizzle/
-apps/api/src/database/schema/
+apps/api/src/modules/infrastructure/database/schema/
 ```
 
 正常流程：

@@ -5,12 +5,12 @@
 ## Architecture
 
 - [ ] 后端只有明确 `apps/api` 入口，没有 runtime/server 平行实现？
-- [ ] Controller / Service / Repository 是否分别位于 `controllers/`、`services/`、`repositories/`，没有平铺在 Feature/Module 根目录？
-- [ ] 新建/小型 API 是否优先保持单 `AppModule`，没有因 Auth/Health/Database/单个 CRUD 机械拆 Module？
-- [ ] 每个新增 Nest Module 是否能给出独立领域、基础设施生命周期、稳定 Public API 或运行/安全边界证据？
-- [ ] 是否出现一 Provider 一 Module、大量 imports/exports/forwardRef？
-- [ ] 强相关 Service/Repository/Controller 是否应该合并回 `AppModule` 或同一个粗粒度 Module？
-- [ ] 已拆出的 Module 内部是否仍按 `controllers/`、`services/`、`repositories/` 分层？
+- [ ] `AppModule` 是否只做 Composition Root，没有把全部业务 Provider 直接堆进去？
+- [ ] 新建 API 是否保留少量粗粒度领域/基础设施 Module，而非退化成单大 Module？
+- [ ] 每个 Nest Module 是否代表一组强相关业务能力或真实基础设施生命周期/Public API/运行安全边界？
+- [ ] 是否出现一接口一 Module、一 Provider 一 Module、大量 imports/exports/forwardRef？
+- [ ] 强相关 Service/Repository/Controller 是否应该合并回同一个粗粒度 Module？
+- [ ] 每个 Module 内部是否按 `controllers/`、`services/`、`repositories/` 分层，没有平铺？
 - [ ] Controller 是否只依赖 Service，未注入 Repository？
 - [ ] Service 是否无 Drizzle/raw SQL？
 - [ ] Repository 是否默认私有，跨 Feature 是否只走 Module Public API？

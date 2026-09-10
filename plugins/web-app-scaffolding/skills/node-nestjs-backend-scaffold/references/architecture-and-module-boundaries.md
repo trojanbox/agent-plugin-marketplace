@@ -4,7 +4,7 @@
 
 ## 1. 应用结构
 
-新建/小型 API 默认从**单 `AppModule` + 按职责分目录**开始，不预建 `modules/`：
+新项目默认保留 `modules/`，`AppModule` 只做 Composition Root。Module 按**粗粒度业务域 / 基础设施边界**组织，Module 内再按职责分目录：
 
 ```text
 apps/
@@ -16,22 +16,33 @@ apps/
         ├── config/
         ├── errors/
         ├── http/
-        ├── controllers/
-        │   ├── auth.controller.ts
-        │   ├── items.controller.ts
-        │   └── health.controller.ts
-        ├── services/
-        │   ├── auth.service.ts
-        │   └── items.service.ts
-        ├── repositories/
-        │   ├── auth.repository.ts
-        │   └── items.repository.ts
-        ├── guards/
-        ├── decorators/
-        ├── security/
-        └── database/
-            ├── schema/
-            └── database.service.ts
+        └── modules/
+            ├── account/
+            │   ├── controllers/
+            │   │   └── auth.controller.ts
+            │   ├── services/
+            │   │   └── auth.service.ts
+            │   ├── repositories/
+            │   │   └── account.repository.ts
+            │   ├── guards/
+            │   ├── decorators/
+            │   ├── security/
+            │   └── account.module.ts
+            ├── catalog/
+            │   ├── controllers/
+            │   │   └── items.controller.ts
+            │   ├── services/
+            │   │   └── items.service.ts
+            │   ├── repositories/
+            │   │   └── items.repository.ts
+            │   └── catalog.module.ts
+            └── infrastructure/
+                ├── controllers/
+                │   └── health.controller.ts
+                ├── database/
+                │   ├── schema/
+                │   └── database.service.ts
+                └── infrastructure.module.ts
 packages/
 ├── contracts/
 ├── i18n/
@@ -41,10 +52,11 @@ tests/
 
 规则：
 
-- Controller / Service / Repository 按职责进入 `controllers/`、`services/`、`repositories/`；禁止把这些文件平铺在 `auth/`、`items/` 或某个 Module 根目录。
-- `auth`、`items`、`health`、`database` 可以只是文件前缀或职责目录；出现这些能力不等于必须存在 `AuthModule`、`ItemsModule`、`HealthModule`、`DatabaseModule`。
-- 小型项目由 `AppModule` 直接注册这些 Controller / Provider；先让代码内聚，再根据真实边界演进。
-- 只有满足后文 Module Gate 时才增加 `modules/<domain>/`。一旦拆出 Module，其内部仍使用 `controllers/`、`services/`、`repositories/` 等职责子目录，不能退回平铺。
+- `AppModule` 只组装 Module 与全局框架配置，不直接堆放全部业务 Controller / Service / Repository。
+- Module 名表达粗粒度 owner；例如登录、注册、用户、Session 可归同一个 `AccountModule`，列表/详情/筛选等同领域能力可归同一个 `CatalogModule`。
+- Controller / Service / Repository 必须进入所属 Module 的 `controllers/`、`services/`、`repositories/`；禁止平铺在 Module 根目录。
+- 技术基础设施可按真实生命周期边界聚合，例如 Database + Health 由一个 `InfrastructureModule` 承接；不要为了一个 `DatabaseService` 或一个 Health Controller 再各建 Module。
+- 目录/文件可以继续细分，但不能因为多一个文件、Provider、endpoint 或 CRUD 就增加 Nest Module。
 
 不要同时存在 `apps/api`、`apps/runtime`、`server/` 等多个后端入口。后端实现默认留在 `apps/api`，不提前抽 `packages/backend-core`、`platform-core`、`common`。
 
@@ -56,34 +68,45 @@ tests/
 
 ## 3. Module 必须粗粒度
 
-### 默认：先不要拆 Module
+### 默认：多 Module，但按业务域聚合
 
-新建、小型或只有少量 CRUD/Auth/Health 能力的 API，默认只保留 `AppModule`。**Feature 名、目录名、Controller 数量、Service 数量都不能单独作为创建 Nest Module 的理由。**
+新项目保留模块化结构，避免把所有业务都塞进 `AppModule`。同时，Module 数量必须克制：**一个 Module 应覆盖一组强相关、共同演进的业务能力或一个真实基础设施生命周期边界。**
 
-例如只有登录/注册、列表/详情、健康检查时，应优先保持：
+合理聚合示例：
 
 ```text
-AppModule
-├── controllers/
-├── services/
-├── repositories/
-├── guards/
-├── security/
-└── database/
+AccountModule
+├── login
+├── register
+├── user profile
+└── session
+
+CatalogModule
+├── list
+├── detail
+├── filter
+└── category
+
+InfrastructureModule
+├── database lifecycle
+└── health/readiness
 ```
 
 不要机械演变成：
 
 ```text
-AuthModule
-ItemsModule
+LoginModule
+RegisterModule
+SessionModule
+ItemListModule
+ItemDetailModule
 HealthModule
 DatabaseModule
 ```
 
-### Module 创建 Gate
+### Module 创建 / 拆分 Gate
 
-只有当一个候选边界能明确回答“为什么继续放在 `AppModule` 或现有 Module 已经不合适”，并且形成下列至少一种**真实独立边界**时，才创建 Module：
+新增或拆出 Module 前，至少证明它形成下列一种真实独立边界：
 
 ```text
 业务领域边界
@@ -94,14 +117,15 @@ DatabaseModule
 
 同时检查：
 
-1. 拆分后是否减少跨职责耦合，而非只增加 `imports/providers/exports` wiring；
-2. 是否有一组强相关 Controller / Service / Repository 需要共同演进；
-3. 是否确实需要独立 exports、生命周期或安全边界；
-4. 如果删掉这个 Module 并放回 `AppModule`/现有 Module，结构是否更简单且职责仍清楚——若是，则不要拆。
+1. 这组能力是否有共同 owner、模型、规则或生命周期，需要一起演进；
+2. 继续留在现有粗粒度 Module 是否已经造成职责混杂、依赖扩散或 Public API 不清；
+3. 拆分后是否真正减少耦合，而非只增加 `imports/providers/exports` wiring；
+4. 如果只是新增一个 Controller / Service / Repository / endpoint，默认继续留在现有 Module；
+5. 如果删掉候选 Module 并合回上一级领域，结构反而更清楚，则不要拆。
 
-`AuthModule`、`WebsitesModule`、`BillingModule`、`DatabaseModule`、`HealthModule` 这些名称本身都不构成合理性证明；只有满足上述 Gate 时才成立。
+`AuthModule`、`WebsitesModule`、`BillingModule`、`DatabaseModule`、`HealthModule` 这些名字本身都不构成合理性证明；关键是它们是否达到上述边界。
 
-### 拆出 Module 后仍按职责分目录
+### Module 内部按职责分目录
 
 ```text
 modules/
@@ -121,27 +145,26 @@ modules/
 
 ### 过度拆分告警
 
-- 一个业务 Module 只有 1～2 个 Provider，且没有独立生命周期/Public API/安全边界；
+- 一个业务 Module 只对应单个 endpoint、单个 Controller 或单个 Provider；
 - `PasswordHashModule`、`SlugModule`、`RetryModule` 这类一 Provider 一 Module；
-- 登录/注册就单独建 `AuthModule`，单个 CRUD 就建 `ItemsModule`，一个健康接口就建 `HealthModule`；
+- 登录和注册分别建 Module，列表和详情分别建 Module；
+- Database/Health 只有简单 Provider/Controller 却各自单建 Module，而完全可以归到同一基础设施边界；
 - 新增一个功能要改 5 个 Module 的 imports/exports；
 - 大量 A→B→C→A 网状依赖；
 - `forwardRef()` 持续增长；
 - 为两个强耦合 Module 再造 `SharedModule/CommonModule`。
 
-优先合并强耦合 Module。原则：**先内聚，后拆分**。
+优先合并强耦合 Module。原则：**多模块承载边界，粗粒度控制数量，目录层级承载细节。**
 
 ## 4. 小型跨域 Provider
 
-单 `AppModule` 阶段，Clock、ID Generator 等小型稳定 Provider 直接由 `AppModule` 注册，不为了“以后复用”提前创建 `FoundationModule`。
+Clock、ID Generator 等小型、稳定、跨域 Provider 不为自己创建独立 Module。优先放入已经存在且职责匹配的粗粒度基础设施 Module。
 
-只有项目已经存在多个真实独立 Module，并且这些 Module 确实共同依赖一组稳定基础 Provider 时，才可以集中到有限的 `FoundationModule`，无需各建 Module。
+只有当多个真实独立 Module 共同依赖一组稳定基础 Provider，并且现有 Infrastructure/Platform 边界不适合承接时，才考虑有限的 `FoundationModule`。
 
-FoundationModule 不能变成“不知道放哪就塞这里”的垃圾桶。Nest 官方 Config 等继续用官方 Module；简单 Health Controller 也不要求为了目录整齐额外创建 `HealthModule`。
+FoundationModule 不能变成“不知道放哪就塞这里”的垃圾桶。Nest 官方 Config 等继续使用官方 Module。
 
 ## 5. Module Public API
-
-本节只适用于已经通过 Module 创建 Gate 的独立 Module。单 `AppModule` 阶段不为了“Public API”概念额外造 Module。
 
 Repository 默认私有；对外优先 export 少量 Application Service：
 
@@ -171,7 +194,7 @@ DatabaseService / PostgreSQL
 
 硬边界：
 
-- 无论当前只有 `AppModule` 还是已经拆出独立 Module，Controller / Service / Repository 都按职责进入对应目录，不在 Feature/Module 根目录平铺；
+- Controller / Service / Repository 都按职责进入所属 Module 的对应目录，不在 Module 根目录平铺；
 - Controller 永远不注入 Feature Repository；
 - Controller 不开事务、不写 SQL；
 - Service 可以 `database.transaction()`，但不写 Drizzle query/raw SQL；
@@ -194,12 +217,12 @@ DatabaseService / PostgreSQL
 
 ## 8. Review
 
-先检查目录，再检查 Module：
+先检查 Module 粒度，再检查目录：
 
-1. Controller / Service / Repository 是否分别进入 `controllers/`、`services/`、`repositories/`，没有平铺在 Feature/Module 根目录？
-2. 新建/小型 API 是否仍可由单 `AppModule` 清晰承接？如果可以，不新增 Module。
-3. 当前 Owner 是谁？
-4. 现有 `AppModule`/Module 为什么不能承接？能否给出真实边界证据？
-5. 候选 Module 是否形成独立领域、生命周期、稳定 Public API 或运行/安全边界？
-6. 新拆分是否减少耦合，还是只增加 wiring？
-7. 如果删掉这个 Module/Package，结构是否反而更清楚？
+1. `AppModule` 是否只做 Composition Root，没有把全部业务 Provider 直接堆进去？
+2. 当前 Module 是否代表一组强相关业务能力或真实基础设施生命周期边界？
+3. 是否出现一接口一 Module、一 Provider 一 Module、登录/注册各一个 Module 之类机械拆分？
+4. 强相关能力是否应该合并回同一个粗粒度 Module？
+5. Controller / Service / Repository 是否分别进入所属 Module 的 `controllers/`、`services/`、`repositories/`？
+6. 新 Module 是否真正减少耦合，并形成清楚的 Public API / 生命周期 / owner？
+7. 如果删掉这个 Module 并合并回相邻领域，结构是否反而更清楚？

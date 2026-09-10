@@ -35,5 +35,5 @@
 | A006 | gate | 现有项目是 Express + Prisma，把整个后端迁到我们定的 Nest + Drizzle 基线。 | web-app-scaffolding/node-nestjs-backend-scaffold |
 | A007 | gate | 需要做异步任务，顺便按“标准架构”给我加 BullMQ、Redis、Worker、Outbox。 | 明确指出这些当前不是默认能力；真实需求需要单独架构决策，不自动扩展 |
 | A008 | gate | 做一个普通 CRUD，为了以后扩容把 Redis、CQRS、EventBus 都预装好。 | web-app-scaffolding/node-nestjs-backend-scaffold 应拒绝预防性平台复杂度，仍用简单 CRUD 基线 |
-| A009 | gate | 只有登录注册、列表详情和健康检查，这种小 Nest 项目是不是要拆 AuthModule、ItemsModule、DatabaseModule、HealthModule？ | web-app-scaffolding/node-nestjs-backend-scaffold；默认单 `AppModule`，按 `controllers/services/repositories` 职责目录组织，不机械拆 Module |
+| A009 | gate | 只有登录注册、列表详情和健康检查，这种 Nest 项目 Module 怎么拆才不会太碎？ | web-app-scaffolding/node-nestjs-backend-scaffold；保留粗粒度多 Module，例如 Account/Catalog/Infrastructure，`AppModule` 只组装，Module 内按 `controllers/services/repositories` 分目录 |
 | A010 | gate | 已有一个真正独立的网站领域，需要多个 Controller、Service、Repository 共同演进并向其他领域暴露稳定服务，目录怎么放？ | web-app-scaffolding/node-nestjs-backend-scaffold；满足 Module Gate 时可建粗粒度领域 Module，但内部仍按 `controllers/services/repositories` 分目录 |
