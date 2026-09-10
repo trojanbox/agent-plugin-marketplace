@@ -34,6 +34,8 @@
 | A006 | PASS | 用户明确要求技术栈迁移，web-app-scaffolding/node-nestjs-backend-scaffold 正向命中 |
 | A007 | PASS | Stop Gate 生效，不假设 BullMQ/Redis/Worker/Outbox 已属于基线 |
 | A008 | PASS | 阻止预防性 Redis/CQRS/EventBus 复杂度 |
+| A009 | PASS | 小型 Auth/CRUD/Health 场景仍由本 Skill 承接；Module Gate 明确收敛到单 `AppModule` + 职责目录，不按 Feature 名拆 Module |
+| A010 | PASS | 已有真实独立领域边界时允许粗粒度 Module，且目录分层规则继续生效 |
 
 ## 结论
 

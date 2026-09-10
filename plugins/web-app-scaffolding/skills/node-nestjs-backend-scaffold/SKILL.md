@@ -31,7 +31,7 @@ Oxlint + Prettier
 2. **确认栈匹配**：不是 Node/Nest/PostgreSQL/Drizzle 且用户未明确要求迁移时，只指出差异，不静默换栈。
 3. **确认主任务**：只承接后端实现/迁移/重构/规范审查；Bug、调研、讨论、Spec、计划让对应 development Skill 主导。
 4. **按需读 reference**：只加载当前主题。
-5. **粗粒度 Module**：目录/文件可细；Module 只表达真实领域/基础设施边界，先内聚后拆分。
+5. **单 Module 起步、目录按职责分层**：新建/小型 API 默认只用 `AppModule`，Controller / Service / Repository 分别进入 `controllers/`、`services/`、`repositories/`；目录/文件可细，不能因为出现 Auth、Health、Database 或一个 CRUD Feature 就机械创建 Nest Module。只有形成真实独立领域、生命周期或 Public API 边界后才拆 Module。
 6. **沿边界实现**：Controller → Service → Repository → Database；跨 Module/Package 只走公开 API；Node/Nest 官方能力优先。
 7. **不预造平台**：无真实需求不装 Redis/Worker/Queue/Cache/HTTP Client，也不继续设计其体系。
 8. **真实验证**：至少跑相关 lint/typecheck/test；Persistence 用真实 PostgreSQL，HTTP 用真实 Nest pipeline。未真实验证不得声称通过。
@@ -56,7 +56,8 @@ Oxlint + Prettier
 ## 始终生效的硬边界
 
 - 后端默认 `apps/api`；不建 `server/runtime/backend-core/platform-core` 平行体系。
-- Module 少而内聚；一 Provider 一 Module、大量 `forwardRef()`/网状依赖是拆分告警。
+- 新建/小型 API 默认从单 `AppModule` 开始；Controller / Service / Repository 必须按职责进入 `controllers/`、`services/`、`repositories/`，禁止把 `*.controller.ts`、`*.service.ts`、`*.repository.ts` 平铺在 Feature/Module 根目录。
+- Module 少而内聚；Feature/目录存在不构成拆 Module 的理由。新增 Module 必须能说明独立领域、基础设施生命周期、稳定 Public API 或明确运行/安全边界；一 Provider 一 Module、大量 `forwardRef()`/网状依赖是过度拆分告警。
 - Controller 不注入 Repository；Service 定事务但不写 Drizzle；Repository 持有查询且默认私有。
 - DB lower snake_case，应用 camelCase；普通查询 Query Builder First。
 - JSON API 统一 Envelope：详情 `data:T`，分页 `data:{list,page}`。

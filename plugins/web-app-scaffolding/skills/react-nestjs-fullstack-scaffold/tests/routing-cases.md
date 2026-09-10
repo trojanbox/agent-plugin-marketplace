@@ -26,3 +26,4 @@
 | A003 | conflict | 同时给我 React+Nest 完整项目，以及一套独立 Spring Boot 后端模板。 | 两个独立主交付物；应识别冲突/分别执行，不由一个 Fullstack Skill吞并 |
 | A004 | gate | 现有是 Next.js + FastAPI，只修一个页面和一个接口，不要求迁栈。 | 不静默迁到 React/Vite + Nest；尊重现有栈 |
 | A005 | gate | 现有 Next.js + FastAPI，明确把完整项目迁到我们的 React + Nest 基线。 | web-app-scaffolding/react-nestjs-fullstack-scaffold |
+| A006 | composition | 从零做一个 React + Nest 小项目，只有登录注册、列表详情和健康检查，后端目录也按脚手架规范。 | web-app-scaffolding/react-nestjs-fullstack-scaffold 主导；后端目录/Module 必须下沉到 node-nestjs-backend-scaffold 的架构规则，小项目不因 Feature 名机械拆 Module |

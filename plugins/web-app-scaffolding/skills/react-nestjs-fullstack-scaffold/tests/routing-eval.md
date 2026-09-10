@@ -26,3 +26,4 @@
 | A003 | PASS_CONFLICT | React+Nest 项目与独立 Spring 模板是两个主交付物 |
 | A004 | PASS | 未要求迁栈时不静默套用固定组合 |
 | A005 | PASS_COMPOSITION | 用户明确整栈迁移，Fullstack 正向命中 |
+| A006 | PASS_COMPOSITION | Fullstack 保留主任务语义；apps/api 目录与 Module 粒度由 Node/Nest Skill 的架构 reference 决定，小型 API 收敛为单 AppModule + 职责目录 |

@@ -62,6 +62,7 @@ Quality → Oxlint + Prettier + Vitest + Playwright
 - Browser Auth 默认同源 HttpOnly Session Cookie + CSRF；前端不保存 Session credential。
 - Database migration 是部署步骤；前端构建/启动不拥有数据库生命周期。
 - Feature 名相同不等于代码互相穿透；前后端各自保持自己的 Feature Owner 和 Public API。
+- 本 Skill 不自行定义 `apps/api` 内部目录和 Nest Module 粒度；凡是创建、迁移或审查后端目录/Module，必须触发 `node-nestjs-backend-scaffold` 的架构 reference，以后端 Skill 为唯一规则 Owner，不能凭全栈示例或 Feature 名机械造 Module。
 - 不为了“全栈完整”提前加入 Redis、Worker、Queue、S3、GraphQL、BFF、微服务或第二套 API Client。
 
 ## 停止边界
