@@ -169,6 +169,8 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertIn("被 Git 和项目格式化工具忽略的 `.agents/work/`", backend_skill)
         self.assertIn("六个月后仍必需", fullstack_skill)
         self.assertIn("不要为了描述该规则额外创建文档说明文件", fullstack_skill)
+        self.assertIn("docs/authentication-and-security.md", fullstack_skill)
+        self.assertIn("README/AGENTS 只链接和摘要", fullstack_skill)
         self.assertIn("不要为函数、方法、参数或显而易见的实现细节", quality)
         self.assertIn("不要为函数、方法、参数或显而易见的实现细节", backend_quality)
 
