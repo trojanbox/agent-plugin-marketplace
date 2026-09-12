@@ -77,20 +77,22 @@ Loader/Action 与 Feature 共置，Router 只声明路由。命名遵守：`webs
 
 ## 4. Service 只负责业务数据访问
 
-跨前后端的 serialized contract 优先从 `packages/contracts` 消费；列表固定读取 `data.list`：
+跨前后端的 serialized contract 优先从 `packages/contracts` 消费。无实例状态的前端 Service 默认使用**可继承的静态类**，避免模块级对象单例难以形成明确扩展点；只有真实存在 per-instance state/config/lifecycle 时才改成实例 Service。
 
 ```ts
 import type { WebsiteListResponse } from '@app/contracts'
 
-export const websiteService = {
-  async list(options?: { signal?: AbortSignal }): Promise<Website[]> {
-    const response = await apiClient.get<WebsiteListResponse>('/websites', options)
+export class WebsiteService {
+  protected constructor() {}
+
+  static async list(options?: { signal?: AbortSignal }): Promise<Website[]> {
+    const response = await ApiClient.get<WebsiteListResponse>('/websites', options)
     return response.data.list.map(mapWebsiteListItem)
-  },
+  }
 }
 ```
 
-禁止 Service 接收 `setState`、弹 Toast、navigate、读 DOM。
+调用方使用 `WebsiteService.list()`。子类可以继承静态方法并覆盖受保护扩展点；禁止为了“可扩展”创建无状态实例 singleton。Service 不接收 `setState`，不弹 Toast、不 navigate、不读 DOM。
 
 ## 5. Serialized Contract 与前端模型分离
 
@@ -118,27 +120,31 @@ Component 只消费 `Website`；serialized contract 字段变化主要影响 Ser
 
 ## 6. HTTP 默认 Native Fetch
 
-唯一边界：
+唯一边界放在职责明确的基础设施目录：
 
 ```text
-apps/web/src/lib/api.client.ts
+apps/web/src/infrastructure/http/api.client.ts
 ```
 
-不默认安装 Axios。
+不使用含义模糊的 `lib/` 作为默认容器，也不默认安装 Axios。
 
-`apiClient` 负责：Base URL、Headers、credentials/session、JSON、AbortSignal、HTTP Status、Transport Error。
-
-`fetch` 对 4xx/5xx 不自动 reject，必须检查：
+`ApiClient` 使用可继承的静态类，负责 Base URL、Headers、credentials/session、JSON、AbortSignal、HTTP Status、Transport Error；受保护成员只为真实继承扩展点服务。
 
 ```ts
-async function request<T>(input: RequestInfo | URL, init?: RequestInit): Promise<T> {
-  const response = await fetch(input, init)
+export class ApiClient {
+  protected constructor() {}
 
-  if (!response.ok) {
-    throw await createApiError(response)
+  protected static basePath = '/api/v1'
+
+  protected static async request<T>(path: string, init?: RequestInit): Promise<T> {
+    const response = await fetch(`${this.basePath}${path}`, init)
+    if (!response.ok) throw await createApiError(response)
+    return response.json() as Promise<T>
   }
 
-  return response.json() as Promise<T>
+  static get<T>(path: string, init?: RequestInit): Promise<T> {
+    return this.request<T>(path, { ...init, method: 'GET' })
+  }
 }
 ```
 

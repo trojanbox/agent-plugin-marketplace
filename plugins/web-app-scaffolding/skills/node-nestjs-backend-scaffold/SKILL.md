@@ -64,6 +64,7 @@ Oxlint + Prettier
 - DB lower snake_case，应用 camelCase；普通查询 Query Builder First。
 - JSON API 统一 Envelope：详情 `data:T`，分页 `data:{list,page}`。
 - Browser 默认 PostgreSQL Opaque Session + HttpOnly Cookie，服务端 Default Deny。
+- Comments 只保留代码无法可靠表达的约束/原因/外部怪异行为；不为显而易见实现写常规说明，修改时清理附近过期注释。
 - Production API 不自动 migrate；无支持合同的 legacy/fallback/双实现直接删。
 
 ## 停止边界

@@ -49,7 +49,7 @@ Browserslist
 
 不使用 Tailwind、SCSS、Less、CSS-in-JS。
 
-组件：
+组件/Page 的私有 CSS Module 与 Owner 共置，并从当前目录 `./*.module.css` 引用；禁止向父级/祖先目录借用 CSS Module。真正公共的视觉合同提升到 Token、`packages/ui` 或明确的应用级公共样式。
 
 ```tsx
 import styles from './website-card.module.css'

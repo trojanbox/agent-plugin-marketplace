@@ -124,6 +124,42 @@ class RuntimeContractTests(unittest.TestCase):
         )
         self.assertEqual(fullstack["group"], "fullstack")
 
+    def test_frontend_scaffold_freezes_maintainability_contracts(self) -> None:
+        root = PLUGINS / "web-app-scaffolding" / "skills"
+        frontend = root / "react-typescript-frontend-scaffold"
+        backend = root / "node-nestjs-backend-scaffold"
+        fullstack = root / "react-nestjs-fullstack-scaffold"
+
+        skill = (frontend / "SKILL.md").read_text(encoding="utf-8")
+        architecture = (frontend / "references/architecture-and-naming.md").read_text(
+            encoding="utf-8"
+        )
+        routing = (frontend / "references/routing-data-and-http.md").read_text(
+            encoding="utf-8"
+        )
+        i18n = (frontend / "references/i18n.md").read_text(encoding="utf-8")
+        quality = (frontend / "references/security-config-and-quality.md").read_text(
+            encoding="utf-8"
+        )
+        backend_quality = (
+            backend / "references/typescript-naming-and-quality.md"
+        ).read_text(encoding="utf-8")
+        contracts = (
+            fullstack / "references/workspace-and-contract-boundaries.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("layouts/", architecture)
+        self.assertIn("infrastructure/", architecture)
+        self.assertNotIn("├── shell/", architecture)
+        self.assertNotIn("├── lib/", architecture)
+        self.assertIn("禁止子级向父/祖先目录借 CSS Module", skill)
+        self.assertIn("可继承的静态类", routing)
+        self.assertIn("packages/i18n/src/", i18n)
+        self.assertIn("├── runtime/", i18n)
+        self.assertIn("packages/contracts/src/", contracts)
+        self.assertIn("不要为函数、方法、参数或显而易见的实现细节", quality)
+        self.assertIn("不要为函数、方法、参数或显而易见的实现细节", backend_quality)
+
     def test_runtime_is_relocatable_as_a_directory(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             relocated = Path(td) / ("runtime-moved-" + "x" * 96)

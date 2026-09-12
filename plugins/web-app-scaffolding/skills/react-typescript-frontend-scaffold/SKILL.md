@@ -54,16 +54,19 @@ Oxlint + Prettier
 
 ## 始终生效的硬边界
 
-- 组件样式用 `*.module.css`；全局 CSS 只承担 tokens/reset/base/index。
+- 组件/Page 私有样式用共置 `*.module.css`，只从当前目录引用；禁止子级向父/祖先目录借 CSS Module。全局 CSS 只承担 tokens/reset/base/index。
 - Design Token：Foundation → Semantic → Component；业务颜色优先 Semantic Token。
 - 独立 React UI Unit 一组件一目录；普通组件目录不加无意义 `index.ts`。
+- 应用级布局进入 `layouts/`，浏览器/HTTP 基础设施进入 `infrastructure/`；不默认使用含义模糊的 `shell/`、`lib/`。
+- Package `src/` 根只保留 Public API/入口，Contract、i18n、UI 实现按功能/组件类别继续分目录。
 - 跨 Feature 只能经 Feature Public API；跨 Package 只能经 Package exports。
-- Page 负责组合；Route 数据优先 loader/action；Service 不依赖 React；UI 不直接消费后端 Persistence Model。
-- HTTP 默认 Native Fetch，集中在 `api.client.ts`，必须检查 HTTP status 并支持 AbortSignal。
+- Page 负责组合；Route 数据优先 loader/action；无实例状态 Service 默认静态可继承类且不依赖 React；UI 不直接消费后端 Persistence Model。
+- HTTP 默认 Native Fetch，以 `infrastructure/http/ApiClient` 静态可继承类集中处理，必须检查 HTTP status 并支持 AbortSignal。
 - 复杂交互可在 `packages/ui` 内封装 Radix Primitives；业务 Feature 不直接依赖 Radix。
 - 用户可见自然语言走 i18n；`packages/ui` 不依赖 `packages/i18n`。
 - Dark Mode、响应式、Route/大 Feature 懒加载、非首屏图片懒加载是默认能力。
 - Semantic HTML First；键盘、Focus、Label、Contrast 是默认合同。
+- Comments 只保留代码无法可靠表达的约束/原因/外部怪异行为；不为显而易见实现写常规说明，修改时清理附近过期注释。
 - 浏览器默认合同：Chrome 80+、Edge 80+、Firefox 78+、Safari 13.1+、iOS Safari 13.4+。
 - 不为未来假想需求新增依赖、兼容层、全局 Store、抽象目录或独立 Package bundler。
 

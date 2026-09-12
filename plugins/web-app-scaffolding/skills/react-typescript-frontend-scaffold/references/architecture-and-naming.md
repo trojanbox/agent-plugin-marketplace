@@ -11,8 +11,9 @@ apps/web/src/
 ├── components/       # 应用级跨 Feature 组合组件
 ├── config/           # env 等应用配置边界
 ├── features/         # 业务主体
-├── lib/              # 明确基础设施，如 api.client.ts；不是垃圾桶
-├── shell/            # App Shell / Header / Sidebar
+├── infrastructure/   # 浏览器/HTTP 等明确基础设施，不是垃圾桶
+├── layouts/          # App/Page Layout；Header/Sidebar 随 Layout 内聚
+├── routing/          # Route Error 等路由级公共实现
 ├── styles/           # tokens/reset/base/index
 ├── test/             # test setup
 ├── router.tsx
@@ -81,6 +82,14 @@ pages/websites/
 ```
 
 普通组件/Page 目录不加 `index.ts`。小型内部实现如果没有独立语义/状态/复用/测试价值，留在父文件，不机械拆目录。
+
+组件/Page 的私有样式必须与 Owner 共置，并通过当前目录 `./*.module.css` 引用。禁止为了复用几条样式让子组件/Page 向上引用父目录、祖先目录的 CSS Module。真实公共视觉规则应提升为 Semantic Token、`packages/ui` Primitive 或明确的应用级公共样式合同，不能靠父级 CSS 文件形成隐式耦合。
+
+```text
+pages/login/
+├── login.page.tsx
+└── login.page.module.css
+```
 
 ## 4. `index.ts` 只表达 Public API
 
@@ -225,5 +234,7 @@ Cross Package                → Package exports
   "exports": { ".": "./src/index.ts" }
 }
 ```
+
+Package 根 `src/` 只保留 Public API/极少数入口文件，具体实现按职责继续分目录；禁止把几十个组件、Contract、Locale helper 全平铺在 `src/`。例如 `packages/ui` 可按 `components/actions/*`、`components/overlays/*` 扩展；新分类只在真实组件类型出现后创建，不预建空目录。
 
 Vite 负责最终 TSX/CSS Modules/JSON bundle；Turborepo 只负责 lint/typecheck/test/build orchestration/cache。内部包不产生无意义 `dist`；真正需要跨仓库/npm 分发时再单独升级成 Library Build。

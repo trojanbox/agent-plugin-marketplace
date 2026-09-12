@@ -7,8 +7,10 @@
 - 业务是否按 Feature 内聚？
 - Page 是否主要负责组合与编排？
 - 是否出现 `shared/common/utils/types/constants/misc` 垃圾桶？
-- 独立 UI Unit 是否一组件一目录？
+- 独立 UI Unit 是否一组件一目录？私有 CSS Module 是否与 Owner 共置且只从当前目录引用？
 - 普通组件/Page 是否增加无意义 `index.ts`？
+- 应用布局是否进入 `layouts/`，基础设施是否进入明确 `infrastructure/*`，是否重新出现含义模糊的 `shell/`、`lib/`？
+- Package `src/` 是否只保留 Public API/入口，具体 Contract/i18n/UI 是否按职责继续分目录？
 - 跨 Feature 是否只经 Feature Public API？
 - 跨 Package 是否只经 Package exports？
 - 内部 Package 是否无理由增加 bundler/dist？
@@ -70,8 +72,8 @@
 - Route 首屏数据是否应该 loader？路由 submit 是否应该 action？
 - Loader/Action 是否与 Feature 内聚？
 - Page/Component 是否直接散落 `fetch()`？
-- Service 是否错误依赖 React/Toast/navigate/DOM？
-- `apiClient` 是否检查 `response.ok`？
+- 无实例状态 Service 是否使用静态可继承类？Service 是否错误依赖 React/Toast/navigate/DOM？
+- HTTP 是否收敛到 `infrastructure/http/ApiClient` 静态类？是否检查 `response.ok`？
 - `request.signal` 是否能传到底层？
 - 是否无理由使用 Axios、Interceptor、Retry、固定 Timeout？
 - UI 是否直接消费 API DTO？
@@ -96,6 +98,7 @@
 - 外部 URL 是否验证协议/来源？
 - 前端权限是否被误当真实授权？
 - 日志是否泄漏敏感信息？
+- 是否存在只翻译代码的 routine comments、过期注释或无上下文 TODO？
 - 是否动态注入未经治理的第三方 Script？
 
 ## 9. Performance / Assets / Responsive

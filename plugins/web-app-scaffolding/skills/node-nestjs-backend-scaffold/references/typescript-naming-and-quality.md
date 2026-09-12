@@ -106,7 +106,9 @@ production source 不 import tests/**
 
 Feature-private Repository 规则如果用 glob 会极度脆弱，宁可结合 Module wiring/Code Review，不为 100% 静态自动化造复杂 lint DSL。
 
-## 7. Disable / Dead Code
+## 7. Comments / Disable / Dead Code
+
+不要为函数、方法、参数或显而易见的实现细节补常规注释/文档；优先依靠表达力足够的命名、类型和测试。只在代码本身无法可靠推断的信息需要长期保存时写注释，例如隐藏约束、非直观设计决策、外部系统怪异行为、业务不变量，或为什么不能采用看起来更简单的实现。修改代码时同步删除附近过期、重复或只是在翻译代码的注释。
 
 Oxlint disable 只允许局部精准：
 

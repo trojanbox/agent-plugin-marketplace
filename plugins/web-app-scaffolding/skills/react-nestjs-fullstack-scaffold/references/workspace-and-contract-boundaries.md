@@ -37,6 +37,21 @@ tests/
 
 判断：**两个应用都需要理解同一个序列化边界，才共享。**
 
+`packages/contracts/src/` 根只保留 Public API；Contract 按功能/领域分目录，公共 Envelope/Error 单独归入 `common/`，禁止所有 Schema/Type 长期平铺在一层：
+
+```text
+packages/contracts/src/
+├── common/
+│   └── api.contract.ts
+├── authentication/
+│   └── authentication.contract.ts
+├── catalog/
+│   └── item.contract.ts
+└── index.ts
+```
+
+不为了只有一个文件的假想领域预建目录；一旦存在多个真实 Contract 领域，就按上述边界组织。
+
 ## 3. 单一 API 合同
 
 推荐：

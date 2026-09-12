@@ -56,8 +56,8 @@ Quality → Oxlint + Prettier + Vitest + Playwright
 ## 始终生效的跨栈硬边界
 
 - `apps/web` 不能 import `apps/api` 源码；`apps/api` 也不能 import `apps/web`。
-- 真正跨应用的 serialized schema/type 才进入 `packages/contracts`；Repository Row、Nest Provider、UI Props 不进入。
-- API 合同单源：后端 Route 使用共享 Zod Schema，前端通过共享类型和 `api.client.ts` 消费；不维护前后端两份 DTO。
+- 真正跨应用的 serialized schema/type 才进入 `packages/contracts`；Repository Row、Nest Provider、UI Props 不进入。`src/` 根只保留 Public API，多个真实 Contract 领域按功能目录组织。
+- API 合同单源：后端 Route 使用共享 Zod Schema，前端通过共享类型和统一 `ApiClient` 边界消费；不维护前后端两份 DTO。
 - 普通 JSON 成功/失败、详情/列表/分页结构统一；前端不猜 response shape。
 - Browser Auth 默认同源 HttpOnly Session Cookie + CSRF；前端不保存 Session credential。
 - Database migration 是部署步骤；前端构建/启动不拥有数据库生命周期。

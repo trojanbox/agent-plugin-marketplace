@@ -127,14 +127,16 @@ Web Platform / JS 标准库能否解决？
 
 Radix、Lucide、i18next、Playwright 是已确认例外。
 
-## 7. 注释 / TODO
+## 7. Comments / TODO
 
-注释解释：为什么、业务不变量、外部约束、非直观兼容原因、workaround 退出条件。
+不要为函数、方法、参数或显而易见的实现细节补常规注释/文档；优先依靠表达力足够的命名、类型和测试传达意图。
+
+只在代码本身无法可靠推断的信息需要长期保存时写注释，例如：隐藏约束、非直观设计决策、外部系统怪异行为、业务不变量，或为什么不能采用看起来更简单的实现。修改代码时同步删除附近已经过期、重复或只是在翻译代码的注释。
 
 推荐：
 
 ```ts
-// 删除后存在短暂最终一致性，保持当前列表直到 loader revalidation。
+// 上游删除事件最终一致，保留当前行直到 loader revalidation 确认服务端状态。
 ```
 
 反例：
@@ -144,7 +146,7 @@ Radix、Lucide、i18next、Playwright 是已确认例外。
 setLoading(true)
 ```
 
-TODO/FIXME 必须有上下文；长期技术债关联 Issue。禁止 `// TODO fix later`。
+TODO/FIXME 必须带可行动上下文；长期技术债关联 Issue。禁止 `// TODO fix later`。
 
 ## 8. 删除 / 兼容代码
 
