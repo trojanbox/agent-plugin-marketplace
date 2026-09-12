@@ -58,7 +58,7 @@
 
 ## 5. UI / Accessibility
 
-- Complex primitive 是否通过 `packages/ui` 封装 Radix，而非 Feature 直连？
+- Complex primitive 是否通过 `packages/ui` 封装 `radix-ui`，而非 Feature 直连？是否误装了多个 `@radix-ui/react-*` 独立包？
 - 普通图标是否来自 Lucide？是否混用 Emoji/Unicode/第二套库？
 - Icon-only control 是否有 accessible name？
 - 是否 Semantic HTML First？

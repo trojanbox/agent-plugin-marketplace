@@ -185,13 +185,15 @@ Dark Mode 是默认能力，支持：`light / dark / system`，默认 `system`�
 
 复杂交互默认允许并优先 Radix Primitives：Dialog、Popover、Dropdown Menu、Select、Tooltip、Tabs 等。
 
+依赖统一使用官方聚合包 `radix-ui`，由 `packages/ui` 持有并封装。新增 Primitive 时从 `radix-ui` 导入对应 namespace，例如 `import { Dialog } from 'radix-ui'`；不要为每个 Primitive 分别安装 `@radix-ui/react-dialog`、`@radix-ui/react-tooltip` 等独立包。
+
 ```text
-Radix → 行为 / Focus / Keyboard / ARIA / Portal / Dismiss
+radix-ui → 行为 / Focus / Keyboard / ARIA / Portal / Dismiss
 packages/ui → 自己的 Component API
 CSS Modules + Token → 全部视觉
 ```
 
-业务 Feature 禁止直接 import Radix；由 `packages/ui` 封装。简单 Button/Input 等不机械套 Radix。
+业务 Feature 禁止直接 import `radix-ui`；只消费 `@repo/ui`。简单 Button/Input 等不机械套 Radix。
 
 不用 Radix Themes、shadcn/ui。
 

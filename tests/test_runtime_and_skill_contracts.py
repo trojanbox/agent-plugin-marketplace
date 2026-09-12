@@ -141,6 +141,9 @@ class RuntimeContractTests(unittest.TestCase):
         quality = (frontend / "references/security-config-and-quality.md").read_text(
             encoding="utf-8"
         )
+        visual = (frontend / "references/visual-css-and-ui.md").read_text(
+            encoding="utf-8"
+        )
         backend_quality = (
             backend / "references/typescript-naming-and-quality.md"
         ).read_text(encoding="utf-8")
@@ -157,6 +160,9 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertIn("packages/i18n/src/", i18n)
         self.assertIn("├── runtime/", i18n)
         self.assertIn("packages/contracts/src/", contracts)
+        self.assertIn("Radix Primitives (`radix-ui`) + Lucide", skill)
+        self.assertIn("统一使用官方聚合包 `radix-ui`", visual)
+        self.assertIn("不要为每个 Primitive 分别安装 `@radix-ui/react-dialog`", visual)
         self.assertIn("不要为函数、方法、参数或显而易见的实现细节", quality)
         self.assertIn("不要为函数、方法、参数或显而易见的实现细节", backend_quality)
 

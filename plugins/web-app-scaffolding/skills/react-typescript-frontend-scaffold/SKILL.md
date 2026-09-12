@@ -18,7 +18,7 @@ React 19 + TypeScript 6 + Vite 8 + React Router 7
 pnpm + Turborepo
 Native CSS + CSS Modules + CSS Custom Properties
 PostCSS + postcss-preset-env + Browserslist
-Radix Primitives + Lucide
+Radix Primitives (`radix-ui`) + Lucide
 packages/i18n: i18next + react-i18next
 Vitest + React Testing Library
 Playwright E2E
@@ -62,7 +62,7 @@ Oxlint + Prettier
 - 跨 Feature 只能经 Feature Public API；跨 Package 只能经 Package exports。
 - Page 负责组合；Route 数据优先 loader/action；无实例状态 Service 默认静态可继承类且不依赖 React；UI 不直接消费后端 Persistence Model。
 - HTTP 默认 Native Fetch，以 `infrastructure/http/ApiClient` 静态可继承类集中处理，必须检查 HTTP status 并支持 AbortSignal。
-- 复杂交互可在 `packages/ui` 内封装 Radix Primitives；业务 Feature 不直接依赖 Radix。
+- 复杂交互在 `packages/ui` 内封装 Radix Primitives；统一依赖 `radix-ui` 聚合包，不为单个 Primitive 分别安装 `@radix-ui/react-*`，业务 Feature 不直接依赖 Radix。
 - 用户可见自然语言走 i18n；`packages/ui` 不依赖 `packages/i18n`。
 - Dark Mode、响应式、Route/大 Feature 懒加载、非首屏图片懒加载是默认能力。
 - Semantic HTML First；键盘、Focus、Label、Contrast 是默认合同。
