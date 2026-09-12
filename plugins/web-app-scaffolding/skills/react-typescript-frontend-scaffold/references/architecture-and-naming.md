@@ -12,7 +12,7 @@ apps/web/src/
 ├── config/           # env 等应用配置边界
 ├── features/         # 业务主体
 ├── infrastructure/   # 浏览器/HTTP 等明确基础设施，不是垃圾桶
-├── layouts/          # App/Page Layout；Header/Sidebar 随 Layout 内聚
+├── layout/           # App/Page Layout；Header/Sidebar 随 Layout 内聚
 ├── routing/          # Route Error 等路由级公共实现
 ├── styles/           # tokens/reset/base/index
 ├── test/             # test setup

@@ -9,7 +9,7 @@
 - 是否出现 `shared/common/utils/types/constants/misc` 垃圾桶？
 - 独立 UI Unit 是否一组件一目录？私有 CSS Module 是否与 Owner 共置且只从当前目录引用？
 - 普通组件/Page 是否增加无意义 `index.ts`？
-- 应用布局是否进入 `layouts/`，基础设施是否进入明确 `infrastructure/*`，是否重新出现含义模糊的 `shell/`、`lib/`？
+- 应用布局是否进入 `layout/`，基础设施是否进入明确 `infrastructure/*`，是否重新出现含义模糊的 `shell/`、`lib/`？
 - Package `src/` 是否只保留 Public API/入口，具体 Contract/i18n/UI 是否按职责继续分目录？
 - 跨 Feature 是否只经 Feature Public API？
 - 跨 Package 是否只经 Package exports？

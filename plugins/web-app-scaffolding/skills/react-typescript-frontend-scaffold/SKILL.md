@@ -57,7 +57,7 @@ Oxlint + Prettier
 - 组件/Page 私有样式用共置 `*.module.css`，只从当前目录引用；禁止子级向父/祖先目录借 CSS Module。全局 CSS 只承担 tokens/reset/base/index。
 - Design Token：Foundation → Semantic → Component；业务颜色优先 Semantic Token。
 - 独立 React UI Unit 一组件一目录；普通组件目录不加无意义 `index.ts`。
-- 应用级布局进入 `layouts/`，浏览器/HTTP 基础设施进入 `infrastructure/`；不默认使用含义模糊的 `shell/`、`lib/`。
+- 应用级布局进入 `layout/`，浏览器/HTTP 基础设施进入 `infrastructure/`；不默认使用含义模糊的 `shell/`、`lib/`。
 - Package `src/` 根只保留 Public API/入口，Contract、i18n、UI 实现按功能/组件类别继续分目录。
 - 跨 Feature 只能经 Feature Public API；跨 Package 只能经 Package exports。
 - Page 负责组合；Route 数据优先 loader/action；无实例状态 Service 默认静态可继承类且不依赖 React；UI 不直接消费后端 Persistence Model。

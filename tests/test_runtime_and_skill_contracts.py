@@ -148,7 +148,7 @@ class RuntimeContractTests(unittest.TestCase):
             fullstack / "references/workspace-and-contract-boundaries.md"
         ).read_text(encoding="utf-8")
 
-        self.assertIn("layouts/", architecture)
+        self.assertIn("layout/", architecture)
         self.assertIn("infrastructure/", architecture)
         self.assertNotIn("├── shell/", architecture)
         self.assertNotIn("├── lib/", architecture)
