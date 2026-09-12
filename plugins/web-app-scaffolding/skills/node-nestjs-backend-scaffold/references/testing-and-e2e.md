@@ -4,17 +4,22 @@
 
 ## 1. 目录
 
-后端测试集中根目录：
+后端纯 Unit Test 与生产源码 Owner 共置；跨文件、跨 Module、数据库和浏览器级测试集中在根 `tests/`：
 
 ```text
+apps/api/src/modules/account/services/
+├── auth.service.ts
+└── auth.service.test.ts
+
 tests/
-├── unit/api/
 ├── integration/api/
 ├── e2e/
 └── support/api/
 ```
 
-后端生产源码附近默认不放 `*.test.ts/__tests__`。测试路径尽量镜像 Feature。
+Service、Guard、纯 helper，以及不连接真实数据库的局部 Repository Unit Test 使用 `*.test.ts` 与被测文件同目录。不要重新建立 `tests/unit/api` 镜像树，也不要创建 `__tests__` 目录。
+
+真实数据库 Repository Test 属于 Integration，继续放 `tests/integration/api/repositories/`。Module Wiring、HTTP Pipeline、跨 Module 行为也放 Integration。
 
 ## 2. Vitest + Nest TestingModule
 

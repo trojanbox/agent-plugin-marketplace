@@ -65,6 +65,8 @@
 
 ## Testing
 
+- [ ] 后端纯 Unit Test 是否与生产源码 Owner 共置为 `*.test.ts`，根目录没有重新出现 `tests/unit/api` 镜像树？
+- [ ] 真实数据库 Repository Test 是否仍位于 Integration，而不是误放到源码旁冒充 Unit？
 - [ ] Nest-managed Subject 是否通过 `Test.createTestingModule()` 获取？
 - [ ] 是否 broad automock/手工 new 对象图掩盖 wiring？
 - [ ] Meaningful Module/AppModule 是否有 wiring coverage？

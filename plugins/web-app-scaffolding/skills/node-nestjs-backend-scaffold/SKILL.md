@@ -64,6 +64,7 @@ Oxlint + Prettier
 - DB lower snake_case，应用 camelCase；普通查询 Query Builder First。
 - JSON API 统一 Envelope：详情 `data:T`，分页 `data:{list,page}`。
 - Browser 默认 PostgreSQL Opaque Session + HttpOnly Cookie，服务端 Default Deny。
+- 后端纯 Unit Test 与生产源码 Owner 共置为 `*.test.ts`；根 `tests/` 只承载 Integration、E2E、Support 等跨层测试。真实数据库 Repository Test 属于 Integration，不放回源码目录。
 - Comments 只保留代码无法可靠表达的约束/原因/外部怪异行为；不为显而易见实现写常规说明，修改时清理附近过期注释。
 - 新建或迁移项目时采用保守文档策略：`docs/` 只保存长期有效、源码难以快速可靠推导且未来会重复使用的项目知识；AI 调研、计划、TODO、Debug、Handoff、执行日志等任务级产物默认不进入 `docs/`。确需落盘的临时材料使用被 Git 和项目格式化工具忽略的 `.agents/work/`，创建正式 Markdown 前执行“六个月后是否仍必需”与单一事实来源检查；README/AGENTS 保持简洁。
 - Production API 不自动 migrate；无支持合同的 legacy/fallback/双实现直接删。

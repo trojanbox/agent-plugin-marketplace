@@ -149,6 +149,9 @@ class RuntimeContractTests(unittest.TestCase):
         backend_quality = (
             backend / "references/typescript-naming-and-quality.md"
         ).read_text(encoding="utf-8")
+        backend_testing = (backend / "references/testing-and-e2e.md").read_text(
+            encoding="utf-8"
+        )
         contracts = (
             fullstack / "references/workspace-and-contract-boundaries.md"
         ).read_text(encoding="utf-8")
@@ -171,6 +174,9 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertIn("不要为了描述该规则额外创建文档说明文件", fullstack_skill)
         self.assertIn("docs/authentication-and-security.md", fullstack_skill)
         self.assertIn("README/AGENTS 只链接和摘要", fullstack_skill)
+        self.assertIn("后端纯 Unit Test 与生产源码 Owner 共置", backend_skill)
+        self.assertIn("不要重新建立 `tests/unit/api` 镜像树", backend_testing)
+        self.assertIn("真实数据库 Repository Test 属于 Integration", backend_testing)
         self.assertIn("不要为函数、方法、参数或显而易见的实现细节", quality)
         self.assertIn("不要为函数、方法、参数或显而易见的实现细节", backend_quality)
 
