@@ -67,6 +67,7 @@ Oxlint + Prettier
 - Dark Mode、响应式、Route/大 Feature 懒加载、非首屏图片懒加载是默认能力。
 - Semantic HTML First；键盘、Focus、Label、Contrast 是默认合同。
 - Comments 只保留代码无法可靠表达的约束/原因/外部怪异行为；不为显而易见实现写常规说明，修改时清理附近过期注释。
+- 新建或迁移项目时采用保守文档策略：`docs/` 只保存长期有效、源码难以快速可靠推导且未来会重复使用的项目知识；AI 调研、计划、TODO、Debug、Handoff、执行日志等任务级产物默认不进入 `docs/`。确需落盘的临时材料使用被 Git 和项目格式化工具忽略的 `.agents/work/`，创建正式 Markdown 前执行“六个月后是否仍必需”与单一事实来源检查；README/AGENTS 保持简洁。
 - 浏览器默认合同：Chrome 80+、Edge 80+、Firefox 78+、Safari 13.1+、iOS Safari 13.4+。
 - 不为未来假想需求新增依赖、兼容层、全局 Store、抽象目录或独立 Package bundler。
 

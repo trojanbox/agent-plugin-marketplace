@@ -131,6 +131,8 @@ class RuntimeContractTests(unittest.TestCase):
         fullstack = root / "react-nestjs-fullstack-scaffold"
 
         skill = (frontend / "SKILL.md").read_text(encoding="utf-8")
+        backend_skill = (backend / "SKILL.md").read_text(encoding="utf-8")
+        fullstack_skill = (fullstack / "SKILL.md").read_text(encoding="utf-8")
         architecture = (frontend / "references/architecture-and-naming.md").read_text(
             encoding="utf-8"
         )
@@ -163,6 +165,10 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertIn("Radix Primitives (`radix-ui`) + Lucide", skill)
         self.assertIn("统一使用官方聚合包 `radix-ui`", visual)
         self.assertIn("不要为每个 Primitive 分别安装 `@radix-ui/react-dialog`", visual)
+        self.assertIn("被 Git 和项目格式化工具忽略的 `.agents/work/`", skill)
+        self.assertIn("被 Git 和项目格式化工具忽略的 `.agents/work/`", backend_skill)
+        self.assertIn("六个月后仍必需", fullstack_skill)
+        self.assertIn("不要为了描述该规则额外创建文档说明文件", fullstack_skill)
         self.assertIn("不要为函数、方法、参数或显而易见的实现细节", quality)
         self.assertIn("不要为函数、方法、参数或显而易见的实现细节", backend_quality)
 

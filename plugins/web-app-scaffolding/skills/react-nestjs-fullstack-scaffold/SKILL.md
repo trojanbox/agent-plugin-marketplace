@@ -63,6 +63,7 @@ Quality → Oxlint + Prettier + Vitest + Playwright
 - Database migration 是部署步骤；前端构建/启动不拥有数据库生命周期。
 - Feature 名相同不等于代码互相穿透；前后端各自保持自己的 Feature Owner 和 Public API。
 - 本 Skill 不自行定义 `apps/api` 内部目录和 Nest Module 粒度；凡是创建、迁移或审查后端目录/Module，必须触发 `node-nestjs-backend-scaffold` 的架构 reference，以后端 Skill 为唯一规则 Owner，不能凭全栈示例或 Feature 名机械造 Module。
+- 全栈模板默认写入保守文档管理约束：`docs/` 只承载长期知识；调研、计划、TODO、Debug、Handoff、执行日志等任务级产物不进入正式文档，确需落盘时使用被 Git 和项目格式化工具忽略的 `.agents/work/`；新增长期 Markdown 必须通过“六个月后仍必需”、源码难以可靠推导、未来重复使用、维护成本可接受、无重复权威来源这组检查。不要为了描述该规则额外创建文档说明文件。
 - 不为了“全栈完整”提前加入 Redis、Worker、Queue、S3、GraphQL、BFF、微服务或第二套 API Client。
 
 ## 停止边界
