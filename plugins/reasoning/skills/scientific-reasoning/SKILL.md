@@ -1,6 +1,6 @@
 ---
 name: scientific-reasoning
-description: "用于跨领域的科学推理与机制分析：面对现象、规律或猜测时，区分事实/主张/解释，澄清定义与测量，建立合理的竞争性假设，比较潜在机制，生成可区分预测，检查相关与因果，主动寻找反例和证伪条件，并根据新证据更新当前模型。适合‘这个现象背后的规律是什么/还有没有其他解释/怎么验证这个猜测/这是相关还是因果/什么证据能推翻我的判断/底层机制是什么/帮我建立几个可能解释’。若主目标是查外部资料、做统计检验、审查数据分析或定位软件 Bug，分别由 research、data 或 development 对应 Skill 主导。"
+description: "用于跨领域的科学推理、机制分析与不确定性预测：面对现象、规律、猜测或未来判断时，区分事实/主张/解释，澄清定义与测量，建立合理的竞争性假设，比较潜在机制，生成可区分预测，检查相关与因果，主动寻找反例和证伪条件，并根据新证据更新当前模型。适合‘这个现象背后的规律是什么/还有没有其他解释/怎么验证这个猜测/这是相关还是因果/什么证据能推翻我的判断/底层机制是什么/未来可能怎么演化/什么时候风险会显化/帮我做情景推演’。若主目标是查外部资料、做统计检验、审查数据分析或定位软件 Bug，分别由 research、data 或 development 对应 Skill 主导。"
 visibility: workflow
 phase: analysis
 optional_uses: "research/deep-research,data/statistical-analysis"
@@ -14,7 +14,7 @@ optional_uses: "research/deep-research,data/statistical-analysis"
 
 ## 什么时候使用
 
-高信号：规律、底层机制、还有什么解释、相关还是因果、如何验证猜测、什么证据能推翻判断、建立多个可能解释。
+高信号：规律、底层机制、还有什么解释、相关还是因果、如何验证猜测、什么证据能推翻判断、建立多个可能解释、未来如何演化、情景推演、风险何时显化。
 
 主要任务是查外部资料 → research；主要做统计检验 → data；检查已有数据分析 → data-validation；具体软件 Bug 根因 → development。
 
@@ -35,8 +35,8 @@ optional_uses: "research/deep-research,data/statistical-analysis"
 6. **Falsification & Counterexamples**：主动寻找反例、失败条件和能推翻当前模型的证据。
 7. **Update**：根据新证据调整相对可信度，并保留未解释问题。
 
-深度执行时读取 `references/reasoning-playbook.md`；选择 Lightweight/Deep、正式输出和失败模式时读取 `references/modes-output-failures.md`。
+深度执行时读取 `references/reasoning-playbook.md`；选择 Lightweight/Deep、正式输出和失败模式时读取 `references/modes-output-failures.md`；用户要求未来预测、时间窗口、情景推演或风险显化条件时读取 `references/forecasting-mode.md`。
 
 ## 真实性边界
 
-证据不足时保持假设状态；相关性不自动升级为因果；没有实际数据检验时不声称统计显著；结论必须写明适用条件和会改变判断的新证据。
+证据不足时保持假设状态；相关性不自动升级为因果；没有实际数据检验时不声称统计显著；缺乏可校准模型或明确外部时点约束时，不用伪精确概率或单点日期包装预测；结论必须写明适用条件和会改变判断的新证据。
