@@ -14,14 +14,14 @@ optional_uses: "research/deep-research,research/knowledge-synthesis,data/data-vi
 
 ## Upstream Gate
 
-上游固定在 `vendor/baoyu-design/UPSTREAM.json` 指定的 commit。执行设计任务前：
+上游固定在 `vendor/baoyu-design/UPSTREAM.json` 指定的 commit，并由官方 snapshot 在打包前预先 materialize。执行设计任务前：
 
 1. 检查 `vendor/baoyu-design/upstream/system-prompt.md` 与 `project-types.json` 是否存在；
-2. 缺失时运行 `node vendor/baoyu-design/materialize-upstream.mjs`；
-3. 若当前宿主无网络且尚未 hydrate，明确说明缺少固定上游源码，停止依赖上游细节的设计执行，不猜造缺失规则；
-4. 已 hydrate 时读取 `vendor/baoyu-design/upstream/system-prompt.md`，再按 `project-types.json` 只加载本次需要的 `built-in-skills/*.md` 与 starter component。
+2. 运行 `node vendor/baoyu-design/materialize-upstream.mjs --verify-only` 做本地完整性校验；该模式只读取本地文件，不访问网络；
+3. 文件缺失或校验失败时，把当前 Runtime 视为不完整/损坏的制品，停止依赖上游细节的设计执行，并要求重新获取有效 snapshot；不要在正常 Skill 执行期间静默联网补齐；
+4. 校验通过后读取 `vendor/baoyu-design/upstream/system-prompt.md`，再按 `project-types.json` 只加载本次需要的 `built-in-skills/*.md` 与 starter component。
 
-不要把 `vendor/baoyu-design/upstream/SKILL.md` 注册成 Runtime Skill；它只作为第三方实现资料。
+`materialize-upstream.mjs` 的联网模式只用于源码 checkout 的维护和 snapshot 构建。不要把 `vendor/baoyu-design/upstream/SKILL.md` 注册成 Runtime Skill；它只作为第三方实现资料。
 
 ## Runtime 路由
 

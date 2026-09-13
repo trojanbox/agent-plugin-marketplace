@@ -18,6 +18,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Materialize pinned baoyu-design upstream
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node vendor/baoyu-design/materialize-upstream.mjs
+
+      - name: Verify bundled baoyu-design upstream
+        run: node vendor/baoyu-design/materialize-upstream.mjs --verify-only
+
       - name: Upload repository snapshot
         uses: actions/upload-artifact@v4
         with:

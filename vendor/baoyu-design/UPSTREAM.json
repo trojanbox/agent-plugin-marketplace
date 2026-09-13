@@ -11,6 +11,7 @@
   "verifiedAt": "2026-09-07",
   "license": "MIT",
   "notes": "Pinned to current main after the path-validation security fix merged in PR #15. The runtime adapter stays separate from the third-party upstream tree.",
-  "hydratedInBundle": false,
-  "hydrateCommand": "node vendor/baoyu-design/materialize-upstream.mjs"
+  "hydratedInBundle": true,
+  "hydrateCommand": "node vendor/baoyu-design/materialize-upstream.mjs",
+  "bundleWorkflow": ".github/workflows/ai-snapshot.yml"
 }

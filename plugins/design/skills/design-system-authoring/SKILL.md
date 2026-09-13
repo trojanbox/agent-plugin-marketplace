@@ -13,11 +13,11 @@ phase: architecture
 
 ## Upstream Gate
 
-执行前检查 `vendor/baoyu-design/upstream/built-in-skills/design-system-authoring-guide.md`。缺失时运行：
+官方 snapshot 在上传前已包含固定版本的完整 upstream。执行前检查 `vendor/baoyu-design/upstream/built-in-skills/design-system-authoring-guide.md`，并运行：
 
-`node vendor/baoyu-design/materialize-upstream.mjs`
+`node vendor/baoyu-design/materialize-upstream.mjs --verify-only`
 
-若当前环境无法联网且 upstream 尚未 hydrate，明确报告这一前置条件，不能凭记忆重写上游设计系统协议。
+该校验只读取本地文件，不访问网络。若文件缺失或 pinned revision 校验失败，把当前 Runtime 视为不完整/损坏的制品，停止依赖上游协议的执行并要求重新获取有效 snapshot；不要在正常 Skill 执行期间静默联网 hydration，也不能凭记忆重写缺失协议。联网 materialize 仅用于源码 checkout 维护和 snapshot 构建。
 
 ## Authoring Flow
 

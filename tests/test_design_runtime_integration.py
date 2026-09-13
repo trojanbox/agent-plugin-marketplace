@@ -33,6 +33,8 @@ class DesignRuntimeIntegrationTests(unittest.TestCase):
         self.assertEqual(cfg["commit"], "026d4ea012bdd5cada72ac8cc13f21ba4edf2245")
         self.assertEqual(cfg["subtreePath"], "skills/baoyu-design")
         self.assertEqual(cfg["subtreeSha"], "6021a026f87d3aefe957e924b173108c24275ea1")
+        self.assertTrue(cfg["hydratedInBundle"])
+        self.assertEqual(cfg["bundleWorkflow"], ".github/workflows/ai-snapshot.yml")
         snapshot = json.loads((VENDOR / "project-types.snapshot.json").read_text(encoding="utf-8"))
         ids = {item["id"] for item in snapshot["projectTypes"]}
         self.assertEqual(len(ids), 13)
@@ -51,9 +53,22 @@ class DesignRuntimeIntegrationTests(unittest.TestCase):
             self.assertFalse(str(path).startswith(str(ROOT / "plugins")))
         visual = (ROOT / "plugins/design/skills/visual-artifact-design/SKILL.md").read_text(encoding="utf-8")
         authoring = (ROOT / "plugins/design/skills/design-system-authoring/SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("materialize-upstream.mjs", visual)
+        self.assertIn("materialize-upstream.mjs --verify-only", visual)
+        self.assertIn("不要在正常 Skill 执行期间静默联网补齐", visual)
         self.assertIn("design/design-system-authoring", visual)
+        self.assertIn("materialize-upstream.mjs --verify-only", authoring)
+        self.assertIn("不要在正常 Skill 执行期间静默联网 hydration", authoring)
         self.assertIn("visual-artifact-design", authoring)
+
+
+    def test_snapshot_workflow_bundles_upstream_before_upload(self) -> None:
+        workflow = (ROOT / ".github/workflows/ai-snapshot.yml").read_text(encoding="utf-8")
+        materialize = workflow.index("node vendor/baoyu-design/materialize-upstream.mjs\n")
+        verify = workflow.index("node vendor/baoyu-design/materialize-upstream.mjs --verify-only")
+        upload = workflow.index("uses: actions/upload-artifact@v4")
+        self.assertLess(materialize, verify)
+        self.assertLess(verify, upload)
+        self.assertIn("GITHUB_TOKEN: ${{ github.token }}", workflow)
 
     def test_semantic_regression_contains_design_boundaries(self) -> None:
         corpus = ROOT / "plugins/ai-workflow/skills/skill-system-design/references/semantic-routing-regression.csv"
