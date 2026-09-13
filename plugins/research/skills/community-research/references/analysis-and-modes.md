@@ -2,7 +2,7 @@
 
 收集到原帖后读取，用于去重、相关性过滤、主题聚类、共识/分歧、Comparison/Discovery/人物/项目模式和 Evidence Ledger。
 
-## Phase 4 — Recent Evidence Collection
+## Phase 4 — Evidence Collection
 
 对每个选定来源做定向检索：
 
@@ -46,7 +46,7 @@
 - 与目标同名但实体错误；
 - 无实质内容的 help-me 帖；
 - 明显机器人/批量生成内容；
-- 超出时间窗口且没有背景价值的旧讨论；
+- 超出时间窗口且没有背景价值的旧讨论；长期实践模式下，仍被当前证据验证的奠基性旧讨论可作为背景保留；
 - 只引用别人观点、没有新增信息的二次转述。
 
 ## Phase 6 — Signal & Theme Clustering
@@ -71,7 +71,7 @@
 综合考虑：
 
 1. **Relevance**：是否直接回答研究问题；
-2. **Recency**：是否位于目标窗口，离当前越近是否更重要；
+2. **Temporal fit**：是否位于目标窗口；近期趋势模式强调 Recency，长期实践模式同时看新近有效性与跨时间重复性；
 3. **Independence**：是否来自独立讨论 / 独立用户群；
 4. **Engagement**：评论、upvote、likes、stars 等参与度；
 5. **Specificity**：是否包含具体案例、数字、复现、迁移经历，而非一句情绪；
