@@ -142,7 +142,7 @@ Exclusive Resources: ...
 
 - API/错误：invalid input / permission / upstream failure；
 - 并发/事务：conflict / concurrency / atomicity / idempotency；
-- migration：old data / partial / rollback-or-forward-fit；
+- migration：old data / partial / rollback-or-forward-fix；
 - Worker/Runner：retry / duplicate delivery / restart / cancel / timeout；
 - UI：reload / navigation / stale response / unmount / multi-object invariant；
 - CLI/API 输出：output_contract；
