@@ -57,6 +57,7 @@ Regression → 跑当前 Task 的 focused regression 和必要合同验证
 - 环境错误、命令不存在、依赖缺失不能冒充 Red。
 - 新测试若直接 Green，必须先判断功能是否已存在或测试是否没有命中目标；不能直接进入实现。
 - 纯文案、纯静态资源、无法形成有意义行为 Red 的 Task 才允许 `TDD: N/A`，并写清证据和替代验证。
+- 每个 Task 完成且当前 Task 的 Regression / Acceptance 满足后，必须创建一个本地 Git commit，再进入后续 Task；commit 只包含当前 Task 的变更。该要求不授权 push/merge/release/deploy。
 
 详细字段读取 `references/task-contract.md`。
 

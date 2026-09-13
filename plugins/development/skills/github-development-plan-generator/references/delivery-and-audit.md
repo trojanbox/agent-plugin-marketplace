@@ -32,6 +32,7 @@
 - Red 有 Test/Assertion/CWD/Command/Expected old failure；
 - `TDD: N/A` 有真实理由和替代验证；
 - 每个重要 Invariant/Risk 有 Behavior Case/测试/替代证据；
+- 每个 Task 明确 Regression / Acceptance 满足后创建仅包含当前 Task 变更的本地 Git commit；
 - 命令来自当前仓库；
 - 重大 Decision 没被规划阶段重新发明；
 - 没有 `TBD/TODO/补必要测试/类似 Txx` 等占位；
@@ -98,6 +99,7 @@ GitHub 计划成功写入后，最终回复给出可直接执行的 Goal，要�
 - `TDD: N/A` 只按 Task 明示理由执行替代验证；
 - Green 只做根因级最小完整实现，不通过改弱测试求绿；
 - Task 完成后运行真实 focused regression，并记录命令/证据；
+- 当前 Task 的 Regression / Acceptance 满足后，创建一个只包含当前 Task 变更的本地 Git commit，再进入后续 Task；
 - 有业务/技术测试方案时只消费当前 Task 映射的合同；全部 Task 后再执行必要的跨 Task 技术/业务验收；
 - DAG ready task 可并行，但共享写集/资源冲突串行；
 - 实施完成后安排独立 Review；发现问题后修复、重新验证、重新 Review；

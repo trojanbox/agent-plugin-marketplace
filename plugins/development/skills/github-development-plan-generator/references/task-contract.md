@@ -75,6 +75,10 @@ Exclusive Resources: ...
 
 ### Acceptance
 - [ ] ...
+
+### Git Commit
+- After: Regression / Acceptance 满足后
+- Scope: 仅当前 Task 的变更
 ```
 
 # 二、TDD 执行合同（强制）
@@ -138,7 +142,7 @@ Exclusive Resources: ...
 
 - API/错误：invalid input / permission / upstream failure；
 - 并发/事务：conflict / concurrency / atomicity / idempotency；
-- migration：old data / partial / rollback-or-forward-fix；
+- migration：old data / partial / rollback-or-forward-fit；
 - Worker/Runner：retry / duplicate delivery / restart / cancel / timeout；
 - UI：reload / navigation / stale response / unmount / multi-object invariant；
 - CLI/API 输出：output_contract；
@@ -170,3 +174,9 @@ Exclusive Resources: ...
 `在 <环境/CWD> 执行 <真实命令>，预期证明 <合同/断言>`。
 
 未运行的命令不能写成已通过；环境阻塞要与产品/测试失败区分。
+
+# 七、Task 完成后的 Git 提交
+
+- 当前 Task 的 Regression / Acceptance 满足后，必须创建一个本地 Git commit，再进入后续 Task；
+- commit 只包含当前 Task 的 Write Set 与完成该 Task 必需的测试/生成物，不夹带其它 Task 或顺手修改；
+- commit 只表示本地完成检查点，不代表获得 push/merge/release/deploy 权限。

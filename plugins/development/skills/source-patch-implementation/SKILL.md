@@ -73,6 +73,8 @@ phase: implementation
 
 只通过 `git apply --check` 不能声称 Bug 已修复验证通过。
 
+Bug 修复达到本 Skill 的完成/验证要求后：若当前是项目真实 Git 工作区，必须创建一个本地 Git commit，且只包含本次修复与必要测试；`synthetic_local_baseline` 的审计 commit 不能冒充项目真实提交。该要求不授权 push/merge/release/deploy。
+
 ## 六、默认交付
 
 至少包含：
