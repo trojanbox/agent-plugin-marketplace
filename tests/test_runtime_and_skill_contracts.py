@@ -488,7 +488,7 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
         self.assertEqual(internal[0]["name"], "github-incidental-bug-capture")
         self.assertEqual(
             internal[0]["uses"],
-            ["development/github-issue-triage", "development/github-issue-manager"],
+            ["github/github-issue-triage", "github/github-issue-manager"],
         )
         self.assertEqual(internal[0]["rootKind"], "internal")
         self.assertIn(
@@ -640,14 +640,14 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
     def test_github_remote_write_recovery_precedes_handoff(self) -> None:
         recovery = (
             PLUGINS
-            / "development/shared/github-core/references/github-remote-write-recovery.md"
+            / "github/shared/references/github-remote-write-recovery.md"
         ).read_text(encoding="utf-8")
         handoff = (
             PLUGINS
-            / "development/shared/github-core/references/handoff-protocol.md"
+            / "github/shared/references/handoff-protocol.md"
         ).read_text(encoding="utf-8")
         manager = (
-            PLUGINS / "development/skills/github-issue-manager/SKILL.md"
+            PLUGINS / "github/skills/github-issue-manager/SKILL.md"
         ).read_text(encoding="utf-8")
         discussion = (
             PLUGINS
@@ -669,14 +669,14 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
         doctor = runtime_json("doctor")
         by_name = {skill["name"]: skill for skill in doctor["skills"]}
         self.assertIn(
-            "development/github-issue-triage",
+            "github/github-issue-triage",
             by_name["github-issue-manager"].get("optionalUses", []),
         )
         manager = (
-            PLUGINS / "development/skills/github-issue-manager/SKILL.md"
+            PLUGINS / "github/skills/github-issue-manager/SKILL.md"
         ).read_text(encoding="utf-8")
         triage = (
-            PLUGINS / "development/skills/github-issue-triage/SKILL.md"
+            PLUGINS / "github/skills/github-issue-triage/SKILL.md"
         ).read_text(encoding="utf-8")
         self.assertIn("本 Skill 拥有主路由", manager)
         self.assertIn("领域工作流的持久化步骤", manager)
@@ -736,7 +736,8 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
         self.assertTrue(corpus.exists())
         with corpus.open(encoding="utf-8", newline="") as handle:
             rows = list(csv.DictReader(handle))
-        self.assertEqual(len(rows), 239)
+        self.assertEqual(len(rows), 253)
+        self.assertEqual(len({row["id"] for row in rows}), len(rows))
         buckets = {row["bucket"] for row in rows}
         for bucket in (
             "baseline-regression",

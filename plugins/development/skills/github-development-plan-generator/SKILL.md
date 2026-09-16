@@ -2,7 +2,7 @@
 name: github-development-plan-generator
 description: "用于把已经明确或需要先经过前置 Gate 的需求、结论或缺陷永久解决方向转换成可直接交给小模型/Coding Agent 的 GitHub 开发计划。用户明确请求开发/实施计划时由本 Skill 先承接并执行 Spec Gate；若进入 ready_for_spec，再转入 github-spec 或按用户明确选择记录跳过。默认采用 small-model-strict：以当前源码建立来源索引、传播图、文件结构、契约和自包含 Task DAG，冻结 Read Before Edit、Entry Preconditions、Allowed/Forbidden、Write Set、Stop Conditions、Expected Diff Shape、逐 symbol Implementation Steps、Behavior Cases、验证义务与验收。该 Skill 只负责规划，不修改源码或运行完整真实测试。"
 phase: planning
-optional_uses: "development/github-incidental-bug-capture"
+optional_uses: "github/github-issue-manager,development/github-incidental-bug-capture"
 ---
 
 # GitHub Development Plan Generator / 开发计划生成器
@@ -16,6 +16,8 @@ optional_uses: "development/github-incidental-bug-capture"
 共享规则：`../../shared/github-core/references/collaboration-policy.md`、`../../shared/github-core/references/plan-authoring.md`；GitHub 不可写时使用 handoff protocol。
 
 ## Skill Composition
+
+- 需要 GitHub 持久化时组合 `github/github-issue-manager`，使用其查重、写入恢复与 handoff 协议；本 Skill 保留研发内容与阶段 Gate，不复制通用远端操作。
 
 - 规划期间发现独立生产缺陷，可按现有条件组合 `development/github-incidental-bug-capture`；主任务仍是实施计划。
 - 已有业务测试方案时，把当前 Task 直接相关的业务场景/不变量写回 Task；不能只留链接。

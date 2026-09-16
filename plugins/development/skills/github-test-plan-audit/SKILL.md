@@ -2,12 +2,14 @@
 name: github-test-plan-audit
 description: "用于审查已经存在的业务测试方案、技术测试方案或两者组合，检查 Spec Gate/权威来源是否完整、它们是否与当前源码/已确认目标合同一致、覆盖是否充分、是否可交给下游 Agent 执行。业务计划重点审 Business Alignment、Expected Contract、Feature/State/Invariant/Gherkin；技术方案重点审 Risk/Layer、Harness/Fixture/Reset、Evidence、Fresh Run、Resilience 与自动化可维护性。默认只审计和给修改建议，不运行真实测试、不编写测试代码、不修改产品代码。"
 phase: verification
-optional_uses: "development/github-incidental-bug-capture"
+optional_uses: "github/github-issue-manager,development/github-incidental-bug-capture"
 ---
 
 # GitHub Test Plan Audit / 测试方案审计
 
 ## Skill Composition
+
+- 需要 GitHub 持久化时组合 `github/github-issue-manager`，使用其查重、写入恢复与 handoff 协议；本 Skill 保留研发内容与阶段 Gate，不复制通用远端操作。
 
 - 审计源码/测试/日志时发现已确认独立生产 Bug → `development/github-incidental-bug-capture`；
 - 其它疑似问题按真实类别写入审计，不误报生产 Bug。

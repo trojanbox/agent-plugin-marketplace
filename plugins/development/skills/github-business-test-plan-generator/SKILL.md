@@ -2,7 +2,7 @@
 name: github-business-test-plan-generator
 description: "用于把已经确认或需要先与用户校准的一轮业务范围，整理成可交给下游 Test Agent 执行的业务测试方案。用户明确请求业务测试方案/业务用例时由本 Skill 先承接并执行 Spec Gate；若进入 ready_for_spec，再转入 github-spec 或按用户明确选择记录跳过。随后回显 Business Understanding，与用户或已确认结论对齐 Expected Business Contract，再建立 Feature/状态维度/跨对象不变量/Gherkin/业务 Evidence。适合‘给我业务测试方案/业务用例/按用户流程怎么测/这个功能有哪些业务场景’。不负责选择 Unit/Integration/E2E、设计 Harness/故障注入或编写测试代码；这些进入技术测试方案。"
 phase: planning
-optional_uses: "development/github-incidental-bug-capture"
+optional_uses: "github/github-issue-manager,development/github-incidental-bug-capture"
 ---
 
 # GitHub Business Test Plan Generator / 业务测试方案生成器
@@ -10,6 +10,8 @@ optional_uses: "development/github-incidental-bug-capture"
 公共质量合同：`../../shared/testing-core/test-plan-quality-contract.md`。
 
 ## Skill Composition
+
+- 需要 GitHub 持久化时组合 `github/github-issue-manager`，使用其查重、写入恢复与 handoff 协议；本 Skill 保留研发内容与阶段 Gate，不复制通用远端操作。
 
 读取源码/日志/测试时确认独立生产 Bug → 组合 `development/github-incidental-bug-capture`；证据不足 mismatch、未实现能力、合同未决、测试/Harness 问题按真实类别记录。
 

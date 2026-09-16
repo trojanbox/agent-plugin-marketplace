@@ -16,6 +16,8 @@ claude plugin marketplace add trojanbox/agent-plugin-marketplace
 claude plugin install development@agent-plugin-marketplace
 ```
 
+需要 GitHub Issue 操作的研发工作流还需安装 `github@agent-plugin-marketplace`；原生宿主不会自动安装 Composition 依赖。
+
 其它 Plugin 把 `development` 替换为 `research`、`writing`、`data`、`web-app-scaffolding` 等名称即可。
 
 Claude 原生分发文件：
@@ -117,3 +119,9 @@ vendor/
 - `AI_USAGE.md + skill-runtime.js` 保留为独立自用入口，不参与宿主安装链。
 
 更多设计约束见 [`PLUGIN_MODEL.md`](./PLUGIN_MODEL.md) 与 [`SKILL_COMPOSITION.md`](./SKILL_COMPOSITION.md)。
+
+## GitHub 与 Reasoning 边界
+
+`github` 提供 Issue 管理、查重与交接同步；这三个 Skill 的 canonical ID 统一为 `github/github-issue-manager`、`github/github-issue-triage`、`github/github-issue-handoff-sync`，不保留旧 Development 实现。跨 Plugin 资源按已安装 Skill 路径定位。
+
+`reasoning/structured-debate` 负责观点攻防与命题版本；`scientific-reasoning` 负责竞争假设、机制与预测。仅在要求 GitHub 留档时组合 github Plugin，辩论 Issue 必须使用 `【辩论】` 前缀。研发源码、决策、测试与 Patch 规则仍由 Development 持有。

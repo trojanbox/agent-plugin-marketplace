@@ -2,7 +2,7 @@
 name: github-discussion-facilitator
 description: "在需要围绕技术、产品、架构或实现主题与用户进行可追踪讨论时使用。正式讨论前创建或续用一个【讨论】Issue，以源码证据、当前实现/目标方案/差距、决策树、待决项和 Mermaid 图示为核心表达，按决策依赖逐步确认高杠杆问题，并在每次回答后追加可追溯的决定、理由、边界和未决项；无法写入 GitHub 时使用标准化本地交接包持续记录。"
 phase: discussion
-optional_uses: "development/github-incidental-bug-capture"
+optional_uses: "github/github-issue-manager,development/github-incidental-bug-capture"
 ---
 
 # GitHub 讨论主持
@@ -11,7 +11,7 @@ optional_uses: "development/github-incidental-bug-capture"
 
 把“还没有定案”的产品/技术/架构问题推进成**可追溯的决策过程**：先建立事实和边界，再按依赖顺序讨论关键决策，记录已确认决定与未决项，最后判断是否需要【结论】。
 
-共享研发规则见 `../../shared/github-core/references/collaboration-policy.md`。GitHub 写操作异常时先读取 `../../shared/github-core/references/github-remote-write-recovery.md` 完成恢复 Gate；只有 Gate 确认远端能力确实不可用时，才按 `../../shared/github-core/references/handoff-protocol.md` 文件化交接。
+共享研发规则见 `../../shared/github-core/references/collaboration-policy.md`。GitHub 写操作异常时先读取 `<github-shared>/references/github-remote-write-recovery.md` 完成恢复 Gate；只有 Gate 确认远端能力确实不可用时，才按 `<github-shared>/references/handoff-protocol.md` 文件化交接。
 
 ## 什么时候使用
 
@@ -22,6 +22,8 @@ optional_uses: "development/github-incidental-bug-capture"
 已确认目标只需冻结合同 → `github-spec`；独立故障根因 → `github-bug-investigation`；只需梳理当前实现 → 调研 Skill。
 
 ## Skill Composition / 旁路缺陷捕获
+
+- 需要 GitHub 持久化或写入恢复时组合 `github/github-issue-manager`。`<github-shared>` 指该 Skill 所属 github Plugin 的真实 `shared/` 目录：自用 Runtime 读取 `skill github/github-issue-manager` 的 `sharedRoot`；宿主按已发现 Skill 路径定位，不假设 Plugin 相邻安装。未安装时报告依赖缺失，不猜路径。
 
 讨论过程中读取源码/日志等证据，若确认独立生产 Bug，组合 `development/github-incidental-bug-capture` 留痕后回到讨论。证据不足、未实现需求、合同未决、测试/Harness 问题不自动报生产 Bug。
 

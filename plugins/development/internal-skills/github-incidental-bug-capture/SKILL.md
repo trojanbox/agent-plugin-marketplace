@@ -3,7 +3,7 @@ name: github-incidental-bug-capture
 description: "作为其它 development Skill 的旁路组合能力：在调研、讨论、API 审计、结论、开发计划、技术/业务测试方案生成、测试方案审计或其它读取源码/日志/测试的过程中，若发现有证据支持的独立生产 Bug，立即完成查重并创建、补充或重开对应缺陷 Issue，然后继续原主任务。它不把未实现需求、纯文档漂移、代码风格、技术债或证据不足的 mismatch 误报为 Bug，也不默认修复；用户主目标本来就是排查 Bug 时仍使用 github-bug-investigation。"
 visibility: internal
 phase: operations
-uses: "development/github-issue-triage,development/github-issue-manager"
+uses: "github/github-issue-triage,github/github-issue-manager"
 ---
 
 # GitHub Incidental Bug Capture / 旁路缺陷捕获
@@ -134,8 +134,8 @@ uses: "development/github-issue-triage,development/github-issue-manager"
 
 本 Skill 必需组合：
 
-- `development/github-issue-triage`；
-- `development/github-issue-manager`。
+- `github/github-issue-triage`；
+- `github/github-issue-manager`。
 
 顺序固定：
 

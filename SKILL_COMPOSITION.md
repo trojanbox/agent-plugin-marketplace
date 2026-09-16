@@ -49,7 +49,7 @@ visibility: internal
 
 ## 逻辑 Skill ID 与 Plugin Group Metadata
 
-Composition 引用只使用稳定逻辑 ID：`<plugin>/<skill>`。本 Runtime 的 Plugin 名沿用原 Category 名，因此历史 ID 不变。
+Composition 引用只使用稳定逻辑 ID：`<plugin>/<skill>`。Group 调整不改变逻辑 ID；跨 Plugin 迁移必须同步所有引用。通用 Issue 操作现归 `github` namespace，旧 Development 实现不保留。
 
 - Public Skill 物理目录固定为 `plugins/<plugin>/skills/<skill>/SKILL.md`；`visibility: internal` 的内部组合能力固定在 `plugins/<plugin>/internal-skills/<skill>/SKILL.md`，逻辑 ID 不变；
 - Group 只存在于 `plugin.json` metadata，不进入 `uses / optional_uses`；
@@ -138,6 +138,11 @@ Skill Composition 只解决“一个主任务需要哪些辅助能力”。它�
 
 ## GitHub Issue Gate 示例
 
-- 用户只问“有没有重复、这个是不是复发、应该重开还是新建” → `development/github-issue-triage` 为主。
-- 上游内容已经明确、用户当前只要求“创建/重开 Issue” → `development/github-issue-manager` 为主，并把 Triage 作为写前 Gate；Gate 未完成不构成两个主 Skill 冲突。
+- 用户只问“有没有重复、这个是不是复发、应该重开还是新建” → `github/github-issue-triage` 为主。
+- 上游内容已经明确、用户当前只要求“创建/重开 Issue” → `github/github-issue-manager` 为主，并把 Triage 作为写前 Gate；Gate 未完成不构成两个主 Skill 冲突。
 - 如果 Issue 写入只是 Bug 调查、讨论、结论、计划或测试方案等领域主任务的持久化副作用，领域 Skill 保留主路由，Manager 不把“会写 GitHub”提升成第二个主任务。
+
+## Debate / GitHub Composition
+
+- `reasoning/structured-debate` 保留命题冻结、单点攻防与 Claim Ledger；仅在用户要留档时组合 `github/github-issue-manager`，正式标题为 `【辩论】<主题>`。
+- 通用 GitHub Skills 不依赖 Development。研发 Skill 提供领域事实与决定，并按需消费 GitHub 持久化；shared 路径从实际安装位置解析，不假设插件相邻。

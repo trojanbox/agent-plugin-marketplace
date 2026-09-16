@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "name": "github",
+  "version": "1.0.0",
+  "description": "用于跨领域的 GitHub Issue 生命周期管理、查重与复发判断、离线交接同步和远端写入恢复。内容、证据与领域决定由调用方负责；不承担源码调查、研发审批或辩论方法。",
+  "skills": "./skills",
+  "shared": "./shared",
+  "compatibility": {
+    "stableSkillIdPrefix": "github"
+  }
+}

@@ -7,7 +7,7 @@
 对 ZIP/TAR 使用：
 
 ```bash
-python3 ../../shared/github-core/scripts/github_workflow.py archive extract \
+python3 ../../shared/github-core/scripts/workspace_workflow.py archive extract \
   --archive source.zip --destination work/source
 ```
 
@@ -16,7 +16,7 @@ python3 ../../shared/github-core/scripts/github_workflow.py archive extract \
 ## 源码快照
 
 ```bash
-python3 ../../shared/github-core/scripts/github_workflow.py workspace snapshot \
+python3 ../../shared/github-core/scripts/workspace_workflow.py workspace snapshot \
   --path work/source --output snapshot.json
 ```
 
@@ -45,8 +45,8 @@ git -c user.name="local-baseline" -c user.email="local-baseline@example.invalid"
 ## Patch 审查
 
 ```bash
-python3 ../../shared/github-core/scripts/github_workflow.py patch inspect --patch change.patch
-python3 ../../shared/github-core/scripts/github_workflow.py patch check --workspace work/source --patch change.patch
+python3 ../../shared/github-core/scripts/workspace_workflow.py patch inspect --patch change.patch
+python3 ../../shared/github-core/scripts/workspace_workflow.py patch check --workspace work/source --patch change.patch
 ```
 
 `patch check` 成功只证明语法和上下文可应用，不证明行为正确。
@@ -54,7 +54,7 @@ python3 ../../shared/github-core/scripts/github_workflow.py patch check --worksp
 ## Patch 导出
 
 ```bash
-python3 ../../shared/github-core/scripts/github_workflow.py patch export \
+python3 ../../shared/github-core/scripts/workspace_workflow.py patch export \
   --workspace work/source --base HEAD --output delivery.patch
 ```
 

@@ -2,7 +2,7 @@
 name: github-spec
 description: "用于冻结已经完成讨论或已经明确确认的目标合同，创建独立【结论】Issue。用户明确要求结论/规格、讨论收口需要冻结权威合同，或下游实施计划/技术测试方案/业务测试方案执行 Spec Gate 后进入 ready_for_spec 时使用。用户已经明确点名下游交付物时，主路由先进入对应下游 Skill，由它执行 Spec Gate；不能因为高传播且缺结论就同时把本 Skill 列为主候选。局部低传播修改可记录 spec_not_required 后跳过。"
 phase: specification
-optional_uses: "development/github-incidental-bug-capture"
+optional_uses: "github/github-issue-manager,development/github-incidental-bug-capture"
 ---
 
 # GitHub 结论
@@ -14,6 +14,8 @@ optional_uses: "development/github-incidental-bug-capture"
 共享研发规则见 `../../shared/github-core/references/collaboration-policy.md`。
 
 ## Skill Composition / 旁路缺陷捕获
+
+- 需要 GitHub 持久化时组合 `github/github-issue-manager`，使用其查重、写入恢复与 handoff 协议；本 Skill 保留研发内容与阶段 Gate，不复制通用远端操作。
 
 整理结论时若证据中确认独立生产 Bug，组合 `development/github-incidental-bug-capture` 查重留痕；缺口、未决合同、测试问题不能伪装成 Bug。
 

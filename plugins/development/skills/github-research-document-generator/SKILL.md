@@ -2,7 +2,7 @@
 name: github-research-document-generator
 description: "用于对当前软件项目、模块、服务、Agent、Workflow、API 或完整调用链做系统性源码调研，建立可复用的当前实现事实基线。即使用户没有明确说“调研文档/报告”，只要请求表现为完整梳理、盘点现状、分析实现到什么程度、说明系统怎么工作、梳理现有能力与缺口，并且需要跨多个源码证据形成系统认知，也应优先列为主 Skill 候选；单点事实、独立缺陷、未定方案讨论和已经明确的开发计划/测试方案请求进入对应 Skill。默认可直接在当前对话交付完整调研结论；用户明确要求创建/生成调研文档、调研报告、【调研】Issue、把刚才的源码分析/调研留档到 GitHub，或其它 Markdown/Wiki/GitHub 留痕时，仍由本 Skill 主导并进入文档持久化模式，Issue 写入只是调研工作流的持久化步骤。"
 phase: research
-optional_uses: "development/github-incidental-bug-capture"
+optional_uses: "github/github-issue-manager,development/github-incidental-bug-capture"
 ---
 
 # 源码调研与调研文档生成器
@@ -11,11 +11,13 @@ optional_uses: "development/github-incidental-bug-capture"
 
 基于**用户提供的当前源码、日志、测试、截图和说明**建立可追溯的当前实现事实基线，回答“现在怎么工作、做到什么程度、能力/缺口在哪里”。
 
-共享研发证据、范围、决策与 GitHub 真实性规则见 `../../shared/github-core/references/collaboration-policy.md`；GitHub 不可写时见 `../../shared/github-core/references/handoff-protocol.md`。
+共享研发证据、范围、决策与 GitHub 真实性规则见 `../../shared/github-core/references/collaboration-policy.md`；GitHub 不可写时见 `<github-shared>/references/handoff-protocol.md`。
 
 高信号：完整梳理、跨模块调用链、实现程度、现状盘点、能力与缺口。单点 API 合同转 `api-contract-audit`；独立故障转 `github-bug-investigation`；未定方案转讨论；已经明确要计划/测试方案时进入对应下游 Skill。
 
 ## Skill Composition / 旁路缺陷捕获
+
+- 需要 GitHub 持久化或写入恢复时组合 `github/github-issue-manager`。`<github-shared>` 指该 Skill 所属 github Plugin 的真实 `shared/` 目录：自用 Runtime 读取 `skill github/github-issue-manager` 的 `sharedRoot`；宿主按已发现 Skill 路径定位，不假设 Plugin 相邻安装。未安装时报告依赖缺失，不猜路径。
 
 调研主流程始终由本 Skill 持有。读取证据时如果确认一个**独立生产 Bug**，组合 `development/github-incidental-bug-capture` 完成查重/留痕后继续调研；疑似 mismatch、未实现需求、合同未决、文档漂移、测试/Harness 问题按真实类别记录，不自动报 Bug。
 

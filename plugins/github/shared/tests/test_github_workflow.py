@@ -15,7 +15,7 @@ assert spec and spec.loader
 spec.loader.exec_module(workflow)
 
 
-class HandoffTests(unittest.TestCase):
+class WorkflowTests(unittest.TestCase):
     def test_init_add_validate(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp) / "handoff"
@@ -35,6 +35,7 @@ class HandoffTests(unittest.TestCase):
             self.assertEqual(warnings, [])
             manifest = json.loads((bundle / "manifest.json").read_text(encoding="utf-8"))
             self.assertEqual(manifest["entries"][0]["sync_status"], "blocked_by_triage")
+
 
     def test_comment_ids_are_unique_across_parents(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -59,6 +60,7 @@ class HandoffTests(unittest.TestCase):
             self.assertEqual(comment_ids, ["BUG-001-COMMENT-001", "BUG-002-COMMENT-001"])
             errors, _ = workflow.validate_bundle_data(bundle, strict=True)
             self.assertEqual(errors, [])
+
 
     def test_record_sync_updates_manifest_and_markdown(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -87,6 +89,7 @@ class HandoffTests(unittest.TestCase):
             self.assertEqual(errors, [])
             self.assertEqual(warnings, [])
 
+
     def test_hash_change_is_warning_or_error(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp) / "handoff"
@@ -107,17 +110,6 @@ class HandoffTests(unittest.TestCase):
             errors, _ = workflow.validate_bundle_data(bundle, strict=True)
             self.assertTrue(any("sha256" in item for item in errors))
 
-
-class ArchiveTests(unittest.TestCase):
-    def test_zip_path_traversal_rejected(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            archive = Path(tmp) / "bad.zip"
-            with zipfile.ZipFile(archive, "w") as zf:
-                zf.writestr("../escape.txt", "bad")
-            with self.assertRaises(workflow.WorkflowError):
-                workflow.extract_archive(argparse.Namespace(
-                    archive=str(archive), destination=str(Path(tmp) / "out"), force=False
-                ))
 
 
 

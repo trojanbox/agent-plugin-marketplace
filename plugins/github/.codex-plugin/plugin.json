@@ -1,0 +1,24 @@
+{
+  "name": "github",
+  "version": "1.0.0",
+  "description": "用于跨领域的 GitHub Issue 生命周期管理、查重与复发判断、离线交接同步和远端写入恢复。内容、证据与领域决定由调用方负责；不承担源码调查、研发审批或辩论方法。",
+  "author": {
+    "name": "trojanbox",
+    "url": "https://github.com/trojanbox"
+  },
+  "repository": "https://github.com/trojanbox/agent-plugin-marketplace",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Github",
+    "shortDescription": "用于跨领域的 GitHub Issue 生命周期管理、查重与复发判断、离线交接同步和远端写入恢复。内容、证据与领域决定由调用方负责；不承担源码调查、研发审批或辩论方法。",
+    "longDescription": "用于跨领域的 GitHub Issue 生命周期管理、查重与复发判断、离线交接同步和远端写入恢复。内容、证据与领域决定由调用方负责；不承担源码调查、研发审批或辩论方法。",
+    "developerName": "trojanbox",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive"
+    ],
+    "defaultPrompt": [
+      "使用 Github 插件帮助我完成当前任务。"
+    ]
+  }
+}

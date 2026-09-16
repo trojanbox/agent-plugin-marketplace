@@ -2,7 +2,7 @@
 name: github-bug-investigation
 description: "在用户提供源码、日志、复现步骤、测试、截图或补丁，需要调查软件 Bug 时使用。以当前源码和证据确定症状、影响、根因或待验证假设、严重级别、永久解决方向、复杂度和验收要求。默认完成调查而不自动创建 Issue；用户明确要求在调查后留痕时才执行查重/Issue 持久化。根因确认后若用户要直接 `.patch`，先做 S/M/L 与 Patch Fast Lane Gate；仅 S 级合格项进入 source-patch-implementation。"
 phase: investigation
-optional_uses: "reasoning/scientific-reasoning"
+optional_uses: "github/github-issue-manager,reasoning/scientific-reasoning"
 ---
 
 # GitHub Bug Investigation / Bug 根因调查
@@ -24,6 +24,8 @@ optional_uses: "reasoning/scientific-reasoning"
 默认**不自动创建 GitHub Issue**，也不修改源码。用户明确要求留痕时，Issue 写入属于调查后的持久化步骤；根因已经完整、当前只剩写 Issue 时切换 `github-issue-manager`。
 
 ## Skill Composition
+
+- 需要 GitHub 持久化或写入恢复时组合 `github/github-issue-manager`。`<github-shared>` 指该 Skill 所属 github Plugin 的真实 `shared/` 目录：自用 Runtime 读取 `skill github/github-issue-manager` 的 `sharedRoot`；宿主按已发现 Skill 路径定位，不假设 Plugin 相邻安装。未安装时报告依赖缺失，不猜路径。
 
 当根因存在多个实质性竞争假设、需要显式预测/证伪时，可按需组合 `reasoning/scientific-reasoning`。Bug 的工程证据、严重级别、复杂度和后续流程仍由本 Skill 决定。
 
@@ -110,7 +112,7 @@ Trigger → Entry → State / Contract → Producer / Consumer
 
 创建/重开执行类 Issue 前必须查重开放与已关闭记录：同根因开放项补证；同根因关闭项复发优先重开；不同根因新建并关联历史。一个 Issue 只承载一个可独立复现、修复、验收的根因。
 
-无法读取/写入 GitHub 时明确 `triage_unavailable` 或写入能力缺失，并按 `../../shared/github-core/references/handoff-protocol.md` 生成交接；不得声称远端已完成。
+无法读取/写入 GitHub 时明确 `triage_unavailable` 或写入能力缺失，并按 `<github-shared>/references/handoff-protocol.md` 生成交接；不得声称远端已完成。
 
 ## 十、最终回复
 

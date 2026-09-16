@@ -57,12 +57,12 @@ P015,breadth-positive,分析 feature 分支相对目标分支的分叉基线，�
 P016,breadth-positive,我要指定分支的基线源码包和差异 Patch，两份都导出来并校验。,development/git-branch-patch-bundle-export
 P017,breadth-positive,把这个仓库的 release 分支浅克隆下来，去掉 Git 历史后打成 ZIP。,development/git-shallow-zip-export
 P018,breadth-positive,给我下载指定分支的源码 ZIP，不要 .git 和历史记录。,development/git-shallow-zip-export
-P019,breadth-positive,现在模型已经有 GitHub Issues 权限了，把 github-handoff 目录里的离线交接同步上去。,development/github-issue-handoff-sync
-P020,breadth-positive,校验这批 handoff 文件，重新查重后按依赖顺序幂等同步到 GitHub。,development/github-issue-handoff-sync
-P021,breadth-positive,给目标仓库现有的 Issue #123 追加这段评论并添加已有的 bug 标签。,development/github-issue-manager
-P022,breadth-positive,把 Issue #88 按已经确认的关闭理由关闭，执行后核对真实状态。,development/github-issue-manager
-P023,breadth-positive,先查一下目标仓库有没有同根因 Issue，开放和已关闭的都要看。,development/github-issue-triage
-P024,breadth-positive,这个问题和历史 Issue 很像，帮我判断是补充、重开还是应该新建。,development/github-issue-triage
+P019,breadth-positive,现在模型已经有 GitHub Issues 权限了，把 github-handoff 目录里的离线交接同步上去。,github/github-issue-handoff-sync
+P020,breadth-positive,校验这批 handoff 文件，重新查重后按依赖顺序幂等同步到 GitHub。,github/github-issue-handoff-sync
+P021,breadth-positive,给目标仓库现有的 Issue #123 追加这段评论并添加已有的 bug 标签。,github/github-issue-manager
+P022,breadth-positive,把 Issue #88 按已经确认的关闭理由关闭，执行后核对真实状态。,github/github-issue-manager
+P023,breadth-positive,先查一下目标仓库有没有同根因 Issue，开放和已关闭的都要看。,github/github-issue-triage
+P024,breadth-positive,这个问题和历史 Issue 很像，帮我判断是补充、重开还是应该新建。,github/github-issue-triage
 P025,breadth-positive,从零设计一节八年级科学课，主题是光合作用，要有目标、活动和检查理解。,education/k12-lesson-planning
 P026,breadth-positive,给五年级设计一节新的小数乘法 mini-lesson。,education/k12-lesson-planning
 P027,breadth-positive,把我现有的七年级科学课分成三个 proficiency 层级，但保持同一个标准和 essential question。,education/k12-lesson-differentiation
@@ -154,7 +154,7 @@ T032,targeted-issue,创建一个【讨论】Issue，咱们围绕这个架构冲�
 T033,targeted-issue,完整调研发布链路，并把调研结果记录成【调研】Issue。,development/github-research-document-generator 为主
 T034,targeted-issue,已有【结论】，给我拆实施计划并创建对应【实施计划】Issue。,development/github-development-plan-generator 为主
 T035,targeted-issue,这份实施计划正文已经完成，不要再规划，只把它作为一个新 Issue 写到仓库。,github-issue-manager 为主 → triage Gate → 创建
-T036,targeted-issue,把这个 github-handoff 包按 manifest 同步到目标仓库。,development/github-issue-handoff-sync
+T036,targeted-issue,把这个 github-handoff 包按 manifest 同步到目标仓库。,github/github-issue-handoff-sync
 T037,skill-system-behavior,这两个 Skill 路由总打架，帮我修好、回归测试，然后打包最新版 Runtime。,ai-workflow/skill-system-design；修路由 + semantic eval + doctor + package
 T038,skill-system-behavior,我感觉以后可能会需要一个“万能研究 Skill”，先帮我加上。,skill-system-design 必须执行 New Skill Gate；无独立重复目标时优先拒绝新增/复用现有能力
 T039,skill-system-behavior,把这个 Skill 的 description 和 optional_uses 调整一下。,skill-system-design；因为改路由/组合，交付前必须 semantic routing eval + doctor
@@ -173,9 +173,9 @@ T051,cross-category,写一篇给普通青少年看的黑洞科普文章，不是
 T052,cross-category,建立一份长期产品营销上下文，同时再输出完整竞品战略分析。,business/product-marketing-context 与 business/competitive-analysis 两个独立主交付物，识别冲突
 T053,multi-turn,上下文：上一轮已经完成调研，确认只是局部修正、Spec Gate=not_required。当前：现在给我实施计划。,development/github-development-plan-generator，直接消费 spec_not_required 理由
 T054,multi-turn,上下文：上一轮讨论已经定稿，并生成当前有效【结论】。当前：现在给我业务测试方案。,development/github-business-test-plan-generator；Spec Gate 已满足
-T055,multi-turn,上下文：刚才 Triage 结论是“新建”。当前：现在创建这个 Issue。,development/github-issue-manager；复用已有 triage 结论，不重复全仓查重
-T056,multi-turn,上下文：刚才 Triage 结论是复用 #123。当前：把这批新证据补到 #123。,development/github-issue-manager；更新已知现有 Issue
-T057,multi-turn,上下文：刚才只完成查重，我还没授权写入。当前：先别创建，把候选差异再解释清楚。,development/github-issue-triage 继续主导
+T055,multi-turn,上下文：刚才 Triage 结论是“新建”。当前：现在创建这个 Issue。,github/github-issue-manager；复用已有 triage 结论，不重复全仓查重
+T056,multi-turn,上下文：刚才 Triage 结论是复用 #123。当前：把这批新证据补到 #123。,github/github-issue-manager；更新已知现有 Issue
+T057,multi-turn,上下文：刚才只完成查重，我还没授权写入。当前：先别创建，把候选差异再解释清楚。,github/github-issue-triage 继续主导
 T058,multi-turn,上下文：刚才已经写好一份 CEO 风险升级汇报。当前：现在帮我去 AI 味，但决策结构和 ask 别动。,writing/executive-communication 为主 + writing/humanizer 组合
 T059,multi-turn,上下文：刚才显著性检验和置信区间已经算完。当前：现在只把结果画成 CI 图。,data/data-visualization；统计工作已完成，当前主要交付物是图
 T060,multi-turn,上下文：图表和统计结果都已经有了。当前：检查整个分析能不能发给管理层。,data/data-validation
@@ -193,7 +193,7 @@ T071,targeted-patch,根因确认是跨服务职责划分错误，需要重排调
 T072,targeted-patch,这是局部文案条件判断修正，根因和目标都确定；可以顺手补现有单测，然后给 patch。,development/source-patch-implementation；允许必要局部回归测试
 T073,multi-turn,上下文：上一轮缺陷调查已经 confirmed root cause，并判定 S + patch_fast_lane_eligible。当前：好，那直接 patch。,development/source-patch-implementation；继承上一轮 Gate 结果
 T074,multi-turn,上下文：上一轮只有两个竞争性根因假设，还没拿到区分证据。当前：不用查了，直接 patch。,development/github-bug-investigation；hypothesis 不能跳到 implementation
-T075,multi-turn,上下文：刚才 S 级 Patch 已经交付。当前：把这个问题创建成 Bug Issue 吧。,development/github-issue-manager；必要时先执行 github-issue-triage Gate
+T075,multi-turn,上下文：刚才 S 级 Patch 已经交付。当前：把这个问题创建成 Bug Issue 吧。,github/github-issue-manager；必要时先执行 github-issue-triage Gate
 T076,multi-turn,上下文：上一轮已经确认根因，但复杂度是 L，涉及跨服务状态生命周期。当前：我还是想直接 patch。,继续完整流程，Fast Lane blocked；按决策状态进入 discussion/spec/development plan，不降级成 S
 D001,design-integration,帮我设计一个 Reader Mac App 的三个高保真方案。,design/visual-artifact-design
 D002,design-integration,把这份 PRD 做成 10 页产品发布演示稿，要求有完整视觉层级。,design/visual-artifact-design
@@ -210,7 +210,7 @@ D012,design-integration,研究最新竞品定位，然后做一份给投资人�
 D013,design-integration,综合这 5 份已有报告，最后设计一份高管汇报演示稿。,design/visual-artifact-design 为主；组合 research/knowledge-synthesis
 D014,design-integration,建立完整 Design System，同时另外设计一套不依赖它的 SaaS Dashboard 原型。,主 Skill 冲突：design/design-system-authoring + design/visual-artifact-design；拆成两个可独立验收任务
 T077,multi-turn,上下文：创建讨论 Issue 时 shell 报 gh: not found，但 ~/.local/bin/gh 存在。当前：继续创建，不要生成 handoff。,development/github-discussion-facilitator；先恢复 gh 路径并使用 body-file 写入，不能仅因 PATH 问题降级 handoff
-T078,multi-turn,上下文：Triage 已完成且 GitHub 读取正常；长 gh issue create 命令被执行宿主拒绝。当前：再试一次创建。,development/github-issue-manager；使用绝对 gh 路径并拆分正文文件与远端写入，恢复 Gate 失败后才允许 handoff
+T078,multi-turn,上下文：Triage 已完成且 GitHub 读取正常；长 gh issue create 命令被执行宿主拒绝。当前：再试一次创建。,github/github-issue-manager；使用绝对 gh 路径并拆分正文文件与远端写入，恢复 Gate 失败后才允许 handoff
 K001,domain-learning,我准备进入企业销售领域，没有经验，帮我建立领域地图，先让我具备能做关键决策的基本判断力。,research/domain-knowledge-builder
 K002,domain-learning,我做了十多年开发，现在要学市场推广，别给教材目录，帮我建立一套能不断更新的认知模型。,research/domain-knowledge-builder
 K003,domain-learning,我对供应链完全陌生，先梳理参与者、关键决策、高杠杆变量和未知项。,research/domain-knowledge-builder
@@ -238,3 +238,17 @@ PM004,plugin-architecture,给 Runtime 加一个 marketplace.json，只负责发�
 PM005,plugin-architecture,基于刚才这个 Plugin 架构，给另一个 Codex 写一个执行改造的 Goal Prompt。,ai-workflow/agent-prompt-design；当前交付物是下游 Agent 执行 Prompt
 PM006,plugin-architecture,我们产品里的插件市场页面点安装会报 500，结合源码帮我查根因。,development/github-bug-investigation；产品中的 Plugin/Marketplace 概念不触发 Runtime 设计 Skill
 T079,multi-turn,上下文：上一轮已经完成 VCP OIDC 源码调研。当前：创建一份调研文档到 Issue 吧。,development/github-research-document-generator；进入 documented_research，Issue 写入是调研工作流持久化步骤
+DB001,positive,这个观点我已经想得差不多了，你站在反方和我辩一辩,reasoning/structured-debate
+DB002,positive,不要顺着我说，逐条攻击我的核心论点，看看最后还能剩什么,reasoning/structured-debate
+DB003,positive,我们一轮一轮辩，输了的观点要明确修改，不能偷偷换说法,reasoning/structured-debate
+DB004,positive,帮我把这个观点做一次 adversarial debate,reasoning/structured-debate
+DB005,negative,这个现象可能有哪些原因？,reasoning/scientific-reasoning
+DB006,negative,我们讨论一下这个系统到底用 Kafka 还是 RabbitMQ，然后记录到 Issue,development/github-discussion-facilitator + github/github-issue-manager
+DB007,negative,帮我创建一个 Bug Issue，正文就是我提供的完整报告,github/github-issue-manager + github/github-issue-triage Gate
+DB008,composition,站反方辩我的观点，并把每轮保存到 GitHub,reasoning/structured-debate + github/github-issue-manager；标题必须以【辩论】开头
+DB009,multi-turn,上轮 C-001 已经缩小了范围，保留原话，我们继续攻击它,reasoning/structured-debate；保留 Original 和版本历史
+DB010,adversarial,用两年前的模型实验说明现在 AI 肯定做不了架构设计，和我辩,reasoning/structured-debate；证据时效 Gate，不把历史实验当当前边界
+DB011,positive,给志愿者招募事项查重，判断复用还是新建，先不写,github/github-issue-triage；按交付范围判断，不要求源码根因
+DB012,negative,辩论已经定稿，别继续辩了，只把这份正文保存成 Issue,github/github-issue-manager；【辩论】标题与原始命题保真
+DB013,conflict,请独立写一篇科学机制分析报告，另外主持我这个价值观点的辩论,两个独立主交付物：reasoning/scientific-reasoning 与 reasoning/structured-debate，确认当前主目标
+DB014,gate,AI 能完成这份 Jira，所以需求分析已经不需要了；来反驳我,reasoning/structured-debate；检查 artifact 来源与隐含上游劳动

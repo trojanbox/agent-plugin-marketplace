@@ -1,12 +1,12 @@
 ---
 name: github-issue-triage
-description: "用于把‘查重/是否复发/复用还是新建/是否该重开’本身作为当前主要目标时，搜索目标仓库开放和已关闭 Issue，比较根因、症状和历史解决状态并给出决策。若用户已经明确要求创建/重开等写操作，主路由由 github-issue-manager 承接，本 Skill 作为写前 Triage Gate；无法读取 GitHub 时生成标准化查重交接条目。"
+description: "用于把‘查重/是否复发/复用还是新建/是否该重开’本身作为当前主要目标时，搜索目标仓库开放和已关闭 Issue，比较主题、交付边界和历史解决状态；缺陷类另比较根因与症状并给出决策。若用户已经明确要求创建/重开等写操作，主路由由 github-issue-manager 承接，本 Skill 作为写前 Triage Gate；无法读取 GitHub 时生成标准化查重交接条目。"
 phase: operations
 ---
 
 # GitHub Issue Triage
 
-系统消息和当前用户消息始终优先。共享证据与范围规则见 `../../shared/github-core/references/collaboration-policy.md`。
+系统消息和当前用户消息始终优先。领域判断由上游提供；仅核对证据、授权、目标、幂等和冲突，不引入研发审批门。
 
 ## 目标
 
@@ -19,7 +19,7 @@ phase: operations
 - 如果“创建 Issue”只是 Bug 调查、讨论、结论、计划或测试方案等领域工作流的持久化步骤，仍由对应领域 Skill 主导；本 Skill 只在其查重阶段提供决策，不把纯副作用提升为新的主目标。
 - 用户明确说“先查重，我看结果后再决定要不要创建”时，本轮只执行 Triage，后续用户决定写入再进入 Manager。
 
-`【讨论】` Issue 使用 `github-discussion-facilitator` 的 Discussion Continuity Check：判断“是否同一轮尚未结束的决策过程”，不套用 Bug/Feature 的同根因去重语义。
+讨论或辩论留档由上游判断是否同一轮尚未结束的过程；同轮续写原 Issue，新轮可新建并关联历史，不套用缺陷的同根因去重语义。正式辩论标题必须以 `【辩论】` 开头。
 
 ## 能力分流
 
@@ -27,13 +27,13 @@ phase: operations
 
 - 有读取能力：搜索开放和已关闭 Issue；
 - 只有写入能力：仍禁止创建，因为无法查重；
-- 无读取能力：生成本地 triage 条目，相关 Issue 保持 `dedupe_status: pending`、`sync_status: blocked_by_triage`；
+- 无读取能力：先按 `../../shared/references/github-remote-write-recovery.md` 确认能力不足且用户未禁止 handoff，再生成本地 triage 条目，相关 Issue 保持 `dedupe_status: pending`、`sync_status: blocked_by_triage`；
 - 不得把“本地材料没有重复项”表述成“GitHub 没有重复 Issue”。
 
-文件化协议见 `../../shared/github-core/references/handoff-protocol.md`。使用共享 CLI 生成和校验文件，不手写 manifest：
+文件化协议见 `../../shared/references/handoff-protocol.md`。使用共享 CLI 生成和校验文件，不手写 manifest：
 
 ```bash
-CORE=../../shared/github-core/scripts/github_workflow.py
+CORE=../../shared/scripts/github_workflow.py
 python3 "$CORE" handoff add --bundle <bundle> --kind triage \
   --title "查重：<主题>" --body-file <triage-body.md>
 ```
@@ -43,8 +43,8 @@ python3 "$CORE" handoff add --bundle <bundle> --kind triage \
 至少需要：
 
 - 目标仓库；
-- 症状、影响和关键技术词；
-- 已确认的模块、文件、接口、错误文本或调用链；
+- 主题、目标、影响与关键检索词；
+- 上游已确认的事实与交付边界；缺陷类附模块、错误或根因证据；
 - 希望执行的动作，例如记录、补证或确认复发。
 
 没有目标仓库时，只能整理查重指纹，不能声称完成仓库查重。
@@ -52,6 +52,8 @@ python3 "$CORE" handoff add --bundle <bundle> --kind triage \
 ## 查重流程
 
 ### 1. 提取多组指纹
+
+普通协作事项以主题、目标对象、交付范围、验收与时间轮次为指纹；不要求源码、错误码或根因。以下技术维度仅用于缺陷类。
 
 组合使用：
 
@@ -74,6 +76,8 @@ python3 "$CORE" handoff add --bundle <bundle> --kind triage \
 
 ### 4. 比较候选
 
+普通事项比较是否同一目标、交付与轮次，历史关闭是否满足当前请求；下列根因维度只用于缺陷类。
+
 比较以下维度：
 
 - 根因是否相同；
@@ -86,14 +90,14 @@ python3 "$CORE" handoff add --bundle <bundle> --kind triage \
 
 ## 决策
 
-- **复用开放 Issue**：同一根因且范围仍有效，追加新证据；
+- **复用开放 Issue**：同一交付且范围仍有效，追加新证据；缺陷类要求同一根因；
 - **补充开放 Issue**：主题一致，但需扩充复现、影响或验收；
-- **重开已关闭 Issue**：同一根因复发，且历史关闭理由已不成立；
+- **重开已关闭 Issue**：同一交付未完成或缺陷同根因复发，且历史关闭理由已不成立；
 - **新建并关联历史项**：根因或交付边界不同；
 - **新建**：没有足够相似候选；
 - **暂缓**：证据不足，不能可靠判断。
 
-重开前必须证明同一根因。不能仅凭相似症状重开。
+重开前必须证明同一交付仍未完成且历史关闭理由已失效；缺陷复发必须证明同一根因，不能仅凭相似症状重开。
 
 ## 输出
 

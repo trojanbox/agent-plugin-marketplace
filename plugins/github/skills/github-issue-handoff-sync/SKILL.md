@@ -2,15 +2,21 @@
 name: github-issue-handoff-sync
 description: "在当前模型具备目标 GitHub Issues 读写权限后使用。校验 github-handoff 目录，先查重，再按依赖顺序幂等创建、复用、补充、重开、评论、加标签和建立关联，并回写 manifest 与同步日志。"
 phase: operations
+optional_uses: "github/github-issue-triage,github/github-issue-manager"
 ---
 
 # GitHub Issue Handoff Sync
 
-系统消息和当前用户消息始终优先。共享证据、决策门 与范围规则见 `../../shared/github-core/references/collaboration-policy.md`。
+系统消息和当前用户消息始终优先。领域判断由上游提供；仅核对证据、授权、目标、幂等和冲突，不引入研发审批门。
 
 ## 目标
 
 把 `github-handoff/<bundle-id>/` 中的本地意图安全、可追踪、幂等地同步到目标仓库。
+
+## Skill Composition
+
+- 待查重条目加载 `github/github-issue-triage`；实际远端写入加载 `github/github-issue-manager`，继承其标题、授权与回读核验规则。
+- 本 Skill 保留批次依赖、幂等映射与同步日志所有权。
 
 ## 必需能力
 
@@ -24,10 +30,10 @@ phase: operations
 
 ## 共享协议与预检
 
-完整协议见 `../../shared/github-core/references/handoff-protocol.md`。
+完整协议见 `../../shared/references/handoff-protocol.md`。
 
 ```bash
-CORE=../../shared/github-core/scripts/github_workflow.py
+CORE=../../shared/scripts/github_workflow.py
 python3 "$CORE" handoff validate --bundle <bundle> --strict
 python3 "$CORE" handoff next-actions --bundle <bundle>
 ```
@@ -47,7 +53,7 @@ python3 "$CORE" handoff next-actions --bundle <bundle>
 
 ## 同步语义保真
 
-同步只把本地已确认意图映射到远端，不在同步阶段重新设计、补决定或扩大 Scope。交接包中存在 `DECISION_REQUIRED` 或上游冲突时，相关条目保持阻塞；不得为了完成同步自行选择方案。
+同步只把本地已确认意图映射到远端，不在同步阶段重新设计、补决定或扩大 Scope。交接包中存在 尚未确认的上游决定或冲突时，相关条目保持阻塞；不得为了完成同步自行选择方案。
 
 ## 同步工作流
 

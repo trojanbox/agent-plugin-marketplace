@@ -2,7 +2,7 @@
 name: github-issue-manager
 description: "用于当 GitHub Issue 生命周期写操作本身是主要目标、且待写内容/上游决定已经明确时执行创建、更新正文、评论、标签、指派、关闭或重开，并核对真实返回。明确创建/重开由本 Skill 承接并把 github-issue-triage 作为写前 Gate；若 Bug 调查、讨论、结论、计划、测试方案等领域工作仍是主任务，Issue 写入只是其持久化副作用，本 Skill 不抢主路由。"
 phase: operations
-optional_uses: "development/github-issue-triage"
+optional_uses: "github/github-issue-triage"
 ---
 
 # GitHub Issue Manager
@@ -13,12 +13,12 @@ optional_uses: "development/github-issue-triage"
 
 ## Skill Composition / Issue Write Gate
 
-- 用户明确请求**创建新执行类 Issue**或**重开可能复发的 Issue**，且 Issue 内容/根因报告/上游决定已经准备好、当前主要工作只剩生命周期写操作时，本 Skill 拥有主路由；先按需加载 `development/github-issue-triage` 完成查重/复发判断，得到允许动作后再继续写入。
+- 用户明确请求**创建新执行类 Issue**或**重开可能复发的 Issue**，且 Issue 内容/根因报告/上游决定已经准备好、当前主要工作只剩生命周期写操作时，本 Skill 拥有主路由；先按需加载 `github/github-issue-triage` 完成查重/复发判断，得到允许动作后再继续写入。
 - Triage 是写前 Gate，不因为尚未完成就与本 Skill 形成主 Skill 冲突。
 - 用户只要查重或“判断应该新建还是重开”，没有要求执行写操作时，直接以 `github-issue-triage` 为主。
 - 对用户已明确指定的现有 Issue 做评论、正文更新、标签、指派或明确关闭，不加载 Triage。
 - 如果用户当前还要求“结合源码调查 Bug / 正式开始讨论 / 生成结论 / 生成实施或测试方案 / 审核方案”等领域产物，即使同一句里写了“并创建 Issue”，仍由对应领域 Skill 主导；Issue 写入属于该领域工作流的持久化步骤。
-- 专门的交接同步任务继续由 `development/github-issue-handoff-sync` 主导，本 Skill 不因最终会产生 GitHub 写操作而接管。
+- 专门的交接同步任务继续由 `github/github-issue-handoff-sync` 主导，本 Skill 不因最终会产生 GitHub 写操作而接管。
 
 ## 前置条件
 
@@ -50,9 +50,9 @@ optional_uses: "development/github-issue-triage"
 
 可以在读取并确认目标仓库/Issue 后直接执行，不为了流程形式重新搜索整个仓库。
 
-讨论类 Issue 仍遵守项目规则：同一轮未结束讨论继续原 Issue；开始新一轮讨论不使用执行类 Issue 的根因查重逻辑。
+讨论与辩论留档由上游确定轮次：同一轮未结束过程继续原 Issue；新轮不使用缺陷的根因查重逻辑。正式辩论类 Issue 标题必须以 `【辩论】` 开头，不能使用 `【讨论】`；其它类型沿用上游与项目约定，不强制研发标题集合。
 
-GitHub 写操作异常时先按 `../../shared/github-core/references/github-remote-write-recovery.md` 区分 CLI/PATH、Shell/宿主、认证与远端拒绝，并执行有限恢复。只有恢复 Gate 确认写能力确实不足时，才继续整理内容并按 handoff 协议生成交接包；用户明确禁止 handoff 时不得生成。任何未获远端成功结果的动作都不得声称已完成。
+GitHub 写操作异常时先按 `../../shared/references/github-remote-write-recovery.md` 区分 CLI/PATH、Shell/宿主、认证与远端拒绝，并执行有限恢复。只有恢复 Gate 确认写能力确实不足时，才继续整理内容并按 handoff 协议生成交接包；用户明确禁止 handoff 时不得生成。任何未获远端成功结果的动作都不得声称已完成。
 
 ## 项目边界
 
@@ -90,7 +90,7 @@ GitHub 写操作异常时先按 `../../shared/github-core/references/github-remo
 
 ### 重开
 
-必须有 triage 证据说明同一根因/同一交付仍未解决或复发，并补充新证据。
+必须有 triage 证据说明同一交付仍未解决；缺陷类需说明同一根因复发，并补充新证据。
 
 ### 关闭
 
@@ -98,7 +98,7 @@ GitHub 写操作异常时先按 `../../shared/github-core/references/github-remo
 
 ## 远端写入恢复与文件化操作
 
-写操作异常先使用 `../../shared/github-core/references/github-remote-write-recovery.md`。确认远端写能力确实不足后，才使用 `../../shared/github-core/references/handoff-protocol.md` 与共享 CLI。需要新 Issue 而尚未完成 triage 时保持 `blocked_by_triage`；对已知现有 Issue 的评论/操作则以目标 Issue 作为依赖。
+写操作异常先使用 `../../shared/references/github-remote-write-recovery.md`。确认远端写能力确实不足后，才使用 `../../shared/references/handoff-protocol.md` 与共享 CLI。需要新 Issue 而尚未完成 triage 时保持 `blocked_by_triage`；对已知现有 Issue 的评论/操作则以目标 Issue 作为依赖。
 
 ## 错误处理
 

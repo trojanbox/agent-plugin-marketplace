@@ -1,6 +1,6 @@
 # 文件化 GitHub 交接协议
 
-> 以下 `../../shared/github-core/...` 相对路径以当前 `plugins/development/skills/<skill>/` Skill 目录为基准。
+> 以下 `../../shared/...` 相对路径以当前 `plugins/github/skills/<skill>/` Skill 目录为基准。
 
 ## 何时启用
 
@@ -11,11 +11,11 @@ GitHub 读取或写入能力不足时，先按 `github-remote-write-recovery.md`
 ## 标准流程
 
 ```bash
-CORE=../../shared/github-core/scripts/github_workflow.py
+CORE=../../shared/scripts/github_workflow.py
 python3 "$CORE" handoff init --bundle-id <id> --repo owner/repository
 python3 "$CORE" handoff add --bundle github-handoff/<id> --kind triage --title "查重：..." --body-file triage-body.md
-python3 "$CORE" handoff add --bundle github-handoff/<id> --kind issue --id BUG-001 --title "【缺陷】P1 ..." --body-file issue-body.md
-python3 "$CORE" handoff add --bundle github-handoff/<id> --kind comment --parent BUG-001 --title "缺陷调查补充" --body-file comment-body.md
+python3 "$CORE" handoff add --bundle github-handoff/<id> --kind issue --id ISSUE-001 --title "<上游已确认标题>" --body-file issue-body.md
+python3 "$CORE" handoff add --bundle github-handoff/<id> --kind comment --parent ISSUE-001 --title "补充记录" --body-file comment-body.md
 python3 "$CORE" handoff validate --bundle github-handoff/<id> --strict
 ```
 

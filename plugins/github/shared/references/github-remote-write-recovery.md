@@ -62,9 +62,8 @@ Issue / 评论正文较长、包含 Markdown、代码块、反引号、Mermaid �
 
 ```bash
 "$GH_BIN" issue create -R owner/repo \
-  --title "【讨论】..." \
-  --body-file /tmp/issue-body.md \
-  --label discussion
+  --title "<上游已确认标题>" \
+  --body-file /tmp/issue-body.md
 
 "$GH_BIN" issue edit <number> -R owner/repo \
   --body-file /tmp/issue-body.md

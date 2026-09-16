@@ -63,6 +63,11 @@
       "name": "web-app-scaffolding",
       "source": "./plugins/web-app-scaffolding",
       "category": "Development"
+    },
+    {
+      "name": "github",
+      "source": "./plugins/github",
+      "category": "Productivity"
     }
   ]
 }

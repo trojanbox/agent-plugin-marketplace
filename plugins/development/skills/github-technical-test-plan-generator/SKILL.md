@@ -2,7 +2,7 @@
 name: github-technical-test-plan-generator
 description: "用于为已有需求、缺陷、实施计划或业务测试范围设计可交给下游 Test/Coding Agent 执行的技术测试方案。用户明确请求技术测试方案/自动化回归设计时由本 Skill 先承接并执行 Spec Gate；若进入 ready_for_spec，再转入 github-spec 或按用户明确选择记录跳过。随后重点回答‘技术上怎么测’：测试层级、现有测试复用、Harness/Environment、Fixture/Reset、Contract/E2E、故障注入、并发/恢复、Evidence、Fresh Run 与自动化维护。适合‘给我技术测试方案/自动化回归怎么做/哪些测试要迁移/怎么构建稳定可回测环境/这个改动要测哪些层’。不负责定义业务应该怎么工作，不编写测试代码，也不在当前容器声称真实测试已通过。"
 phase: planning
-optional_uses: "development/github-incidental-bug-capture"
+optional_uses: "github/github-issue-manager,development/github-incidental-bug-capture"
 ---
 
 # GitHub Technical Test Plan Generator / 技术测试方案生成器
@@ -10,6 +10,8 @@ optional_uses: "development/github-incidental-bug-capture"
 公共质量合同：`../../shared/testing-core/test-plan-quality-contract.md`。
 
 ## Skill Composition
+
+- 需要 GitHub 持久化时组合 `github/github-issue-manager`，使用其查重、写入恢复与 handoff 协议；本 Skill 保留研发内容与阶段 Gate，不复制通用远端操作。
 
 读取源码/测试/日志时确认独立生产 Bug → 组合 `development/github-incidental-bug-capture`；测试/Harness/环境问题按真实类别记录，不自动报生产 Bug。
 
