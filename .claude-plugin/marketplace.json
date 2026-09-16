@@ -118,8 +118,8 @@
     {
       "name": "writing",
       "source": "./plugins/writing",
-      "description": "用于人类可读文本的清晰表达、去除明显 AI 写作痕迹、高层决策沟通、复杂知识科普，以及把已有系统/工具/工作流写成面向真实使用者的实操指南。包含 clear-writing、humanizer、executive-communication、popular-science-explainer、practical-usage-guide；纯翻译、简单语法修正或无需改写的内容不强制进入本分类。",
-      "version": "1.0.0",
+      "description": "用于人类可读文本的清晰表达、去除明显 AI 写作痕迹、高层决策沟通、复杂知识科普、实操使用指南，以及慢燃、后劲型恐怖小说/叙事创作。包含 clear-writing、humanizer、executive-communication、popular-science-explainer、practical-usage-guide、slow-burn-horror-fiction；普通小说创作、纯翻译、简单语法修正或无需改写的内容不强制进入本分类。",
+      "version": "1.1.0",
       "author": {
         "name": "trojanbox",
         "url": "https://github.com/trojanbox"

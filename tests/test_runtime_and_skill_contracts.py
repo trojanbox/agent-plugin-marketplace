@@ -736,7 +736,7 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
         self.assertTrue(corpus.exists())
         with corpus.open(encoding="utf-8", newline="") as handle:
             rows = list(csv.DictReader(handle))
-        self.assertEqual(len(rows), 253)
+        self.assertEqual(len(rows), 273)
         self.assertEqual(len({row["id"] for row in rows}), len(rows))
         buckets = {row["bucket"] for row in rows}
         for bucket in (

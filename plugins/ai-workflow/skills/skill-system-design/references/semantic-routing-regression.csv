@@ -252,3 +252,23 @@ DB011,positive,给志愿者招募事项查重，判断复用还是新建，先�
 DB012,negative,辩论已经定稿，别继续辩了，只把这份正文保存成 Issue,github/github-issue-manager；【辩论】标题与原始命题保真
 DB013,conflict,请独立写一篇科学机制分析报告，另外主持我这个价值观点的辩论,两个独立主交付物：reasoning/scientific-reasoning 与 reasoning/structured-debate，确认当前主目标
 DB014,gate,AI 能完成这份 Jira，所以需求分析已经不需要了；来反驳我,reasoning/structured-debate；检查 artifact 来源与隐含上游劳动
+SBH001,positive,写一个读完以后越想越可怕的恐怖故事,writing/slow-burn-horror-fiction；直接交付小说正文
+SBH002,positive,写一篇慢燃、后劲大的恐怖小说，不要只靠 jump scare,writing/slow-burn-horror-fiction；稳定日常与意义升级
+SBH003,positive,帮我把这个故事改得更细思极恐，让恐怖进入日常生活,writing/slow-burn-horror-fiction；结构性重写，保留用户限定
+SBH004,positive,写一个存在具体怪物显现、但最终真相无法完全解释的故事,writing/slow-burn-horror-fiction；具体显现与开放终极本体并存
+SBH005,positive,先构思一个有后劲的民俗恐怖短篇，只要人物和异常升级，不要正文,writing/slow-burn-horror-fiction；构思模式，不提前写正文
+SBH006,positive,写一个宇宙尺度的恐怖故事，异常甚至不知道人类存在，读完以后还会害怕,writing/slow-burn-horror-fiction；允许无恶意的尺度差
+SBH007,negative,帮我把这封邮件写清楚,writing/clear-writing
+SBH008,negative,把这篇文章去掉 AI 味,writing/humanizer
+SBH009,negative,写一个普通爱情故事,不强制使用现有 Skill；不进入 slow-burn-horror-fiction
+SBH010,negative,解释一下量子纠缠,writing/popular-science-explainer；不进入 slow-burn-horror-fiction
+SBH011,negative,把这篇已经完成的恐怖小说去 AI 味，情节、段落和结尾不要重做,writing/humanizer；题材不覆盖明确的纯编辑目标
+SBH012,composition,把这个故事改得更有后劲，再去掉 AI 腔，保留那些故意不解释的线索,writing/slow-burn-horror-fiction 为主 + writing/humanizer；后处理不封闭未知
+SBH013,negative,把这篇恐怖小说里绕口的句子写清楚，只改措辞，不改恐怖结构,writing/clear-writing；只做清晰改写
+SBH014,conflict,独立写一篇后劲大的恐怖小说，另外给我一篇完整的量子纠缠科普文章,slow-burn-horror-fiction 与 popular-science-explainer 两个独立主交付物，识别冲突
+SBH015,multi-turn,上下文：刚才已确认慢燃恐怖短篇的人物、异常链和结尾回响。当前：继续，直接写正文,writing/slow-burn-horror-fiction；继承已确认构思，直接写正文
+SBH016,multi-turn,上下文：恐怖小说已经完成。当前：这轮只去 AI 味，别再增强恐怖或改结尾,writing/humanizer；切换为纯编辑，不继承创作主路由
+SBH017,gate,上下文：没有提供任何故事原文。当前：把刚才那篇重写得更有后劲，人物和结尾必须保留,writing/slow-burn-horror-fiction；先索取缺失原文，不编造已知情节
+SBH018,adversarial,写一个关于空椅子和旧照片的普通家庭故事，温馨一点，不要恐怖,不强制使用现有 Skill；日常物件关键词不触发恐怖创作
+SBH019,positive,写个慢慢让人不敢相信自己记忆的心理恐怖故事，别用全是幻觉收场,writing/slow-burn-horror-fiction；感知失效仍留下客观残余
+SBH020,adversarial,写一个让我明天刷牙时还会想起来的恐怖短篇，直接给成品，不要提纲和创作解说,writing/slow-burn-horror-fiction；现实接口、自然段正文与克制收尾
