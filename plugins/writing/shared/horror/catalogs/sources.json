@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "accessedOn": "2026-09-16",
+  "mappingNotice": "CSV 条目均为本项目原创创作候选；source_ids 仅标明设计所参考的研究或教学原则，不表示论文提出、验证或推荐该具体情节。",
+  "sources": [
+    {
+      "id": "R1",
+      "title": "Generative artificial intelligence enhances creativity but reduces the diversity of novel content",
+      "authors": "Anil R. Doshi; Oliver P. Hauser",
+      "url": "https://arxiv.org/abs/2312.00506",
+      "publicationUrl": "https://doi.org/10.1126/sciadv.adn5290",
+      "accessedOn": "2026-09-16",
+      "kind": "author_preprint_of_empirical_study",
+      "contribution": "短篇故事实验中，获得生成式 AI 构思帮助的作品更容易彼此相似；据此将结构重复检查和多方向比较列为设计关注点。",
+      "limits": "读取作者预印本摘要；期刊全文入口返回 403。实验结果受任务、人群和交互设计限制，不能直接证明本库、辩论流程或长篇写作的效果。"
+    },
+    {
+      "id": "R2",
+      "title": "Toward a general psychological model of tension and suspense",
+      "authors": "Moritz Lehne; Stefan Koelsch",
+      "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2015.00079/full",
+      "accessedOn": "2026-09-16",
+      "kind": "theoretical_model",
+      "contribution": "张力可涉及冲突、不稳定、情感相关后果和面向未来的期待；不确定的对象可以是是否、何时或如何发生。由此拆分推进力量、代价、时间与节奏维度。",
+      "limits": "这是跨叙事和音乐的理论模型；不支持固定场次、节拍比例或最优恐怖公式，具体 CSV 条目为原创推演。"
+    },
+    {
+      "id": "R3",
+      "title": "Start writing fiction",
+      "authors": "The Open University / OpenLearn",
+      "url": "https://www.open.edu/openlearn/mod/oucontent/view.php?id=1622&printable=1",
+      "accessedOn": "2026-09-16",
+      "kind": "university_creative_writing_course",
+      "contribution": "人物欲望、矛盾、行为和生活场所共同形成可信行动；场景与人物互相影响。由此要求每个候选先建立生活需求及行动因果桥。",
+      "limits": "教学方法并非恐怖效果实验；不移植课程中提及作品、人物或作家风格，库内人际关系与场景均为原创。"
+    },
+    {
+      "id": "R4",
+      "title": "Approaching prose fiction: Glossary",
+      "authors": "The Open University / OpenLearn",
+      "url": "https://www.open.edu/openlearn/history-the-arts/literature/approaching-prose-fiction/content-section--glossary",
+      "accessedOn": "2026-09-16",
+      "kind": "university_literary_analysis_course",
+      "contribution": "区分叙述者与焦点人物、事件顺序与叙事安排，并通过行动、对话和人物互动表现人物。由此将视角、时间组织和证据接触范围独立设计。",
+      "limits": "术语与分析框架不证明某种形式更恐怖；具体条目和同题样例是本项目原创，不是课程摘录。"
+    },
+    {
+      "id": "R5",
+      "title": "Playing With Fear: A Field Study in Recreational Horror",
+      "authors": "Marc Malmdorf Andersen; Uffe Schjoedt; Henry Price; Fernando E. Rosas; Coltan Scrivner; Mathias Clasen",
+      "url": "https://www.psychologicalscience.org/journals/psychological-science/0956797620972116/",
+      "publicationUrl": "https://doi.org/10.1177/0956797620972116",
+      "accessedOn": "2026-09-16",
+      "kind": "empirical_field_study",
+      "contribution": "鬼屋现场研究观察到恐惧强度与享受并非单调上升关系；据此保留强度偏好、缓和段和真实日常满足的设计空间。",
+      "limits": "研究场景为鬼屋而非小说，样本 110 人；不能据此计算小说的最佳强度、节奏比例或统一读者阈值。"
+    }
+  ]
+}

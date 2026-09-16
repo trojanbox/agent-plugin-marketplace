@@ -272,3 +272,28 @@ SBH017,gate,上下文：没有提供任何故事原文。当前：把刚才那�
 SBH018,adversarial,写一个关于空椅子和旧照片的普通家庭故事，温馨一点，不要恐怖,不强制使用现有 Skill；日常物件关键词不触发恐怖创作
 SBH019,positive,写个慢慢让人不敢相信自己记忆的心理恐怖故事，别用全是幻觉收场,writing/slow-burn-horror-fiction；感知失效仍留下客观残余
 SBH020,adversarial,写一个让我明天刷牙时还会想起来的恐怖短篇，直接给成品，不要提纲和创作解说,writing/slow-burn-horror-fiction；现实接口、自然段正文与克制收尾
+HCC001,positive,想写恐怖小说但还没想好方向，先陪我聊几轮，每轮把我们确定的内容记下来，暂时不写正文,writing/horror-story-co-creation；真实多轮共创并持续固化已定事项
+HCC002,positive,开一个恐怖小说共创 Issue，记录人物与方向的讨论，等讨论完成再写文章,writing/horror-story-co-creation；领域讨论为主，Issue 是讨论留痕
+HCC003,negative,一次给我三个结构不同的恐怖故事方向就行，不用和我来回讨论,writing/slow-burn-horror-fiction；一次性构思不启动共创会话
+HCC004,negative,直接给我一篇慢燃恐怖短篇，设定缺的你定，别先问我,writing/slow-burn-horror-fiction；直接创作且内部筛选方向
+HCC005,negative,把现有故事的调查解谜路线改成责任困境，人物和发生过的事实要保留，直接给重写稿,writing/slow-burn-horror-fiction；结构性重写不默认先共创
+HCC006,gate,上下文：共创记录已经 ready。当前：我还没同意写正文，先让我看一下冻结的方向,writing/horror-story-co-creation；ready 只证明方向完备，不构成正文授权
+HCC007,multi-turn,先陪我讨论方向，等我确认方向定稿就直接写，不用再问一次是否开始,writing/horror-story-co-creation → writing/slow-burn-horror-fiction；保存用户的条件授权，实际确认定稿后继续成文
+HCC008,gate,这轮只聊恐怖故事方向，即使方向定好了也别生成正文,writing/horror-story-co-creation；保持仅讨论边界，不把完成讨论当成写作许可
+HCC009,multi-turn,上下文：共创讨论到一半。当前：不用再聊了，剩下细节你定，现在直接写正文,writing/horror-story-co-creation 完成授权与剩余选择记录 → writing/slow-burn-horror-fiction；继承已定事实，不重复征询许可
+HCC010,negative,我主张恐怖小说的结尾必须解释全部异常，请与我围绕这个明确命题正式辩论并记录攻防,reasoning/structured-debate；正式命题辩论不因恐怖题材变成小说共创
+HCC011,negative,小说已经写完，这是最终正文和标题，只替我查重并创建一个保存成品的 GitHub Issue,github/github-issue-manager；Issue 生命周期写入是当前唯一交付
+HCC012,negative,只把这段恐怖小说绕口的句子改清楚，别讨论故事方向也别改情节,writing/clear-writing；纯措辞编辑不进入共创
+HCC013,negative,这篇恐怖小说已经定稿，只去掉 AI 味，别重做人物关系或结尾,writing/humanizer；纯表达后处理不进入共创
+HCC014,composition,先通过几轮对话定恐怖故事方向并记录到 Issue，我确认定稿后写全文，写完再去 AI 味,writing/horror-story-co-creation → writing/slow-burn-horror-fiction + writing/humanizer；按依赖阶段推进，不要求重新选择唯一总目标
+HCC015,adversarial,上下文：共创只问过我一个问题但我还没有回答。当前：按正常讨论流程继续记录,writing/horror-story-co-creation；未回复不等于确认，不伪造用户选择或已批准合同
+HCC016,multi-turn,上下文：我选了照护关系方向。当前：具体为什么留下来还没想好，继续围绕这个问题聊，不要写正文,writing/horror-story-co-creation；围绕影响人物行动的未决项继续澄清
+HCC017,gate,上下文：你问三个方向是否选第二个，我说可以。当前：我只确认了这个选择，还没有要求写故事,writing/horror-story-co-creation；确认局部选择不自动变成正文授权
+HCC018,positive,陪我多轮构思一个后劲大的恐怖故事，把已定内容存在本地文件即可，不要建 Issue,writing/horror-story-co-creation；尊重本地留痕偏好，不强制远程写入
+HCC019,negative,给我三种恐怖短篇方案，你内部做一次红蓝队检查，最后一次性列出方案即可,writing/slow-burn-horror-fiction；内部审查不等于与用户进行多轮共创
+HCC020,multi-turn,上下文：恐怖故事方向已经冻结，我也授权开始写。当前：继续按那份记录交付正文,writing/slow-burn-horror-fiction；读取冻结记录与有效授权后直接成文
+HCC021,positive,我们一起讨论恐怖故事的关系和结尾，候选方向可以互相质疑，但不是要正式辩论一个命题,writing/horror-story-co-creation；创作质疑服务方向澄清，不强制组合 structured-debate
+HCC022,negative,我们先讨论这个小说发布网站的权限架构，把技术决定持续记录到讨论 Issue,development/github-discussion-facilitator；软件架构讨论不进入小说共创
+HCC023,negative,想写一个温馨普通爱情故事，先和我聊人物关系，不要恐怖元素,不强制使用恐怖 Skills；普通小说多轮构思不被共创关键词劫持
+HCC024,conflict,独立给我一篇恐怖小说成品，另外围绕 AI 会不会取代作家正式辩论一轮，两件都要,writing/slow-burn-horror-fiction 与 reasoning/structured-debate 两个独立主交付物；确认当前先处理哪项
+HCC025,multi-turn,上下文：正在讨论一篇新恐怖故事的方向。当前：先暂停那个任务，这轮只给另一篇已经完成的小说去 AI 味,writing/humanizer；当前明确编辑目标覆盖先前共创主路由
