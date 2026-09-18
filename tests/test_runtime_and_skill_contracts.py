@@ -637,6 +637,44 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
             by_name["humanizer"].get("optionalUses", []),
         )
 
+    def test_fiction_three_stage_workflow_replaces_horror_state_machine(self) -> None:
+        doctor = runtime_json("doctor")
+        by_name = {skill["name"]: skill for skill in doctor["skills"]}
+
+        for name, phase in (
+            ("fiction-story-architecture", "architecture"),
+            ("fiction-story-development", "development"),
+            ("fiction-writing", "creation"),
+        ):
+            self.assertIn(name, by_name)
+            self.assertEqual(by_name[name]["phase"], phase)
+
+        self.assertNotIn("horror-story-co-creation", by_name)
+        self.assertNotIn("slow-burn-horror-fiction", by_name)
+
+        writing = runtime_json("list", "writing")
+        groups = {group["name"]: {item["name"] for item in group["skills"]} for group in writing["groups"]}
+        self.assertEqual(
+            groups["fiction"],
+            {"fiction-story-architecture", "fiction-story-development", "fiction-writing"},
+        )
+
+        architecture = (PLUGINS / "writing/skills/fiction-story-architecture/SKILL.md").read_text(encoding="utf-8")
+        development = (PLUGINS / "writing/skills/fiction-story-development/SKILL.md").read_text(encoding="utf-8")
+        writing_skill = (PLUGINS / "writing/skills/fiction-writing/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("解决结构性未知", architecture)
+        self.assertIn("最小充分深化", development)
+        self.assertIn("不拥有未授权的方向自由", writing_skill)
+        self.assertIn("轻量 Architecture + Development", writing_skill)
+
+        genre = PLUGINS / "writing/shared/fiction/genres/psychological-horror.md"
+        self.assertTrue(genre.exists())
+        self.assertIn("不提供固定结构", genre.read_text(encoding="utf-8"))
+
+        self.assertFalse((PLUGINS / "writing/shared/horror").exists())
+        self.assertFalse((ROOT / "tests/test_horror_session.mjs").exists())
+        self.assertFalse((ROOT / "tests/test_horror_tools.mjs").exists())
+
     def test_github_remote_write_recovery_precedes_handoff(self) -> None:
         recovery = (
             PLUGINS

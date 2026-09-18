@@ -118,8 +118,8 @@
     {
       "name": "writing",
       "source": "./plugins/writing",
-      "description": "用于人类可读文本的清晰表达、去除明显 AI 写作痕迹、高层决策沟通、复杂知识科普、实操使用指南，以及慢燃、后劲型恐怖小说的多轮共同构思与叙事创作。包含 clear-writing、humanizer、executive-communication、popular-science-explainer、practical-usage-guide、horror-story-co-creation、slow-burn-horror-fiction；普通小说创作、纯翻译、简单语法修正或无需改写的内容不强制进入本分类。",
-      "version": "1.2.0",
+      "description": "用于人类可读文本的清晰表达、去除明显 AI 写作痕迹、高层决策沟通、复杂知识科普、实操使用指南，以及中篇级、多章节小说的故事架构、故事深化和正式成文。小说主流程由 fiction-story-architecture、fiction-story-development、fiction-writing 分阶段承接；类型知识按作品需要从 shared/fiction 渐进加载。只改已有文本清晰度/AI 痕迹时继续使用 clear-writing/humanizer。",
+      "version": "2.0.0",
       "author": {
         "name": "trojanbox",
         "url": "https://github.com/trojanbox"
