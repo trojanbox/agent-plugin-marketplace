@@ -82,3 +82,17 @@
 | FIC050 | 小说已经写完，只检查人物是不是 NPC、章节是不是教学案例，不改高层故事 | `writing/fiction-writing`；问题导向 Revision，不回 Architecture | PASS |
 | FIC051 | 只把已经定稿的一章去掉 AI 味，不调整场景与人物行为 | `writing/humanizer`；纯表达后处理不被 Quality Gate 抢路由 | PASS |
 | FIC052 | 末日小说里城市三天后封锁，先帮我设计这个期限怎样改变人物选择，正文以后再写 | 按成熟度进入 Architecture/Development；高影响约束传播属于通用小说设计，不形成第四主 Skill | PASS |
+
+
+## 2026-09-19 Work Voice Contract Gate 路由回归
+
+本轮补强 `fiction-story-development` 的作品表达合同与 `fiction-writing` 的 Voice Gate，但不新增 Skill、不修改三个 Fiction Skill 的 description / phase / ownership。以下样本用于确认“作者审美 / 单部作品声音”仍属于现有阶段职责，没有形成第四个主 Skill。
+
+| ID | Prompt 摘要 | 当前选择 | 结果 |
+|---|---|---|---|
+| FIC053 | 故事主线、人物和结局都定了，先别写正文，帮我把这一本到底该怎么说话、怎么揭示信息、怎么让人物被读者认识定下来 | `writing/fiction-story-development`；Work Voice Contract 属于第二层表达深化 | PASS |
+| FIC054 | 我已经有完整 Story Development Plan 和文风合同了，直接按它写第一章 | `writing/fiction-writing`；读取既有 Work Voice Contract 后正式成文 | PASS |
+| FIC055 | 我想把自己几本书里长期稳定的审美偏好整理出来，但这本新书仍然按它自己的类型和 POV 来 | 当前创作阶段继续由对应 fiction Skill 主导；Author Aesthetic Profile 只是兼容输入，不形成新的主 Skill，也不覆盖作品合同 | PASS |
+| FIC056 | 这章已经写完，只检查是不是写得太平均、太像通用好文，人物和高层结构都不要动 | `writing/fiction-writing`；Voice Gate / Revision 属于成文阶段内部质量检查 | PASS |
+| FIC057 | 只把这一段现成小说改得更口语一点，剧情、人物和整体文风合同都别动 | `writing/clear-writing`；纯措辞编辑不被 Work Voice Gate 抢路由 | PASS |
+| FIC058 | 这是另一部全新的爱情小说，不要沿用我上一本职场小说的第一人称吐槽和程序员黑话 | 按当前材料成熟度进入 fiction 三层；Work Voice 必须按新作品生成，禁止把上一部表层风格升级成作者通用规则 | PASS |
