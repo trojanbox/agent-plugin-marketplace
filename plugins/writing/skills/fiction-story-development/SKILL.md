@@ -39,6 +39,7 @@ optional_uses: "github/github-issue-manager"
 
 - 人物与关系需要进一步深化时读取 `references/character-relationships.md`。
 - 场景、信息、支线、生活世界和章节选择需要细化时读取 `references/scenes-information-world.md`。
+- 当前作品以公司、学校、医院、政府、科研机构或其它组织为重要舞台，且层级、权力、排期、责任边界、跨岗位协作会影响人物行为时，读取 [职场与组织现实主义](../../shared/fiction/references/workplace-realism.md)。
 - 当前作品需要类型知识时读取 [Genre 索引](../../shared/fiction/genres/index.md)，只加载当前作品真正需要的类型 reference。
 - 用户要求 GitHub 持久化时读取 [创作 Issue 工作流](../../shared/fiction/references/creative-issue-workflow.md)。
 
