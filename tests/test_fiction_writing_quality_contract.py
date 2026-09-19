@@ -15,6 +15,7 @@ class FictionWritingQualityContractTests(unittest.TestCase):
         development = (WRITING / "skills/fiction-story-development/SKILL.md").read_text(encoding="utf-8")
         scenes = (WRITING / "skills/fiction-story-development/references/scenes-information-world.md").read_text(encoding="utf-8")
         character = (WRITING / "skills/fiction-story-development/references/character-relationships.md").read_text(encoding="utf-8")
+        voice_contract = (WRITING / "shared/fiction/references/voice-contract.md").read_text(encoding="utf-8")
         quality_eval = (ROOT / "tests/fiction-writing-quality-eval.md").read_text(encoding="utf-8")
         workplace = WRITING / "shared/fiction/references/workplace-realism.md"
 
@@ -34,11 +35,25 @@ class FictionWritingQualityContractTests(unittest.TestCase):
         self.assertIn("高影响约束与能力变化", scenes)
         self.assertIn("同刺激差异", character)
         self.assertIn("FQ015", quality_eval)
+        self.assertIn("Work Voice Contract", development)
+        self.assertIn("Work Voice Contract", writing_skill)
+        self.assertIn("Voice Flattening", revision)
+        self.assertIn("Author Aesthetic Profile", voice_contract)
+        self.assertIn("Reader Experience", voice_contract)
+        self.assertIn("Narrative Lens", voice_contract)
+        self.assertIn("Character Revelation", voice_contract)
+        self.assertIn("Information Revelation", voice_contract)
+        self.assertIn("Signature Tendencies", voice_contract)
+        self.assertIn("Anti-Voice", voice_contract)
+        self.assertIn("不把素材库当成正文句库", voice_contract)
+        self.assertIn("遮掉人名、地名和专有术语", writing_skill)
 
         self.assertFalse(workplace.exists())
-        for text in (writing_skill, drafting, development):
+        for text in (writing_skill, drafting, development, voice_contract):
             self.assertNotIn("workplace-realism", text)
             self.assertNotIn("职场与组织现实主义", text)
+            self.assertNotIn("程序员日常喜剧", text)
+            self.assertNotIn("陈逼牛", text)
 
 
 if __name__ == "__main__":
