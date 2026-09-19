@@ -71,14 +71,14 @@
 
 ## 2026-09-19 Writing Quality Gate 路由回归
 
-本轮只强化 `fiction-writing` 内部 Drafting/Revision/Reader Pull Gate，并新增 shared `workplace-realism` reference；未修改三个 Fiction Skill 的 description / phase / ownership。按 Skill System Design 的 Gate 回归要求，补以下自然表达确认主路由仍稳定：
+本轮只强化 `fiction-writing` 内部 Drafting/Revision/Reader Pull Gate，并把人物反应、外部约束传播、能力变化和结果解释保持为**通用小说规则**；不新增题材专用 shared reference，也未修改三个 Fiction Skill 的 description / phase / ownership。按 Skill System Design 的 Gate 回归要求，补以下自然表达确认主路由仍稳定：
 
 | ID | Prompt 摘要 | 当前选择 | 结果 |
 |---|---|---|---|
 | FIC046 | 大纲和人物都定了，直接写第一章，但人物别像工具人，写完自己检查好不好看 | `writing/fiction-writing`；质量自审属于 Writing 内部 Gate | PASS |
-| FIC047 | 这是职场群像完整大纲，直接开始写，注意老板、产品、研发、测试的真实反应 | `writing/fiction-writing`；按需加载 workplace-realism | PASS |
-| FIC048 | 高层故事已定，先别写正文，帮我设计同一个坏排期下不同岗位会怎么反应 | `writing/fiction-story-development`；人物/场景深化并按需加载 workplace-realism | PASS |
+| FIC047 | 这是家庭群像完整大纲，直接开始写，注意同一个坏消息下每个人反应别一样 | `writing/fiction-writing`；差异反应属于通用 Writing Gate | PASS |
+| FIC048 | 高层故事已定，先别写正文，帮我设计同一个重大刺激下不同角色会怎么反应 | `writing/fiction-story-development`；人物/场景深化，不依赖题材专用 reference | PASS |
 | FIC049 | 连续写完这 6 章后先整体通读，觉得平就自己重写，再继续下一条故事线 | `writing/fiction-writing`；Story Movement 连续通读属于 Writing Gate | PASS |
 | FIC050 | 小说已经写完，只检查人物是不是 NPC、章节是不是教学案例，不改高层故事 | `writing/fiction-writing`；问题导向 Revision，不回 Architecture | PASS |
 | FIC051 | 只把已经定稿的一章去掉 AI 味，不调整场景与人物行为 | `writing/humanizer`；纯表达后处理不被 Quality Gate 抢路由 | PASS |
-| FIC052 | 我们先把职场小说的组织结构、权力关系和人物立场讨论清楚，正文以后再写 | 按成熟度进入 Architecture/Development；workplace-realism 是 reference，不成为第四主 Skill | PASS |
+| FIC052 | 末日小说里城市三天后封锁，先帮我设计这个期限怎样改变人物选择，正文以后再写 | 按成熟度进入 Architecture/Development；高影响约束传播属于通用小说设计，不形成第四主 Skill | PASS |
