@@ -4,7 +4,7 @@
 
 | ID | Bucket | Prompt / Context | Expected | Current decision | Result |
 |---|---|---|---|---|---|
-| GWR-01 | positive | 创建一个【讨论】Issue，咱们围绕插件架构正式讨论。 | `development/github-discussion-facilitator` | 讨论仍由 facilitator 主导，远端写入只是持久化步骤。 | PASS |
+| GWR-01 | positive | 创建一个【开发·讨论】Issue，咱们围绕插件架构正式讨论。 | `development/github-discussion-facilitator` | 讨论仍由 facilitator 主导，远端写入只是持久化步骤。 | PASS |
 | GWR-02 | positive | 根因报告已经完整，直接创建 GitHub 缺陷 Issue。 | `github/github-issue-manager` + triage Gate | Manager 主导创建，Triage 保持写前 Gate。 | PASS_SEQUENCE |
 | GWR-03 | negative | 只查一下有没有重复 Issue，先不要创建。 | `github/github-issue-triage` | 只读查重仍由 Triage 主导。 | PASS |
 | GWR-04 | negative | 把现有 github-handoff 包同步到 GitHub。 | `github/github-issue-handoff-sync` | 已有交接同步仍由 Handoff Sync 主导。 | PASS |

@@ -23,7 +23,7 @@ optional_uses: "github/github-issue-manager,development/github-incidental-bug-ca
 
 1. 用户明确要技术测试/自动化/回归/可回测环境；已有计划仅需审计时转 `github-test-plan-audit`。
 2. **Spec Gate 与权威输入（强制）**：
-   - `required` + 有有效【结论】 → 记录 `spec_source` 后继续；
+   - `required` + 有有效【开发·结论】 → 记录 `spec_source` 后继续；
    - `required` + 无结论 → `ready_for_spec`，不创建最终技术测试方案；
    - `not_required` → 记录 `spec_not_required` 与具体理由；
    - `undetermined` → 返回调研/讨论，不能把源码现状/测试断言当目标合同；

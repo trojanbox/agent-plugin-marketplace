@@ -1,6 +1,6 @@
 # Author Aesthetic Profile 与 Work Voice Contract
 
-本 reference 用于小说第二层形成/重审作品表达合同，以及第三层在已有表达合同下成文或修订。目标不是给所有作品套同一种“作者腔”，而是区分**跨作品稳定偏好**与**单部作品的具体声音**。
+本 reference 用于【创作·讨论】/【创作·结论】中形成或重审作品表达合同，以及 Outline、Manuscript 与表达审查阶段读取当前 Work Voice。目标不是给所有作品套同一种“作者腔”，而是区分**跨作品稳定偏好**与**单部作品的具体声音**。
 
 ## 一、两类合同必须分开
 
@@ -159,6 +159,6 @@ Voice Gate 失败时，优先改**观察焦点、信息顺序、人物反应和�
 
 ## 六、停止边界
 
-- 如果为了形成 Work Voice 必须改 Genre、POV、核心关系、Story Movement、终点或其它高层合同，回到 `fiction-story-architecture`；
-- 如果当前只是在已有 Work Voice 内调整场景、对白、段落和句子，留在 `fiction-writing`；
+- 如果为了形成 Work Voice 必须改 Genre、POV、核心关系、Story Movement、终点或其它高层合同，回到 `writing/fiction-discussion`；
+- 如果当前只是在已有 Work Voice 内检查作品是否漂移，使用 `writing/fiction-expression-review`；实际正文修改由当前项目的 Manuscript 工作流按本书合同执行；
 - 不因为某一本书成功就把它的表层风格自动升级成所有后续作品的通用规则。

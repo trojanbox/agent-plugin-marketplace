@@ -36,9 +36,9 @@ B034,baseline-regression,直接给我生成一个 .patch 修掉这个问题。,�
 B035,baseline-regression,给我一份测试方案，确保这个功能没问题。,业务测试 vs 技术测试未明确
 B036,baseline-regression,这个接口字段错了，顺便把整个发布链路完整调研一下。,缺陷调查 + 系统调研两个主目标
 B037,baseline-regression,测试方案里既要定义用户成功/失败语义，也要把 Harness、Fixture、故障注入设计完。,业务测试 + 技术测试两个主目标
-B038,baseline-regression,跨服务发布工作流目标已经明确，但还没有【结论】，直接给我开发计划。,应有唯一 Gate 所有权
-B039,baseline-regression,涉及状态生命周期和跨对象合同，还没有【结论】，直接给我业务测试方案。,应有唯一 Gate 所有权
-B040,baseline-regression,涉及跨服务并发、幂等和恢复合同，还没有【结论】，直接给我技术测试方案。,应有唯一 Gate 所有权
+B038,baseline-regression,跨服务发布工作流目标已经明确，但还没有【开发·结论】，直接给我开发计划。,应有唯一 Gate 所有权
+B039,baseline-regression,涉及状态生命周期和跨对象合同，还没有【开发·结论】，直接给我业务测试方案。,应有唯一 Gate 所有权
+B040,baseline-regression,涉及跨服务并发、幂等和恢复合同，还没有【开发·结论】，直接给我技术测试方案。,应有唯一 Gate 所有权
 P001,breadth-positive,我这套 Skill 分类越来越多了，帮我审计一下路由、组合和重复能力。,ai-workflow/skill-system-design
 P002,breadth-positive,把 agent-plugin-marketplace 里职责重叠的 Skill 合并掉，修改后跑 doctor 并重新打包。,ai-workflow/skill-system-design
 P003,breadth-positive,分析我们和 Notion AI 的竞争差异，比较定位、价格、客户体验和替代方案。,business/competitive-analysis
@@ -112,7 +112,7 @@ A012,adversarial,给八年级学生设计一节课，目标是把黑洞讲明白
 A013,adversarial,写一篇给八年级学生看的黑洞科普文章，不是课堂教案。,writing/popular-science-explainer
 A014,adversarial,这个 Bug 已经有完整根因报告了，直接创建 GitHub 缺陷 Issue。,理想：github-issue-manager 承接明确写操作，并把 triage 作为创建 Gate
 A015,adversarial,这个 Bug 已经确认了。先查重，再根据查重结果创建或重开 Issue。,先 github-issue-triage；完成后顺序进入 github-issue-manager
-A016,adversarial,已有【结论】，给我开发计划，并同时写一份 Codex 执行 Prompt。,development/github-development-plan-generator 与 ai-workflow/agent-prompt-design 是两个交付物，应识别冲突
+A016,adversarial,已有【开发·结论】，给我开发计划，并同时写一份 Codex 执行 Prompt。,development/github-development-plan-generator 与 ai-workflow/agent-prompt-design 是两个交付物，应识别冲突
 A017,adversarial,给我业务测试方案，并把其中高风险场景的 Harness、Fixture 和故障注入也设计好。,业务测试与技术测试两个主交付物，应识别冲突
 A018,adversarial,全面调研发布链路，过程中如果确认独立 Bug 就顺手查重留痕。,development/github-research-document-generator 为主 + incidental bug capture
 A019,adversarial,这个系统偶发失败。建立几个竞争性假设，但最终目标是结合源码定位软件根因。,development/github-bug-investigation 为主 + optional reasoning/scientific-reasoning
@@ -150,9 +150,9 @@ T028,targeted-issue,先查重，把候选和判断给我，我看完再决定要
 T029,targeted-issue,给现有 #123 追加这段新证据。,github-issue-manager；已知现有 Issue，不重复 triage
 T030,targeted-issue,把 #123 关闭，关闭理由就用我给的这段。,github-issue-manager；已知现有 Issue，不重复 triage
 T031,targeted-issue,结合源码把这个偶发 Bug 根因查清楚，并创建缺陷 Issue。,development/github-bug-investigation 为主；Issue 写入是领域工作流副作用
-T032,targeted-issue,创建一个【讨论】Issue，咱们围绕这个架构冲突正式讨论。,development/github-discussion-facilitator 为主
-T033,targeted-issue,完整调研发布链路，并把调研结果记录成【调研】Issue。,development/github-research-document-generator 为主
-T034,targeted-issue,已有【结论】，给我拆实施计划并创建对应【实施计划】Issue。,development/github-development-plan-generator 为主
+T032,targeted-issue,创建一个【开发·讨论】Issue，咱们围绕这个架构冲突正式讨论。,development/github-discussion-facilitator 为主
+T033,targeted-issue,完整调研发布链路，并把调研结果记录成【开发·调研】Issue。,development/github-research-document-generator 为主
+T034,targeted-issue,已有【开发·结论】，给我拆实施计划并创建对应【开发·实施计划】Issue。,development/github-development-plan-generator 为主
 T035,targeted-issue,这份实施计划正文已经完成，不要再规划，只把它作为一个新 Issue 写到仓库。,github-issue-manager 为主 → triage Gate → 创建
 T036,targeted-issue,把这个 github-handoff 包按 manifest 同步到目标仓库。,github/github-issue-handoff-sync
 T037,skill-system-behavior,这两个 Skill 路由总打架，帮我修好、回归测试，然后打包最新版 Runtime。,ai-workflow/skill-system-design；修路由 + semantic eval + doctor + package
@@ -172,7 +172,7 @@ T050,cross-category,给八年级设计一节关于黑洞的课堂课，包含活
 T051,cross-category,写一篇给普通青少年看的黑洞科普文章，不是课堂教案。,writing/popular-science-explainer
 T052,cross-category,建立一份长期产品营销上下文，同时再输出完整竞品战略分析。,business/product-marketing-context 与 business/competitive-analysis 两个独立主交付物，识别冲突
 T053,multi-turn,上下文：上一轮已经完成调研，确认只是局部修正、Spec Gate=not_required。当前：现在给我实施计划。,development/github-development-plan-generator，直接消费 spec_not_required 理由
-T054,multi-turn,上下文：上一轮讨论已经定稿，并生成当前有效【结论】。当前：现在给我业务测试方案。,development/github-business-test-plan-generator；Spec Gate 已满足
+T054,multi-turn,上下文：上一轮讨论已经定稿，并生成当前有效【开发·结论】。当前：现在给我业务测试方案。,development/github-business-test-plan-generator；Spec Gate 已满足
 T055,multi-turn,上下文：刚才 Triage 结论是“新建”。当前：现在创建这个 Issue。,github/github-issue-manager；复用已有 triage 结论，不重复全仓查重
 T056,multi-turn,上下文：刚才 Triage 结论是复用 #123。当前：把这批新证据补到 #123。,github/github-issue-manager；更新已知现有 Issue
 T057,multi-turn,上下文：刚才只完成查重，我还没授权写入。当前：先别创建，把候选差异再解释清楚。,github/github-issue-triage 继续主导
@@ -252,48 +252,67 @@ DB011,positive,给志愿者招募事项查重，判断复用还是新建，先�
 DB012,negative,辩论已经定稿，别继续辩了，只把这份正文保存成 Issue,github/github-issue-manager；【辩论】标题与原始命题保真
 DB013,conflict,请独立写一篇科学机制分析报告，另外主持我这个价值观点的辩论,两个独立主交付物：reasoning/scientific-reasoning 与 reasoning/structured-debate，确认当前主目标
 DB014,gate,AI 能完成这份 Jira，所以需求分析已经不需要了；来反驳我,reasoning/structured-debate；检查 artifact 来源与隐含上游劳动
-FIC001,positive,我想写一个县城重逢的爱情中篇，先陪我把故事从头搭起来,writing/fiction-story-architecture；从创作种子搭高层故事架构
-FIC002,positive,我只知道最后女儿会签字停止父亲治疗，前面都没想好,writing/fiction-story-architecture；从终点反推完整轨迹
-FIC003,positive,一个老太太每天给死去二十年的丈夫做饭，我还不知道它最后是温情还是恐怖，先聊故事,writing/fiction-story-architecture；允许 Genre 在第一层过程中逐渐确定
-FIC004,positive,主线开头结尾都定了，但人物太工具人，帮我把人物和关系做扎实,writing/fiction-story-development；高层故事已成立，深化人物关系
-FIC005,positive,故事已经从头到尾讲得清楚了，帮我规划哪些场景必须完整写出来,writing/fiction-story-development；Movement 展开为场景组和锚点场景
-FIC006,positive,这是完整大纲和人物设定，直接开始写第一章，不要重新问我,writing/fiction-writing；继承现有创作合同直接成文
-FIC007,positive,给我直接写一篇成年人重逢的现实主义爱情中篇，温暖一点，别悬疑，人物细节你自己定,writing/fiction-writing；授权范围内内部完成轻量 Architecture/Development 后成文
-FIC008,positive,写个1500字左右短篇，题材我已经说清楚了，直接给成品,writing/fiction-writing；短篇轻量直写，不强制完整前两层
-FIC009,positive,继续上次【创作】Issue，故事骨架已经定了，这次把人物和场景往下做,writing/fiction-story-development + github/github-issue-manager；读取当前共识后续接深化
-FIC010,positive,继续这个小说，方向都定了，接着写下一章,writing/fiction-writing；继承既有合同继续成文
-FIC011,multi-turn,上下文：刚才只确定了一个养老院场景和主角职业。当前：继续把这本中篇的故事架起来,writing/fiction-story-architecture；高层轨迹仍未成立
-FIC012,multi-turn,上下文：起点终点和关键状态变化都已经定了。当前：继续完善这个故事,writing/fiction-story-development；按材料成熟度判断“完善故事”阶段
-FIC013,multi-turn,上下文：人物、关系、场景组和表达合同已经确定。当前：现在开始写,writing/fiction-writing；按阶段顺序进入成文，不重问
-FIC014,gate,先陪我讨论这个故事，即使今天聊完整了也不要写正文,writing/fiction-story-architecture 或 development 依材料成熟度；尊重仅讨论边界，不自动成文
-FIC015,gate,故事方向已经确定，但我还没让你开始写，先把当前共识给我看,writing/fiction-story-architecture/development 当前阶段；不把准备充分当正文授权
-FIC016,adversarial,帮我完善这个故事,按当前材料成熟度：高层故事缺失→writing/fiction-story-architecture；高层已成立→writing/fiction-story-development
-FIC017,adversarial,我想写个家庭故事，但先别逼我定到底是温情、悬疑还是恐怖,writing/fiction-story-architecture；Genre 可渐进收敛，不第一轮强贴标签
-FIC018,adversarial,写爱情故事，别恐怖，最后给我一点惊喜,writing/fiction-writing 或前置阶段按成熟度；“惊喜”不得覆盖明确爱情 Genre/禁区
-FIC019,adversarial,给我一个十万字目标，不够就多加几条支线,writing/fiction-story-architecture；体量用于架构匹配，不为数字灌水
-FIC020,adversarial,每个人都按 Want Need Ghost Lie 给我填完整，越全越好,writing/fiction-story-development；人物深度按需，不把固定人物卡当必填合同
-FIC021,composition,先聊清楚这个小说并记录到 GitHub，骨架定了以后再继续深化,writing/fiction-story-architecture → writing/fiction-story-development + github/github-issue-manager；同一【创作】Issue 持久化
-FIC022,composition,先把人物场景深化好，然后写全文，写完再去 AI 味,writing/fiction-story-development → writing/fiction-writing + writing/humanizer；按依赖阶段推进
-FIC023,composition,这是完整大纲，直接写成心理恐怖小说，写完再去 AI 味,writing/fiction-writing + writing/humanizer；按需加载 psychological-horror genre knowledge
-FIC024,composition,我们慢慢聊这个故事并持续记录，但只在聊天里，不要建 Issue,writing/fiction-story-architecture/development；尊重 chat-only，不组合 github
-FIC025,composition,把当前创作共识写回【创作】Issue，但这轮先别写正文,当前 fiction-story-architecture/development 主导 + github/github-issue-manager；Issue 是持久化步骤
-FIC026,negative,帮我把这封邮件写清楚,writing/clear-writing；小说三层不抢普通清晰编辑
-FIC027,negative,把这篇已经定稿的小说去掉 AI 味，人物结构结尾都别动,writing/humanizer；纯表达后处理不进入 fiction-writing
-FIC028,negative,只把这段小说里绕口的句子改清楚，剧情别动,writing/clear-writing；纯措辞编辑
-FIC029,negative,解释一下量子纠缠,writing/popular-science-explainer；不进入小说流程
-FIC030,negative,讨论一下小说发布系统的权限架构并记录到 Issue,development/github-discussion-facilitator；软件架构讨论不因“小说”误路由
-FIC031,negative,小说已经写完，标题正文都不用改，只帮我存成 GitHub Issue,github/github-issue-manager；当前唯一交付是 Issue 生命周期操作
-FIC032,negative,给我十个爱情故事点子，一次性列出来就行，不要和我讨论,writing/fiction-story-architecture；一次性高层构思可轻量完成，不强制多轮
-FIC033,negative,写一段产品发布会开场白,不强制小说 Skills；按实际写作/沟通目标路由
-FIC034,conflict,独立写一篇小说成品，另外给我一篇完整量子纠缠科普文章,两个独立主交付物：writing/fiction-writing 与 writing/popular-science-explainer；识别冲突
-FIC035,conflict,帮我设计这本小说的完整故事，另外独立和我辩论“AI会不会取代作家”,两个独立主交付物：writing/fiction-story-architecture 与 reasoning/structured-debate；确认当前主目标
-FIC036,multi-turn,上下文：原来定的是现实爱情。当前：我改主意了，整体改成心理恐怖,writing/fiction-story-architecture；作品身份高影响变化，重审高层结构
-FIC037,multi-turn,上下文：正在讨论故事骨架。当前：这个方向先停，这轮只给另一篇成稿去 AI 味,writing/humanizer；当前明确编辑目标覆盖历史创作主路由
-FIC038,multi-turn,上下文：故事架构和深化都完成。当前：我自己改了一个大结局，帮我按新结局重写,writing/fiction-story-architecture/development 先校验受影响设计 → writing/fiction-writing；高影响变更顺序执行
-FIC039,multi-turn,上下文：这篇成稿中段很散。当前：人物和结尾保留，我们先讨论怎么重构,writing/fiction-story-architecture/development；先重新设计结构，不直接改 prose
-FIC040,multi-turn,上下文：这篇成稿中段很散。当前：人物和结尾保留，结构你自己定，直接给新版别再问,writing/fiction-story-architecture/development → writing/fiction-writing；用户已委托结构决策，不额外确认
-FIC041,positive,这是爱情+科幻，爱情是主线，科幻只提供环境压力，主线已定，帮我深化两个人的关系,writing/fiction-story-development；保持类型主次，按需加载类型知识
-FIC042,positive,我想写心理恐怖，但不要慢燃，也可以第一章就出事，先把高层故事聊出来,writing/fiction-story-architecture；按需加载 psychological-horror knowledge，不套 slow-burn
-FIC043,positive,故事和人物都定了，帮我把心理恐怖的场景和信息安排做实，但别开始写,writing/fiction-story-development；按需加载 psychological-horror knowledge，停在场景/信息设计
-FIC044,positive,按已经确定的心理恐怖大纲直接写，结局可以解释完整，不要擅自留神秘尾巴,writing/fiction-writing；Genre knowledge 服从作品合同，不强制未知本体/开放结局
-FIC045,adversarial,这是普通家庭小说，里面有人精神状态很复杂，但不要恐怖,按成熟度进入通用小说三层；不得仅因心理复杂加载心理恐怖为作品方向
+FIC001,positive,我想写一个县城重逢的爱情中篇，先陪我把故事从头搭起来,writing/fiction-discussion；从创作种子进入宽讨论入口
+FIC002,positive,我只知道最后女儿会签字停止父亲治疗，前面都没想好,writing/fiction-discussion；从终点反推但保留 creative_open
+FIC003,positive,这个人物现在像剧情工具人，咱们聊聊到底哪里不对,writing/fiction-discussion；当前目标是高影响人物设计，不是 Review 验收
+FIC004,positive,我想把已经定下来的结局整体换掉，先讨论影响,writing/fiction-discussion；高影响 Story 变更
+FIC005,positive,这本书已经有 Storybook，咱们重新讨论一下 Work Voice,writing/fiction-discussion；读取当前 Book / Style 后讨论
+FIC006,adversarial,帮我完善这个故事,writing/fiction-discussion；宽入口按当前材料决定具体讨论范围
+FIC007,multi-turn,上下文：原来定的是现实爱情。当前：我改主意了，整体改成心理恐怖,writing/fiction-discussion；作品身份高影响变化
+FIC008,composition,我们慢慢聊这个故事，但只在聊天里，不要建 Issue,writing/fiction-discussion；chat-only，不组合 github
+FIC009,composition,创建【创作·讨论】Issue，咱们正式聊这本书的结局,writing/fiction-discussion + github/github-issue-manager
+FIC010,gate,我在做第8章章纲，但发现主角为什么愿意背叛朋友还没定，直接帮我补上,writing/fiction-outline → writing/fiction-discussion；高影响人物/Story 缺口不能在章纲层静默补齐
+FIC011,positive,刚才这轮已经讨论完了，创建一份【创作·结论】,writing/fiction-conclusion + github/github-issue-manager
+FIC012,positive,刚才只在聊天里讨论，没有 Discussion Issue，但决定都已经确认了，现在生成创作结论,writing/fiction-conclusion + github/github-issue-manager；chat-only 讨论也可作为来源
+FIC013,gate,这轮讨论里两个结局方案还冲突着，先帮我生成最终创作结论,writing/fiction-conclusion → writing/fiction-discussion；存在 conflict 不能冻结
+FIC014,gate,把你刚才建议但我还没确认的人物身世也写进结论,writing/fiction-conclusion；candidate 不能升级为 confirmed
+FIC015,multi-turn,同一轮创作结论已经有了，我又确认了一条边界，更新原结论别重复建,writing/fiction-conclusion + github/github-issue-manager；更新同轮结论
+FIC016,positive,新结论只替代旧结论里小七的知识边界，其它保持有效,writing/fiction-conclusion；精确 supersedes 子范围
+FIC017,gate,把这轮讨论整理成结论，然后顺手直接把 Storybook 全改掉,writing/fiction-conclusion 先完成冻结；Storybook 调整是后续独立任务，不在结论里静默执行
+FIC018,negative,我只想看刚才讨论到哪了，别创建任何 Issue,writing/fiction-discussion；回显当前共识，不触发 fiction-conclusion
+FIC019,positive,故事已经成熟了，开始设计真正的逐章章纲,writing/fiction-outline + github/github-issue-manager
+FIC020,positive,没有创作结论，但我有成熟梗概和 Storybook，直接做章纲,writing/fiction-outline；不强制前置【创作·结论】
+FIC021,multi-turn,继续第5章章纲，把它细化到可以直接交给正文,writing/fiction-outline
+FIC022,positive,程越这一段是第5到7章，咱们三章一起讨论但最后分别落章纲,writing/fiction-outline；讨论可按强关联章节组，最终按真实章节
+FIC023,positive,第8章塞太多了，拆成两章并更新后续章号,writing/fiction-outline；允许自然拆章
+FIC024,positive,第8和第9章其实是一个完整场景，合并掉,writing/fiction-outline；允许自然合章
+FIC025,positive,先把前五章细化，二十章以后暂时只写章节职责和禁止提前揭露的信息,writing/fiction-outline；渐进细化
+FIC026,gate,主线开头和结尾都没有定，但先给我做30章详细章纲,writing/fiction-outline → writing/fiction-discussion；材料不足以支持章节级设计
+FIC027,negative,章纲阶段先把第一章完整对白也写出来吧,writing/fiction-outline；停止在章纲层，不写正式 Manuscript
+FIC028,gate,第5章评论已经确认了但还没同步 outline/005.md，可以直接说 Ready for Writing 吗,writing/fiction-outline；pending_sync，不得判 Ready for Writing
+FIC029,positive,从头检查一下主角是不是越来越不像自己了,writing/fiction-character-review
+FIC030,positive,程越突然变成机器人后居然不先怀疑自己身体，这个人物反应合理吗,writing/fiction-character-review；常识级第一反应
+FIC031,positive,同一个坏消息来了，四个人全都冷静分析，检查一下人物是不是同质化,writing/fiction-character-review
+FIC032,positive,小七后面越来越像客服说话，做一次 Character Voice 审查,writing/fiction-character-review
+FIC033,negative,所有人物和旁白后半本都越来越像客服和 AI,writing/fiction-expression-review；已扩散为作品级 Voice Flattening
+FIC034,positive,检查主角是不是在不知道真相的时候做出了只有知道真相才会做的行为,writing/fiction-character-review；Knowledge Boundary 影响人物行为
+FIC035,positive,检查这本书前后世界设定有没有互相打架,writing/fiction-continuity-review
+FIC036,positive,我刚重写第6章，看看第5→6→7章接不接得上,writing/fiction-continuity-review；相邻章节连续性
+FIC037,positive,第4章他明明还不知道这件事，第5章怎么直接拿它做判断了,writing/fiction-continuity-review
+FIC038,positive,第二章和第三章是不是把同一件事又演了一遍,writing/fiction-continuity-review
+FIC039,positive,查一下时间、年龄、地点、物件和身体状态有没有前后矛盾,writing/fiction-continuity-review
+FIC040,negative,这轮修改完了，检查原问题修没修好以及有没有把前后章改坏,writing/fiction-revision-validation；修订目标与回归是主问题
+FIC041,positive,连续读一下，看看这几章文风是不是漂了,writing/fiction-expression-review
+FIC042,positive,这本书后半段所有人都开始说标准 AI 话了,writing/fiction-expression-review；作品级表达漂移
+FIC043,positive,多轮对话像聊天记录，一人一句每句都精准回答，审一下表达,writing/fiction-expression-review
+FIC044,positive,段落长度越来越一样，读起来很像模型生成，检查一下,writing/fiction-expression-review
+FIC045,positive,技术信息逻辑没错，但叙述越来越像产品规格文档,writing/fiction-expression-review
+FIC046,negative,把这篇已经定稿的小说去掉 AI 味，人物结构结尾都别动,writing/humanizer；当前主目标是实际去 AI 味编辑，不是审查
+FIC047,positive,这段每句话都看得懂，但连起来特别费劲，帮我审可读性,writing/fiction-readability-review
+FIC048,positive,这里全是源侧选项、实例、经验导出，普通读者能看懂吗,writing/fiction-readability-review；抽象术语负担
+FIC049,positive,人物突然开始查日志，我忘了他为什么现在要查，看看是不是上下文没写出来,writing/fiction-readability-review
+FIC050,positive,正文里英文缩写和专有名词太多，做一次可读性审查,writing/fiction-readability-review
+FIC051,positive,这段对白全是‘煤气？’这种省略句，第一次读能不能跟上,writing/fiction-readability-review
+FIC052,negative,只把这段小说里绕口的句子改清楚，剧情别动,writing/clear-writing；当前交付是实际清晰改写
+FIC053,positive,连续读前十章，看看为什么都能读但没什么吸引力,writing/fiction-pacing-review
+FIC054,positive,这十章一直是查→核→等→看结果→再查，是不是结构太重复,writing/fiction-pacing-review
+FIC055,positive,故事已经讲完了，但我感觉还没和角色建立感情就结束了,writing/fiction-pacing-review；情感投资不足
+FIC056,positive,每章都像一个技术案例：出问题、解释、解决，整本很累,writing/fiction-pacing-review；案例集化
+FIC057,positive,这轮可读性重写已经改完，验收一下原问题有没有修掉,writing/fiction-revision-validation
+FIC058,positive,修完可读性以后幽默感没了，检查是不是修一个坏一个,writing/fiction-revision-validation；Preserve Set / regression
+FIC059,positive,整本从头到尾做一次最终连续阅读和出版终审,writing/fiction-final-review
+FIC060,negative,这是完整大纲和人物设定，直接开始写第一章，不要重新问我,不触发独立 Fiction Public Skill；正式正文按当前项目 / Storybook 的 Book、Style、Characters、Story、Outline 合同执行
+FIC061,negative,解释一下量子纠缠,writing/popular-science-explainer；不进入小说流程
+FIC062,negative,讨论一下小说发布系统的权限架构并记录到 Issue,development/github-discussion-facilitator；软件架构讨论不因‘小说’误路由
+FIC063,negative,小说已经写完，标题正文都不用改，只帮我存成 GitHub Issue,github/github-issue-manager；唯一交付是 Issue 生命周期操作
+FIC064,conflict,帮我设计这本小说的完整故事，另外独立和我辩论 AI 会不会取代作家,writing/fiction-discussion 与 reasoning/structured-debate 是两个独立主交付物，应识别冲突

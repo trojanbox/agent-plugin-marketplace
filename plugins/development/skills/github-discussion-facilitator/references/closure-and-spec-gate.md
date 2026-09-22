@@ -24,7 +24,7 @@
 
 确定目标交付物后，按主 `SKILL.md` 已声明的共享研发协作策略与 `github-spec` 对实施计划、业务测试方案、技术测试方案执行同一套 Gate：
 
-- `required`：已有当前有效【结论】完整覆盖时，记录 `spec_source` 后进入所选计划；尚无有效结论时状态进入 `ready_for_spec`；
+- `required`：已有当前有效【开发·结论】完整覆盖时，记录 `spec_source` 后进入所选计划；尚无有效结论时状态进入 `ready_for_spec`；
 - `not_required`：记录 `spec_not_required` 与具体理由后，进入所选计划；
 - `undetermined`：继续补事实或讨论，不能进入任一下游计划。
 
@@ -59,7 +59,7 @@
 - `discussion_in_progress`：仍需继续讨论；
 - `ready_for_business_test_plan`：业务目标和关键不变量已明确，且已有当前有效 `spec_source`、Spec Gate=`not_required` 已记录理由，或用户已明确记录 `spec_skipped_by_user`；
 - `ready_for_technical_test_plan`：技术测试目标、目标合同和主要风险已明确，且已有当前有效 `spec_source`、Spec Gate=`not_required` 已记录理由，或用户已明确记录 `spec_skipped_by_user`；
-- `ready_for_spec`：所选下游计划涉及高传播合同、当前尚无有效【结论】，可以生成正式结论；
+- `ready_for_spec`：所选下游计划涉及高传播合同、当前尚无有效【开发·结论】，可以生成正式结论；
 - `ready_for_development_plan`：实施目标已明确，且已有当前有效 `spec_source`、Spec Gate=`not_required` 已记录理由，或用户已明确记录 `spec_skipped_by_user`；信息已足以生成实施计划；
 - `blocked`：缺少源码、外部决定或关键事实，无法可靠进入目标下一阶段。
 

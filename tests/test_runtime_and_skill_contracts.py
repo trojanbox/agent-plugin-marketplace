@@ -467,12 +467,12 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
             / "development/shared/github-core/references/collaboration-policy.md"
         ).read_text(encoding="utf-8")
         for prefix in (
-            "【讨论】",
-            "【调研】",
-            "【结论】",
-            "【实施计划】",
-            "【技术测试方案】",
-            "【业务测试方案】",
+            "【开发·讨论】",
+            "【开发·调研】",
+            "【开发·结论】",
+            "【开发·实施计划】",
+            "【开发·技术测试】",
+            "【开发·业务测试】",
             "【缺陷】P0|P1|P2|P3",
         ):
             self.assertIn(prefix, policy)
@@ -637,43 +637,48 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
             by_name["humanizer"].get("optionalUses", []),
         )
 
-    def test_fiction_three_stage_workflow_replaces_horror_state_machine(self) -> None:
+    def test_fiction_workflow_and_review_skills_replace_three_stage_workflow(self) -> None:
         doctor = runtime_json("doctor")
         by_name = {skill["name"]: skill for skill in doctor["skills"]}
 
-        for name, phase in (
-            ("fiction-story-architecture", "architecture"),
-            ("fiction-story-development", "development"),
-            ("fiction-writing", "creation"),
-        ):
+        expected = {
+            "fiction-discussion": "discussion",
+            "fiction-conclusion": "specification",
+            "fiction-outline": "planning",
+            "fiction-character-review": "verification",
+            "fiction-continuity-review": "verification",
+            "fiction-expression-review": "verification",
+            "fiction-readability-review": "verification",
+            "fiction-pacing-review": "verification",
+            "fiction-revision-validation": "verification",
+            "fiction-final-review": "verification",
+        }
+        for name, phase in expected.items():
             self.assertIn(name, by_name)
             self.assertEqual(by_name[name]["phase"], phase)
 
-        self.assertNotIn("horror-story-co-creation", by_name)
-        self.assertNotIn("slow-burn-horror-fiction", by_name)
+        for old in ("fiction-story-architecture", "fiction-story-development", "fiction-writing"):
+            self.assertNotIn(old, by_name)
 
         writing = runtime_json("list", "writing")
         groups = {group["name"]: {item["name"] for item in group["skills"]} for group in writing["groups"]}
-        self.assertEqual(
-            groups["fiction"],
-            {"fiction-story-architecture", "fiction-story-development", "fiction-writing"},
-        )
+        self.assertEqual(groups["fiction"], set(expected))
 
-        architecture = (PLUGINS / "writing/skills/fiction-story-architecture/SKILL.md").read_text(encoding="utf-8")
-        development = (PLUGINS / "writing/skills/fiction-story-development/SKILL.md").read_text(encoding="utf-8")
-        writing_skill = (PLUGINS / "writing/skills/fiction-writing/SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("解决结构性未知", architecture)
-        self.assertIn("最小充分深化", development)
-        self.assertIn("不拥有未授权的方向自由", writing_skill)
-        self.assertIn("轻量 Architecture + Development", writing_skill)
+        discussion = (PLUGINS / "writing/skills/fiction-discussion/SKILL.md").read_text(encoding="utf-8")
+        conclusion = (PLUGINS / "writing/skills/fiction-conclusion/SKILL.md").read_text(encoding="utf-8")
+        outline = (PLUGINS / "writing/skills/fiction-outline/SKILL.md").read_text(encoding="utf-8")
+        final_review = (PLUGINS / "writing/skills/fiction-final-review/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("creative_open", discussion)
+        self.assertIn("Standalone Reader Gate", conclusion)
+        self.assertIn("pending_sync", outline)
+        self.assertIn("Canonical Owner", outline)
+        self.assertIn("组合型", final_review)
 
         genre = PLUGINS / "writing/shared/fiction/genres/psychological-horror.md"
         self.assertTrue(genre.exists())
         self.assertIn("不提供固定结构", genre.read_text(encoding="utf-8"))
 
         self.assertFalse((PLUGINS / "writing/shared/horror").exists())
-        self.assertFalse((ROOT / "tests/test_horror_session.mjs").exists())
-        self.assertFalse((ROOT / "tests/test_horror_tools.mjs").exists())
 
     def test_github_remote_write_recovery_precedes_handoff(self) -> None:
         recovery = (
@@ -774,7 +779,7 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
         self.assertTrue(corpus.exists())
         with corpus.open(encoding="utf-8", newline="") as handle:
             rows = list(csv.DictReader(handle))
-        self.assertEqual(len(rows), 298)
+        self.assertGreaterEqual(len(rows), 317)
         self.assertEqual(len({row["id"] for row in rows}), len(rows))
         buckets = {row["bucket"] for row in rows}
         for bucket in (
@@ -788,6 +793,8 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
         ):
             self.assertIn(bucket, buckets)
         self.assertTrue(all(row["prompt"].strip() and row["expected"].strip() for row in rows))
+        for required_id in ("FIC001", "FIC064"):
+            self.assertTrue(any(row["id"] == required_id for row in rows))
         research_issue_case = next(row for row in rows if row["id"] == "T079")
         self.assertIn("创建一份调研文档到 Issue", research_issue_case["prompt"])
         self.assertIn(
@@ -799,14 +806,14 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
         plugin = json.loads(
             (PLUGINS / "development/plugin.json").read_text(encoding="utf-8")
         )
-        self.assertIn("调研文档/【调研】Issue", plugin["description"])
+        self.assertIn("调研文档/【开发·调研】Issue", plugin["description"])
         self.assertIn("把刚才调研留档到 Issue", plugin["description"])
 
         skill = (
             PLUGINS / "development/skills/github-research-document-generator/SKILL.md"
         ).read_text(encoding="utf-8")
         self.assertIn("创建/生成调研文档", skill)
-        self.assertIn("【调研】Issue", skill)
+        self.assertIn("【开发·调研】Issue", skill)
         self.assertIn("Issue 创建/更新属于持久化步骤", skill)
 
     def test_spec_side_bug_uses_incidental_capture(self) -> None:

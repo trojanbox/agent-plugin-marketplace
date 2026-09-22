@@ -1,6 +1,6 @@
 ---
 name: github-spec
-description: "用于冻结已经完成讨论或已经明确确认的目标合同，创建独立【结论】Issue。用户明确要求结论/规格、讨论收口需要冻结权威合同，或下游实施计划/技术测试方案/业务测试方案执行 Spec Gate 后进入 ready_for_spec 时使用。用户已经明确点名下游交付物时，主路由先进入对应下游 Skill，由它执行 Spec Gate；不能因为高传播且缺结论就同时把本 Skill 列为主候选。局部低传播修改可记录 spec_not_required 后跳过。"
+description: "用于冻结已经完成讨论或已经明确确认的目标合同，创建独立【开发·结论】Issue。用户明确要求结论/规格、讨论收口需要冻结权威合同，或下游实施计划/技术测试方案/业务测试方案执行 Spec Gate 后进入 ready_for_spec 时使用。用户已经明确点名下游交付物时，主路由先进入对应下游 Skill，由它执行 Spec Gate；不能因为高传播且缺结论就同时把本 Skill 列为主候选。局部低传播修改可记录 spec_not_required 后跳过。"
 phase: specification
 optional_uses: "github/github-issue-manager,development/github-incidental-bug-capture"
 ---
@@ -9,7 +9,7 @@ optional_uses: "github/github-issue-manager,development/github-incidental-bug-ca
 
 ## 唯一目标
 
-把已经确认的目标行为冻结成一个**权威、可追溯、可被实施计划和测试方案直接引用的【结论】**。结论继承已确认决定，不重新开启已结束讨论。
+把已经确认的目标行为冻结成一个**权威、可追溯、可被实施计划和测试方案直接引用的【开发·结论】**。结论继承已确认决定，不重新开启已结束讨论。
 
 共享研发规则见 `../../shared/github-core/references/collaboration-policy.md`。
 
@@ -21,11 +21,11 @@ optional_uses: "github/github-issue-manager,development/github-incidental-bug-ca
 
 ## Spec Gate
 
-- `required`：API/数据/事件/状态生命周期/模块职责/安全/失败恢复/并发/幂等/跨服务职责等高传播合同变化，需要当前有效【结论】。
+- `required`：API/数据/事件/状态生命周期/模块职责/安全/失败恢复/并发/幂等/跨服务职责等高传播合同变化，需要当前有效【开发·结论】。
 - `not_required`：局部低传播、已有合同内直接修正，可记录理由后跳过。
 - `undetermined`：关键事实或决定仍缺失，返回调研/讨论。
 
-用户明确点名【实施计划】、【业务测试方案】或【技术测试方案】时，由对应下游 Skill 先承接并执行 Gate；进入 `ready_for_spec` 后再转本 Skill。用户直接要求“结论/规格/冻结合同”时，本 Skill 主导。
+用户明确点名【开发·实施计划】、【开发·业务测试】或【开发·技术测试】时，由对应下游 Skill 先承接并执行 Gate；进入 `ready_for_spec` 后再转本 Skill。用户直接要求“结论/规格/冻结合同”时，本 Skill 主导。
 
 ## 核心流程
 
@@ -38,4 +38,4 @@ optional_uses: "github/github-issue-manager,development/github-incidental-bug-ca
 
 ## 完成状态
 
-只有真实写入成功且完整性检查通过时，才能说【结论】已创建/更新。结论完成只代表目标合同被冻结，不代表实施或测试已经完成。
+只有真实写入成功且完整性检查通过时，才能说【开发·结论】已创建/更新。结论完成只代表目标合同被冻结，不代表实施或测试已经完成。

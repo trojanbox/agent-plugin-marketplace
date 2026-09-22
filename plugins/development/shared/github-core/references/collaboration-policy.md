@@ -20,12 +20,12 @@
 
 `development` 新创建的正式 GitHub Issue 只使用以下前缀：
 
-- `【讨论】<主题>`：尚未定案，需要沟通和决策；
-- `【调研】<主题>`：系统性调查当前实现、调用链、事实和缺口；
-- `【结论】<主题>`：把已经确认的讨论/调研结果和高传播合同冻结为权威输入；
-- `【实施计划】<交付目标>`：给下游 Coding Agent 的严格开发执行合同；
-- `【技术测试方案】<范围>`：测试层级、Harness、Fixture、Reset、自动化、E2E/Resilience、Evidence 等技术测试设计；
-- `【业务测试方案】<业务目标>`：业务理解、Expected Contract、Feature/State/Invariant/Scenario/Gherkin 等业务验收设计；
+- `【开发·讨论】<主题>`：尚未定案，需要沟通和决策；
+- `【开发·调研】<主题>`：系统性调查当前实现、调用链、事实和缺口；
+- `【开发·结论】<主题>`：把已经确认的讨论/调研结果和高传播合同冻结为权威输入；
+- `【开发·实施计划】<交付目标>`：给下游 Coding Agent 的严格开发执行合同；
+- `【开发·技术测试】<范围>`：测试层级、Harness、Fixture、Reset、自动化、E2E/Resilience、Evidence 等技术测试设计；
+- `【开发·业务测试】<业务目标>`：业务理解、Expected Contract、Feature/State/Invariant/Scenario/Gherkin 等业务验收设计；
 - `【缺陷】P0|P1|P2|P3 <故障标题>`：已经有证据确认的真实生产缺陷。
 
 这是唯一命名集合。新写 Issue 不保留旧前缀别名、不做双写、不为历史命名增加兼容分支。内部 Skill ID、状态字段和 handoff 本地 ID 可以继续使用稳定程序标识，不属于用户可见标题前缀。
@@ -176,14 +176,14 @@ flowchart LR
 
 ```text
 源码/证据调查
-→ 【讨论】决策冻结（需要决策时）
+→ 【开发·讨论】决策冻结（需要决策时）
 → Spec Gate
-   ├─ required → 【结论】明确目标行为与验收边界
+   ├─ required → 【开发·结论】明确目标行为与验收边界
    ├─ not_required → 记录 spec_not_required + 理由
    └─ undetermined → 返回调查 / 讨论补齐
 → 复杂度 Gate
    ├─ S + patch_fast_lane_eligible + 用户要直接修改 → Source Patch Implementation
-   └─ M/L 或 Fast Lane blocked → 根据目标形成【实施计划】/【技术测试方案】/【业务测试方案】
+   └─ M/L 或 Fast Lane blocked → 根据目标形成【开发·实施计划】/【开发·技术测试】/【开发·业务测试】
 → S 级 Patch 在当前 Runtime 做局部实施/回放验证；M/L 由下游 Coding/Test Agent 在真实环境实施与验证
 → 执行证据返回后进入调研 / 缺陷 / 测试方案审计
 ```

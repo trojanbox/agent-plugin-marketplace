@@ -23,7 +23,7 @@ optional_uses: "github/github-issue-manager,development/github-incidental-bug-ca
 
 1. 用户明确要业务测试方案/业务用例；已有方案只需审计时转 `github-test-plan-audit`；核心产品决定仍未确认时先回讨论。
 2. **Spec Gate 与权威输入（强制）**：
-   - `required` + 有有效【结论】 → 记录 `spec_source` 后继续；
+   - `required` + 有有效【开发·结论】 → 记录 `spec_source` 后继续；
    - `required` + 无结论 → `ready_for_spec`，不创建最终业务测试方案；
    - `not_required` → 记录 `spec_not_required` 与具体理由；
    - `undetermined` → 返回调研/讨论；

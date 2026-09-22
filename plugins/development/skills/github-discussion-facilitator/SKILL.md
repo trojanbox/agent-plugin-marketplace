@@ -1,6 +1,6 @@
 ---
 name: github-discussion-facilitator
-description: "在需要围绕技术、产品、架构或实现主题与用户进行可追踪讨论时使用。正式讨论前创建或续用一个【讨论】Issue，以源码证据、当前实现/目标方案/差距、决策树、待决项和 Mermaid 图示为核心表达，按决策依赖逐步确认高杠杆问题，并在每次回答后追加可追溯的决定、理由、边界和未决项；无法写入 GitHub 时使用标准化本地交接包持续记录。"
+description: "在需要围绕技术、产品、架构或实现主题与用户进行可追踪讨论时使用。正式讨论前创建或续用一个【开发·讨论】Issue，以源码证据、当前实现/目标方案/差距、决策树、待决项和 Mermaid 图示为核心表达，按决策依赖逐步确认高杠杆问题，并在每次回答后追加可追溯的决定、理由、边界和未决项；无法写入 GitHub 时使用标准化本地交接包持续记录。"
 phase: discussion
 optional_uses: "github/github-issue-manager,development/github-incidental-bug-capture"
 ---
@@ -9,7 +9,7 @@ optional_uses: "github/github-issue-manager,development/github-incidental-bug-ca
 
 ## 唯一目标
 
-把“还没有定案”的产品/技术/架构问题推进成**可追溯的决策过程**：先建立事实和边界，再按依赖顺序讨论关键决策，记录已确认决定与未决项，最后判断是否需要【结论】。
+把“还没有定案”的产品/技术/架构问题推进成**可追溯的决策过程**：先建立事实和边界，再按依赖顺序讨论关键决策，记录已确认决定与未决项，最后判断是否需要【开发·结论】。
 
 共享研发规则见 `../../shared/github-core/references/collaboration-policy.md`。GitHub 写操作异常时先读取 `<github-shared>/references/github-remote-write-recovery.md` 完成恢复 Gate；只有 Gate 确认远端能力确实不可用时，才按 `<github-shared>/references/handoff-protocol.md` 文件化交接。
 
@@ -29,9 +29,9 @@ optional_uses: "github/github-issue-manager,development/github-incidental-bug-ca
 
 ## 核心流程
 
-1. **连续性检查**：判断新建还是续用同一轮【讨论】；讨论类 Issue 可复用同一轮，避免重复创建。
+1. **连续性检查**：判断新建还是续用同一轮【开发·讨论】；讨论类 Issue 可复用同一轮，避免重复创建。
 2. **证据与范围门**：涉及当前实现时必须先读足够源码；建立当前实现、目标、差距、范围/非目标。需要详细证据索引、决策树或图示时读取 `references/evidence-and-decision-model.md`。
-3. **建立/续用记录**：正式讨论前创建或续用【讨论】Issue；写入结构与决策记录时读取 `references/issue-recording.md`。
+3. **建立/续用记录**：正式讨论前创建或续用【开发·讨论】Issue；写入结构与决策记录时读取 `references/issue-recording.md`。
 4. **逐项决策**：一次优先推进一个高杠杆待决项；给出必要上下文和推荐理由，用户回答后记录 `决定 / 理由 / 边界 / 影响 / 仍未决`。
 5. **持续刷新状态**：已确认决定不能被后续评论静默覆盖；条件变化时显式记录替代关系。
 6. **收口**：所有关键决策完成后，才判断下一阶段。准备进入实施计划、业务测试方案或技术测试方案时读取 `references/closure-and-spec-gate.md`，对所有下游计划执行 Spec Gate。

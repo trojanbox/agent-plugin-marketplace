@@ -33,7 +33,7 @@ optional_uses: "github/github-issue-manager,development/github-incidental-bug-ca
 
 # 二、事实源与合同
 
-优先级：用户明确决定 → 当前有效【结论】/【讨论】 → 当前源码/测试/配置/日志 → 计划文本 → 历史 Issue/文档。必须读取适用 `AGENTS.md`。
+优先级：用户明确决定 → 当前有效【开发·结论】/【开发·讨论】 → 当前源码/测试/配置/日志 → 计划文本 → 历史 Issue/文档。必须读取适用 `AGENTS.md`。
 
 计划里的“预期行为”不能因为与当前源码一致就自动视为正确；没有可追溯来源时标记 `EXPECTED_CONTRACT_SOURCE_GAP`。
 
@@ -41,7 +41,7 @@ optional_uses: "github/github-issue-manager,development/github-incidental-bug-ca
 
 检查计划是否明确记录以下一种合法状态：
 
-- `spec_source`：高传播合同由当前有效【结论】覆盖；
+- `spec_source`：高传播合同由当前有效【开发·结论】覆盖；
 - `spec_not_required` + 具体理由：范围局部、低传播且位于既有合同内；
 - `spec_skipped_by_user` + 风险边界：用户明确跳过 required 结论。
 

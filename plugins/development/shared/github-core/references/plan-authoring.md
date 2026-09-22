@@ -4,7 +4,7 @@
 
 ## 1. 计划事实源
 
-正常路径：GitHub `【实施计划】` 主 Issue + 评论。
+正常路径：GitHub `【开发·实施计划】` 主 Issue + 评论。
 
 - 主 Issue：目标、范围、快照、总体策略、Task Index、DAG、Contract 摘要、总体验收、真实性边界；
 - 规划评论：来源索引、当前实现事实、搜索/传播、File Structure、风险；
@@ -29,7 +29,7 @@
 ## 3. 主 Issue 模板
 
 ```markdown
-# 【实施计划】<交付目标>
+# 【开发·实施计划】<交付目标>
 
 - 计划修订: r1
 - 源码快照: <branch/head/hash>

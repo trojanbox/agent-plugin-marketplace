@@ -47,7 +47,7 @@
 标题：
 
 ```text
-【实施计划】<清晰、可检索的交付目标>
+【开发·实施计划】<清晰、可检索的交付目标>
 ```
 
 默认事实源：
@@ -70,7 +70,7 @@
 - 不需要新 Harness/Fixture/Reset；
 - 没有复杂跨层 race/recovery、外部 replay、环境隔离或 Fresh Run 设计。
 
-建议单独形成【技术测试方案】的情况：
+建议单独形成【开发·技术测试】的情况：
 
 - 多 Task 组合后才出现关键系统 Invariant；
 - 需要 Unit/Integration/Contract/Component/E2E 分层取舍；

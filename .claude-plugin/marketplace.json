@@ -58,7 +58,7 @@
     {
       "name": "development",
       "source": "./plugins/development",
-      "description": "用于软件研发协作中的源码调研、调研文档/【调研】Issue、需求与源码事实梳理、缺陷根因调查、S 级局部源码 Patch、讨论/结论冻结、开发计划、技术测试方案、业务测试方案与测试方案审计，以及本地 Git/Patch 支撑操作；通用 GitHub Issue 操作由 github Plugin 提供。当前项目的跨模块实现梳理、完整调用链、能力盘点，以及‘把刚才调研留档到 Issue’均进入 development 内对应调研 Skill；外部资料/互联网/论文研究进入 research。仅 Patch Fast Lane 允许对根因/目标已确认的低传播 S 级修改直接实施；M/L 级实际开发和完整真实环境验证仍由下游 Coding/Test Agent 在完整流程后完成。",
+      "description": "用于软件研发协作中的源码调研、调研文档/【开发·调研】Issue、需求与源码事实梳理、缺陷根因调查、S 级局部源码 Patch、讨论/结论冻结、开发计划、技术测试方案、业务测试方案与测试方案审计，以及本地 Git/Patch 支撑操作；通用 GitHub Issue 操作由 github Plugin 提供。当前项目的跨模块实现梳理、完整调用链、能力盘点，以及‘把刚才调研留档到 Issue’均进入 development 内对应调研 Skill；外部资料/互联网/论文研究进入 research。仅 Patch Fast Lane 允许对根因/目标已确认的低传播 S 级修改直接实施；M/L 级实际开发和完整真实环境验证仍由下游 Coding/Test Agent 在完整流程后完成。",
       "version": "2.0.0",
       "author": {
         "name": "trojanbox",
@@ -118,8 +118,8 @@
     {
       "name": "writing",
       "source": "./plugins/writing",
-      "description": "用于人类可读文本的清晰表达、去除明显 AI 写作痕迹、高层决策沟通、复杂知识科普、实操使用指南，以及中篇级、多章节小说的故事架构、故事深化和正式成文。小说主流程由 fiction-story-architecture、fiction-story-development、fiction-writing 分阶段承接；类型知识按作品需要从 shared/fiction 渐进加载。只改已有文本清晰度/AI 痕迹时继续使用 clear-writing/humanizer。",
-      "version": "2.0.0",
+      "description": "用于人类可读文本的清晰表达、去除明显 AI 写作痕迹、高层决策沟通、复杂知识科普、实操指南，以及长期小说创作的【创作·讨论】、【创作·结论】、【创作·章纲】与人物/连续性/表达/可读性/节奏/修订/全书终审。小说具体正文风格和 Canon 由单部作品自己的 Storybook / 项目目录合同承载，不再由通用正文 Public Skill 统一定义；类型知识按作品需要从 shared/fiction 渐进加载。",
+      "version": "3.0.0",
       "author": {
         "name": "trojanbox",
         "url": "https://github.com/trojanbox"

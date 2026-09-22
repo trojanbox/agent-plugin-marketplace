@@ -111,7 +111,7 @@ Skill Composition 只解决“一个主任务需要哪些辅助能力”。它�
 - `development/github-research-document-generator`、`development/github-discussion-facilitator`、`development/api-contract-audit`、`development/github-spec`、`development/github-development-plan-generator`、技术/业务测试方案生成与测试方案审计在读取当前源码/证据时，如果**旁路发现已经被证据确认的独立生产 Bug**，条件成立后必须组合 `development/github-incidental-bug-capture`。frontmatter 使用 `optional_uses` 只是为了避免在未发现 Bug 时无条件加载，并不表示确认 Bug 后可以静默跳过。原主 Skill 保留当前调研/讨论/规划/审计目标，Bug Capture 只负责查重、留痕和返回。
 - 如果用户这一轮的主要目标本来就是排查某个故障，直接以 `development/github-bug-investigation` 为主；不能用旁路捕获替代完整缺陷调查。
 - `development/github-business-test-plan-generator` 与 `development/github-technical-test-plan-generator` 是两个独立主目标：前者定义“业务应该验什么”，后者定义“技术上如何稳定证明”。不能用 Composition 把二者静默合并；用户明确只要其中一种时走对应 Skill。
-- 【实施计划】、【技术测试方案】、【业务测试方案】进入最终生成前都必须消费同一套 Spec Gate：高传播合同需要当前有效【结论】，低传播范围要记录 `spec_not_required` 与具体理由，仍未判断清楚时返回调研/讨论。测试路径不会因为名称里有“测试方案”就自动要求结论。
+- 【开发·实施计划】、【开发·技术测试】、【开发·业务测试】进入最终生成前都必须消费同一套 Spec Gate：高传播合同需要当前有效【开发·结论】，低传播范围要记录 `spec_not_required` 与具体理由，仍未判断清楚时返回调研/讨论。测试路径不会因为名称里有“测试方案”就自动要求结论。
 - `development/source-patch-implementation` 是唯一受控的生产代码实施快车道：只有根因/目标已确认且通过共享 `S` 级 Patch Fast Lane Gate 时使用。用户说“直接 patch”不能绕过 Gate；根因未明先调查，高影响未决策先讨论/Spec，M/L 继续走实施计划与下游 Coding Agent。
 - Patch Fast Lane 可以随局部修复补必要的回归测试，但不承接测试体系设计、Harness 重构或完整真实环境测试执行；这些仍进入 Testing Skill / 下游 Test Agent。
 - 多轮续接时继承上一轮阶段：`根因 confirmed + S + fast-lane eligible → 那直接 patch` 直接进入 `source-patch-implementation`；`hypothesis / M / L / decision_required → 那直接 patch` 仍停留在对应上游 Gate。

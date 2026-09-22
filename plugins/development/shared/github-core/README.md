@@ -6,7 +6,7 @@
 
 共享脚本只负责可确定、可验证、容易重复出错的机械操作：归档安全、Git 工作区快照和 Patch 检查。
 
-开发计划本身直接写入 GitHub `【实施计划】` 主 Issue 与评论；不通过本地计划 JSON、Markdown 渲染文件、评论 manifest 或实施状态 JSON 驱动。Development Runtime 不维护下游 Coding/Test Agent 的实施状态；仅 `source-patch-implementation` 可在 S 级 Patch Fast Lane 内直接实施局部源码修改。
+开发计划本身直接写入 GitHub `【开发·实施计划】` 主 Issue 与评论；不通过本地计划 JSON、Markdown 渲染文件、评论 manifest 或实施状态 JSON 驱动。Development Runtime 不维护下游 Coding/Test Agent 的实施状态；仅 `source-patch-implementation` 可在 S 级 Patch Fast Lane 内直接实施局部源码修改。
 
 Skill 负责语义判断：问题边界、严重级别、查重结论、根因、架构、风险、Task 拆分、依赖/Wave、Contract、测试与验收，以及安全信息应进入何种渠道。
 

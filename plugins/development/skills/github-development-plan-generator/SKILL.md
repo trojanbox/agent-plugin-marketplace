@@ -28,7 +28,7 @@ optional_uses: "github/github-issue-manager,development/github-incidental-bug-ca
 
 1. **目标成熟度**：重大产品/架构决定未确认 → 返回讨论；当前实现事实不足 → 先调研/API/缺陷调查。
 2. **Spec Gate**：
-   - 有当前有效【结论】 → 记录 `spec_source` 并继续；
+   - 有当前有效【开发·结论】 → 记录 `spec_source` 并继续；
    - 上游明确 `spec_not_required` + 理由 → 可继续；
    - `ready_for_spec` 且无结论 → 不静默跳过，先进入 Spec 或由用户明确记录 `spec_skipped_by_user`；
    - 无法判断是否需要 Spec → 返回调研/讨论。
