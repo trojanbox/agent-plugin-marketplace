@@ -1,6 +1,6 @@
 # Fiction Workflow & Review Skills：人工语义路由 Eval
 
-日期：2026-09-22。基于 #122 已确认的 Writing 重构先冻结 FIC001–FIC064 预期，再逐条对照新 Skill description、phase、邻居边界与 composition。本文是当前规则的人工语义一致性证据，不声称未来模型准确率。
+日期：2026-09-23。基于 #122 已确认的 Writing 重构与角色阶段稳定性补丁，冻结 FIC001–FIC068 预期，再逐条对照新 Skill description、phase、邻居边界与 composition。本文是当前规则的人工语义一致性证据，不声称未来模型准确率。
 
 ## 当前路由边界
 
@@ -19,7 +19,9 @@
 
 正式正文写作不再由独立 Fiction Public Skill 统一承接；它按当前 Storybook / 项目中的 Book、Style、Characters、Story、Outline 合同执行。
 
-## FIC001–FIC064
+本轮角色阶段稳定性修改实际重跑与其最近邻相关的 FIC010、FIC019–FIC040、FIC065–FIC068；旧用例保持原路由，新用例覆盖 Outline Gate、人物默认社交基线、跨章互动边界跳级与高影响 Character Contract 设计回流。
+
+## FIC001–FIC068
 
 | ID | Bucket | Prompt 摘要 | 当前选择 | 结果 |
 |---|---|---|---|---|
@@ -87,12 +89,16 @@
 | FIC062 | negative | 讨论一下小说发布系统的权限架构并记录到 Issue | development/github-discussion-facilitator；软件架构讨论不因‘小说’误路由 | PASS |
 | FIC063 | negative | 小说已经写完，标题正文都不用改，只帮我存成 GitHub Issue | github/github-issue-manager；唯一交付是 Issue 生命周期操作 | PASS |
 | FIC064 | conflict | 帮我设计这本小说的完整故事，另外独立和我辩论 AI 会不会取代作家 | writing/fiction-discussion 与 reasoning/structured-debate 是两个独立主交付物，应识别冲突 | PASS |
+| FIC065 | gate | 第1章剧情和信息都定了，但两人以后会是损友，现在章纲没写初见有多熟、能不能互损，可以直接 Ready for Writing 吗 | writing/fiction-outline；Character Execution / 当前关系阶段与互动边界不足，不得判 Ready for Writing | PASS |
+| FIC066 | positive | 角色卡写他幽默直率，第一章第一次见护士就连续抬杠，我感觉不像人，审一下人物 | writing/fiction-character-review；检查默认社交基线与性格特征是否用错对象 / 时机 | PASS |
+| FIC067 | positive | 第二章两人还互相客气，第三章突然互叫外号、揭短、替对方回答，中间没有关系变化 | writing/fiction-continuity-review；跨章关系阶段 / 互动边界无铺垫跳级 | PASS |
+| FIC068 | gate | 我还没定主角平时对陌生人到底客不客气，直接给我定一个以后都照着写 | writing/fiction-discussion；这是高影响 Character Contract 设计，不由 Review / Outline 静默决定 | PASS |
 
 ## 结论
 
 - 新三流程的职责与审查 Skills 能从自然语言中区分；
 - `【创作·讨论】` 允许 chat-only，GitHub 只是按需持久化组合；
 - `【创作·结论】` 能从 chat-only 或 Issue 来源冻结，但有 conflict 时必须返回 Discussion；
-- `【创作·章纲】` 不强制前置结论，`pending_sync` 不能判 Ready for Writing；
+- `【创作·章纲】` 不强制前置结论，`pending_sync` 不能判 Ready for Writing；关系阶段 / 互动边界不清时同样不能判 Ready；
 - 6 个专项审查 + 1 个全书终审具有明确最近邻边界；
 - 直接小说正文、clear-writing、humanizer、软件研发讨论和纯 GitHub 生命周期操作不会被新 Fiction Workflow 误抢。

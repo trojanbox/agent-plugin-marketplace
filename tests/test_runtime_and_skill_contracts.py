@@ -672,6 +672,8 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
         self.assertIn("Standalone Reader Gate", conclusion)
         self.assertIn("pending_sync", outline)
         self.assertIn("Canonical Owner", outline)
+        self.assertIn("Character Execution", outline)
+        self.assertIn("互动边界", outline)
         self.assertIn("组合型", final_review)
 
         genre = PLUGINS / "writing/shared/fiction/genres/psychological-horror.md"

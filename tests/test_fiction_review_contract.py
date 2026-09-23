@@ -20,6 +20,8 @@ class FictionReviewContractTests(unittest.TestCase):
         validation = (WRITING / "skills/fiction-revision-validation/SKILL.md").read_text(encoding="utf-8")
         final_review = (WRITING / "skills/fiction-final-review/SKILL.md").read_text(encoding="utf-8")
         voice = (WRITING / "shared/fiction/references/voice-contract.md").read_text(encoding="utf-8")
+        relationships = (WRITING / "shared/fiction/references/character-relationships.md").read_text(encoding="utf-8")
+        outline = (WRITING / "skills/fiction-outline/SKILL.md").read_text(encoding="utf-8")
         quality_eval = (ROOT / "tests/fiction-review-quality-eval.md").read_text(encoding="utf-8")
 
         self.assertIn("Evidence First", review)
@@ -30,7 +32,12 @@ class FictionReviewContractTests(unittest.TestCase):
         self.assertIn("教学案例化 / Checklist 化", revision)
         self.assertIn("Voice Flattening", revision)
         self.assertIn("Character Voice", character)
+        self.assertIn("默认社交基线", character)
+        self.assertIn("后期才建立", character)
+        self.assertIn("互动边界", relationships)
+        self.assertIn("Character Execution", outline)
         self.assertIn("前一章 → 当前章 → 后一章", continuity)
+        self.assertIn("无铺垫跳级", continuity)
         self.assertIn("Work Voice Flattening", expression)
         self.assertIn("第一次阅读", readability)
         self.assertIn("Reader Pull", pacing)
@@ -39,6 +46,8 @@ class FictionReviewContractTests(unittest.TestCase):
         self.assertIn("Author Aesthetic Profile", voice)
         self.assertIn("Anti-Voice", voice)
         self.assertIn("FQ020", quality_eval)
+        self.assertIn("FQ021", quality_eval)
+        self.assertIn("FQ022", quality_eval)
 
         for old in ("fiction-story-architecture", "fiction-story-development", "fiction-writing"):
             self.assertFalse((WRITING / f"skills/{old}").exists(), old)
