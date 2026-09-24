@@ -118,8 +118,8 @@
     {
       "name": "writing",
       "source": "./plugins/writing",
-      "description": "用于人类可读文本的清晰表达、去除明显 AI 写作痕迹、高层决策沟通、复杂知识科普、实操指南，以及长期小说创作的【创作·讨论】、【创作·结论】、【创作·章纲】、正文可写性 Gate、正式正文起草与人物/连续性/表达/可读性/节奏/修订/全书终审。fiction-manuscript-drafting 负责直接开始、续写与重写正式 Manuscript，并先消费 Readiness Gate；小说具体 Style、Voice Baseline 与 Canon 继续由单部作品自己的 Storybook / 项目目录合同承载。",
-      "version": "3.2.0",
+      "description": "用于人类可读文本的清晰表达、去除明显 AI 写作痕迹、高层决策沟通、复杂知识科普、实操指南，以及长期小说创作的【创作·讨论】、【创作·结论】、可选【创作·章纲】/Rolling Plan、正文可写性 Gate、正式正文起草与人物/连续性/表达/可读性/节奏/修订/全书终审。fiction-manuscript-drafting 支持在高影响决定稳定后直接开始或续写 Manuscript，不强制先做完整逐章章纲；小说具体 Style、Voice Baseline 与 Canon 继续由单部作品自己的 Storybook / 项目目录合同承载。",
+      "version": "3.3.0",
       "author": {
         "name": "trojanbox",
         "url": "https://github.com/trojanbox"

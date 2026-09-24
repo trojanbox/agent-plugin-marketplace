@@ -8,7 +8,7 @@
 
 - 用户当前明确要求；
 - Storybook 当前权威文件；
-- 相关 Outline / Manuscript 真实内容；
+- 相关 Manuscript，以及存在时仍有效的近期 Planning；
 - 当前仍有效的历史决定；
 - 当前问题的具体文本证据。
 
@@ -52,7 +52,8 @@ supersedes：
 - Characters：这个人是谁、通常怎样想/反应/说话；
 - Story：这些人经历什么、为什么从开始走到结束；
 - Style：这本书怎样被写出来；
-- Outline：章节 / 场景怎样落实。
+- Manuscript：正式成文；
+- Planning / Outline：可选的近期章节投影，不拥有长期 Canon。
 
 问题可以传播到多个 Owner，但只能有一个主要 Owner；其它 Owner 只记录传播影响。
 

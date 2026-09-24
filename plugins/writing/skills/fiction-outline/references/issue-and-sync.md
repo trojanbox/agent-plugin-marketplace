@@ -1,66 +1,64 @@
-# 【创作·章纲】Issue 与 Outline 同步合同
+# 【创作·章纲】Issue 与 Planning 持久化合同
 
 ## 权威模型
 
 ```text
-【创作·章纲】Issue
-= 协作 / 讨论 / 当前工作视图 / 决策历史
+World / Characters / Story / Style
+= 长期 Canon Owner
 
-Storybook outline/
-= 当前确认章纲的长期 Canonical Owner
+outline/ 或等价 Planning Layer
+= 可选的近期写作计划 / 结构工作视图
+
+【创作·章纲】Issue
+= 需要时的协作、讨论与决策历史
 ```
 
-Issue 与 `outline/` 不允许各自独立演化成两套 Canon。
+Planning 不能成为第二套 Canon。长期事实如果只存在于章纲 / Issue，必须回写真正 Owner；旧计划与当前 Canon 冲突时，以 Canon Owner 为准。
 
-## Issue 正文
+## 推荐持久化方式
 
-保持轻量，维护：当前来源、本版目标、工作体量、继承合同、Story Movement / 阶段索引、真实章节索引、跨章硬约束、验收、非目标、替代关系。
-
-索引建议同时指向：
+持续写作、每次只推进少量章节时，优先维护：
 
 ```text
-第5章 → current comment link → outline/005.md → sync_status: synced
+outline/current.md
 ```
 
-## 章纲评论
+只保存接下来 1～3 章或当前真实需要的近端范围。已消费的计划可以由 Git 历史追溯；完整逐章大纲只有用户明确需要时才维护。
 
-长篇细化后优先一章一个稳定评论。评论是当前工作视图；同一章后续调整原地编辑，不制造 v1/v2/v3 评论链。
+项目已经存在历史详细章纲时，可以保留为 `legacy / superseded planning reference`，不要求删除，也不能继续作为 Manuscript 的逐项执行清单。
 
-新增评论仅用于：新章节、新 Movement/组、拆章产生的新章节、值得追溯的高影响结构决定。
+## Issue
 
-合并章节时保留一个当前评论；其它评论标记 merged / superseded 并从正文 current index 移除。
+Routine Rolling Plan 不强制建 Issue。以下情况才使用【创作·章纲】Issue：
+
+- 用户明确要求长期记录 / GitHub 协作；
+- 章节拆合会明显影响 Story Movement 或大量后续文件；
+- 多人 / 多 Agent 需要共享当前规划决策历史；
+- 项目合同明确要求。
+
+Issue 正文保持轻量：范围、目标、已确认结构决定、Preserve Set、替代关系和当前持久化入口。
 
 ## pending_sync
 
-用户已经确认、但尚未写回 `outline/` 时：
+只有当**项目或用户明确要求某个 Planning 产物必须先持久化**时，才使用 `pending_sync`：
 
-- Issue 索引标记 `pending_sync`；
-- 下游不能把它当长期权威；
-- 不得宣布该章节 Ready for Writing。
+- 已确认但尚未写回当前 Planning 文件 → `pending_sync`；
+- 不能声称“计划已经同步”；
+- 但 `pending_sync` **不是通用 Manuscript Readiness Blocker**。正文是否可写仍由高影响 Canon / Story / Character / Style / relationship / information 边界决定。
 
-同步成功后：更新 `outline/` 文件 → 更新 Issue index 为 `synced` → 回读并检查一致性。
+## Rolling Plan 最低质量
 
-## Ready for Writing 最低条件
-
-- 章节职责清楚；
-- 人物当前目标清楚；
-- 进入/离开状态清楚；
-- 场景链有因果；
-- 人物 / 读者信息边界明确；
-- 重大刺激下人物第一反应成立；
-- 关键人物的当前关系阶段、默认社交姿态与互动边界足以约束对白和行为；
-- 上一章遗留的关系 / 情绪 / 身体边界在本章有明确 Carry-over（适用时）；
-- 章尾自然进入下一步；
-- 特殊章节的 Reading Effect / 写作重点已明确（适用时）；
-- 当前确认版本已同步到 Canonical `outline/`。
+- 当前 Chapter Engine 清楚；
+- Hard Anchors 只保留高影响节点；
+- 关系 / 信息边界足以避免真实越界；
+- Exit Change 或近端方向清楚；
+- `creative_open` 明确保留给正文；
+- 不用固定场景数、固定章节数或知识点配额组织正文。
 
 ## 每轮写后检查
 
-- Issue current index 是否唯一；
-- comment 与 `outline/` 是否一致；
-- split / merge 的旧入口是否失效；
-- 前一章 → 当前章 → 后一章是否连续；
-- 信息是否提前 / 重复；
-- Character Voice / Knowledge Boundary 是否越界；
-- 熟悉度、称呼、玩笑、打断、触碰、替答等互动边界是否发生无铺垫跳级；
-- 全局硬约束是否仍同步。
+- 长期事实是否误放进 Planning 而没有 Owner；
+- 当前计划是否仍与 Story / Characters / Style 一致；
+- 上一章正式成文后，原计划是否已经失效或需要缩短 / 改写；
+- 是否出现“场景 A 证明主题 A、场景 B 展示设定 B”的逐项施工倾向；
+- 旧计划是否被清楚标记为 superseded / legacy，而没有和 `current.md` 并列争权威。

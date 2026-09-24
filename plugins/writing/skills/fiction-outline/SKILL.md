@@ -1,6 +1,6 @@
 ---
 name: fiction-outline
-description: "【创作·章纲】用于把已经足够成熟的小说材料通过与用户逐轮确认，落实成真实章节 / 场景计划，并维护长期可恢复的章纲 Issue；章纲同时要把关键人物的当章执行态、关系阶段与互动边界明确到可直接指导正文。输入可以是 Storybook、成熟梗概、半成品、旧章纲、已有正文或一份/多份【创作·结论】，不强制要求前置结论。适合‘开始设计章纲/继续第5章章纲/把这几章细化到可以写/调整章节拆分’。如果用户只想判断现有材料是否已经可以进入正式正文，使用 fiction-manuscript-readiness；如果高影响 World / Character / Story / Style 决策仍缺失，回 fiction-discussion；不写正式正文。"
+description: "【创作·章纲】用于用户明确想做章节规划、短期 Rolling Plan、章节拆合或复杂结构预演时，把成熟 Story / Characters / Style 暂时投影成可执行的近期计划。Outline 是可选 Planning Layer，不是 Manuscript 的强制前置 Canon Owner；默认优先规划接下来 1～3 章，锁高影响锚点、关系/信息边界和离场变化，把对白、小动作、环境细节和普通场景实现留给正文。适合‘先规划接下来三章/把第5章拆开/这一段多线太复杂先做章纲/我明确要完整逐章大纲’。如果用户已经要直接开始/继续正文且高影响决定已稳定，进入 fiction-manuscript-drafting；如果 World / Character / Story / Style 仍有高影响缺口，回 fiction-discussion；不写正式正文。"
 visibility: workflow
 phase: planning
 optional_uses: "github/github-issue-manager"
@@ -10,51 +10,75 @@ optional_uses: "github/github-issue-manager"
 
 ## 唯一目标
 
-把当前成熟故事落成**可直接指导 Manuscript 的真实章节计划**，同时保持 Storybook `outline/` 作为长期 Canonical Owner，Issue 作为协作、讨论和工作视图。
+在**确实需要规划**时，为当前 Manuscript 提供轻量、可替换的章节级导航；优先服务近期 1～3 章，不把 Planning Layer 升格成长期 Canon，也不要求所有作品先做完整逐章施工图。
+
+长期事实继续由 World / Characters / Story / Style 持有。Outline / Rolling Plan 只消费这些 Owner，并记录当前写作范围需要的近端投影。
 
 ## 启动 Gate
 
-不检查“有没有前置【创作·结论】”，只检查材料是否足以进行章节级设计。有效输入可来自 Storybook、成熟梗概、旧章纲、已有正文、用户明确方向或创作结论。
+以下情况适合进入本 Skill：
 
-如果为了让某章成立仍必须新增高影响 World / Characters / Story / Style 决定，停止在章纲层静默补设计，回 `writing/fiction-discussion`。
+- 用户明确要求章纲、章节拆合、近期 2～3 章规划；
+- 多 POV / 多时间线 / 高密度 reveal 等结构复杂度使直接成文容易发生真实因果错误；
+- 正文阶段遇到章级结构阻塞，需要先把近端路线理清；
+- 用户明确偏好完整逐章大纲。
+
+以下情况**不要求**先进入本 Skill：
+
+- 用户已经要求开始 / 继续正文，Story、Characters、Style、关系阶段与信息边界足够稳定；
+- 缺少的只是对白、小动作、生活细节、局部场景顺序等 `creative_open`；
+- 仅因为“长篇小说一般应该有章纲”。
+
+如果为了让近端章节成立仍必须新增高影响 World / Characters / Story / Style 决定，停止在 Planning 层静默补设计，回 `writing/fiction-discussion`。
 
 ## 主流程
 
-1. **恢复权威输入**：读取 Book README、Outline Directory Contract、当前 World / Characters / Story / Style、相关结论、已有 Outline / Manuscript 与章纲 Issue。
-2. **先打通全书骨架**：保证开头到结尾可完整复述，主要 Story Movement、人物/关系变化与信息释放没有明显断链。
-3. **按强关联章节组讨论**：每轮范围由真实依赖决定，不固定 3 章/5 章；最终仍按真实章节分别落纲。
-4. **渐进细化**：近端章节可很细，远端章节可暂时只保留职责、核心变化、禁止提前开放的信息；不要求全书同一字段密度。
-5. **允许自然拆合**：过载拆章，实际属于一个完整场景时合并；不为整数章数机械操作。
-6. **Ready for Writing Gate**：按 `../../shared/fiction/references/manuscript-readiness.md` 检查本章；只要正文作者仍需临场决定关键剧情、人物反应、关系权限、信息释放或高影响事实，就不能判 Ready。
-7. **同步 Canonical Outline**：用户确认一个章节/章节组后，必须把当前有效版本同步到 Storybook `outline/`；同步前标记 `pending_sync`，不能视为 Ready for Writing。
-8. **写后检查**：Issue 索引、当前评论、`outline/` 文件、前后章与全局合同一致后才结束本轮。
+1. **恢复权威输入**：读取 Book README、相关 World / Characters / Story / Style、上一章正式 Manuscript、必要 Knowledge / Mistakes，以及项目当前 Planning Contract（若存在）。
+2. **先找近端叙事发动机**：当前人物接下来实际在做什么；不要先把主题、设定点或人物标签拆成场景任务。
+3. **锁最小硬锚点**：只记录若遗漏就会破坏 Story 因果、关系阶段、信息释放或重要状态变化的节点。
+4. **保留 Creative Open**：对白、普通动作、环境细节、低影响生活摩擦、笑点实现、具体道具与大部分场景调度默认留给 Manuscript。
+5. **按真实边界拆合**：章节数量服从行动、POV、时间、情绪与状态变化；不按 3 章、5 章或固定场景数配额拆分。
+6. **近详远略**：默认只把接下来 1～3 章规划到可用程度；更远只保留 Story Movement / 长线锚点，除非用户明确要求完整逐章大纲。
+7. **Readiness 对齐**：按 `../../shared/fiction/references/manuscript-readiness.md` 检查是否仍有高影响阻塞；**没有持久化 Outline 文件本身不是 Not Ready 理由**。
+8. **按需持久化**：项目 / 用户需要跨会话恢复时写入当前 Planning Layer（推荐 `outline/current.md` 或项目自己的等价位置）；旧计划可保留为历史规划，不反向覆盖 Canon Owner。
 
-## Character Execution
+## Rolling Plan 推荐字段
 
-章纲只实例化**本章真正影响成文的当前态**，不要复制整张角色卡。关键人物按需明确：当前目标/注意力、压力水平、默认社交姿态、当前关系阶段、已经建立与尚未建立的互动边界、上一章 Carry-over、本章离场变化。
+默认不写固定 Scene List。一个近期章节通常只需要：
 
-稳定默认基线归 Characters，跨章关系阶段归 Story；缺哪一层就回对应 Owner 补齐，不能让正文作者自行用“这个角色幽默/直率/话多”去猜当前应该有多熟。
+- **Chapter Engine**：这一章人物实际在做什么；
+- **Hard Anchors**：2～4 个不可丢的高影响节点；
+- **Character / Relationship Boundary**：只有当前章确实需要额外提醒时记录；
+- **Information Open / Closed**：当前 reveal 边界；
+- **Exit Change**：章末最重要的状态变化；
+- **Creative Open**：明确哪些实现留给正文现场发现。
 
-## Writing Simulation Test
+如果这些字段仍然被写成“场景1负责 A、场景2负责 B、场景3负责 C”的知识点清单，优先判定 Planning 过度执行。
 
-换一个没参加讨论的 Agent，只给它当前 Storybook 权威内容 + 本章 Outline，它是否仍必须重新决定关键剧情、人物反应、信息释放，或猜“他们现在有多熟、能不能这样开玩笑 / 打断 / 触碰 / 揭短 / 替答 / 问私人问题”？如果会，章纲还不够细。
+## Planning Simulation Test
+
+问两个问题：
+
+1. **删掉这个计划以后，长期 Canon 是否仍完整存在于真正 Owner？** 如果否，说明把 Canon 错放进了 Planning。
+2. **正文作者是否被迫逐项证明计划里的每个主题 / 人设 / 信息点？** 如果是，计划太细，应退回 Engine + Hard Anchors + Boundaries。
 
 ## 按需读取
 
-- 需要 Issue 正文/评论维护、`pending_sync`、拆合章与 `outline/` 同步规则时读取 `references/issue-and-sync.md`。
+- 需要 Issue / `outline/current.md` 持久化和替代关系时读取 `references/issue-and-sync.md`。
 - 需要 Story Movement / 体量方法时读取 `../../shared/fiction/references/story-movements.md`。
-- 需要人物反应与关系检查时读取 `../../shared/fiction/references/character-relationships.md`。
+- 需要人物关系边界时读取 `../../shared/fiction/references/character-relationships.md`。
 - 需要场景、信息释放与生活世界方法时读取 `../../shared/fiction/references/scenes-information-world.md`。
 - 需要 Work Voice / POV 约束时读取 `../../shared/fiction/references/voice-contract.md`。
-- 需要判断当前 Outline 是否真正达到正文可写状态时读取 `../../shared/fiction/references/manuscript-readiness.md`。
+- 需要判断是否可以直接进入正文时读取 `../../shared/fiction/references/manuscript-readiness.md`。
 
 ## Composition
 
-正式启动【创作·章纲】时需要长期 Issue；组合 `github/github-issue-manager` 使用 `【创作·章纲】【书名】<版本 / 范围>`。GitHub 暂不可写时只能生成待同步交接，不能声称远端章纲已更新。
+Routine Rolling Plan 不强制创建 Issue。用户明确要求 GitHub 持久化、项目规定必须通过 Issue 协作，或一次高影响章节结构调整需要保留决策历史时，组合 `github/github-issue-manager` 使用 `【创作·章纲】【书名】<版本 / 范围>`。
 
 ## 停止边界
 
 - 高影响上游合同缺失 → 回【创作·讨论】。
-- 用户只要求检查现有 Book / 当前章能否开始正文 → 路由 `writing/fiction-manuscript-readiness`。
-- 开始写完整对白/正式叙述 → 停止，当前 Skill 不负责 Manuscript。
-- 尚未同步到 `outline/` 的确认内容 → 保持 `pending_sync`，不得宣布 Ready for Writing。
+- 用户已经明确要求直接开始 / 继续正式正文，且 Readiness 没有高影响阻塞 → 转 `writing/fiction-manuscript-drafting`，不要为了流程完整强制补章纲。
+- 用户只要求检查能否开始正文 → `writing/fiction-manuscript-readiness`。
+- 开始写完整对白 / 正式叙述 → 停止，当前 Skill 不负责 Manuscript。
+- Planning 未持久化但用户没有要求持久化 → 不构成阻塞。

@@ -18,7 +18,7 @@
 
 ## 2. 默认只审查
 
-Review Skill 默认不静默修改 World / Characters / Story / Style / Outline / Manuscript。用户明确要求“审查并修复”时，先完成诊断再进入实际修改。
+Review Skill 默认不静默修改 World / Characters / Story / Style / Manuscript，也不静默重写当前 Planning / Outline。用户明确要求“审查并修复”时，先完成诊断再进入实际修改。
 
 高影响创作问题不能由 Review Skill 自行重新设计，路由回 `writing/fiction-discussion`。
 
@@ -63,7 +63,7 @@ Review Skill 默认不静默修改 World / Characters / Story / Style / Outline 
 - Characters：稳定人物逻辑、Voice、认知边界；
 - Story：主线、关系跨阶段变化、信息释放；
 - Style：Work Voice、POV、表达边界；
-- Outline：章级场景、状态与衔接；
+- Planning / Outline：可选的章级结构与近端计划；不是长期 Canon Owner；
 - Manuscript：正式成文；
 - Revisions：只保存 QA / 修订结果，不成为第二 Canon。
 

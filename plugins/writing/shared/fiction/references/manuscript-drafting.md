@@ -2,7 +2,7 @@
 
 本 reference 供 `fiction-manuscript-drafting` 在**已有正式正文、跨章续写、新会话恢复、实质重写或用户要求加强某个表达维度**时读取。
 
-它只提供恢复和检查方法，不提供通用小说文风。作品实际声音仍由当前 Book Style、Characters、Story、Outline、Knowledge 与已确认 Manuscript 决定。
+它只提供恢复和检查方法，不提供通用小说文风。作品实际声音仍由当前 Book Style、Characters、Story、Knowledge、已确认 Manuscript，以及存在时的近期 Planning 决定。
 
 ## 1. Voice Calibration
 
@@ -13,7 +13,7 @@
 1. 当前有效、用户已确认的正式 Manuscript；
 2. 上一章与当前章相邻的正式正文；
 3. 当前 Work Voice Contract / Anti-Voice；
-4. Character Voice、Story 信息策略、Outline 当前执行态；
+4. Character Voice、Story 信息策略，以及存在时仍有效的近期 Planning；
 5. 历史旧稿只作为低优先级表达证据，前提是项目明确允许且不与当前 Canon 冲突。
 
 聊天里刚生成但未确认的候选稿、用户已经否决的版本、未落入正式 Manuscript 的草稿都不构成 Voice Baseline。

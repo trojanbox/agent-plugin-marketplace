@@ -1,6 +1,6 @@
 ---
 name: fiction-discussion
-description: "【创作·讨论】小说创作的宽入口。用于从新点子、角色、场景、主题、结局、已有 Storybook、章纲、正文、半成品或阅读反馈出发，围绕 World / Characters / Story / Style / Outline 的高影响创作问题做多轮决策讨论。适合‘咱们聊聊这个故事/这个人物不对/这段为什么不好看/重新讨论结局/把这轮创作讨论记录下来’。不要求先有 Book 或 Issue；需要形成独立可执行冻结结果时进入 fiction-conclusion，需要把成熟故事落实成真实章节时进入 fiction-outline，纯质量检查进入对应 fiction-*-review。"
+description: "【创作·讨论】小说创作的宽入口。用于从新点子、角色、场景、主题、结局、已有 Storybook、章纲、正文、半成品或阅读反馈出发，围绕 World / Characters / Story / Style 与高影响章节结构做多轮决策讨论。适合‘咱们聊聊这个故事/这个人物不对/这段为什么不好看/重新讨论结局/把这轮创作讨论记录下来’。不要求先有 Book 或 Issue；需要形成独立可执行冻结结果时进入 fiction-conclusion；用户明确需要章节规划时进入 fiction-outline；高影响决定已经稳定且用户要直接开始/继续正文时可直接进入 fiction-manuscript-drafting，不强制先做完整章纲。"
 visibility: workflow
 phase: discussion
 optional_uses: "github/github-issue-manager"
@@ -10,13 +10,13 @@ optional_uses: "github/github-issue-manager"
 
 ## 唯一目标
 
-把当前创作问题推进成**可追溯的创作决定**：解决会阻塞当前范围的结构性未知，同时显式保留有价值的 `creative_open`，不把讨论扩张成全书百科或固定问卷。
+把当前创作问题推进成**可追溯的创作决定**：解决会阻塞当前范围的结构性未知，同时显式保留有价值的 `creative_open`，不把讨论扩张成全书百科、固定问卷或强制逐章设计。
 
 ## 主流程
 
-1. **恢复当前事实**：如果已有 Book，先读取项目 `AGENTS.md`、Book README、相关 Directory Contract、当前 Owner 权威文件、直接相关 Outline / Manuscript 与活动 Issue；全新构思可以从用户当前材料直接开始。
+1. **恢复当前事实**：如果已有 Book，先读取项目 `AGENTS.md`、Book README、相关 Directory Contract、当前 Canon Owner、直接相关 Manuscript、存在时的当前 Planning 与活动 Issue；全新构思可以从用户当前材料直接开始。
 2. **建立 Current Creative State**：区分当前作品事实、用户已确认决定、AI 推断、候选、deferred、非目标、creative_open 与 superseded；AI 推荐不能冒充事实。
-3. **确定 Scope 与主 Owner**：用户无需先分类；Skill 内部判断 World / Characters / Story / Style / Outline 的主 Owner 与传播影响，一条长期事实只指定一个主要 Owner。
+3. **确定 Scope 与主 Owner**：用户无需先分类；Skill 内部判断 World / Characters / Story / Style / Manuscript 的主 Owner 与传播影响。Planning / Outline 可以承载近端投影，但不拥有长期 Canon。
 4. **建立 Q-xxx 决策树**：按依赖关系找最高杠杆问题；一次主要推进一个会真实改变后续的决策，已经能从材料确认的事实不反问用户。
 5. **记录 D-xxx**：用户确认后记录选择、理由、主 Owner、传播影响、边界/非目标、creative_open、未决项、来源、depends_on / supersedes。
 6. **重算待决项**：剪枝已失效分支；如果继续细化不会改善正文或避免真实错误，停止扩张。
@@ -31,7 +31,7 @@ optional_uses: "github/github-issue-manager"
 ## 结构性未知 vs 创造性未知
 
 - **结构性未知**：不解决会导致 Canon 冲突、人物逻辑失真、Story 因果断裂、信息释放错误或大规模返工，必须解决。
-- **创造性未知**：台词、小动作、低影响生活细节、局部节奏等可安全留给后续 Outline / Manuscript，标记 `creative_open`。
+- **创造性未知**：台词、小动作、低影响生活细节、具体道具、局部场景顺序与普通节奏等可安全留给 Manuscript；只有用户明确需要预规划时才进入 Outline。
 
 ## 按需读取
 
@@ -50,6 +50,7 @@ optional_uses: "github/github-issue-manager"
 ## 停止边界
 
 - 当前需要的是已经确认讨论的独立权威结论 → 转 `writing/fiction-conclusion`。
-- 当前故事已成熟到逐章设计 → 转 `writing/fiction-outline`。
+- 用户明确要求先做章节规划、拆合或复杂近端路线 → 转 `writing/fiction-outline`。
+- 高影响决定已稳定，用户明确要求开始 / 继续正式正文 → 转 `writing/fiction-manuscript-drafting`；**不强制补完整章纲**。
 - 当前只是人物/连续性/表达/可读性/节奏等质量检查 → 转对应 Review Skill。
 - 不在讨论阶段直接写正式 Manuscript，除非用户明确切换任务。
