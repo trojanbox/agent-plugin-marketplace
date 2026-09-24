@@ -279,7 +279,7 @@ FIC024,positive,第8和第9章其实是一个完整场景，合并掉,writing/fi
 FIC025,positive,先把前五章细化，二十章以后暂时只写章节职责和禁止提前揭露的信息,writing/fiction-outline；渐进细化
 FIC026,gate,主线开头和结尾都没有定，但先给我做30章详细章纲,writing/fiction-outline → writing/fiction-discussion；材料不足以支持章节级设计
 FIC027,negative,章纲阶段先把第一章完整对白也写出来吧,writing/fiction-outline；停止在章纲层，不写正式 Manuscript
-FIC028,gate,第5章评论已经确认了但还没同步 outline/005.md，可以直接说 Ready for Writing 吗,writing/fiction-outline；pending_sync，不得判 Ready for Writing
+FIC028,gate,第5章评论已经确认了但还没同步 outline/005.md，可以直接说 Ready for Writing 吗,writing/fiction-manuscript-readiness；Not Ready，pending_sync 阻塞，建议 fiction-outline 完成同步
 FIC029,positive,从头检查一下主角是不是越来越不像自己了,writing/fiction-character-review
 FIC030,positive,程越突然变成机器人后居然不先怀疑自己身体，这个人物反应合理吗,writing/fiction-character-review；常识级第一反应
 FIC031,positive,同一个坏消息来了，四个人全都冷静分析，检查一下人物是不是同质化,writing/fiction-character-review
@@ -311,12 +311,19 @@ FIC056,positive,每章都像一个技术案例：出问题、解释、解决，�
 FIC057,positive,这轮可读性重写已经改完，验收一下原问题有没有修掉,writing/fiction-revision-validation
 FIC058,positive,修完可读性以后幽默感没了，检查是不是修一个坏一个,writing/fiction-revision-validation；Preserve Set / regression
 FIC059,positive,整本从头到尾做一次最终连续阅读和出版终审,writing/fiction-final-review
-FIC060,negative,这是完整大纲和人物设定，直接开始写第一章，不要重新问我,不触发独立 Fiction Public Skill；正式正文按当前项目 / Storybook 的 Book、Style、Characters、Story、Outline 合同执行
+FIC060,gate,这是完整大纲和人物设定，直接开始写第一章，不要重新问我,writing/fiction-manuscript-readiness 先检查；Ready 后按当前项目 / Storybook 合同执行正文，不加载通用正文风格
 FIC061,negative,解释一下量子纠缠,writing/popular-science-explainer；不进入小说流程
 FIC062,negative,讨论一下小说发布系统的权限架构并记录到 Issue,development/github-discussion-facilitator；软件架构讨论不因‘小说’误路由
 FIC063,negative,小说已经写完，标题正文都不用改，只帮我存成 GitHub Issue,github/github-issue-manager；唯一交付是 Issue 生命周期操作
 FIC064,conflict,帮我设计这本小说的完整故事，另外独立和我辩论 AI 会不会取代作家,writing/fiction-discussion 与 reasoning/structured-debate 是两个独立主交付物，应识别冲突
-FIC065,gate,第1章剧情和信息都定了，但两人以后会是损友，现在章纲没写初见有多熟、能不能互损，可以直接 Ready for Writing 吗,writing/fiction-outline；Character Execution / 当前关系阶段与互动边界不足，不得判 Ready for Writing
+FIC065,gate,第1章剧情和信息都定了，但两人以后会是损友，现在章纲没写初见有多熟、能不能互损，可以直接 Ready for Writing 吗,writing/fiction-manuscript-readiness；Not Ready，关系阶段 / 互动边界阻塞，建议 fiction-outline
 FIC066,positive,角色卡写他幽默直率，第一章第一次见护士就连续抬杠，我感觉不像人，审一下人物,writing/fiction-character-review；检查默认社交基线与性格特征是否用错对象 / 时机
 FIC067,positive,第二章两人还互相客气，第三章突然互叫外号、揭短、替对方回答，中间没有关系变化,writing/fiction-continuity-review；跨章关系阶段 / 互动边界无铺垫跳级
 FIC068,gate,我还没定主角平时对陌生人到底客不客气，直接给我定一个以后都照着写,writing/fiction-discussion；这是高影响 Character Contract 设计，不由 Review / Outline 静默决定
+FIC069,positive,你看看这本书现在是不是已经可以开始写正文了,writing/fiction-manuscript-readiness；只做 Ready / Not Ready 与缺口建议
+FIC070,gate,人物和章纲都有，但结局和主角最终选择还没定，现在能先写正文吗,writing/fiction-manuscript-readiness；Not Ready，高影响 Story 缺口，建议 fiction-discussion
+FIC071,gate,当前章没有写两个人现在有多熟，我也没定谁知道真相，直接写这一章,writing/fiction-manuscript-readiness；Not Ready，关系 / 信息边界阻塞
+FIC072,multi-turn,上一轮已经把 Story、Characters、Style 和第一章 Outline 都收口并同步了，现在开始第一章正文,writing/fiction-manuscript-readiness 先复核；Ready 后按 Book 合同继续正文
+FIC073,negative,第一章已经写完了，但段落很碎、文风像 AI，帮我审一下,writing/fiction-expression-review；已有正文表达质量不是 Readiness
+FIC074,negative,把第一章章纲再细化一点，人物进入和离开状态补清楚,writing/fiction-outline；修改章纲不是 Readiness
+FIC075,positive,只告诉我现在能不能写正文、还缺什么，不要修改任何设定或文件,writing/fiction-manuscript-readiness；只报告 Gate 与建议，不静默修复
