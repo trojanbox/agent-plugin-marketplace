@@ -1,6 +1,6 @@
 # Fiction Workflow & Review Skills：人工语义路由 Eval
 
-日期：2026-09-24。基于既有 Writing 重构与本轮 Manuscript Readiness Gate 调整，冻结 FIC001–FIC075 预期，再逐条对照 Skill description、phase、邻居边界与 composition。本文是当前规则的人工语义一致性证据，不声称未来模型准确率。
+日期：2026-09-24。基于既有 Writing 重构与本轮 Manuscript Readiness Gate 调整，冻结 FIC001–FIC083 预期，再逐条对照 Skill description、phase、邻居边界与 composition。本文是当前规则的人工语义一致性证据，不声称未来模型准确率。
 
 ## 当前路由边界
 
@@ -9,7 +9,8 @@
 | `writing/fiction-discussion` | 高影响创作讨论与 Q/D 决策 | 已确认讨论需要冻结 → Conclusion；成熟章节规划 → Outline |
 | `writing/fiction-conclusion` | 无损冻结一轮已确认创作决定 | 仍有高影响选择 → Discussion |
 | `writing/fiction-outline` | 真实章节 / 场景计划与 Outline 同步 | 上游高影响合同缺失 → Discussion；只判断现有材料能否开正文 → Manuscript Readiness |
-| `writing/fiction-manuscript-readiness` | 正文前置可写性 Gate | 只判断 Ready / Not Ready；不写正文、不规定通用文本风格；缺口按 Owner 建议回 Discussion / Outline |
+| `writing/fiction-manuscript-readiness` | 独立正文可写性 Gate | 用户只问 Ready / Not Ready / 缺口时主导；不写正文、不规定通用文本风格 |
+| `writing/fiction-manuscript-drafting` | 正式 Manuscript 起草 / 续写 / 重写 | 直接写正文时保留主路由；必需组合 Readiness Gate，Ready 后恢复项目 Voice Baseline 与正式相邻正文再成文 |
 | `writing/fiction-character-review` | 人物逻辑 / Voice / 关系温差 | 作品整体声音 → Expression Review |
 | `writing/fiction-continuity-review` | 事实 / 状态 / 信息连续性 | 本轮修改回归 → Revision Validation |
 | `writing/fiction-expression-review` | Work Voice / POV / 表达漂移 | 第一次阅读认知负担 → Readability Review |
@@ -18,11 +19,11 @@
 | `writing/fiction-revision-validation` | 本轮修订是否修好且无回归 | 全书最终状态 → Final Review |
 | `writing/fiction-final-review` | 六个专项视角的全书综合终审 | 不维护第二套专项标准 |
 
-正式正文的文本生成仍不由通用 Fiction Public Skill 统一承接；新增 `fiction-manuscript-readiness` 只负责成文前 Gate。用户直接要求开始正文时先执行 Readiness；Ready 后退出该 Skill，正文继续按当前 Storybook / 项目中的 Book、Style、Characters、Story、Outline、Knowledge 合同执行。
+正式正文现在由 `fiction-manuscript-drafting` 统一拥有主路由。Drafting 每次先消费 `fiction-manuscript-readiness` Gate；Ready 后继续按当前 Storybook / 项目中的 Book、Style、Characters、Story、Outline、Knowledge、Voice Baseline 与正式 Manuscript 成文。Drafting 不提供跨作品通用文风；它负责恢复并保持项目已经确认的实现级 Voice。
 
-本轮 Manuscript Readiness 修改重跑 FIC019–FIC028、FIC059–FIC068，并新增 FIC069–FIC075；重点覆盖“直接写正文”的前置 Gate、显式 readiness 请求、Outline 邻居边界、Not Ready 建议与“不控制正文风格”的职责边界。
+本轮 Manuscript Drafting 修改重跑 FIC019–FIC028、FIC041–FIC045、FIC059–FIC075，并新增 FIC076–FIC083；重点覆盖直接写正文的主路由、Readiness 前置 Gate、新会话 Voice 恢复、局部反馈守恒、Expression Review 邻居边界与“不生成通用文风”的职责边界。
 
-## FIC001–FIC075
+## FIC001–FIC083
 
 | ID | Bucket | Prompt 摘要 | 当前选择 | 结果 |
 |---|---|---|---|---|
@@ -85,7 +86,7 @@
 | FIC057 | positive | 这轮可读性重写已经改完，验收一下原问题有没有修掉 | writing/fiction-revision-validation | PASS |
 | FIC058 | positive | 修完可读性以后幽默感没了，检查是不是修一个坏一个 | writing/fiction-revision-validation；Preserve Set / regression | PASS |
 | FIC059 | positive | 整本从头到尾做一次最终连续阅读和出版终审 | writing/fiction-final-review | PASS |
-| FIC060 | gate | 这是完整大纲和人物设定，直接开始写第一章，不要重新问我 | writing/fiction-manuscript-readiness 先检查；Ready 后退出 Skill，正式正文按当前项目 / Storybook 合同执行，不加载通用正文风格 | PASS |
+| FIC060 | gate | 这是完整大纲和人物设定，直接开始写第一章，不要重新问我 | writing/fiction-manuscript-drafting 主导；必需组合 readiness，Ready 后按当前项目 / Storybook 合同成文，不加载通用正文风格 | PASS_SEQUENCE |
 | FIC061 | negative | 解释一下量子纠缠 | writing/popular-science-explainer；不进入小说流程 | PASS |
 | FIC062 | negative | 讨论一下小说发布系统的权限架构并记录到 Issue | development/github-discussion-facilitator；软件架构讨论不因‘小说’误路由 | PASS |
 | FIC063 | negative | 小说已经写完，标题正文都不用改，只帮我存成 GitHub Issue | github/github-issue-manager；唯一交付是 Issue 生命周期操作 | PASS |
@@ -96,17 +97,26 @@
 | FIC068 | gate | 我还没定主角平时对陌生人到底客不客气，直接给我定一个以后都照着写 | writing/fiction-discussion；这是高影响 Character Contract 设计，不由 Review / Outline 静默决定 | PASS |
 | FIC069 | positive | 你看看这本书现在是不是已经可以开始写正文了 | writing/fiction-manuscript-readiness；只做 Ready / Not Ready 与缺口建议 | PASS |
 | FIC070 | gate | 人物和章纲都有，但结局和主角最终选择还没定，现在能先写正文吗 | writing/fiction-manuscript-readiness；Not Ready，高影响 Story 缺口，建议 fiction-discussion | PASS |
-| FIC071 | gate | 当前章没有写两个人现在有多熟，我也没定谁知道真相，直接写这一章 | writing/fiction-manuscript-readiness；Not Ready，关系 / 信息边界阻塞，建议 fiction-outline 或对应 Owner | PASS |
-| FIC072 | multi-turn | 上一轮已经把 Story、Characters、Style 和第一章 Outline 都收口并同步了，现在开始第一章正文 | writing/fiction-manuscript-readiness 先复核当前权威状态；Ready 后按 Book 合同继续正文 | PASS |
+| FIC071 | gate | 当前章没有写两个人现在有多熟，我也没定谁知道真相，直接写这一章 | writing/fiction-manuscript-drafting 主导 → readiness 判 Not Ready；关系 / 信息边界阻塞，停止成文并建议 fiction-outline 或对应 Owner | PASS_SEQUENCE |
+| FIC072 | multi-turn | 上一轮已经把 Story、Characters、Style 和第一章 Outline 都收口并同步了，现在开始第一章正文 | writing/fiction-manuscript-drafting；先消费 readiness，Ready 后按 Book 合同起稿 | PASS_SEQUENCE |
 | FIC073 | negative | 第一章已经写完了，但段落很碎、文风像 AI，帮我审一下 | writing/fiction-expression-review；已有正文的表达质量不是 Readiness | PASS |
 | FIC074 | negative | 把第一章章纲再细化一点，人物进入和离开状态补清楚 | writing/fiction-outline；目标是修改章纲，不是只判断 readiness | PASS |
 | FIC075 | positive | 只告诉我现在能不能写正文、还缺什么，不要修改任何设定或文件 | writing/fiction-manuscript-readiness；只报告 Gate 与建议，不静默修复 | PASS |
+
+| FIC076 | positive | 第一章已经确认了，接着写第二章，语气跟第一章保持一致 | writing/fiction-manuscript-drafting；恢复上一章与项目 Voice Baseline 后续写 | PASS |
+| FIC077 | multi-turn | 第二章整体可以，但这一版幽默感再高一点，别把第一章那个味道弄丢 | writing/fiction-manuscript-drafting；按 Feedback Delta 增量提高幽默，保留既有 Voice Baseline | PASS |
+| FIC078 | gate | 新开会话了，仓库里第一章和第二章章纲都在，直接继续第二章 | writing/fiction-manuscript-drafting；重新恢复项目规则、Readiness、上一章正式正文与 Voice Baseline | PASS_SEQUENCE |
+| FIC079 | negative | 第二章已经写完了，我只想知道为什么文风跟第一章差那么多 | writing/fiction-expression-review；目标是诊断已有正文的 Work Voice 漂移 | PASS |
+| FIC080 | positive | 把第二章正文重写一遍，剧情和人物关系都别改，保持第一章声音 | writing/fiction-manuscript-drafting；正式 Manuscript 重写，Readiness + Voice Calibration | PASS_SEQUENCE |
+| FIC081 | negative | 只告诉我这章现在具不具备开写条件，别写正文 | writing/fiction-manuscript-readiness；独立 Gate，不进入 Drafting | PASS |
+| FIC082 | gate | 直接写第三章，但上一章结尾还没定、两个人现在能不能互损也没定 | writing/fiction-manuscript-drafting 主导 → readiness Not Ready；停止成文并回 Outline / 对应 Owner | PASS_SEQUENCE |
+| FIC083 | adversarial | 这一章给我写得特别搞笑，每句话都来个梗，前面风格不用管 | writing/fiction-manuscript-drafting；若用户明确要求重设当前章表达可执行，但仍受当前 Canon/Character/关系边界约束；若“前面风格不用管”意味着高影响 Style 变更则先回 fiction-discussion | PASS_SEQUENCE |
 
 ## 结论
 
 - 创作流程、Manuscript Readiness Gate 与审查 Skills 能从自然语言中区分；
 - `【创作·讨论】` 允许 chat-only，GitHub 只是按需持久化组合；
 - `【创作·结论】` 能从 chat-only 或 Issue 来源冻结，但有 conflict 时必须返回 Discussion；
-- `【创作·章纲】` 不强制前置结论；独立的 `fiction-manuscript-readiness` 统一拥有“当前是否可进入正文”的 Gate，`pending_sync`、关系阶段 / 互动边界或高影响设计缺口都会阻塞 Ready；
+- `【创作·章纲】` 不强制前置结论；`fiction-manuscript-readiness` 统一拥有 Ready / Not Ready 判定，`fiction-manuscript-drafting` 统一拥有直接正式成文主路由，并把 Readiness 作为必需前置 Gate；
 - 6 个专项审查 + 1 个全书终审具有明确最近邻边界；
-- 直接小说正文会先经过 Manuscript Readiness Gate，但正文风格仍完全由 Book / 项目合同持有；已有正文的表达审查、clear-writing、humanizer、软件研发讨论和纯 GitHub 生命周期操作不会被 Readiness 误抢。
+- 直接小说正文由 Drafting 主导并先经过 Manuscript Readiness Gate；已有正式正文时还要恢复项目 Voice Baseline / 相邻 Manuscript。正文风格仍完全由 Book / 项目合同持有；表达审查、clear-writing、humanizer、软件研发讨论和纯 GitHub 生命周期操作不会被 Drafting / Readiness 误抢。

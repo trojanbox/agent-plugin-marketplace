@@ -11,7 +11,7 @@ phase: verification
 
 **这本书现在还像这本书吗？**
 
-先读取 `../../shared/fiction/references/review-contract.md`；有 Storybook 时读取 `style/` 当前合同、必要 Character Voice 与连续正文。
+先读取 `../../shared/fiction/references/review-contract.md`；有 Storybook 时读取 `style/` 当前合同、必要 Character Voice 与连续正文。项目声明 Voice Baseline 时，必须同时读取其指向的已确认正式 Manuscript；抽象 Style 用于判断边界，正式样本用于判断实现层是否漂移。
 
 ## 检查
 
@@ -23,6 +23,8 @@ phase: verification
 - 段落与句式过度均匀；
 - 旁白频繁总结“真正的问题 / 终于明白”；
 - 已成立的幽默、观察方式、生活感和温度是否消失；
+- 与项目 Voice Baseline 对读时，场景运动、对白摩擦、叙述呼吸和情绪 / 幽默机制是否仍像同一本书；
+- 用户只要求加强某个表达维度时，是否出现局部反馈覆盖整体 Work Voice 的过度补偿；
 - 为了文学感而碎行、金句化、过度修辞；
 - 素材库 / 候选句是否覆盖人物自己的声音。
 

@@ -311,7 +311,7 @@ FIC056,positive,每章都像一个技术案例：出问题、解释、解决，�
 FIC057,positive,这轮可读性重写已经改完，验收一下原问题有没有修掉,writing/fiction-revision-validation
 FIC058,positive,修完可读性以后幽默感没了，检查是不是修一个坏一个,writing/fiction-revision-validation；Preserve Set / regression
 FIC059,positive,整本从头到尾做一次最终连续阅读和出版终审,writing/fiction-final-review
-FIC060,gate,这是完整大纲和人物设定，直接开始写第一章，不要重新问我,writing/fiction-manuscript-readiness 先检查；Ready 后按当前项目 / Storybook 合同执行正文，不加载通用正文风格
+FIC060,gate,这是完整大纲和人物设定，直接开始写第一章，不要重新问我,writing/fiction-manuscript-drafting 主导；组合 readiness Gate；Ready 后按当前项目 / Storybook 合同成文
 FIC061,negative,解释一下量子纠缠,writing/popular-science-explainer；不进入小说流程
 FIC062,negative,讨论一下小说发布系统的权限架构并记录到 Issue,development/github-discussion-facilitator；软件架构讨论不因‘小说’误路由
 FIC063,negative,小说已经写完，标题正文都不用改，只帮我存成 GitHub Issue,github/github-issue-manager；唯一交付是 Issue 生命周期操作
@@ -322,8 +322,15 @@ FIC067,positive,第二章两人还互相客气，第三章突然互叫外号、�
 FIC068,gate,我还没定主角平时对陌生人到底客不客气，直接给我定一个以后都照着写,writing/fiction-discussion；这是高影响 Character Contract 设计，不由 Review / Outline 静默决定
 FIC069,positive,你看看这本书现在是不是已经可以开始写正文了,writing/fiction-manuscript-readiness；只做 Ready / Not Ready 与缺口建议
 FIC070,gate,人物和章纲都有，但结局和主角最终选择还没定，现在能先写正文吗,writing/fiction-manuscript-readiness；Not Ready，高影响 Story 缺口，建议 fiction-discussion
-FIC071,gate,当前章没有写两个人现在有多熟，我也没定谁知道真相，直接写这一章,writing/fiction-manuscript-readiness；Not Ready，关系 / 信息边界阻塞
-FIC072,multi-turn,上一轮已经把 Story、Characters、Style 和第一章 Outline 都收口并同步了，现在开始第一章正文,writing/fiction-manuscript-readiness 先复核；Ready 后按 Book 合同继续正文
+FIC071,gate,当前章没有写两个人现在有多熟，我也没定谁知道真相，直接写这一章,writing/fiction-manuscript-drafting → readiness Not Ready；关系 / 信息边界阻塞并停止成文
+FIC072,multi-turn,上一轮已经把 Story、Characters、Style 和第一章 Outline 都收口并同步了，现在开始第一章正文,writing/fiction-manuscript-drafting；组合 readiness，Ready 后按 Book 合同起稿
 FIC073,negative,第一章已经写完了，但段落很碎、文风像 AI，帮我审一下,writing/fiction-expression-review；已有正文表达质量不是 Readiness
 FIC074,negative,把第一章章纲再细化一点，人物进入和离开状态补清楚,writing/fiction-outline；修改章纲不是 Readiness
 FIC075,positive,只告诉我现在能不能写正文、还缺什么，不要修改任何设定或文件,writing/fiction-manuscript-readiness；只报告 Gate 与建议，不静默修复
+FIC076,positive,第一章已经确认了，接着写第二章，语气跟第一章保持一致,writing/fiction-manuscript-drafting；恢复正式上一章与项目 Voice Baseline 后续写
+FIC077,multi-turn,第二章整体可以，但这一版幽默感再高一点，别把第一章那个味道弄丢,writing/fiction-manuscript-drafting；Feedback Delta 增量调整，保留 Voice Baseline
+FIC078,multi-turn,新开会话了，仓库里第一章和第二章章纲都在，直接继续第二章,writing/fiction-manuscript-drafting；重新恢复项目规则、readiness、正式上一章与 Voice Baseline
+FIC079,negative,第二章已经写完了，我只想知道为什么文风跟第一章差那么多,writing/fiction-expression-review；已有正文 Work Voice 漂移审查
+FIC080,positive,把第二章正文重写一遍，剧情和人物关系都别改，保持第一章声音,writing/fiction-manuscript-drafting；Readiness + Voice Calibration 后重写正式正文
+FIC081,negative,只告诉我这章现在具不具备开写条件，别写正文,writing/fiction-manuscript-readiness；独立 Gate
+FIC082,gate,直接写第三章，但上一章结尾还没定、两个人现在能不能互损也没定,writing/fiction-manuscript-drafting → readiness Not Ready；停止成文并回 Outline / 对应 Owner

@@ -646,6 +646,7 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
             "fiction-conclusion": "specification",
             "fiction-outline": "planning",
             "fiction-manuscript-readiness": "verification",
+            "fiction-manuscript-drafting": "generation",
             "fiction-character-review": "verification",
             "fiction-continuity-review": "verification",
             "fiction-expression-review": "verification",
@@ -669,6 +670,7 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
         conclusion = (PLUGINS / "writing/skills/fiction-conclusion/SKILL.md").read_text(encoding="utf-8")
         outline = (PLUGINS / "writing/skills/fiction-outline/SKILL.md").read_text(encoding="utf-8")
         readiness = (PLUGINS / "writing/skills/fiction-manuscript-readiness/SKILL.md").read_text(encoding="utf-8")
+        drafting = (PLUGINS / "writing/skills/fiction-manuscript-drafting/SKILL.md").read_text(encoding="utf-8")
         final_review = (PLUGINS / "writing/skills/fiction-final-review/SKILL.md").read_text(encoding="utf-8")
         self.assertIn("creative_open", discussion)
         self.assertIn("Standalone Reader Gate", conclusion)
@@ -680,7 +682,12 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
         self.assertIn("不定义小说文本风格", readiness)
         self.assertIn("Not Ready", readiness)
         self.assertIn("不把 `shared/fiction/references/drafting-quality.md`", readiness)
-        self.assertIn("不提供额外通用文风规则", readiness)
+        self.assertIn("fiction-manuscript-drafting", readiness)
+        self.assertIn("不定义小说文本风格", readiness)
+        self.assertIn("Voice Calibration", drafting)
+        self.assertIn("局部反馈", drafting)
+        self.assertIn("manuscript-drafting.md", drafting)
+        self.assertIn("writing/fiction-manuscript-readiness", by_name["fiction-manuscript-drafting"].get("uses", []))
         self.assertIn("组合型", final_review)
 
         genre = PLUGINS / "writing/shared/fiction/genres/psychological-horror.md"
