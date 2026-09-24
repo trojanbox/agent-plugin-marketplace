@@ -1,6 +1,6 @@
 ---
 name: fiction-outline
-description: "【创作·章纲】用于把已经足够成熟的小说材料通过与用户逐轮确认，落实成真实章节 / 场景计划，并维护长期可恢复的章纲 Issue；章纲同时要把关键人物的当章执行态、关系阶段与互动边界明确到可直接指导正文。输入可以是 Storybook、成熟梗概、半成品、旧章纲、已有正文或一份/多份【创作·结论】，不强制要求前置结论。适合‘开始设计章纲/继续第5章章纲/把这几章细化到可以写/调整章节拆分’。如果高影响 World / Character / Story / Style 决策仍缺失，回 fiction-discussion；不写正式正文。"
+description: "【创作·章纲】用于把已经足够成熟的小说材料通过与用户逐轮确认，落实成真实章节 / 场景计划，并维护长期可恢复的章纲 Issue；章纲同时要把关键人物的当章执行态、关系阶段与互动边界明确到可直接指导正文。输入可以是 Storybook、成熟梗概、半成品、旧章纲、已有正文或一份/多份【创作·结论】，不强制要求前置结论。适合‘开始设计章纲/继续第5章章纲/把这几章细化到可以写/调整章节拆分’。如果用户只想判断现有材料是否已经可以进入正式正文，使用 fiction-manuscript-readiness；如果高影响 World / Character / Story / Style 决策仍缺失，回 fiction-discussion；不写正式正文。"
 visibility: workflow
 phase: planning
 optional_uses: "github/github-issue-manager"
@@ -25,7 +25,7 @@ optional_uses: "github/github-issue-manager"
 3. **按强关联章节组讨论**：每轮范围由真实依赖决定，不固定 3 章/5 章；最终仍按真实章节分别落纲。
 4. **渐进细化**：近端章节可很细，远端章节可暂时只保留职责、核心变化、禁止提前开放的信息；不要求全书同一字段密度。
 5. **允许自然拆合**：过载拆章，实际属于一个完整场景时合并；不为整数章数机械操作。
-6. **Ready for Writing Gate**：章节职责、人物当前目标、进入/离开状态、场景因果、信息边界、关键第一反应、当前关系阶段与互动边界、上一章关系/情绪余波、章尾连接均清楚；剩余未知主要属于正式表达。
+6. **Ready for Writing Gate**：按 `../../shared/fiction/references/manuscript-readiness.md` 检查本章；只要正文作者仍需临场决定关键剧情、人物反应、关系权限、信息释放或高影响事实，就不能判 Ready。
 7. **同步 Canonical Outline**：用户确认一个章节/章节组后，必须把当前有效版本同步到 Storybook `outline/`；同步前标记 `pending_sync`，不能视为 Ready for Writing。
 8. **写后检查**：Issue 索引、当前评论、`outline/` 文件、前后章与全局合同一致后才结束本轮。
 
@@ -46,6 +46,7 @@ optional_uses: "github/github-issue-manager"
 - 需要人物反应与关系检查时读取 `../../shared/fiction/references/character-relationships.md`。
 - 需要场景、信息释放与生活世界方法时读取 `../../shared/fiction/references/scenes-information-world.md`。
 - 需要 Work Voice / POV 约束时读取 `../../shared/fiction/references/voice-contract.md`。
+- 需要判断当前 Outline 是否真正达到正文可写状态时读取 `../../shared/fiction/references/manuscript-readiness.md`。
 
 ## Composition
 
@@ -54,5 +55,6 @@ optional_uses: "github/github-issue-manager"
 ## 停止边界
 
 - 高影响上游合同缺失 → 回【创作·讨论】。
+- 用户只要求检查现有 Book / 当前章能否开始正文 → 路由 `writing/fiction-manuscript-readiness`。
 - 开始写完整对白/正式叙述 → 停止，当前 Skill 不负责 Manuscript。
 - 尚未同步到 `outline/` 的确认内容 → 保持 `pending_sync`，不得宣布 Ready for Writing。
