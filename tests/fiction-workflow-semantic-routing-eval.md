@@ -1,6 +1,6 @@
 # Fiction Workflow & Review Skills：人工语义路由 Eval
 
-日期：2026-09-24。基于既有 Writing 重构与本轮 Manuscript Readiness Gate 调整，冻结 FIC001–FIC083 预期，再逐条对照 Skill description、phase、邻居边界与 composition。本文是当前规则的人工语义一致性证据，不声称未来模型准确率。
+日期：2026-09-29。基于既有 Writing 3.3.0 回归基线与本轮 3.4.0 Fiction QA 增强，冻结 FIC001–FIC096 预期，再逐条对照 Skill description、phase、邻居边界与 composition。本文是当前规则的人工语义一致性证据，不声称未来模型准确率。
 
 ## 当前路由边界
 
@@ -11,19 +11,19 @@
 | `writing/fiction-outline` | 可选章节规划 / Rolling Plan / 拆合 | 上游高影响合同缺失 → Discussion；用户已要直接正文且无需规划 → Drafting；只判断能否开正文 → Manuscript Readiness |
 | `writing/fiction-manuscript-readiness` | 独立正文可写性 Gate | 用户只问 Ready / Not Ready / 缺口时主导；不写正文、不规定通用文本风格 |
 | `writing/fiction-manuscript-drafting` | 正式 Manuscript 起草 / 续写 / 重写 | 直接写正文时保留主路由；必需组合 Readiness Gate，Ready 后恢复项目 Voice Baseline 与正式相邻正文再成文 |
-| `writing/fiction-character-review` | 人物逻辑 / Voice / 关系温差 | 作品整体声音 → Expression Review |
+| `writing/fiction-character-review` | 人物逻辑 / Voice / 关系温差 / Knowledge-Permission-Memory Boundary | 跨章关系状态 → Continuity；作品整体声音 → Expression Review |
 | `writing/fiction-continuity-review` | 事实 / 状态 / 信息连续性 | 本轮修改回归 → Revision Validation |
-| `writing/fiction-expression-review` | Work Voice / POV / 表达漂移 | 第一次阅读认知负担 → Readability Review |
+| `writing/fiction-expression-review` | Work Voice / POV / 表达漂移；区分状态变化与真正 Drift | 第一次阅读认知负担 → Readability Review |
 | `writing/fiction-readability-review` | 普通读者是否顺畅理解 | 实际清晰改写 → clear-writing |
 | `writing/fiction-pacing-review` | 连续多章 / 全书阅读节奏 | 多维整本终审 → Final Review |
-| `writing/fiction-revision-validation` | 本轮修订是否修好且无回归 | 全书最终状态 → Final Review |
-| `writing/fiction-final-review` | 六个专项视角的全书综合终审 | 不维护第二套专项标准 |
+| `writing/fiction-revision-validation` | 本轮修订是否修好且无回归；有版本历史时真实 diff 优先 | 全书最终状态 → Final Review |
+| `writing/fiction-final-review` | 六个专项视角的版本绑定全书终审；发布前可进入终校模式 | 不维护第二套专项标准；无具体缺陷时 Protect / No Change |
 
 正式正文现在由 `fiction-manuscript-drafting` 统一拥有主路由。Drafting 每次先消费 `fiction-manuscript-readiness` Gate；Ready 后按当前 Storybook / 项目中的 Book、Style、Characters、Story、Knowledge、Voice Baseline、正式 Manuscript，以及存在时的可选 Rolling Plan 成文。完整逐章 Outline 不再是强制前置。Drafting 不提供跨作品通用文风；它负责恢复并保持项目已经确认的实现级 Voice。
 
-本轮 Manuscript Drafting / Rolling Planning 修改重跑 FIC019–FIC028、FIC041–FIC045、FIC059–FIC083，并新增 FIC084–FIC088；重点覆盖直接写正文的主路由、Readiness 前置 Gate、新会话 Voice 恢复、局部反馈守恒、Expression Review 邻居边界与“不生成通用文风”的职责边界。
+本轮先保留 Manuscript Drafting / Rolling Planning 的既有 FIC019–FIC088 回归；3.4.0 新增 FIC089–FIC096，重点覆盖修订前后真实对比、文笔漂移与人物状态变化、发布标准、出版终校、Readiness 版本失效、Knowledge / Permission / Memory Source，以及终校停止修改 Gate。
 
-## FIC001–FIC088
+## FIC001–FIC096
 
 | ID | Bucket | Prompt 摘要 | 当前选择 | 结果 |
 |---|---|---|---|---|
@@ -118,11 +118,20 @@
 | FIC087 | gate | Story、人物关系、信息边界都定了，只是没决定第二章路上先遇到门还是先上车，现在能写吗 | writing/fiction-manuscript-readiness；Ready，这是 creative_open，不应要求补 Outline | PASS |
 | FIC088 | multi-turn | 第二章写出来以后和原 Rolling Plan 的几个生活细节不一样，但长线事实没变，接着规划第三到第五章 | writing/fiction-outline；以正式 Manuscript 为近端事实输入更新 Rolling Plan，不强迫正文回填旧计划 | PASS |
 
+| FIC089 | positive | 这一轮小七改完以后到底是更好了还是更差了？对照改之前验收一下 | writing/fiction-revision-validation；比较真实修改前后、Preserve Set 与新增回归 | PASS |
+| FIC090 | positive | 这几章文笔有没有漂移？小七后面话明显少了 | writing/fiction-expression-review；先区分状态变化与真正 Work Voice Drift | PASS |
+| FIC091 | positive | 这本书现在达到发布标准了吗 | writing/fiction-final-review；判断当前版本 Publication Readiness | PASS |
+| FIC092 | multi-turn | 上一轮说已经能发布了，那就来一轮终校吧 | writing/fiction-final-review；进入发布前终校模式，按需加载 publication-proofread reference | PASS_SEQUENCE |
+| FIC093 | gate | 39章版本以前做过出版终审，但后来第三幕重写成43章，原来的发布结论还算吗 | writing/fiction-final-review；Version Binding Gate 判断旧 Readiness 对高影响新版本失效并重新确定审查范围 | PASS |
+| FIC094 | positive | 旧小七知道真实年份但不能说，新小七能看日志却没经历过那些事，检查人物有没有写混 | writing/fiction-character-review；Knowledge / Permission / Memory Source 审查 | PASS |
+| FIC095 | negative | 小七在冲突后不再像前期那样一直说长段，我想直接把所有台词都改回更话痨 | writing/fiction-expression-review；先判断高压/关系变化下的语气收缩是否合理，不能按表层长度机械恢复 | PASS |
+| FIC096 | positive | 全书已经没有明显问题了，剩下只是有些句子换一种也行，还要继续精修吗 | writing/fiction-final-review；触发 Protect / No Change Gate，避免无证据无限润色 | PASS |
+
 ## 结论
 
 - 创作流程、Manuscript Readiness Gate 与审查 Skills 能从自然语言中区分；
 - `【创作·讨论】` 允许 chat-only，GitHub 只是按需持久化组合；
 - `【创作·结论】` 能从 chat-only 或 Issue 来源冻结，但有 conflict 时必须返回 Discussion；
 - `【创作·章纲】` 是可选 Planning / Rolling Plan 能力；`fiction-manuscript-readiness` 统一拥有 Ready / Not Ready 判定，且不得因缺少完整 Outline 自动判 Not Ready；`fiction-manuscript-drafting` 统一拥有直接正式成文主路由，并把 Readiness 作为必需前置 Gate；
-- 6 个专项审查 + 1 个全书终审具有明确最近邻边界；
-- 直接小说正文由 Drafting 主导并先经过 Manuscript Readiness Gate；已有正式正文时还要恢复项目 Voice Baseline / 相邻 Manuscript。正文风格仍完全由 Book / 项目合同持有；表达审查、clear-writing、humanizer、软件研发讨论和纯 GitHub 生命周期操作不会被 Drafting / Readiness 误抢。
+- 6 个专项审查 + 1 个全书终审具有明确最近邻边界；Revision Validation 使用真实 diff 作为优先证据，Final Review 的 Publication Readiness 绑定具体 Manuscript 版本；
+- 直接小说正文由 Drafting 主导并先经过 Manuscript Readiness Gate；已有正式正文时还要恢复项目 Voice Baseline / 相邻 Manuscript。正文风格仍完全由 Book / 项目合同持有；Expression Review 会区分压力/关系阶段造成的正常语气变化与真正 Voice Drift；Final Review 在 P0/P1 清空后可明确 Protect / No Change；clear-writing、humanizer、软件研发讨论和纯 GitHub 生命周期操作不会被 Drafting / Readiness 误抢。

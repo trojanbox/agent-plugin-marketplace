@@ -339,3 +339,11 @@ FIC085,positive,先帮我滚动规划接下来三章，后面的先别细化,wri
 FIC086,positive,我就是喜欢完整规划，给这本悬疑小说做30章逐章大纲,writing/fiction-outline；用户明确要求完整章纲时允许详细规划，但 Outline 仍不成为长期 Canon Owner
 FIC087,gate,Story、人物关系、信息边界都定了，只是没决定第二章路上先遇到门还是先上车，现在能写吗,writing/fiction-manuscript-readiness；Ready，这是 creative_open，不应要求补 Outline
 FIC088,multi-turn,第二章写出来以后和原 Rolling Plan 的几个生活细节不一样，但长线事实没变，接着规划第三到第五章,writing/fiction-outline；以正式 Manuscript 为近端事实输入更新 Rolling Plan，不强迫正文回填旧计划
+FIC089,positive,这一轮小七改完以后到底是更好了还是更差了？对照改之前验收一下,writing/fiction-revision-validation；比较真实修改前后、Preserve Set 与新增回归
+FIC090,positive,这几章文笔有没有漂移？小七后面话明显少了,writing/fiction-expression-review；先区分状态变化与真正 Work Voice Drift
+FIC091,positive,这本书现在达到发布标准了吗,writing/fiction-final-review；判断当前版本 Publication Readiness
+FIC092,multi-turn,上一轮说已经能发布了，那就来一轮终校吧,writing/fiction-final-review；进入发布前终校模式并按需加载终校 reference
+FIC093,gate,39章版本以前做过出版终审但后来第三幕重写成43章，原来的发布结论还算吗,writing/fiction-final-review；Version Binding Gate 判断旧 Readiness 是否失效
+FIC094,positive,旧小七知道真实年份但不能说，新小七能看日志却没经历过那些事，检查人物有没有写混,writing/fiction-character-review；Knowledge / Permission / Memory Source 审查
+FIC095,negative,小七在冲突后不再像前期那样一直说长段，我想直接把所有台词都改回更话痨,writing/fiction-expression-review；先判断状态变化是否合理，不能按表层长度机械恢复
+FIC096,positive,全书已经没有明显问题了，剩下只是有些句子换一种也行，还要继续精修吗,writing/fiction-final-review；Protect / No Change Gate
