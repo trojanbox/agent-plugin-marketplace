@@ -2,7 +2,7 @@
 
 仅在用户明确要求“还应该买什么 / 帮我筛选标的 / 适合长期持有的有哪些 / 找短期可能快速重估的机会 / 两类标的应该怎么看”时读取。
 
-本 reference 解决的是**候选选择方法**，不把任何候选包装成保证收益。
+本 reference 解决的是**一次性候选选择方法**，不把任何候选包装成保证收益。候选进入长期观察池后，持续扫描、状态变化与触发监控转 `finance/market-radar`。
 
 ## 0. 先定义 Selection Mode
 
@@ -236,4 +236,4 @@
 9. `As-of & Sources`；
 10. `Missing Data`：缺数据时明确降级，不编造。
 
-候选筛选是第一阶段。用户随后点名某只股票要做完整长期基本面研究，转 `equity-research`；要做完整 DCF/Comps，转 `valuation-analysis`；核心问题变成宏观 regime 时转 `macro-analysis`。
+候选筛选是第一阶段。用户随后点名某只股票要做完整长期基本面研究，转 `equity-research`；要做完整 DCF/Comps，转 `valuation-analysis`；核心问题变成宏观 regime 时转 `macro-analysis`；候选确定后要求持续盯、维护观察池或判断状态是否触发时转 `market-radar`。

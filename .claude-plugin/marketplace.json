@@ -82,8 +82,8 @@
     {
       "name": "finance",
       "source": "./plugins/finance",
-      "description": "用于股票/上市公司研究、财报、估值、投资组合风险与新增标的筛选、个人财务规划与宏观市场分析。通过 Group metadata 按 investing / personal-finance / macro 做软分组；所有时效敏感市场数据必须核验当前来源并标注 as-of。行业/论文的一般研究进入 research，纯数据集统计进入 data，商业竞争战略进入 business。",
-      "version": "1.1.0",
+      "description": "用于股票/上市公司研究、财报、估值、投资组合风险与新增标的筛选、市场雷达与观察池、个人财务规划和宏观市场分析。通过 Group metadata 按 investing / personal-finance / macro 做软分组；所有时效敏感市场数据必须核验当前来源并标注 as-of。行业/论文的一般研究进入 research，纯数据集统计进入 data，商业竞争战略进入 business。",
+      "version": "1.2.0",
       "author": {
         "name": "trojanbox",
         "url": "https://github.com/trojanbox"

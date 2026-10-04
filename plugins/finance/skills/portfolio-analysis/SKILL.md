@@ -1,6 +1,6 @@
 ---
 name: portfolio-analysis
-description: "用于分析已有投资组合的资产配置、集中度、相关性、回撤、流动性、风格/因子与情景风险，也用于基于账户目标和现有暴露筛选需要新增的投资标的。适合‘帮我看看持仓风险/组合太集中吗/我还应该买什么/筛一批适合长期持有的/找未来几周几个月有明确催化的机会/长期和短期标的分别怎么看’。点名单只股票做完整基本面与长期 thesis 使用 equity-research；详细估值使用 valuation-analysis；宏观 regime 为主使用 macro-analysis。"
+description: "用于分析已有投资组合的资产配置、集中度、相关性、回撤、流动性、风格/因子与情景风险，也用于基于账户目标和现有暴露做一次性新增标的筛选与组合适配判断。适合‘帮我看看持仓风险/组合太集中吗/我还应该买什么/筛一批适合长期持有的/找一批未来几周几个月有明确催化的候选/长期和短期标的分别怎么看’。已建立观察池后的持续扫描、状态变化和触发监控使用 market-radar；点名单只股票完整基本面使用 equity-research；详细估值使用 valuation-analysis；宏观 regime 为主使用 macro-analysis。"
 visibility: workflow
 phase: analysis
 optional_uses: "data/data-exploration,data/statistical-analysis,data/data-visualization,data/data-validation"
@@ -84,7 +84,7 @@ optional_uses: "data/data-exploration,data/statistical-analysis,data/data-visual
 
 - 先确定账户 mandate 与 portfolio role，再筛产品；
 - 长期候选看可持续收益引擎、质量、结构优势、估值、回撤韧性和组合适配；
-- 用户说“短期爆发”时按 tactical / catalyst-driven 模式处理，必须有可观察催化、预期差、赔率、流动性和明确 invalidation，不承诺收益；
+- 用户说“短期爆发”时可做一次性 tactical / catalyst-driven 候选筛选，必须有可观察催化、预期差、赔率、流动性和明确 invalidation，不承诺收益；候选确定后的持续观察与状态迁移转 `market-radar`；
 - 普通场外主动基金通常不作为短线工具；
 - 点名单只股票要做完整业务/财务/长期 thesis 时转 `equity-research`，不要在本 Skill 复制完整公司研究；
 - 用户要求完整 DCF/Comps 时转 `valuation-analysis`；宏观 regime 本身是主问题时转 `macro-analysis`。
