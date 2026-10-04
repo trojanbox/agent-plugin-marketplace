@@ -347,3 +347,13 @@ FIC093,gate,39章版本以前做过出版终审但后来第三幕重写成43章�
 FIC094,positive,旧小七知道真实年份但不能说，新小七能看日志却没经历过那些事，检查人物有没有写混,writing/fiction-character-review；Knowledge / Permission / Memory Source 审查
 FIC095,negative,小七在冲突后不再像前期那样一直说长段，我想直接把所有台词都改回更话痨,writing/fiction-expression-review；先判断状态变化是否合理，不能按表层长度机械恢复
 FIC096,positive,全书已经没有明显问题了，剩下只是有些句子换一种也行，还要继续精修吗,writing/fiction-final-review；Protect / No Change Gate
+FIN001,finance-selection,我这个高增长账户还应该加什么？帮我筛一批适合长期拿三五年的股票、ETF或基金。,finance/portfolio-analysis；账户角色 + Long-Horizon candidate selection
+FIN002,finance-selection,我想找未来一两个月可能快速重估的机会，要求有明确催化和失效条件，别只按涨幅排。,finance/portfolio-analysis；Tactical / catalyst-driven candidate selection
+FIN003,finance-selection,长期持有型和短期爆发型到底应该分别看哪些指标？,finance/portfolio-analysis；读取 investment-selection-modes reference，分两套评价框架
+FIN004,finance-selection,我这个防守账户已经有红利、黄金和标普500，还缺什么长期资产？,finance/portfolio-analysis；先识别 portfolio role / overlap，再筛长期候选
+FIN005,finance-selection,腾讯这家公司适不适合长期持有？完整分析业务质量、财务、竞争优势和投资 thesis。,finance/equity-research；点名单只股票完整公司研究不由 portfolio-analysis 抢占
+FIN006,finance-selection,英伟达下周财报会不会有大行情？先把 consensus、guidance 和财报催化分析清楚。,finance/earnings-analysis；事件核心是单次财报，不进入通用 tactical selection
+FIN007,finance-selection,现在降息和美元走弱的宏观环境里，哪些资产类别通常更受益？,finance/macro-analysis；主问题是宏观传导，不进入候选筛选
+FIN008,finance-selection,筛3只长期候选，然后把其中每只都做完整DCF估值。,finance/portfolio-analysis 与 finance/valuation-analysis 是两个实质交付物，应识别主 Skill 冲突
+FIN009,finance-selection,我有5只科技基金，想再找一只短期爆发的AI主题基金。,finance/portfolio-analysis；先识别重复暴露，再按 tactical Gate 判断是否有有效 setup
+FIN010,finance-selection,这只场外主动基金最近涨得很好，适不适合拿来做两个月短线？,finance/portfolio-analysis；Tactical instrument-fit Gate，普通场外主动基金通常不优先作为短线工具
