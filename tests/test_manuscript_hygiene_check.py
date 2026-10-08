@@ -22,7 +22,7 @@ class ManuscriptHygieneCheckTests(unittest.TestCase):
     def test_clean_numbered_manuscript_passes_with_fixed_ending(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            (root / "001.md").write_text("# 第一章　开始\n\n“你好。⃝\n", encoding="utf-8")
+            (root / "001.md").write_text("# 第一章　开始\n\n“你好。”\n", encoding="utf-8")
             (root / "002.md").write_text(
                 "# 第二章　结束\n\n空白输入框。\n\n闪烁光标。\n", encoding="utf-8"
             )
