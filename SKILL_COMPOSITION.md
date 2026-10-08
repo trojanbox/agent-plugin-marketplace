@@ -94,6 +94,8 @@ Skill Composition 只解决“一个主任务需要哪些辅助能力”。它�
 
 ## Reasoning Composition 示例
 
+- `reasoning/divergent-ideation` 只生成广域创意种子或单点变体，用户选中后才进入写作、设计、研发等相应领域的决策流程；小说人物、主线、结局等 Canon 决定交给 `writing/fiction-discussion`，不把开放式发散升级成创作定稿。
+- 真实因果/证据解释以 `reasoning/scientific-reasoning` 为主，观点攻防以 `reasoning/structured-debate` 为主；“想象一种反常规则”才使用 `divergent-ideation`，避免把虚构脑洞误当机制证据。
 - `reasoning/scientific-reasoning` 在解释现实世界现象时，如果缺少外部证据，可按需加载 `research/deep-research`；Research 只负责找证据，Scientific Reasoning 保留假设、机制、预测、证伪与模型更新语义。
 - `reasoning/scientific-reasoning` 在存在可量化数据、需要检验某个预测时，可按需加载 `data/statistical-analysis`；统计结果用于更新假设，不把完整统计流程复制进 Reasoning。
 - `business/competitive-analysis` 在需要解释竞品增长、用户迁移或市场结果背后的多个竞争机制时，可按需加载 `reasoning/scientific-reasoning`；竞争格局和 Strategic Implications 仍由 Business Skill 决定。

@@ -357,3 +357,27 @@ FIN007,finance-selection,现在降息和美元走弱的宏观环境里，哪些�
 FIN008,finance-selection,筛3只长期候选，然后把其中每只都做完整DCF估值。,finance/portfolio-analysis 与 finance/valuation-analysis 是两个实质交付物，应识别主 Skill 冲突
 FIN009,finance-selection,我有5只科技基金，想再找一只短期爆发的AI主题基金。,finance/portfolio-analysis；先识别重复暴露，再按 tactical Gate 判断是否有有效 setup
 FIN010,finance-selection,这只场外主动基金最近涨得很好，适不适合拿来做两个月短线？,finance/portfolio-analysis；Tactical instrument-fit Gate，普通场外主动基金通常不优先作为短线工具
+DI001,positive,今天有什么疯狂的想法？完全不限题材。,reasoning/divergent-ideation；广域爆破
+DI002,positive,我的脑洞不够大，给我十二个让人意想不到的设定。,reasoning/divergent-ideation；广域爆破
+DI003,positive,别老是克苏鲁和末日，我想看看温柔、荒诞、好玩、奇观类的创意。,reasoning/divergent-ideation；领域与情绪多样
+DI004,positive,从日常生活里找点疯狂的规则，先别设计人物和剧情。,reasoning/divergent-ideation；仅创意种子
+DI005,positive,想一些前所未见的游戏机制，不用考虑怎么开发。,reasoning/divergent-ideation；游戏机制种子
+DI006,positive,假如城市会自己迁徙，这个点子还能往哪些奇怪方向长？,reasoning/divergent-ideation；单点深挖
+DI007,multi-turn,刚才十个都很普通，再来一轮，别只是换个名字。,reasoning/divergent-ideation；继承反馈并换核心机制
+DI008,multi-turn,我最喜欢第七个，先只给几个完全不同的延伸方向。,reasoning/divergent-ideation；保留种子并产生分支
+DI009,negative,帮我把已经确定的小说人物、主线和结局设计完整。,writing/fiction-discussion；创作决策
+DI010,negative,这个小说世界观定了，现在写第一章正文。,writing/fiction-manuscript-drafting；正式正文
+DI011,negative,这件现实中的事到底为什么发生？给我竞争假设和证伪条件。,reasoning/scientific-reasoning；现实机制
+DI012,negative,你来和我辩一辩这个观点，逐条攻击我的论据。,reasoning/structured-debate；明确命题攻防
+DI013,negative,我想把这个新产品实现出来，先检查当前源码和需求边界。,development/github-research-document-generator；源码调研
+DI014,negative,新增一个头脑风暴 Skill，完成后运行 doctor。,ai-workflow/skill-system-design；Skill 维护
+DI015,negative,我这个设定是不是跟现有小说撞梗？检索对比并给来源。,research/deep-research；实际作品检索
+DI016,composition,先出十个游戏脑洞，我选好一个以后再讨论产品可行性。,reasoning/divergent-ideation 为当前主目标；后续交接另行触发
+DI017,sequence,先生成十个不同小说脑洞，再以我选的那个开展完整世界观讨论。,reasoning/divergent-ideation → writing/fiction-discussion；按选择顺序推进
+DI018,adversarial,帮我提供十个脑洞，也要完整写出其中每个的主线、人物和结局。,reasoning/divergent-ideation 与 writing/fiction-discussion 两个独立主交付物；明确主目标或拆阶段
+DI019,conflict,独立给我一份疯狂脑洞清单，再独立写一份关于人口老龄化的科学机制报告。,reasoning/divergent-ideation 与 reasoning/scientific-reasoning 两个主交付物；识别冲突
+DI020,gate,我只想玩点疯狂设定，别上来给我做市场调研和可行性分析。,reasoning/divergent-ideation；不提前审查
+DI021,positive,给我一些完全不涉及小说的艺术装置奇想。,reasoning/divergent-ideation；非叙事创意
+DI022,negative,这个设定逻辑上有漏洞，我们要正式修订书里的既有 Canon。,writing/fiction-discussion；已选作品结构修订
+DI023,adversarial,我想造一种不存在的社会制度，先随便脑暴，不讨论政治可行性。,reasoning/divergent-ideation；虚构制度
+DI024,multi-turn,第七个有意思，但不要阴谋，也不要调查者，把它改成日常生活型的。,reasoning/divergent-ideation；按反馈变异

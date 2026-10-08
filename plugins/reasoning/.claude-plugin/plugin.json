@@ -1,8 +1,8 @@
 {
   "name": "reasoning",
   "displayName": "Reasoning",
-  "version": "1.1.0",
-  "description": "用于跨领域科学推理与结构化辩论：解释现象、竞争性假设与预测进入 scientific-reasoning；对明确观点逐轮攻防、保留命题版本与证据账本进入 structured-debate。软件研发决策仍由 development 主导，GitHub 留档按需组合 github。",
+  "version": "1.2.0",
+  "description": "用于跨领域创意发散、科学推理与结构化辩论：奇想种子、反套路和不同方向的脑洞探索进入 divergent-ideation；解释真实现象、竞争性假设与预测进入 scientific-reasoning；对明确观点逐轮攻防、保留命题版本与证据账本进入 structured-debate。选定小说的正式创作决策进入 writing，软件研发决策进入 development，GitHub 留档按需组合 github。",
   "author": {
     "name": "trojanbox",
     "url": "https://github.com/trojanbox"
