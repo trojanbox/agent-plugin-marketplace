@@ -61,6 +61,17 @@ uses: "writing/fiction-manuscript-readiness"
 
 项目已有 Rolling Plan 时从中读取这些内容；没有时在本轮内部临时收缩，不强制写入 `outline/`，也不把完整合同逐条变成生成清单。
 
+### 1.1 创作激活与审查依据分层
+
+完成项目要求的 Author Preference / Mistakes Preflight 后，再整理成文时的最小激活窗口，**不减少必需读取，也不降低事实校验**：
+
+- **始终生效的硬边界**：World / Story / Character Canon、POV、人物当前知道与不能知道的事、关系权限、重要因果、信息释放、连续性，以及命中 Active Mistake 中涉及这些事实的防回归约束。
+- **供写作参考的软偏好**：当前场景真正相关的少量 Voice 机制和作者审美。其它已读取的偏好与检查项留到成稿审查，不逐句当成必须展示的写作任务。
+- **当前场景发动机**：人物现在想做什么、什么正在阻碍他、读者此刻主要牵挂什么；允许自然的失败、生活时间与不直接产出剧情节点的行为。
+
+不要按每个 Hard Anchor、Preference 或 Mistake 各写一段示范场景。这里的“最小”指生成时的注意力分配，**不能以自由创作为由越过已确认硬约束**。
+
+
 ### 2. 有既有正文时先做 Voice Calibration
 
 当任务属于续章、新会话恢复、整章重写，或用户要求增强某个表达维度时，读取 `../../shared/fiction/references/manuscript-drafting.md` 的 Voice Calibration / Feedback Delta 部分。
@@ -90,9 +101,15 @@ uses: "writing/fiction-manuscript-readiness"
 - 若项目维护 Rolling Plan，只更新接下来 1～3 章；
 - 旧计划与实际正文冲突时，先判断是否影响 Canon：普通实现以正式 Manuscript 为准，高影响冲突回真正 Owner 处理。
 
-### 5. Postflight 后再交付
+### 5. 先连读初稿，再执行完整 Postflight
 
-完整章节或实质重写完成后，读取 `../../shared/fiction/references/manuscript-drafting.md` 的 Postflight 部分，至少检查：
+完成一个连续场景或完整章节后，先暂时放下写作清单，用第一次阅读的读者视角连读：
+
+- 读者当前愿意跟着哪个人、等待什么结果？阅读注意力是否被无关技术步骤或作者总结夺走？
+- 哪些对白、动作、等待和普通生活细节已经让人物成立？先标为 **Protect / Preserve**，不要在修订中顺手抹平。
+- 是否存在真正让读者卡住、失去期待或不相信人物的地方？只记录有原文证据的问题；普通安静场景不强制制造反转、冲突或章尾钩子。
+
+随后重新激活完整项目合同与审查清单。读取 `../../shared/fiction/references/manuscript-drafting.md` 的 Postflight 部分，至少检查：
 
 - Character：人物目标、默认社交姿态、压力路径有没有漂；
 - Continuity：身体、物件、位置、关系余波、已知信息有没有跳变；
