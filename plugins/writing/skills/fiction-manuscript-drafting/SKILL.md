@@ -123,7 +123,7 @@ optional_uses: "writing/fiction-prose-editing"
 - Continuity：身体、物件、位置、关系余波、已知信息有没有跳变；
 - Information：有没有作者知情泄漏或提前消费后续真相；
 - Voice：和当前 Voice Baseline 对读后，是否仍像同一本书；
-- Feedback Delta：本轮“加强某维度”的要求有没有覆盖整体 Work Voice；
+- Feedback Delta：本轮局部反馈“加强某维度”的要求有没有覆盖整体 Work Voice；
 - Overexecution：正文有没有变成章纲逐项展开、合同说明文、喜剧小品或其它单一技巧展示。
 
 发现命中时继续修订，不能把已知回归直接交给用户。

@@ -647,6 +647,7 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
             "fiction-outline": "planning",
             "fiction-manuscript-readiness": "verification",
             "fiction-manuscript-drafting": "generation",
+            "fiction-prose-editing": "editing",
             "fiction-character-review": "verification",
             "fiction-continuity-review": "verification",
             "fiction-expression-review": "verification",
