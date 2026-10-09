@@ -1,9 +1,10 @@
 ---
 name: fiction-manuscript-drafting
-description: "正式小说正文起草。用于用户明确要求‘开始第一章/继续下一章/按当前计划写这一章/没有章纲直接接着写/重写这一章正文’时，以当前 Book / Storybook / 用户材料为权威输入直接生成正式 Manuscript。主流程先执行 Manuscript Readiness Gate；Ready 后恢复当前 Style、已确认 Voice Baseline、相关 Characters / Story、上一章正式正文，并按需读取可选 Rolling Plan / Outline。没有逐章章纲本身不是阻塞；Skill 会从 Story + 上一章收缩出近端 Chapter Engine / Hard Anchors / creative_open 再成文。高影响决定未收口时停止并返回责任 Owner；不把局部反馈扩大成整部作品的 Voice 重置。"
+description: "正式小说正文起草、续写与整章重写。先执行 Manuscript Readiness，恢复 Canon、Style、Voice Baseline 与上一章正文，无需完整章纲。正式整章成稿后默认组合 fiction-prose-editing 检查并按证据精修语言，再完成 Postflight。已有正文的纯文笔精修由 fiction-prose-editing 主导，文风漂移诊断由 fiction-expression-review 主导。"
 visibility: workflow
 phase: generation
 uses: "writing/fiction-manuscript-readiness"
+optional_uses: "writing/fiction-prose-editing"
 ---
 
 # Fiction Manuscript Drafting / 正式正文起草
@@ -44,6 +45,13 @@ uses: "writing/fiction-manuscript-readiness"
 项目没有 Voice Baseline 时，不擅自创建一套通用 Voice。第一章尚无正式正文可校准时，直接服从当前 Book Style / Characters / Story 与用户已确认约束。
 
 ## Drafting Workflow
+
+### Skill Composition｜成稿后自动语言精修
+
+- **默认触发（必须执行）**：每次新写、续写或实质重写出一章**准备交付的正式小说 Manuscript**，先完成初稿及 Reader Pass，随后加载 writing/fiction-prose-editing 做一次“诊断 → 必要时局部编辑 → A/B / Protect”检查；对出版向与网文向都有效。没有可靠收益时返回 Protect / No Change，不强制修改。
+- **不触发**：用户只要未经精修的草稿、章节尚未写完，或任务只是章纲、Readiness、无文笔目标的小型勘误。
+- 已有小说只要纯文笔精修 → prose-editing 为主；只诊断文风漂移 → expression-review 为主。Drafting 保留正式成文及写入职责。
+
 
 ### 1. 建立近端 Writing Frame
 
@@ -109,7 +117,7 @@ uses: "writing/fiction-manuscript-readiness"
 - 哪些对白、动作、等待和普通生活细节已经让人物成立？先标为 **Protect / Preserve**，不要在修订中顺手抹平。
 - 是否存在真正让读者卡住、失去期待或不相信人物的地方？只记录有原文证据的问题；普通安静场景不强制制造反转、冲突或章尾钩子。
 
-随后重新激活完整项目合同与审查清单。读取 `../../shared/fiction/references/manuscript-drafting.md` 的 Postflight 部分，至少检查：
+随后按上面的触发条件执行 prose pass，再重新激活完整项目合同与审查清单。读取 `../../shared/fiction/references/manuscript-drafting.md` 的 Postflight 部分，至少检查：
 
 - Character：人物目标、默认社交姿态、压力路径有没有漂；
 - Continuity：身体、物件、位置、关系余波、已知信息有没有跳变；

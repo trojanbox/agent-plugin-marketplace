@@ -1,8 +1,9 @@
 ---
 name: fiction-expression-review
-description: "表达审查。用于检查一部小说是否仍保持自己的 Work Voice、POV、叙事距离与表达边界，发现 Voice Flattening、AI/客服腔、说明书化、多轮对话机械对称、段落句式过度均匀、幽默和作品温度被磨平等问题。适合‘文风有没有漂/文笔漂移了吗/是不是越来越像 AI 写的/对白怎么越来越机械/这几章还像这本书吗’。审查时区分真正的 Voice Drift 与角色因压力、关系阶段、身体状态发生的正常语气变化；单个角色底色用 fiction-character-review，读起来费劲用 fiction-readability-review。"
+description: "小说表达审查。检查 Work Voice、POV、叙事距离、角色/旁白 AI 腔、机械对白与风格漂移。适合‘文风有没有漂/越来越像 AI/这几章还像这本书吗’，默认仅诊断。已有小说只要求修遣词、句际衔接和细腻感时转 fiction-prose-editing；用户明确要求审查并修复纯文笔时，可先诊断再条件组合。"
 visibility: workflow
 phase: verification
+optional_uses: "writing/fiction-prose-editing"
 ---
 
 # 表达审查
@@ -12,6 +13,12 @@ phase: verification
 **这本书现在还像这本书吗？**
 
 先读取 `../../shared/fiction/references/review-contract.md`；有 Storybook 时读取 `style/` 当前合同、必要 Character Voice 与连续正文。项目声明 Voice Baseline 时，必须同时读取其指向的已确认正式 Manuscript；抽象 Style 用于判断边界，正式样本用于判断实现层是否漂移。
+
+## Skill Composition｜纯文笔问题交接
+
+- 用户只要审查时，**不加载编辑 Skill**；先区分 Voice Drift 与单纯汉语语感问题。
+- 用户明确要求“审查并修复”且缺陷限于遣词、叙述衔接或细腻感时：先完成本 Skill 诊断与 Protect Set，再加载 writing/fiction-prose-editing 定向修改。高影响 Story / Character 缺陷回 Owner。
+- 用户仅要求直接纯文笔润色时，writing/fiction-prose-editing 独立主导，本 Skill 不争主路由。
 
 ## 检查
 

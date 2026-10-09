@@ -53,6 +53,10 @@ phase: verification
 5. 只有完整连续阅读完成后才判断 Publication Readiness；
 6. 如果是终校执行任务，先完成内容诊断，再只修证据明确的成书层问题；创作性改写仍遵守 Review 边界。
 
+## 语言质地问题的交接
+
+全书终审若发现反复出现的汉语搭配、句际衔接、感受描写和段落呼吸问题，应记录原句证据并建议使用 writing/fiction-prose-editing 定向精修。用户只要终审时仍然只诊断；明确授权终审并修复时，先固定 Preserve Set，再开展受控语言编辑与 A/B 验证。
+
 ## Protect / No Change Gate
 
 当 P0/P1 已清空，剩余项主要属于“另一种写法也可以”的 P2 偏好，或继续改会伤害已成立的人物声音、生活感、节奏与 Preserve Set 时：

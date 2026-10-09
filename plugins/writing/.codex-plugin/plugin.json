@@ -1,7 +1,7 @@
 {
   "name": "writing",
-  "version": "3.4.0",
-  "description": "用于人类可读文本的清晰表达、去除明显 AI 写作痕迹、高层决策沟通、复杂知识科普、实操指南，以及长期小说创作的【创作·讨论】、【创作·结论】、可选【创作·章纲】/Rolling Plan、正文可写性 Gate、正式正文起草与人物/连续性/表达/可读性/节奏/修订/全书终审。fiction-final-review 现在把 Publication Readiness 绑定到具体 Manuscript 版本，并在发布前终校时按需执行确定性文本卫生检查；fiction-manuscript-drafting 继续支持在高影响决定稳定后直接开始或续写 Manuscript，不强制先做完整逐章章纲；小说具体 Style、Voice Baseline 与 Canon 继续由单部作品自己的 Storybook / 项目目录合同承载。",
+  "version": "3.5.0",
+  "description": "用于清晰写作、一般去 AI 味和长期小说创作。小说流程包括讨论、结论、近期章纲、Manuscript Readiness、正式正文成文、纯文笔精修（用词、句际衔接、感受细腻和段落呼吸）、人物与连续性、表达/可读性/节奏审查、修订验收及全书终校。完整正式章节由 fiction-manuscript-drafting 在初稿后自动按条件组合 fiction-prose-editing，保护既有 Canon、人物与 Work Voice；小说风格仍由当前作品自己的 Storybook 持有。",
   "author": {
     "name": "trojanbox",
     "url": "https://github.com/trojanbox"
@@ -10,8 +10,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Writing",
-    "shortDescription": "用于人类可读文本的清晰表达、去除明显 AI 写作痕迹、高层决策沟通、复杂知识科普、实操指南，以及长期小说创作的【创作·讨论】、【创作·结论】、可选【创作·章纲】/Rolling Plan、正…",
-    "longDescription": "用于人类可读文本的清晰表达、去除明显 AI 写作痕迹、高层决策沟通、复杂知识科普、实操指南，以及长期小说创作的【创作·讨论】、【创作·结论】、可选【创作·章纲】/Rolling Plan、正文可写性 Gate、正式正文起草与人物/连续性/表达/可读性/节奏/修订/全书终审。fiction-final-review 现在把 Publication Readiness 绑定到具体 Manuscript 版本，并在发布前终校时按需执行确定性文本卫生检查；fiction-manuscript-drafting 继续支持在高影响决定稳定后直接开始或续写 Manuscript，不强制先做完整逐章章纲；小说具体 Style、Voice Baseline 与 Canon 继续由单部作品自己的 Storybook / 项目目录合同承载。",
+    "shortDescription": "用于清晰写作、一般去 AI 味和长期小说创作。小说流程包括讨论、结论、近期章纲、Manuscript Readiness、正式正文成文、纯文笔精修（用词、句际衔接、感受细腻和段落呼吸）、人物…",
+    "longDescription": "用于清晰写作、一般去 AI 味和长期小说创作。小说流程包括讨论、结论、近期章纲、Manuscript Readiness、正式正文成文、纯文笔精修（用词、句际衔接、感受细腻和段落呼吸）、人物与连续性、表达/可读性/节奏审查、修订验收及全书终校。完整正式章节由 fiction-manuscript-drafting 在初稿后自动按条件组合 fiction-prose-editing，保护既有 Canon、人物与 Work Voice；小说风格仍由当前作品自己的 Storybook 持有。",
     "developerName": "trojanbox",
     "category": "Documents",
     "capabilities": [

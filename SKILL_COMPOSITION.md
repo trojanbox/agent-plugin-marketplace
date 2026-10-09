@@ -125,6 +125,12 @@ Skill Composition 只解决“一个主任务需要哪些辅助能力”。它�
 
 ## Writing Composition 示例
 
+- 已有小说正文的主要要求是“剧情不变、只把用词、句际连贯和细腻感打磨舒服” → writing/fiction-prose-editing 主导；一般去 AI 套话仍归 humanizer，说明/报告清晰化仍归 clear-writing。
+- “继续写完整下一章 / 整章重写” → writing/fiction-manuscript-drafting 主导，Readiness 先行；**正式整章完成初稿和 Reader Pass 后**，按 Drafting 的 optional_uses 条件自动组合 fiction-prose-editing 一次；无收益允许 Protect / No Change，用户只要未经润色草稿时跳过。
+- “只看文风漂移” → fiction-expression-review；用户明确要求“审查并修纯文笔” → expression-review 诊断后按条件组合 prose-editing；纯术语理解诊断归 readability-review。
+- “精修后的 A/B 哪一版更好 / 有没有损坏原文” → fiction-revision-validation 独立验收，不能仅据长度或工整程度判定。
+
+
 - “董事会/CEO 决策沟通 + 去 AI 味”以 `writing/executive-communication` 为主，组合 `writing/humanizer`；Humanizer 只处理表达模式，不改决策结构和 ask。
 - “科普/原理解释 + 去 AI 味”以 `writing/popular-science-explainer` 为主，组合 `writing/humanizer`；事实模型和解释路径仍由科普 Skill 决定。
 - “实操使用指南 + 去 AI 味”以 `writing/practical-usage-guide` 为主，它始终 `uses: writing/clear-writing`，并在用户明确要求时可选组合 `writing/humanizer`。

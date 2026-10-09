@@ -381,3 +381,23 @@ DI021,positive,给我一些完全不涉及小说的艺术装置奇想。,reasoni
 DI022,negative,这个设定逻辑上有漏洞，我们要正式修订书里的既有 Canon。,writing/fiction-discussion；已选作品结构修订
 DI023,adversarial,我想造一种不存在的社会制度，先随便脑暴，不讨论政治可行性。,reasoning/divergent-ideation；虚构制度
 DI024,multi-turn,第七个有意思，但不要阴谋，也不要调查者，把它改成日常生活型的。,reasoning/divergent-ideation；按反馈变异
+PROSE001,positive,《无人之地》剧情和对白别动 只精修中文文笔与细腻感,writing/fiction-prose-editing
+PROSE002,positive,第一章每句话都懂但语感别扭 帮我只润色文学语言,writing/fiction-prose-editing
+PROSE003,positive,小说段落句际衔接总是磕绊 请只修遣词句法,writing/fiction-prose-editing
+PROSE004,positive,同样剧情对小说文字做纯文笔 A/B 试验,writing/fiction-prose-editing
+PROSE005,negative,第一章写完了 只审查是不是文风漂移 不要改,writing/fiction-expression-review
+PROSE006,negative,这段科幻术语很多 我只想知道读者能不能看懂,writing/fiction-readability-review
+PROSE007,negative,这段句子之间缺上下文 只诊断理解负担,writing/fiction-readability-review
+PROSE008,negative,给我润色一份简洁清楚的项目延期邮件,writing/clear-writing
+PROSE009,negative,删掉这份普通说明文的 ChatGPT 套话,writing/humanizer
+PROSE010,negative,给我重新设计小说的结局和人物弧线,writing/fiction-discussion
+PROSE011,composition,按设定直接写完第二章并在交稿前检查中文语言质感,writing/fiction-manuscript-drafting → readiness → fiction-prose-editing after draft
+PROSE012,composition,在 Storybook 续写正式第三章 章纲已确定,writing/fiction-manuscript-drafting → readiness → default prose pass after complete chapter
+PROSE013,negative,只写一版未经润色的原始小说草稿,writing/fiction-manuscript-drafting → explicitly skip optional prose editing
+PROSE014,composition,检查本章文风漂移并把诊断出的纯遣词问题修好,writing/fiction-expression-review diagnosis → optional fiction-prose-editing
+PROSE015,negative,这轮语言润色是否只是变短了 请验收 A/B,writing/fiction-revision-validation
+PROSE016,conflict,重新讨论小说结局 同时独立精修已有第一章的文笔,writing/fiction-discussion and writing/fiction-prose-editing are separate main goals
+PROSE017,multi-turn,上一轮写完了正式第一章 现在润色语言再交稿,writing/fiction-prose-editing as post-draft stage
+PROSE018,multi-turn,已经诊断出小说句际衔接不好 现在只修文字别谈情节,writing/fiction-prose-editing
+PROSE019,negative,第一章只有一个错别字要修 其余一字不动,one-off typo fix → no compulsory prose editing
+PROSE020,negative,第一章的故事太无聊 想重构场景与人物冲突,writing/fiction-discussion

@@ -1,6 +1,6 @@
 ---
 name: fiction-readability-review
-description: "可读性审查。站在第一次阅读的普通读者视角，检查小说是否顺畅可理解：上下文是否足够、谁在做什么为什么现在做是否清楚、抽象名词/系统术语/英文缩写负担、对白省略、概念换名、单句正确但整段费劲等。适合‘这段太难读/为什么每句话都懂但读起来累/术语是不是太多/普通读者能看明白吗’。作品声音漂移用 fiction-expression-review。"
+description: "小说可读性审查：诊断第一次阅读能否理解上下文、动作、抽象名词和术语。适合‘读不懂/谁在做什么/信息密度太高’，默认只诊断。若剧情清楚、唯一问题是中文句子不自然或细腻感不足，实际修文应转 fiction-prose-editing。"
 visibility: workflow
 phase: verification
 ---
@@ -26,6 +26,10 @@ phase: verification
 - 技术 / 制度事实是否落到人物动作、意图、对象和现实后果。
 
 技术信息进入小说的具体写法可读取 `../../shared/fiction/references/voice-contract.md` 与 `drafting-quality.md`。
+
+## 纯文笔修订交接
+
+读者能理解事件与术语，却觉得汉语搭配生硬、相邻句磕绊或描写不够细腻时，推荐 writing/fiction-prose-editing；用户明确要直接润色时由它主导，不用大幅删减信息来伪装改善。仅询问理解负担时保留本 Skill 的诊断边界。
 
 ## 边界
 

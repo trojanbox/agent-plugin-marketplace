@@ -39,6 +39,10 @@ phase: verification
 
 没有旧稿或没有足够可比上下文时，标记“无法完成 A/B”，照常做当前版本单独验收，不虚构实验结论。此流程不要求每次小修都启动独立评审 Agent，也不替代 Canon 与相邻章节回归。
 
+## 文笔精修专项验收
+
+修改稿来自 writing/fiction-prose-editing 时，单独比较遣词自然度、句际连贯、感受细腻、段落韵律和有效长句的保留，同时复核原有事实、人物 Voice 与 Preserve Set。若新版仅更短或更工整，不判为改善。仍需语言修订时将问题交回 prose-editing；本 Skill 不在验收中自动重写。
+
 ## 验收顺序
 
 ```text

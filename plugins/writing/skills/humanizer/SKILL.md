@@ -1,6 +1,6 @@
 ---
 name: humanizer
-description: "用于当‘去 AI 味 / humanize / 写得像人 / 别像 ChatGPT’本身是主要编辑目标时，把已有文本改得更自然，同时保留事实、观点和作者声音。若同一句请求还有更具体的文体/受众主目标（如董事会沟通、科普、实操指南），由对应内容 Skill 主导并按需组合本 Skill。一般清晰度和精简使用 clear-writing。"
+description: "现成一般文本去 AI 味 / humanize / 消除公式化表达，保留原有事实和作者声音。用户明确要求小说纯文笔、中文叙述细腻、句际连贯或出版向文字精修时转 writing/fiction-prose-editing；仅需通用 AI 套话清理而无文学质地目标时仍使用本 Skill。"
 visibility: workflow
 phase: editing
 optional_uses: "writing/clear-writing"
@@ -21,6 +21,10 @@ optional_uses: "writing/clear-writing"
 - 被组合时只处理表达模式，不接管事实选择、业务判断、受众目标、解释结构或操作流程。
 - 用户同时要求“清楚/精简”与“去 AI 味”，但没有更具体的文体/受众主任务时：本 Skill 保留主路由，并按需组合 `writing/clear-writing`；明确 anti-AI 目标属于更具体的编辑约束。
 - 用户只说“写得清楚、简洁、具体”，没有 AI 痕迹目标时，使用 `writing/clear-writing`。
+
+## 小说邻接路由
+
+已有小说主要想解决“字句不舒服、细腻感不足、句际过渡生硬”，使用 writing/fiction-prose-editing；只要求清除一般 AI 套话且没有小说文学语言目标时继续本 Skill。不得把通用去 AI 味工作流作为文学精修的替代品。
 
 ## 核心规则
 
