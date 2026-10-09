@@ -3,7 +3,7 @@ name: fiction-outline
 description: "【创作·章纲】用于用户明确想做章节规划、短期 Rolling Plan、章节拆合或复杂结构预演时，把成熟 Story / Characters / Style 暂时投影成可执行的近期计划。Outline 是可选 Planning Layer，不是 Manuscript 的强制前置 Canon Owner；默认优先规划接下来 1～3 章，锁高影响锚点、关系/信息边界和离场变化，把对白、小动作、环境细节和普通场景实现留给正文。适合‘先规划接下来三章/把第5章拆开/这一段多线太复杂先做章纲/我明确要完整逐章大纲’。如果用户已经要直接开始/继续正文且高影响决定已稳定，进入 fiction-manuscript-drafting；如果 World / Character / Story / Style 仍有高影响缺口，回 fiction-discussion；不写正式正文。"
 visibility: workflow
 phase: planning
-optional_uses: "github/github-issue-manager"
+optional_uses: "github/github-issue-manager,writing/fiction-linked-anthology-design"
 ---
 
 # 【创作·章纲】
@@ -72,6 +72,8 @@ optional_uses: "github/github-issue-manager"
 - 需要判断是否可以直接进入正文时读取 `../../shared/fiction/references/manuscript-readiness.md`。
 
 ## Composition
+
+规划已确认的关联档案/单元系列中某个具体篇章，且该篇涉及跨篇人物、主线硬线索或 reveal 顺序时，条件加载 `writing/fiction-linked-anthology-design`，只消费相关 Series Contract / Ledger；当前交付仍是近期章纲，不扩大为整套系列规划。
 
 Routine Rolling Plan 不强制创建 Issue。用户明确要求 GitHub 持久化、项目规定必须通过 Issue 协作，或一次高影响章节结构调整需要保留决策历史时，组合 `github/github-issue-manager` 使用 `【创作·章纲】【书名】<版本 / 范围>`。
 

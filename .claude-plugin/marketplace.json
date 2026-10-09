@@ -118,8 +118,8 @@
     {
       "name": "writing",
       "source": "./plugins/writing",
-      "description": "用于清晰写作、一般去 AI 味和长期小说创作。小说流程包括讨论、结论、近期章纲、Manuscript Readiness、正式正文成文、纯文笔精修（用词、句际衔接、感受细腻和段落呼吸）、人物与连续性、表达/可读性/节奏审查、修订验收及全书终校。完整正式章节由 fiction-manuscript-drafting 在初稿后自动按条件组合 fiction-prose-editing，保护既有 Canon、人物与 Work Voice；小说风格仍由当前作品自己的 Storybook 持有。",
-      "version": "3.5.0",
+      "description": "用于清晰写作、一般去 AI 味和长期小说创作，也支持档案集等独立短中篇共享世界与贯穿主线的系列架构。小说流程包括讨论、结论、近期章纲、Manuscript Readiness、正式正文成文、纯文笔精修（用词、句际衔接、感受细腻和段落呼吸）、人物与连续性、表达/可读性/节奏审查、修订验收及全书终校。完整正式章节由 fiction-manuscript-drafting 在初稿后自动按条件组合 fiction-prose-editing，保护既有 Canon、人物与 Work Voice；小说风格仍由当前作品自己的 Storybook 持有。",
+      "version": "3.6.0",
       "author": {
         "name": "trojanbox",
         "url": "https://github.com/trojanbox"

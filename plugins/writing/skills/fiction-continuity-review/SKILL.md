@@ -3,6 +3,7 @@ name: fiction-continuity-review
 description: "连续性审查。用于检查小说前后事实、状态和信息是否还能同时成立：World/Story/Character Canon、时间年龄地点物件身体状态、人物知道/不知道什么、关系阶段/称呼/互动边界、相邻章节重复事件与章际衔接。适合‘前后设定有没有打架/这章改完和上一章接得上吗/前一章还客气怎么下一章突然像认识十年/人物是不是提前知道了/第二三章是不是重复’。单场人物表现是否像本人用 fiction-character-review；本轮修改是否修好且无回归用 fiction-revision-validation。"
 visibility: workflow
 phase: verification
+optional_uses: "writing/fiction-linked-anthology-design"
 ---
 
 # 连续性审查
@@ -32,6 +33,10 @@ phase: verification
 ```
 
 需要长篇边界与重复方法时读取 `../../shared/fiction/references/revision-methods.md`。
+
+## Skill Composition
+
+检查多个独立档案/单元之间的共享世界、历史时间线、复现人物及主线线索是否一致时，条件加载 `writing/fiction-linked-anthology-design` 的 Series / Unit / Reveal Ledger 方法；本 Skill 仍负责用**实际正文**判断连续性事实，不能将未确认候选当成矛盾。
 
 ## 边界
 
