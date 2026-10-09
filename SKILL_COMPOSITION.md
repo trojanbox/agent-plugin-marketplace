@@ -125,6 +125,8 @@ Skill Composition 只解决“一个主任务需要哪些辅助能力”。它�
 
 ## Writing Composition 示例
 
+- “设计绝密档案/异闻录式的独立短中篇共享世界观、建立跨篇线索表与贯穿主线”由 `writing/fiction-linked-anthology-design` 主导；讨论单篇开放问题仍归 `fiction-discussion`，近期章纲归 `fiction-outline`。Readiness、Outline 和跨单元连续性审查只在涉及已确认跨篇事实或 reveal 时条件组合，不强制为所有作品加载系列能力。
+
 - 已有小说正文的主要要求是“剧情不变、只把用词、句际连贯和细腻感打磨舒服” → writing/fiction-prose-editing 主导；一般去 AI 套话仍归 humanizer，说明/报告清晰化仍归 clear-writing。
 - “继续写完整下一章 / 整章重写” → writing/fiction-manuscript-drafting 主导，Readiness 先行；**正式整章完成初稿和 Reader Pass 后**，按 Drafting 的 optional_uses 条件自动组合 fiction-prose-editing 一次；无收益允许 Protect / No Change，用户只要未经润色草稿时跳过。
 - “只看文风漂移” → fiction-expression-review；用户明确要求“审查并修纯文笔” → expression-review 诊断后按条件组合 prose-editing；纯术语理解诊断归 readability-review。

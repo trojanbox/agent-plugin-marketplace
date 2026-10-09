@@ -1,9 +1,9 @@
 ---
 name: fiction-discussion
-description: "【创作·讨论】小说创作的宽入口。用于从新点子、角色、场景、主题、结局、已有 Storybook、章纲、正文、半成品或阅读反馈出发，围绕 World / Characters / Story / Style 与高影响章节结构做多轮决策讨论。适合‘咱们聊聊这个故事/这个人物不对/这段为什么不好看/重新讨论结局/把这轮创作讨论记录下来’。不要求先有 Book 或 Issue；需要形成独立可执行冻结结果时进入 fiction-conclusion；用户明确需要章节规划时进入 fiction-outline；高影响决定已经稳定且用户要直接开始/继续正文时可直接进入 fiction-manuscript-drafting，不强制先做完整章纲。"
+description: "【创作·讨论】小说创作的宽入口。用于从新点子、角色、场景、主题、结局、已有 Storybook、章纲、正文、半成品或阅读反馈出发，围绕 World / Characters / Story / Style 与高影响章节结构做多轮决策讨论。适合‘咱们聊聊这个故事/这个人物不对/这段为什么不好看/重新讨论结局/把这轮创作讨论记录下来’。不要求先有 Book 或 Issue；需要形成独立可执行冻结结果时进入 fiction-conclusion；用户明确需要章节规划时进入 fiction-outline；高影响决定已经稳定且用户要直接开始/继续正文时可直接进入 fiction-manuscript-drafting，不强制先做完整章纲；明确要求多个独立档案/短中篇的跨篇结构和主线布局由 fiction-linked-anthology-design 主导。"
 visibility: workflow
 phase: discussion
-optional_uses: "github/github-issue-manager"
+optional_uses: "github/github-issue-manager,writing/fiction-linked-anthology-design"
 ---
 
 # 【创作·讨论】
@@ -44,6 +44,8 @@ optional_uses: "github/github-issue-manager"
 - 当前作品需要类型知识时读取 `../../shared/fiction/genres/index.md`，只加载实际相关类型 reference。
 
 ## Issue 与 Composition
+
+单篇档案的角色/情节仍由本 Skill 讨论；仅当该单篇的已确认细节需要核对跨篇线索、主线揭示或共享世界影响时，条件加载 `writing/fiction-linked-anthology-design`。用户主要要求系列总体结构、Unit Ledger 或跨篇 reveal 计划时，直接以该 Skill 为主。
 
 聊天构思不强制建 Issue。用户明确“记录一下 / 创建讨论 / 后面继续”，或跨会话长期协作需要持久化时，组合 `github/github-issue-manager`，使用 `【创作·讨论】【书名】<主题>`；同一轮未结束时续用原 Issue。
 
