@@ -3,7 +3,6 @@ name: fiction-manuscript-readiness
 description: "正文可写性检查。用于用户明确询问‘现在能不能写正文/可以开第一章了吗/这本书达到 Manuscript Ready 了吗/还缺什么才能写’，判断当前 Book / 用户材料是否已经稳定到可以成文。只检查高影响 Canon、Story 因果、人物/关系/信息边界、连续性与项目自带 Style/Knowledge 合同；Outline / Rolling Plan 是可选输入，没有逐章章纲本身不构成 Not Ready。普通对白、小动作、生活细节、局部场景顺序和其它 creative_open 应留给正文。用户直接要求‘开始/继续/重写某章正文’时由 fiction-manuscript-drafting 保留主路由，并把本 Skill 作为前置 Gate 使用。"
 visibility: workflow
 phase: verification
-optional_uses: "writing/fiction-linked-anthology-design"
 ---
 
 # Fiction Manuscript Readiness / 正文可写性检查
@@ -37,10 +36,6 @@ optional_uses: "writing/fiction-linked-anthology-design"
 2. 至少确认当前 Book、当前章 / 范围、当前阶段与长期 Canon Owner 入口。
 3. 读取项目声明为正文前置输入的内容；Storybook 常见输入包括 Book README、相关 World / Characters / Story / Style、上一章 Manuscript、Knowledge / Mistakes、Voice Baseline，以及**存在时**的当前 Rolling Plan / Outline。
 4. 没有 Storybook 时，使用用户当前提供的梗概、人物、长线方向、上一段正文和表达约束做等价判断；不强制用户为了通过 Gate 建目录或写逐章章纲。
-
-## Skill Composition
-
-当前 Book 是共享世界观的档案/单元系列，且本章会使用已经确认的跨篇事实、复现角色/事件或释放主线证据时，条件加载 `writing/fiction-linked-anthology-design` 并核对**已有** Series Contract / Reveal Ledger；没有预先填满全部单元表，本身不构成 Not Ready。Drafting 通过本 Gate 自动继承这一条件核对，不增加另一套正文主流程。
 
 ## Readiness Gate
 

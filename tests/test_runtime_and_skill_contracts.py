@@ -642,7 +642,6 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
         by_name = {skill["name"]: skill for skill in doctor["skills"]}
 
         expected = {
-            "fiction-linked-anthology-design": "architecture",
             "fiction-discussion": "discussion",
             "fiction-conclusion": "specification",
             "fiction-outline": "planning",

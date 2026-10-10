@@ -401,24 +401,3 @@ PROSE017,multi-turn,上一轮写完了正式第一章 现在润色语言再交�
 PROSE018,multi-turn,已经诊断出小说句际衔接不好 现在只修文字别谈情节,writing/fiction-prose-editing
 PROSE019,negative,第一章只有一个错别字要修 其余一字不动,one-off typo fix → no compulsory prose editing
 PROSE020,negative,第一章的故事太无聊 想重构场景与人物冲突,writing/fiction-discussion
-
-ANTH001,positive,我要做一套绝密档案小说 每个短篇可以独立读但要暗中串起总主线,writing/fiction-linked-anthology-design
-ANTH002,positive,每份秘史档案的主角都不同 共享一个世界历史 帮我把各篇关联梳理清楚,writing/fiction-linked-anthology-design
-ANTH003,positive,五个已有案件要做联动台账 主线线索怎么分布才有推进,writing/fiction-linked-anthology-design
-ANTH004,positive,跨三个时代的档案应该按怎样的顺序揭示才能不让读者提前知道真相,writing/fiction-linked-anthology-design
-ANTH005,negative,先给我几个离谱的宇宙恐怖脑洞 别着急建世界观,reasoning/divergent-ideation
-ANTH006,negative,咱们继续讨论第一份档案里父亲的行为动机,writing/fiction-discussion
-ANTH007,negative,新小说还没定题材 先讨论世界观可以怎么选,writing/fiction-discussion
-ANTH008,negative,第一份绝密档案设定已经确认 直接把完整短篇正文写出来,writing/fiction-manuscript-drafting → manuscript-readiness
-ANTH009,negative,把第二份案卷拆成三章章纲 再规划行动锚点,writing/fiction-outline
-ANTH010,negative,档案B里的人知道档案A的结果 可是B发生得更早 帮我检查正文矛盾,writing/fiction-continuity-review + optional linked-anthology method
-ANTH011,composition,给档案第三篇制定近期章纲 并确保已确认的贯穿主线信息按顺序释放,writing/fiction-outline + optional writing/fiction-linked-anthology-design
-ANTH012,composition,写第七份档案正式正文 这里要兑现第五份里已经确定的线索,writing/fiction-manuscript-drafting → manuscript-readiness + conditional linked-anthology
-ANTH013,composition,讨论第一份档案结局 但要核对是否冲突已确认的系列时间线,writing/fiction-discussion + optional writing/fiction-linked-anthology-design
-ANTH014,multi-turn,前五份档案已经确定了 现在把它们整理成一张系列联动图,writing/fiction-linked-anthology-design
-ANTH015,conflict,给整本案卷小说设计跨篇主线 另外独立评价已完成第三篇的文笔,writing/fiction-linked-anthology-design and writing/fiction-expression-review are separate main goals
-ANTH016,negative,标题和正文都已经写好 只帮我创建一个绝密档案讨论Issue,github/github-issue-manager
-ANTH017,negative,核对已经写出的四份档案的年份人物与情报是否互相矛盾,writing/fiction-continuity-review + optional linked-anthology method
-ANTH018,adversarial,为第一份档案写完整正文 同时单独做整套十篇档案的全书结构设计,two main goals: drafting and linked-anthology design; identify conflict
-ANTH019,negative,绝密档案小说全书已经写完了 现在做一次出版终校,writing/fiction-final-review
-ANTH020,positive,每份档案要独立读得懂 又能把背后的长期主线线索安排得可追踪,writing/fiction-linked-anthology-design
