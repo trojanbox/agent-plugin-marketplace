@@ -187,17 +187,18 @@ test('send unknown never retries, auth failure redacts authorization code', asyn
   assert.equal(calls.filter(x=>x.args?.includes('--send')).length,2);
 });
 
-test('missing config, unsafe config, and non-existent attachments are rejected before sending', async (t) => {
+test('missing credentials, unsafe permissions and missing attachments are safely handled', async (t) => {
   const s=await sandbox(t);
   assert.equal(s.cli(['search','--query','subject test']).value.status,'config_missing'); // dirs absent, no implicit config
   s.setup();
   const config=configLocation(s.home).file;
   await fs.chmod(config,0o644);
-  assert.equal(s.cli(['doctor']).value.status,'config_error');
-  await fs.chmod(config,0o600);
+  assert.equal(s.cli(['doctor']).value.status,'local_check_only');
+  assert.equal((await fs.stat(config)).mode & 0o777, 0o600);
+  const callsBefore = (await s.logs()).length;
   const r=s.cli(['send','--to','person@example.com','--subject','hello','--attach',path.join(s.home,'absent')],{input:'body'});
   assert.equal(r.value.status,'invalid_input');
-  await assert.rejects(() => fs.readFile(s.log,'utf8'),/ENOENT/u);
+  assert.equal((await s.logs()).length, callsBefore, 'a missing attachment must not spawn SMTP');
 });
 
 test('a duplicate attachment filename never overwrites the existing file', async (t) => {
@@ -223,5 +224,113 @@ test('option-like mailbox is rejected before invoking backend', async (t) => {
   const s = await sandbox(t); s.setup();
   const result = s.cli(['search', '--query', 'subject hello', '--mailbox', '--log-file']);
   assert.equal(result.value.status, 'invalid_input');
+  await assert.rejects(() => fs.readFile(s.log, 'utf8'), /ENOENT/u);
+});
+
+test('repair prepares dependencies and permissions without emailing or inventing authorization', async (t) => {
+  const s = await sandbox(t);
+  const pre = s.cli(['repair']);
+  assert.equal(pre.code, 2);
+  assert.equal(pre.value.status, 'authorization_required');
+  assert.match(pre.value.message, /Agent/u);
+  await assert.rejects(() => fs.readFile(s.log, 'utf8'), /ENOENT/u);
+
+  s.setup();
+  const config = configLocation(s.home);
+  await fs.chmod(config.root, 0o755);
+  await fs.chmod(config.directory, 0o755);
+  await fs.chmod(config.file, 0o644);
+  const repaired = s.cli(['repair']);
+  assert.equal(repaired.code, 0);
+  assert.equal(repaired.value.status, 'local_repaired');
+  assert.equal((await fs.stat(config.root)).mode & 0o777, 0o700);
+  assert.equal((await fs.stat(config.directory)).mode & 0o777, 0o700);
+  assert.equal((await fs.stat(config.file)).mode & 0o777, 0o600);
+  const calls = await s.logs();
+  assert.equal(calls.length, 1);
+  assert.ok(calls[0].args.includes('account'));
+  assert.equal(calls[0].args.includes('--send'), false);
+});
+
+test('Agent can rotate credentials using stdin without manual TOML edits', async (t) => {
+  const s = await sandbox(t);
+  assert.equal(s.setup().code, 0);
+  const config = configLocation(s.home).file;
+  const old = await fs.readFile(config, 'utf8');
+  assert.match(old, /FAKE_SECRET_456/u);
+  const changed = s.cli(['init', '--email', 'someone@qq.com', '--replace', 'yes'], {
+    input: 'NEW_PRIVATE_AUTH_CODE\n'
+  });
+  assert.equal(changed.code, 0);
+  assert.equal(changed.value.status, 'credential_updated');
+  const saved = await fs.readFile(config, 'utf8');
+  assert.ok(saved.includes('NEW_PRIVATE_AUTH_CODE'));
+  assert.ok(!saved.includes('FAKE_SECRET_456'));
+  assert.ok(!JSON.stringify(changed).includes('NEW_PRIVATE_AUTH_CODE'));
+  assert.equal((await fs.stat(config)).mode & 0o777, 0o600);
+  assert.equal(s.cli(['init', '--email', 'someone@qq.com', '--replace', 'maybe']).value.status, 'invalid_input');
+});
+
+test('managed user-private binary runs automatically when no executable is installed on PATH', async (t) => {
+  const s = await sandbox(t); s.setup();
+  const dir = path.join(configLocation(s.home).directory, 'bin');
+  await fs.mkdir(dir, {mode: 0o700});
+  const managed = path.join(dir, 'himalaya');
+  await fs.copyFile(s.binary, managed);
+  await fs.chmod(managed, 0o700);
+  const result = s.cli(['doctor'], {env: {HIMALAYA_BIN: '', EMAIL_AUTO_INSTALL: '0'}});
+  assert.equal(result.code, 0);
+  assert.equal(result.value.status, 'local_check_only');
+  const calls = await s.logs();
+  assert.equal(calls.length, 1);
+});
+
+test('agent-visible invalid dependency override returns actionable failure without any email call', async (t) => {
+  const s = await sandbox(t); s.setup();
+  const result = s.cli(['send', '--to', 'person@example.com', '--subject', 'Report'], {
+    input: 'body', env: {FAKE_VERSION: '2.3.0'}
+  });
+  assert.equal(result.code, 2);
+  assert.equal(result.value.status, 'dependency_version');
+  assert.match(result.value.message, /Agent/u);
+  await assert.rejects(() => fs.readFile(s.log, 'utf8'), /ENOENT/u);
+});
+
+test('repair does not invent credentials, override explicit restrictions or send any mail', async (t) => {
+  const s = await sandbox(t);
+  const denied = s.cli(['send', '--to', 'recipient@example.com', '--subject', 'No configuration'], {
+    input: 'draft body', env: {HIMALAYA_BIN: '', EMAIL_AUTO_INSTALL: '0', PATH: ''}
+  });
+  assert.equal(denied.code, 2);
+  assert.equal(denied.value.status, 'config_missing');
+  const installed = s.setup();
+  assert.equal(installed.code, 0);
+  const cfg = configLocation(s.home).file;
+  const before = await fs.readFile(cfg, 'utf8');
+  const refusal = s.cli(['send', '--to', 'recipient@example.com', '--subject', 'No dependency'], {
+    input: 'body', env: {HIMALAYA_BIN: '', EMAIL_AUTO_INSTALL: '0', PATH: ''}
+  });
+  assert.equal(refusal.code, 2);
+  assert.equal(refusal.value.status, 'dependency_missing');
+  assert.equal(await fs.readFile(cfg, 'utf8'), before);
+  await assert.rejects(() => fs.readFile(s.log, 'utf8'), /ENOENT/u);
+});
+
+test('symlinked configuration is not silently overwritten or repaired', async (t) => {
+  const s = await sandbox(t); s.setup();
+  const config = configLocation(s.home).file;
+  const actual = path.join(s.home, 'external.txt');
+  await fs.writeFile(actual, 'KEEP_ME', {mode: 0o600});
+  await fs.rm(config);
+  await fs.symlink(actual, config);
+  const result = s.cli(['doctor']);
+  assert.equal(result.code, 2);
+  assert.equal(result.value.status, 'config_error');
+  assert.equal(await fs.readFile(actual, 'utf8'), 'KEEP_ME');
+  const attemptedReplace = s.cli(['init', '--email', 'someone@qq.com', '--replace', 'yes'], {
+    input: 'SENSITIVE_NEW_AUTH\n'
+  });
+  assert.equal(attemptedReplace.value.status, 'config_error');
+  assert.equal(await fs.readFile(actual, 'utf8'), 'KEEP_ME');
   await assert.rejects(() => fs.readFile(s.log, 'utf8'), /ENOENT/u);
 });

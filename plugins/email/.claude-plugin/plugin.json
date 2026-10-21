@@ -2,7 +2,7 @@
   "name": "email",
   "displayName": "Email",
   "version": "1.0.0",
-  "description": "QQ 邮箱本地 CLI 能力：基于 Himalaya 2.2.1 搜索、阅读、附件发送与下载；凭据仅存当前用户家目录。发送有外部副作用，需遵守 Agent 任务授权与发送结果边界。",
+  "description": "QQ 邮箱本地 CLI 和自修复能力：Himalaya 2.2.1 缺失时验证官方哈希并安装；Agent 自行修复当前用户配置权限和可恢复故障，负责搜索、阅读、附件发送与下载。凭据仅存用户家目录，发送结果未知禁止自动重发。",
   "author": {
     "name": "trojanbox",
     "url": "https://github.com/trojanbox"

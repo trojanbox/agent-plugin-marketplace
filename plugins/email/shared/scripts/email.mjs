@@ -5,12 +5,12 @@
  * No mail protocol is implemented here. The installed Himalaya binary owns IMAP/SMTP/MIME.
  */
 import * as fs from 'node:fs/promises';
-import fsSync from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawn, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
+import { installPinnedHimalaya, InstallError } from './himalaya-install.mjs';
 
 export const HIMALAYA_VERSION = '2.2.1';
 export const CONFIG_FILENAME = 'config.toml';
@@ -172,14 +172,21 @@ async function ensurePrivateDirectory(directory) {
     throw new MailError('config_error', '家目录内的配置路径已存在且并非普通目录');
   }
   if (process.platform === 'win32') secureWindowsAcl(directory, true);
-  else await fs.chmod(directory, 0o700);
+  else {
+    if (typeof process.getuid === 'function' && info.uid !== process.getuid()) {
+      throw new MailError('config_error', '不能修改不属于当前用户的配置目录权限');
+    }
+    await fs.chmod(directory, 0o700);
+  }
   await assertDirectory(directory);
 }
 
 async function checkConfig(loc) {
   try {
-    await assertDirectory(loc.root);
-    await assertDirectory(loc.directory);
+    // A private, current-user-owned directory with weak modes can be tightened
+    // in place. Missing credentials remain a distinct, non-repairable case.
+    await ensurePrivateDirectory(loc.root);
+    await ensurePrivateDirectory(loc.directory);
   } catch (error) {
     if (error.code === 'ENOENT') {
       throw new MailError('config_missing', '尚未配置 QQ 邮箱；先运行 init --email YOUR_QQ_EMAIL');
@@ -202,7 +209,11 @@ async function checkConfig(loc) {
     if (typeof process.getuid === 'function' && stat.uid !== process.getuid()) {
       throw new MailError('config_error', '配置文件不是当前用户拥有');
     }
-    if (stat.mode & 0o077) throw new MailError('config_error', '配置文件权限过宽，需要 0600');
+    if (stat.mode & 0o077) await fs.chmod(loc.file, 0o600);
+  } else {
+    // Windows does not reliably implement POSIX mode bits. Normalize the ACL
+    // on every access so a previously broadened config is not used insecurely.
+    secureWindowsAcl(loc.file, false);
   }
   return await fs.readFile(loc.file, 'utf8');
 }
@@ -278,28 +289,41 @@ async function readAuthorizationCode() {
   });
 }
 
-async function initConfig(email) {
+async function initConfig(email, replaceExisting = false) {
   const loc = configLocation();
-  // Check for an existing config before prompting, do not overwrite a user's secret.
-  if (fsSync.existsSync(loc.file)) {
-    throw new MailError('config_exists', '配置已存在；请在家目录中安全地手动更新文件');
-  }
-  const code = await readAuthorizationCode();
-  const data = makeConfig(email, code);
+  // Replacing a secret requires an explicit option AND fresh secret input;
+  // ordinary environment repair never replaces or invents credentials.
   await ensurePrivateDirectory(loc.root);
   await ensurePrivateDirectory(loc.directory);
+  let existing = null;
+  try { existing = await fs.lstat(loc.file); }
+  catch (error) { if (error.code !== 'ENOENT') throw error; }
+  if (existing && (!existing.isFile() || existing.isSymbolicLink())) {
+    throw new MailError('config_error', '拒绝覆盖非普通配置文件或符号链接');
+  }
+  if (existing && !replaceExisting) {
+    throw new MailError('config_exists', '当前用户已配置邮箱；需更换授权码时 Agent 可在取得新的官方授权码后调用 init --email ADDRESS --replace yes');
+  }
+  if (existing && process.platform !== 'win32' && typeof process.getuid === 'function' &&
+      existing.uid !== process.getuid()) {
+    throw new MailError('config_error', '不能覆盖不属于当前用户的配置文件');
+  }
+
+  const code = await readAuthorizationCode();
+  const data = makeConfig(email, code);
   const pending = path.join(loc.directory, '.config-' + randomUUID() + '.tmp');
   try {
     await fs.writeFile(pending, data, { flag: 'wx', mode: 0o600 });
     if (process.platform === 'win32') secureWindowsAcl(pending, false);
     else await fs.chmod(pending, 0o600);
-    // One user-specific config, no implicit overwrite/reconfiguration.
-    await fs.link(pending, loc.file);
+    if (existing && replaceExisting) await fs.rename(pending, loc.file);
+    else await fs.link(pending, loc.file);
     if (process.platform === 'win32') secureWindowsAcl(loc.file, false);
   } finally {
     await fs.rm(pending, { force: true });
   }
-  return { ok: true, status: 'configured', config: loc.file, message: '配置已写入当前用户家目录；请勿共享该文件' };
+  return { ok: true, status: existing ? 'credential_updated' : 'configured', config: loc.file,
+    message: '邮箱配置已由 Agent 安全写入当前用户家目录；请勿共享该文件' };
 }
 
 function parseHimalayaJson(stdout) {
@@ -362,15 +386,43 @@ async function captureProcess(binary, args, cwd, input = '', timeoutMs = DEFAULT
   });
 }
 
+async function resolveHimalaya(loc) {
+  const explicit = process.env.HIMALAYA_BIN?.trim();
+  const managed = path.join(loc.directory, 'bin', process.platform === 'win32' ? 'himalaya.exe' : 'himalaya');
+  const options = explicit ? [explicit] : [managed, 'himalaya'];
+  for (const binary of options) {
+    const probe = await captureProcess(binary, ['--version'], loc.directory, '', 15_000);
+    if (!probe.spawnError && probe.exitCode === 0 &&
+        String(probe.stdout).includes('himalaya v' + HIMALAYA_VERSION + ' ')) {
+      return binary;
+    }
+  }
+  if (explicit) {
+    throw new MailError('dependency_version', '已明确指定 HIMALAYA_BIN，但无法使用其指定的 Himalaya v' + HIMALAYA_VERSION + '；Agent 应先修正该覆盖路径');
+  }
+  if (process.env.EMAIL_AUTO_INSTALL === '0') {
+    throw new MailError('dependency_missing', '自动安装被执行环境策略禁用；Agent 应检查本机已安装依赖');
+  }
+
+  // All downloading occurs before any SMTP/IMAP operation. A root-cause-based
+  // dependency repair here therefore never resends a message of unknown status.
+  let binary;
+  try {
+    binary = await installPinnedHimalaya(loc.directory, { secureWindowsAcl });
+  } catch (error) {
+    const reason = error instanceof InstallError ? error.message : (error?.code || error?.name || 'unknown');
+    throw new MailError('dependency_repair_failed', 'Agent 自动修复 Himalaya 失败：' + reason);
+  }
+  const verified = await captureProcess(binary, ['--version'], loc.directory, '', 15_000);
+  if (verified.spawnError || verified.exitCode !== 0 ||
+      !String(verified.stdout).includes('himalaya v' + HIMALAYA_VERSION + ' ')) {
+    throw new MailError('dependency_repair_failed', '自动下载的 Himalaya 无法执行；请由 Agent 检查系统兼容性');
+  }
+  return binary;
+}
+
 async function runHimalaya(args, loc, backend, input, secrets, send = false) {
-  const binary = process.env.HIMALAYA_BIN || 'himalaya';
-  const version = await captureProcess(binary, ['--version'], loc.directory);
-  if (version.spawnError || version.exitCode !== 0) {
-    throw new MailError('dependency_missing', '需要 Himalaya CLI v' + HIMALAYA_VERSION + '；请安装后检查 PATH');
-  }
-  if (!String(version.stdout).includes('himalaya v' + HIMALAYA_VERSION + ' ')) {
-    throw new MailError('dependency_version', '需要 Himalaya CLI v' + HIMALAYA_VERSION + '，当前版本未经过适配验证');
-  }
+  const binary = await resolveHimalaya(loc);
   const result = await captureProcess(binary, [
     '-c', CONFIG_FILENAME, '-b', backend, '--json', '--log-level', 'off', ...args,
   ], loc.directory, input);
@@ -423,10 +475,36 @@ async function safeRegularFile(filename, label) {
 
 async function executeCommand(command, argv) {
   if (command === 'init') {
-    const f = parseFlags(argv, new Set(['--email']));
-    return initConfig(requireOption(f, '--email'));
+    const f = parseFlags(argv, new Set(['--email', '--replace']));
+    if (f['--replace'] !== undefined && f['--replace'] !== 'yes') {
+      throw new MailError('invalid_input', '覆盖现有邮箱授权码需要明确指定 --replace yes');
+    }
+    return initConfig(requireOption(f, '--email'), f['--replace'] === 'yes');
   }
   const loc = configLocation();
+  if (command === 'repair') {
+    if (argv.length) throw new MailError('invalid_input', 'repair 不接受其它参数');
+    await ensurePrivateDirectory(loc.root);
+    await ensurePrivateDirectory(loc.directory);
+    await resolveHimalaya(loc);
+    try {
+      await checkConfig(loc);
+    } catch (error) {
+      if (error.status === 'config_missing') {
+        return {
+          ok: false,
+          status: 'authorization_required',
+          config: loc.file,
+          message: '本地环境与依赖已修复；需要提供 QQ 邮箱地址和第三方客户端授权码，由 Agent 调用 init 安全写入。用户无须手工编辑文件',
+        };
+      }
+      throw error;
+    }
+    const config = await fs.readFile(loc.file, 'utf8');
+    const data = await runHimalaya(['account', 'list'], loc, 'imap', '', credentialsForRedaction(config));
+    return { ok: true, status: 'local_repaired', config: loc.file, data,
+      message: '本地依赖、配置目录权限和配置文件已就绪；QQ 邮箱实际网络连接还需核验' };
+  }
   const config = await checkConfig(loc);
   const secrets = credentialsForRedaction(config);
   if (command === 'doctor') {
@@ -498,7 +576,7 @@ async function executeCommand(command, argv) {
     const data = await runHimalaya(args, loc, 'smtp', body, secrets, true);
     return { ok: true, operation: 'send', status: 'submitted', message: 'Himalaya 报告 SMTP 提交成功；不代表收件人最终送达', data };
   }
-  throw new MailError('invalid_input', '仅支持 init、doctor、search、read、download、send');
+  throw new MailError('invalid_input', '仅支持 init、repair、doctor、search、read、download、send');
 }
 
 export async function main(args = process.argv.slice(2)) {
@@ -507,8 +585,9 @@ export async function main(args = process.argv.slice(2)) {
     if (!command || command === '--help' || command === 'help') {
       process.stdout.write([
         'Email Plugin V1 (Himalaya 2.2.1)',
-        '  init --email qq@example.com           # QQ authorization code via hidden prompt/stdin',
-        '  doctor                                # local config/version check; no mailbox login',
+        '  init --email qq@example.com [--replace yes]   # Agent collects code via hidden prompt/stdin',
+        '  repair                                # self-heal dependency and file permissions; never sends mail',
+        '  doctor                                # automatically repairs local dependency/config modes; no mailbox login',
         '  search --query "subject Hello" [--mailbox sent] [--page N] [--page-size N]',
         '  read --id ID [--mailbox sent]',
         '  download --id ID --dir DIRECTORY [--mailbox sent] [--part MIME-PART-ID]',
@@ -521,7 +600,7 @@ export async function main(args = process.argv.slice(2)) {
     }
     const result = await executeCommand(command, rest);
     process.stdout.write(JSON.stringify(result) + '\n');
-    return 0;
+    return result.ok === false ? 2 : 0;
   } catch (error) {
     const status = error instanceof MailError ? error.status : 'failed';
     // Unknown, unclassified errors may contain local paths, not credentials.

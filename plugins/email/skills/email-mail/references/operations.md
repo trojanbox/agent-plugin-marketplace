@@ -9,11 +9,13 @@
 | 阅读正文 | `read --id 42 [--mailbox sent]` | `message read`（不额外标记已读） |
 | 下载附件 | `download --id 42 --dir /safe/output [--part 2]` | `attachment download` |
 | 发送（含附件） | `send --to alice@example.com --subject 报告 --body-file /safe/message.txt --attach /safe/report.pdf` | `message compose --send --attach` |
-| 本地诊断 | `doctor` | `account list`（**不进行 QQ 网络登录**） |
+| 自动修复/诊断 | `repair` | **Agent 自动检查安装 Himalaya、收紧权限，诊断凭据是否齐备，绝不发送邮件** |
+| 本地诊断 | `doctor` | 自动恢复受支持的本地依赖/权限后执行 `account list`（**不进行 QQ 网络登录**） |
 
 - `--to`/`--cc`/`--bcc`/`--attach`/`--part` 均可重复；发送正文用 `--body-file` 或**标准输入**，避免放进命令行参数。
 - 搜索查询遵循 Himalaya 本身的查询语言，例如 `after 2026-10-01`、`from alice@example.com and subject report`。可选 `--page`、`--page-size`。
 - 邮件 ID 与它所在文件夹相关，后续 `read`、`download` 应沿用搜索时的 `--mailbox`。指定不存在的文件夹应返回错误。
 - 下载到明确目标目录，Himalaya 原生遇同名文件加后缀。适配器核对本次确实出现新增文件；没有文件不能声明成功。
 - 本版本使用 Himalaya 原生 `message compose --attach` 发送普通 MIME 附件；复杂 HTML/MIME 另须真实验证，目前没有强制引入 MML。
+- 发送失败或配置缺失时**由 Agent 先调用 `repair` 并按返回的状态修复根因**，不要求用户手动安装软件、修改文件权限或编辑配置。若需授权码/轮换凭据，Agent 通过私密交互取得后执行 `init --email ADDRESS [--replace yes]`。
 - 返回 JSON 中 `untrusted:true` 标记搜索/阅读/附件中的外部数据，详见 `security-and-results.md`。

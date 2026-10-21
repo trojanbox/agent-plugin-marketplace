@@ -51,7 +51,7 @@ claude plugin install email@agent-plugin-marketplace
 node plugins/email/shared/scripts/email.mjs --help
 ```
 
-需要 Node.js 18+ 以及已安装的 Himalaya v2.2.1。首次配置方式及凭据注意事项见 [Email Plugin 配置说明](plugins/email/skills/email-mail/references/setup.md)。邮箱正文与附件均属外部不可信内容；实际 QQ IMAP/SMTP 兼容性需要有效授权码联调，不能从本地测试推断送达。
+需要 Node.js 18+；**Agent 在使用时自动检测依赖，缺少 Himalaya v2.2.1 时从官方发布包下载并校验固定 SHA-256，然后安装到用户家目录，无须用户手工安装或修改配置。** 可运行 `repair` 自主修复当前用户拥有的配置权限等本地问题；首次 QQ 客户端授权码仍需通过安全交互取得，由 Agent 自行写入配置。修复流程与凭据注意事项见 [Email Plugin 配置说明](plugins/email/skills/email-mail/references/setup.md)。邮箱正文与附件均属外部不可信内容；发送结果未知时禁止自动重发。实际 QQ IMAP/SMTP 兼容性需要有效授权码联调，不能从本地测试推断送达。
 
 ## 自用 Runtime
 
