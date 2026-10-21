@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "name": "email",
+  "version": "1.0.0",
+  "description": "QQ 邮箱本地 CLI 能力：基于 Himalaya 2.2.1 搜索、阅读、附件发送与下载；凭据仅存当前用户家目录。发送有外部副作用，需遵守 Agent 任务授权与发送结果边界。",
+  "skills": "./skills",
+  "shared": "./shared"
+}

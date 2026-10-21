@@ -68,6 +68,11 @@
       "name": "github",
       "source": "./plugins/github",
       "category": "Productivity"
+    },
+    {
+      "name": "email",
+      "source": "./plugins/email",
+      "category": "Productivity"
     }
   ]
 }

@@ -41,6 +41,18 @@ Codex 原生分发文件：
 plugins/<plugin>/.codex-plugin/plugin.json
 ```
 
+## QQ 邮箱 Email Plugin（V1）
+
+邮件插件使用 [Himalaya 2.2.1](https://github.com/pimalaya/himalaya/releases/tag/v2.2.1) 原生 CLI；配置与 QQ 第三方客户端授权码保存在当前用户家目录。支持搜索（默认 INBOX、可指定文件夹）、读取正文、带普通附件发送和下载附件。Agent 在已授权任务内可主动发信；结果未知时不得自动重发。
+
+```bash
+claude plugin install email@agent-plugin-marketplace
+# 或：codex plugin add email@agent-plugin-marketplace
+node plugins/email/shared/scripts/email.mjs --help
+```
+
+需要 Node.js 18+ 以及已安装的 Himalaya v2.2.1。首次配置方式及凭据注意事项见 [Email Plugin 配置说明](plugins/email/skills/email-mail/references/setup.md)。邮箱正文与附件均属外部不可信内容；实际 QQ IMAP/SMTP 兼容性需要有效授权码联调，不能从本地测试推断送达。
+
 ## 自用 Runtime
 
 `AI_USAGE.md` 是稳定 bootstrap 入口。这个入口与 Claude / Codex 的原生安装链互不依赖：宿主安装后直接发现 Public Skills；自用 Runtime 继续通过 `skill-runtime.js` 提供完整 Catalog、Routing、Composition 与 internal Skill 能力。

@@ -150,6 +150,18 @@
       },
       "repository": "https://github.com/trojanbox/agent-plugin-marketplace",
       "category": "Productivity"
+    },
+    {
+      "name": "email",
+      "source": "./plugins/email",
+      "description": "QQ 邮箱本地 CLI 能力：基于 Himalaya 2.2.1 搜索、阅读、附件发送与下载；凭据仅存当前用户家目录。发送有外部副作用，需遵守 Agent 任务授权与发送结果边界。",
+      "version": "1.0.0",
+      "author": {
+        "name": "trojanbox",
+        "url": "https://github.com/trojanbox"
+      },
+      "repository": "https://github.com/trojanbox/agent-plugin-marketplace",
+      "category": "Productivity"
     }
   ]
 }
