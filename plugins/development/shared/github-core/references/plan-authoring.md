@@ -62,10 +62,6 @@
 ## 总体验收
 - [ ] ...
 
-## 测试合同引用
-- 业务测试方案: ...
-- 技术测试方案: ...
-
 ## 真实性边界
 - 已读取: ...
 - 未验证: ...
@@ -118,10 +114,8 @@ Write Set: ...
 
 ### 验证义务
 - Contract/Regression to prove: ...
-- Business Scenario IDs: ...
-- Technical Risk IDs: ...
-- Known repo command (if verified): ...
-- Real-environment validation required: ...
+- TDD Red/Green/Refactor/Regression assertion: ...
+- Known repo unit/integration/contract/component command (if verified): ...
 
 ### Compatibility / Migration / Rollback / Observability
 - 仅适用项
@@ -141,14 +135,9 @@ Write Set: ...
 
 一个 Task 一个主要交付物；优先按 Contract、Storage/Migration、Core、Caller/UI、Cleanup/Release 拆。确实必须原子修改时记录拆分豁免。
 
-## 9. 验证义务与测试方案
+## 9. 开发 TDD 验证边界
 
-开发计划不重复完整测试设计：
-
-- 业务预期、State、Invariant、Gherkin → `github-business-test-plan-generator`；
-- Unit/Integration/Contract/E2E、Harness/Fixture/Reset、Resilience、Evidence/Fresh Run → `github-technical-test-plan-generator`。
-
-Task 只写必须被证明的合同并引用已存在计划 ID。没有独立测试方案时，可以记录最低充分验证义务，但不能伪装成测试已经执行。
+Task 仅列代码实现需要的 Unit、Integration、Contract、Component 自动化测试和 focused regression。必须给出具体断言与可核对的真实命令；未实际执行不写成通过。**不创建业务测试 Task、E2E Task，不要求 Coding Agent 启动系统 E2E 或完整外部环境**。即使独立测试方案已存在，也不把其验收条目映射成开发 Task 的完成门。
 
 ## 10. 发布前完整性检查
 
@@ -164,4 +153,4 @@ Task 只写必须被证明的合同并引用已存在计划 ID。没有独立测
 
 ## 11. 下游 Coding Agent Goal
 
-Goal 指向真实 Issue/Task，说明执行边界、DAG、验证与阻塞条件。Goal 可以要求下游 Coding Agent 编写代码和运行真实测试，但本 Runtime 自身不执行 Goal，也不维护实施过程状态。
+Goal 指向真实 Issue/Task，说明执行边界、DAG、验证与阻塞条件。Goal 只能要求 Coding Agent 编写代码、先写并运行相应的 TDD 自动测试和局部回归；不要求业务验收、Browser/System E2E 或完整系统启动。本 Runtime 自身不执行 Goal，也不维护实施过程状态。

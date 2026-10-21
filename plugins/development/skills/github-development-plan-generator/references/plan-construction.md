@@ -122,13 +122,13 @@ Producer
 
 依赖必须形成 DAG；DAG readiness 是真实调度依据。`write_set`、generated、migration/schema、锁文件及共享 DB/端口/cache/queue/browser/temp 资源冲突时必须串行。
 
-# 九、测试协作 Gate
+# 九、开发 TDD Gate
 
-实施计划先保证**每个可测试 Task 自身有 TDD + Behavior Cases + focused regression**，然后再判断是否需要独立测试方案：
+实施计划保证**每个可测试生产 Task 都有 TDD + 代码 Behavior Cases + focused regression**：
 
-- 已有业务测试方案 → 把相关业务 Scenario/Invariant 映射进 Task Acceptance/Verification；
-- 已有技术测试方案 → 把相关 Risk/Case/Evidence 映射进 Task TDD/Regression；
-- 没有测试方案 → Task 仍必须完整，不自动创建额外 Issue；
-- 只有当验证本身形成跨 Task/跨层的独立工程问题，例如 Harness/Fixture/Reset、外部 Contract Replay、系统级 race/recovery、Fresh Run/flake 规则、复杂环境隔离时，才建议单独技术测试方案。
+- 测试范围限代码级 Unit、Integration、Contract、Component；按风险选择最低充分层级，不强求所有层级；
+- 已确认业务行为转化为代码断言，不能把业务验收场景、系统 E2E、Playwright/浏览器完整旅程、Harness/Fixture/Reset/Campaign 移入 Task；
+- 开发计划不判断或创建独立业务/技术测试方案，也不把其环境与执行状态作为 Task 依赖；
+- 对只有系统环境才能验证的事实，单独标明代码级验证局限，交由独立测试流程跟进，不能声称已经通过。
 
-独立测试方案永远是补充，不能削弱 Red/Green/Refactor 或把“代码写完再补测试”合法化。
+上述边界不削弱 Red/Green/Refactor/Regression，不允许用环境缺失充当 Red，也不允许通过降低断言获得 Green。

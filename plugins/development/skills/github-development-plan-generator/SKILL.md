@@ -1,6 +1,6 @@
 ---
 name: github-development-plan-generator
-description: "用于把已经明确或需要先经过前置 Gate 的需求、结论或缺陷永久解决方向转换成可直接交给小模型/Coding Agent 的 GitHub 开发计划。用户明确请求开发/实施计划时由本 Skill 先承接并执行 Spec Gate；若进入 ready_for_spec，再转入 github-spec 或按用户明确选择记录跳过。默认采用 small-model-strict：以当前源码建立来源索引、传播图、文件结构、契约和自包含 Task DAG，冻结 Read Before Edit、Entry Preconditions、Allowed/Forbidden、Write Set、Stop Conditions、Expected Diff Shape、逐 symbol Implementation Steps、Behavior Cases、验证义务与验收。该 Skill 只负责规划，不修改源码或运行完整真实测试。"
+description: "当用户说生成开发计划、开发实施计划、TDD 计划、把结论拆成 Coding Agent Task 或创建【开发·实施计划】Issue 时使用。主任务是代码开发派工：基于当前源码和已确认合同生成自包含 Task、依赖 DAG、Red/Green/Refactor/Regression、Unit/Integration/Contract/Component 局部回归，不包含业务测试、Browser/System E2E 或系统验收工作。执行 Spec Gate；纯 Issue 代发由 GitHub Issue Manager 处理。只生成计划，不修改源码。"
 phase: planning
 optional_uses: "github/github-issue-manager,development/github-incidental-bug-capture"
 ---
@@ -20,9 +20,9 @@ optional_uses: "github/github-issue-manager,development/github-incidental-bug-ca
 - 需要 GitHub 持久化时组合 `github/github-issue-manager`，使用其查重、写入恢复与 handoff 协议；本 Skill 保留研发内容与阶段 Gate，不复制通用远端操作。
 
 - 规划期间发现独立生产缺陷，可按现有条件组合 `development/github-incidental-bug-capture`；主任务仍是实施计划。
-- 已有业务测试方案时，把当前 Task 直接相关的业务场景/不变量写回 Task；不能只留链接。
-- 已有技术测试方案时，把当前 Task 直接相关的 Risk/Case/Evidence 写回 Task；**技术测试方案不能替代 Task 内 TDD、Behavior Cases 或 focused regression**。
-- 没有独立业务/技术测试方案时，实施计划仍必须完整可执行；不要为了形式自动创建额外测试 Issue。
+- **开发计划只服务 Coding Agent 的生产实现与 TDD**。Task 以 Unit、模块级 Integration、API/Schema Contract 或 UI Component 测试证明当前代码行为，不能追加业务测试、Browser/System E2E、真实环境联调或跨系统验收任务。
+- 即使已有独立业务/技术测试方案，也不得把其 Scenario、E2E、Harness、Fixture、Reset、Fresh Run 或测试 Campaign 复制进开发计划的 Task、Acceptance 或完成门。已有已确认业务预期只作为代码合同输入，不变成业务测试派工。
+- 业务验收和系统/E2E 验收由独立测试流程管理；其环境复杂或尚未启动，不阻塞仅要求 TDD 的开发 Task 完成。不因为缺独立测试方案而自动创建它。
 
 ## 前置 Gate
 
@@ -53,7 +53,7 @@ optional_uses: "github/github-issue-manager,development/github-incidental-bug-ca
 Red      → 先写/修改最小测试并真实运行，确认因目标能力缺失而失败
 Green    → 做根因级最小完整实现，使该 Red 变 Green
 Refactor → 在测试保护下整理，不扩大已冻结范围
-Regression → 跑当前 Task 的 focused regression 和必要合同验证
+Regression → 跑当前 Task 的局部自动化回归（Unit/Integration/Contract/Component）与类型/构建检查（适用时）
 ```
 
 - 环境错误、命令不存在、依赖缺失不能冒充 Red。
@@ -68,7 +68,7 @@ Regression → 跑当前 Task 的 focused regression 和必要合同验证
 1. Gate 通过后读取 `references/plan-construction.md`：建立源码快照、Source/Fact、搜索覆盖、传播图、持久化/架构边界、File Structure、Contract Catalog 与 Task DAG。
 2. 按 `small-model-strict` 拆 Task；每个 Task 的自包含合同、TDD、Behavior Cases 和验证精度读取 `references/task-contract.md`。
 3. 真实依赖决定 DAG；共享合同先于消费者，冲突写集/资源串行。
-4. 复杂跨 Task 测试架构、Harness/Fixture/故障注入/Fresh Run 如确有独立价值，可衔接技术测试方案；普通改动不把它当强制前置产物。
+4. 各 Task 只设置实现所需的 TDD 与局部回归通过门槛；不将业务测试、E2E、系统环境启动或测试方案准备写成开发完成的前置条件。若另有独立验收需求，可在开发计划之外由测试流程处理。
 5. 主体完成后读取 `references/delivery-and-audit.md`：专项风险、完整性审计、GitHub 发布和下游 Coding Agent Goal。
 
 ## 真实性边界

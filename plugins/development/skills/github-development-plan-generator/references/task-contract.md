@@ -62,8 +62,7 @@ Exclusive Resources: ...
 
 ### Regression / Verification
 - Focused regression: ...
-- Business Scenario IDs: ...
-- Technical Risk/Case IDs: ...
+- TDD Test / Focused Contract or Regression Cases: ...
 - Real repo command: ...
 - Expected Evidence: ...
 
@@ -73,8 +72,9 @@ Exclusive Resources: ...
 ### Risks
 - K01 ...
 
-### Acceptance
-- [ ] ...
+### Acceptance（仅代码合同与 TDD）
+- [ ] 目标行为的局部 Red/Green/Regression 均有实测结果
+- [ ] 所改代码满足已确认的接口/数据/安全合同，不引入其它改动
 
 ### Git Commit
 - After: Regression / Acceptance 满足后
@@ -116,7 +116,7 @@ Exclusive Resources: ...
 ### Regression — 证明没有破坏旧行为
 
 - 跑当前 Task focused regression；
-- 按风险补 Contract/Integration/Component/E2E 中最低充分层级；
+- 按代码风险补 Unit/Integration/Contract/Component 中最低充分层级；**不得加入 Browser/System E2E 或业务测试作为 Task 验收门槛**；
 - 记录真实命令、退出码、关键断言或真实阻塞；
 - “目标测试通过”不能自动替代相关旧行为回归。
 
@@ -159,13 +159,11 @@ Exclusive Resources: ...
 - `Expected Diff Shape` 约束最终 diff；
 - Green 步骤要精确到文件/symbol和后置条件，禁止“适配一下/完善逻辑/按需修改”。
 
-# 五、业务/技术测试方案的关系
+# 五、开发 TDD 与独立测试的边界
 
-- 业务测试方案回答用户/业务流程“应该怎样工作”；
-- 技术测试方案回答复杂跨层验证“如何稳定、可重复地证明”；
-- Task TDD 回答“这一块生产代码应如何被测试先行地写出来”。
-
-三者可以组合，但**后两者都不能替代 Task TDD**。已有测试方案时，把当前 Task 真正需要的 Case/Assertion/Evidence 展开回派工评论，不能只丢 Issue 链接给小模型重新理解。
+- 本 Skill 的 Task 只承担生产代码实现的 Red/Green/Refactor/Regression；必要的 Unit、Integration、Contract、Component 自动化测试应直接描述具体断言、文件与真实命令。
+- 业务测试、Browser/System E2E、完整环境启动/Reset、跨系统探索、验收 Campaign 归独立测试流程；它们**不得**作为本开发计划 Task 的子步骤、完成门或回归指令。
+- 已确认的业务行为可转换为代码级测试断言，但不得照搬业务 Scenario/Gherkin/E2E 步骤。若现有代码风险无法在局部自动化层证明，按事实报告验证边界，不为填满验收虚构 E2E 任务。
 
 # 六、命令与证据真实性
 

@@ -32,7 +32,8 @@
 - Red 有 Test/Assertion/CWD/Command/Expected old failure；
 - `TDD: N/A` 有真实理由和替代验证；
 - 每个重要 Invariant/Risk 有 Behavior Case/测试/替代证据；
-- 每个 Task 明确 Regression / Acceptance 满足后创建仅包含当前 Task 变更的本地 Git commit；
+- 每个 Task 明确 TDD focused Regression / 代码验收满足后创建仅包含当前 Task 变更的本地 Git commit；
+- 没有业务测试、E2E、完整系统环境的任务、Acceptance、DAG 前置或 Coding Agent Goal；
 - 命令来自当前仓库；
 - 重大 Decision 没被规划阶段重新发明；
 - 没有 `TBD/TODO/补必要测试/类似 Txx` 等占位；
@@ -59,33 +60,15 @@
 
 不生成本地计划镜像、实施状态 JSON 或持续工具日志。GitHub 不可写时按 handoff protocol；没有真实工具成功结果不能声称已写入。
 
-# 四、技术测试方案是否需要独立 Issue
+# 四、开发计划与独立测试的交付边界
 
-技术测试能力保留为**条件型独立产物**，不作为所有实施计划的固定下一步。
+**实施计划只负责 Coding Agent 的 TDD 开发完成条件。** Task 必须先 Red、再 Green/Refactor，最后执行局部 Unit/Integration/Contract/Component 回归；其 Acceptance 只确认代码合同及当前 Task 所需自动化测试。
 
-通常**不需要单独技术测试方案**：
+不得把业务验收、端到端测试、Playwright/System E2E、环境启动/Canonical Reset、真实 CMS/Sandbox 联调、跨系统故障探索或独立测试方案变成开发 Task、DAG 依赖、阻塞条件或最终 Coding Agent Goal。
 
-- 单 Task/少量 Task；
-- Task TDD + focused regression 已能覆盖主要风险；
-- 不需要新 Harness/Fixture/Reset；
-- 没有复杂跨层 race/recovery、外部 replay、环境隔离或 Fresh Run 设计。
+业务与系统级验证是其它独立流程的责任；如代码级自动化无法证明某项跨系统风险，可在真实性边界说明“尚未经过系统测试”，不对 Coding Agent 派发该系统测试，也不将其列入实施完成的必过项。
 
-建议单独形成【开发·技术测试】的情况：
-
-- 多 Task 组合后才出现关键系统 Invariant；
-- 需要 Unit/Integration/Contract/Component/E2E 分层取舍；
-- 需要 Harness/Fixture/Reset/Mock/Replay；
-- 涉及 crash/race/retry/idempotency/recovery/duplicate/out-of-order；
-- 外部服务或多进程/多存储环境需要稳定故障注入；
-- 需要 Fresh Run、`retries=0`、flake 治理或大规模测试迁移/去重。
-
-如果存在该方案：开发前用于冻结测试架构和可测试性 seam，开发后由测试阶段按完整方案验收；每个 Coding Task 只消费与自己相关的 Case，不要求小模型反复读取整份方案。
-
-**无论是否存在技术测试方案，Task TDD 都必须成立。**
-
-# 五、与业务测试方案的关系
-
-业务测试方案也是条件型下游产物：当用户流程、业务状态、不变量、跨对象验收本身需要独立 Campaign 时使用。其业务 Scenario 可以映射到 Task Acceptance/Regression，但不能替代开发者测试先行或技术层验证。
+**Task TDD 不得因此弱化。** 代码级 Red、Green、focused Regression 与真实命令必须完整。
 
 # 六、下游 Coding Agent Goal
 
@@ -100,7 +83,7 @@ GitHub 计划成功写入后，最终回复给出可直接执行的 Goal，要�
 - Green 只做根因级最小完整实现，不通过改弱测试求绿；
 - Task 完成后运行真实 focused regression，并记录命令/证据；
 - 当前 Task 的 Regression / Acceptance 满足后，创建一个只包含当前 Task 变更的本地 Git commit，再进入后续 Task；
-- 有业务/技术测试方案时只消费当前 Task 映射的合同；全部 Task 后再执行必要的跨 Task 技术/业务验收；
+- 只执行当前 Task 所列 TDD 与局部代码级回归；完整业务验收、Browser/System E2E 和外部系统环境验证归独立测试流程，不作为开发 Goal 的步骤或通过门槛；
 - DAG ready task 可并行，但共享写集/资源冲突串行；
 - 实施完成后安排独立 Review；发现问题后修复、重新验证、重新 Review；
 - 在 Task/验证/失败分类/阻塞变化等节点简短汇报，汇报后继续推进；
@@ -111,13 +94,13 @@ GitHub 计划成功写入后，最终回复给出可直接执行的 Goal，要�
 
 # 七、最终回复与强制检查
 
-最终至少包含：实施计划 Issue/handoff、Task 数和 DAG、关键 Contract、阻塞/ADR、独立业务/技术测试方案是否需要/已存在、真实性边界、Coding Agent Goal。
+最终至少包含：实施计划 Issue/handoff、Task 数和 DAG、关键 Contract、开发阻塞/ADR、TDD 局部回归合同、真实性边界、Coding Agent Goal；不包含业务测试/E2E 执行安排。
 
 结束前确认：
 
 - 源码和 `AGENTS.md` 已读；Spec Gate 已处理；
 - Search/Propagation/File/Task、Contract 和 DAG 审计通过；
 - TDD 字段没有因拆分测试 Skill 被省略；
-- 测试方案是条件协作，不是实施计划完整性的替代品；
+- 各 Task 只承担 TDD 与代码级局部回归，不混入业务测试、Browser/System E2E 或系统环境启动；
 - 未写生产代码/测试代码，未声称测试已执行；
 - GitHub 操作结果真实；Goal 使用真实 Issue 且无占位符。
