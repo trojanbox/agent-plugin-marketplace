@@ -11,12 +11,17 @@ import { spawn, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import { installPinnedHimalaya, InstallError } from './himalaya-install.mjs';
+import { QueryError, planSearch, matchesEnvelope, applySort } from './search-query.mjs';
 
 export const HIMALAYA_VERSION = '2.2.1';
 export const CONFIG_FILENAME = 'config.toml';
 export const MAX_INPUT_BYTES = 16 * 1024 * 1024;
 export const MAX_OUTPUT_BYTES = 32 * 1024 * 1024;
 export const DEFAULT_TIMEOUT_MS = 120_000;
+// A local search walks the mailbox instead of asking the server to match the term.
+const DEFAULT_PAGE_SIZE = 25;
+const LOCAL_SCAN_PAGE_SIZE = 500;
+const MAX_LOCAL_SCAN = 2000;
 
 export class MailError extends Error {
   constructor(status, message) {
@@ -464,6 +469,44 @@ function mailboxFlag(flags) {
   return ['--mailbox', safeCliValue(flags['--mailbox'], '邮件文件夹')];
 }
 
+/**
+ * Answer a search whose text term the QQ IMAP server cannot match. The server
+ * encodes a non-ASCII criterion as an RFC 3501 literal and then reports an empty
+ * result for it, so the term is matched here against the listed envelopes.
+ */
+async function localSearch(plan, flags, loc, secrets) {
+  const page = flags['--page'] ? positiveNumber(flags['--page'], 'page') : 1;
+  const pageSize = flags['--page-size'] ? positiveNumber(flags['--page-size'], 'page-size') : DEFAULT_PAGE_SIZE;
+  const wanted = page * pageSize;
+  const scanned = [];
+  const matched = [];
+  let truncated = false;
+  for (let scanPage = 1; scanned.length < MAX_LOCAL_SCAN; scanPage += 1) {
+    const data = await runHimalaya([
+      'envelope', 'list', ...mailboxFlag(flags),
+      '--page', String(scanPage), '--page-size', String(LOCAL_SCAN_PAGE_SIZE),
+    ], loc, 'imap', '', secrets);
+    const envelopes = Array.isArray(data?.envelopes) ? data.envelopes : [];
+    scanned.push(...envelopes);
+    for (const envelope of envelopes) {
+      if (matchesEnvelope(plan.ast, envelope)) matched.push(envelope);
+    }
+    if (envelopes.length < LOCAL_SCAN_PAGE_SIZE) break;
+    // The requested page is already filled, so the rest of the mailbox cannot
+    // change it. A sorted result still needs the whole mailbox to rank correctly.
+    if (matched.length >= wanted && !plan.sort) { truncated = true; break; }
+    if (scanned.length >= MAX_LOCAL_SCAN) { truncated = true; break; }
+  }
+  const ordered = applySort(matched, plan.sort);
+  const start = (page - 1) * pageSize;
+  return {
+    data: { queued: 0, envelopes: ordered.slice(start, start + pageSize) },
+    matched: ordered.length,
+    scanned: scanned.length,
+    truncated,
+  };
+}
+
 async function safeRegularFile(filename, label) {
   const full = path.resolve(filename);
   const stat = await fs.lstat(full);
@@ -515,6 +558,20 @@ async function executeCommand(command, argv) {
     const f = parseFlags(argv, new Set(['--query', '--mailbox', '--page', '--page-size']));
     const query = requireOption(f, '--query');
     assertNoOptions(query, '查询语句');
+    let plan;
+    try {
+      plan = planSearch(query);
+    } catch (error) {
+      if (error instanceof QueryError) throw new MailError(error.status, error.message);
+      throw error;
+    }
+    if (plan.mode === 'local') {
+      const local = await localSearch(plan, f, loc, secrets);
+      return {
+        ok: true, operation: 'search', mailbox: f['--mailbox'] || 'INBOX',
+        scope: 'single_mailbox', untrusted: true, matching: 'local', ...local,
+      };
+    }
     const args = ['envelope', 'search', ...mailboxFlag(f)];
     if (f['--page']) args.push('--page', String(positiveNumber(f['--page'], 'page')));
     if (f['--page-size']) args.push('--page-size', String(positiveNumber(f['--page-size'], 'page-size')));
@@ -589,6 +646,8 @@ export async function main(args = process.argv.slice(2)) {
         '  repair                                # self-heal dependency and file permissions; never sends mail',
         '  doctor                                # automatically repairs local dependency/config modes; no mailbox login',
         '  search --query "subject Hello" [--mailbox sent] [--page N] [--page-size N]',
+        '       # A non-ASCII term is matched locally (QQ IMAP cannot match it server-side);',
+        '       # only subject/from/to conditions are supported that way.',
         '  read --id ID [--mailbox sent]',
         '  download --id ID --dir DIRECTORY [--mailbox sent] [--part MIME-PART-ID]',
         '  send --to ADDR [--to ADDR] --subject SUBJECT [--cc ADDR] [--bcc ADDR]',
