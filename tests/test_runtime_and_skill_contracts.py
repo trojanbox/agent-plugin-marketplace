@@ -54,14 +54,14 @@ class RuntimeContractTests(unittest.TestCase):
             doctor["skillCount"],
             doctor["publicSkillCount"] + doctor["internalSkillCount"],
         )
-        self.assertEqual(catalog["skillCount"], doctor["publicSkillCount"])
         self.assertEqual(catalog["publicSkillCount"], doctor["publicSkillCount"])
+        self.assertEqual(len(catalog["skills"]), doctor["publicSkillCount"])
         self.assertEqual(catalog["internalSkillCount"], doctor["internalSkillCount"])
         self.assertEqual(development["internalSkillCount"], 1)
         development_plugin = next(
             item for item in listing["plugins"] if item["name"] == "development"
         )
-        self.assertTrue(development_plugin["skillCountIncludesInternal"])
+        self.assertTrue(listing["skillCountIncludesInternal"])
         self.assertEqual(
             development_plugin["skillCount"],
             development["publicSkillCount"] + development["internalSkillCount"],
@@ -90,7 +90,6 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertEqual(listing["pluginCount"], len(listing["plugins"]))
         direct = runtime_json("skill", "development/github-bug-investigation")
         self.assertEqual(direct["skill"]["plugin"], "development")
-        self.assertEqual(direct["skill"]["category"], "development")
         self.assertTrue(direct["skill"]["path"].endswith(
             "plugins/development/skills/github-bug-investigation/SKILL.md"
         ))
@@ -100,6 +99,9 @@ class RuntimeContractTests(unittest.TestCase):
         for field in ("command", "categories", "categoryCount", "compatibility", "marketplace"):
             self.assertNotIn(field, listing)
         self.assertEqual(listing["pluginCount"], len(listing["plugins"]))
+        self.assertTrue(listing["skillCountIncludesInternal"])
+        for item in listing["plugins"]:
+            self.assertNotIn("skillCountIncludesInternal", item)
 
         plugin = runtime_json("list", "development")
         for field in (
@@ -121,6 +123,22 @@ class RuntimeContractTests(unittest.TestCase):
             + len(plugin["ungroupedSkills"]),
         )
         self.assertEqual(plugin["internalSkillCount"], 1)
+
+    def test_catalog_and_skill_outputs_omit_duplicated_metadata(self) -> None:
+        catalog = runtime_json("catalog")
+        for field in ("command", "marketplace", "skillCount"):
+            self.assertNotIn(field, catalog)
+        self.assertEqual(catalog["publicSkillCount"], len(catalog["skills"]))
+        for skill in catalog["skills"]:
+            for field in ("plugin", "uses", "optionalUses"):
+                self.assertNotIn(field, skill)
+            plugin_name, separator, skill_name = skill["id"].partition("/")
+            self.assertEqual(separator, "/")
+            self.assertTrue(plugin_name and skill_name)
+
+        direct = runtime_json("skill", "development/github-bug-investigation")["skill"]
+        self.assertNotIn("category", direct)
+        self.assertEqual(direct["plugin"], "development")
 
     def test_web_app_scaffolding_has_three_stack_specific_public_skills(self) -> None:
         plugin = runtime_json("list", "web-app-scaffolding")

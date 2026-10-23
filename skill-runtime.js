@@ -643,14 +643,14 @@ function scanResult(command) {
   };
 }
 
-function compactPlugin(plugin) {
+function compactPlugin(plugin, includeSkillCountFlag = true) {
   const item = {
     name: plugin.name,
     version: plugin.version,
     description: plugin.description,
     skillCount: plugin.skillCount,
-    skillCountIncludesInternal: true,
   };
+  if (includeSkillCountFlag) item.skillCountIncludesInternal = true;
   if (plugin.category) item.marketplaceCategory = plugin.category;
   if (plugin.groupCount > 0) item.groupCount = plugin.groupCount;
   return item;
@@ -664,11 +664,9 @@ function compactSkill(skill, includeGroup = true) {
 }
 
 function compactCatalogSkill(skill) {
-  const item = { id: `${skill.plugin}/${skill.name}`, plugin: skill.plugin, description: skill.description };
+  const item = { id: `${skill.plugin}/${skill.name}`, description: skill.description };
   if (skill.group) item.group = skill.group;
   if (skill.phase && skill.phase !== "unspecified") item.phase = skill.phase;
-  if ((skill.uses || []).length > 0) item.uses = skill.uses;
-  if ((skill.optionalUses || []).length > 0) item.optionalUses = skill.optionalUses;
   return item;
 }
 
@@ -759,7 +757,7 @@ function main() {
         mode: "marketplace",
         marketplace: compactMarketplace(marketplace),
         pluginCount: plugins.length,
-        plugins: plugins.map(compactPlugin),
+        plugins: plugins.map((plugin) => compactPlugin(plugin)),
       });
       break;
     }
@@ -772,7 +770,8 @@ function main() {
           mode: "categories",
           architecture: "marketplace-plugin-skill",
           pluginCount: plugins.length,
-          plugins: plugins.map(compactPlugin),
+          skillCountIncludesInternal: true,
+          plugins: plugins.map((plugin) => compactPlugin(plugin, false)),
         });
       }
 
@@ -800,15 +799,12 @@ function main() {
       const visibilityCounts = countSkillsByVisibility(registry.skills);
       output({
         ok: true,
-        command,
         mode: "catalog",
         architecture: "marketplace-plugin-skill",
-        marketplace: compactMarketplace(registry.marketplace),
         pluginCount: registry.plugins.length,
-        skillCount: visibleSkills.length,
         publicSkillCount: visibleSkills.length,
         internalSkillCount: visibilityCounts.internalSkillCount,
-        skills: visibleSkills.map(compactCatalogSkill),
+        skills: visibleSkills.map((skill) => compactCatalogSkill(skill)),
       });
       break;
     }
@@ -860,7 +856,8 @@ function main() {
 
     case "skill": {
       if (argument === undefined) fail("缺少 Skill 标识", { expected: "<plugin>/<skill>" });
-      output({ ok: true, command, mode: "direct-read", architecture: "marketplace-plugin-skill", skill: loadSkillDirect(argument) });
+      const { category, ...skill } = loadSkillDirect(argument);
+      output({ ok: true, command, mode: "direct-read", architecture: "marketplace-plugin-skill", skill });
       break;
     }
 

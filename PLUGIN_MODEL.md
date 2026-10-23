@@ -84,7 +84,7 @@ Canonical `plugins/<plugin>/plugin.json`：
 
 历史逻辑 ID `<category>/<skill>` 保持不变，因为迁移后 Plugin 名沿用原 Category 名。Internal Skill 迁移目录不会改变逻辑 ID。
 
-兼容范围仅是调用参数与逻辑 ID：`list` 不再返回 `command` 回显、`categories` / `categoryCount` 别名（顶层统一为 `plugins` / `pluginCount`），`list <plugin>` 也不再返回等价的派生计数字段（如 `skillCount` / `groupCount` / `hiddenInternalSkillCount` / `ungroupedSkillCount`）。
+兼容范围仅是调用参数与逻辑 ID：`list` 不再返回 `command` 回显、`categories` / `categoryCount` 别名（顶层统一为 `plugins` / `pluginCount`，`skillCountIncludesInternal` 提到顶层只出现一次），`list <plugin>` 也不再返回等价的派生计数字段（如 `skillCount` / `groupCount` / `hiddenInternalSkillCount` / `ungroupedSkillCount`）。`catalog` 同样去掉 `command` / `marketplace` / `skillCount`，每个 Skill 只保留 `id`（`<plugin>/<skill>`）、`description`、`phase`、`group`，不再内联 `plugin` / `uses` / `optionalUses`；`skill <plugin>/<skill>` 不再返回与 `plugin` 重复的 `category`。
 
 以下入口继续有效：
 
