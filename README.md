@@ -65,6 +65,8 @@ node skill-runtime.js skill development/github-bug-investigation
 node skill-runtime.js doctor
 ```
 
+`list` / `list <plugin>` / `catalog` 默认输出 Markdown；需要机器解析时加 `--json`，例如 `node skill-runtime.js catalog --json`。
+
 ## Canonical Source 与生成文件
 
 唯一事实源仍然是：

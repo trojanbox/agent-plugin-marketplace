@@ -26,6 +26,12 @@ function output(payload, exitCode = 0) {
   throw OUTPUT_COMPLETE;
 }
 
+function outputMarkdown(text) {
+  process.exitCode = 0;
+  process.stdout.write(`${text.replace(/\s+$/, "")}\n`);
+  throw OUTPUT_COMPLETE;
+}
+
 function fail(message, details = undefined, exitCode = 1) {
   const payload = { ok: false, error: message };
   if (details !== undefined) payload.details = details;
@@ -721,9 +727,67 @@ function compactMarketplace(marketplace) {
   };
 }
 
+function markdownSkill(skill) {
+  const meta = skill.phase ? ` · ${skill.phase}` : "";
+  return [`- **${skill.name}**${meta}`, `  ${skill.description}`];
+}
+
+function renderListMarkdown(payload) {
+  const lines = [`# Plugin List · ${payload.pluginCount} plugins · skill counts include internal`, ""];
+  for (const plugin of payload.plugins) {
+    const meta = [`**${plugin.name}**`, `v${plugin.version}`, plugin.marketplaceCategory || "-", `${plugin.skillCount} skills`];
+    if (plugin.groupCount > 0) meta.push(`${plugin.groupCount} groups`);
+    lines.push(`- ${meta.join(" · ")}`);
+    lines.push(`  ${plugin.description}`);
+  }
+  return lines.join("\n");
+}
+
+function renderPluginMarkdown(payload) {
+  const plugin = payload.plugin;
+  const counts = [`${payload.publicSkillCount} public skills`];
+  if (payload.internalSkillCount > 0) counts.push(`${payload.internalSkillCount} internal`);
+  const lines = [`# ${plugin.name} · v${plugin.version} · ${counts.join(" · ")}`, "", plugin.description, ""];
+  for (const group of payload.groups) {
+    lines.push(`## ${group.name}`, "");
+    for (const skill of group.skills) lines.push(...markdownSkill(skill));
+    lines.push("");
+  }
+  if (payload.ungroupedSkills.length > 0) {
+    lines.push("## ungrouped", "");
+    for (const skill of payload.ungroupedSkills) lines.push(...markdownSkill(skill));
+  }
+  return lines.join("\n");
+}
+
+function renderCatalogMarkdown(payload) {
+  const counts = [`${payload.pluginCount} plugins`, `${payload.publicSkillCount} public skills`];
+  if (payload.internalSkillCount > 0) counts.push(`${payload.internalSkillCount} internal`);
+  const lines = [`# Catalog · ${counts.join(" · ")}`, ""];
+  let currentPlugin = null;
+  for (const skill of payload.skills) {
+    const pluginName = skill.id.split("/")[0];
+    if (pluginName !== currentPlugin) {
+      if (currentPlugin !== null) lines.push("");
+      currentPlugin = pluginName;
+      lines.push(`## ${pluginName}`, "");
+    }
+    const meta = [skill.phase, skill.group].filter(Boolean).map((item) => ` · ${item}`).join("");
+    lines.push(`- \`${skill.id}\`${meta}`);
+    lines.push(`  ${skill.description}`);
+  }
+  return lines.join("\n");
+}
+
 function main() {
-  const [, , command = "help", argument, extraArgument] = process.argv;
-  if (extraArgument !== undefined) fail("参数过多", { command, arguments: process.argv.slice(3) });
+  const rawArguments = process.argv.slice(2);
+  const flags = rawArguments.filter((item) => item.startsWith("--"));
+  const unknownFlags = flags.filter((flag) => flag !== "--json");
+  if (unknownFlags.length > 0) fail("未知参数", { flags: unknownFlags });
+  const jsonOutput = flags.includes("--json");
+  const positional = rawArguments.filter((item) => !item.startsWith("--"));
+  const [command = "help", argument, extraArgument] = positional;
+  if (extraArgument !== undefined) fail("参数过多", { command, arguments: positional.slice(1) });
 
   switch (command) {
     case "init":
@@ -765,21 +829,23 @@ function main() {
     case "list": {
       if (argument === undefined) {
         const { plugins } = scanPlugins();
-        output({
+        const payload = {
           ok: true,
           mode: "categories",
           architecture: "marketplace-plugin-skill",
           pluginCount: plugins.length,
           skillCountIncludesInternal: true,
           plugins: plugins.map((plugin) => compactPlugin(plugin, false)),
-        });
+        };
+        if (!jsonOutput) outputMarkdown(renderListMarkdown(payload));
+        output(payload);
       }
 
       const { plugin } = getPluginByName(argument);
       const allSkills = scanPluginSkills(plugin);
       const visibleSkills = allSkills.filter((skill) => skill.visibility !== "internal");
       const grouped = groupPluginSkills(visibleSkills);
-      output({
+      const payload = {
         ok: true,
         mode: "category",
         architecture: "marketplace-plugin-skill",
@@ -788,7 +854,9 @@ function main() {
         internalSkillCount: allSkills.length - visibleSkills.length,
         groups: grouped.groups,
         ungroupedSkills: grouped.ungroupedSkills,
-      });
+      };
+      if (!jsonOutput) outputMarkdown(renderPluginMarkdown(payload));
+      output(payload);
       break;
     }
 
@@ -797,7 +865,7 @@ function main() {
       const registry = scanRegistry();
       const visibleSkills = registry.skills.filter((skill) => skill.visibility !== "internal");
       const visibilityCounts = countSkillsByVisibility(registry.skills);
-      output({
+      const payload = {
         ok: true,
         mode: "catalog",
         architecture: "marketplace-plugin-skill",
@@ -805,7 +873,9 @@ function main() {
         publicSkillCount: visibleSkills.length,
         internalSkillCount: visibilityCounts.internalSkillCount,
         skills: visibleSkills.map((skill) => compactCatalogSkill(skill)),
-      });
+      };
+      if (!jsonOutput) outputMarkdown(renderCatalogMarkdown(payload));
+      output(payload);
       break;
     }
 
@@ -882,6 +952,7 @@ function main() {
           "node <runtime>/skill-runtime.js skill <category>/<skill-name>",
         ],
         notes: [
+          "list、list <plugin>、catalog 默认输出 Markdown；需要机器解析时加 --json。错误始终是 JSON。",
           "Runtime 根目录由 skill-runtime.js 自身位置自动确定，整个目录可搬迁。",
           "AI_USAGE.md 仍是稳定 bootstrap 入口；Marketplace/Plugin 细节由 Runtime CLI 负责发现。",
           "marketplace.json 只负责本地已安装 Plugin 的 Catalog/分组/来源元数据；Runtime 执行不回查远程市场。",

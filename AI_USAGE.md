@@ -4,6 +4,8 @@
 
 ## 日常路由
 
+`list` / `list <plugin>` / `catalog` 默认输出 Markdown；需要结构化解析时加 `--json`（错误始终是 JSON，其余命令始终是 JSON）。
+
 1. `node skill-runtime.js list`：只看已安装 Plugin 元数据，先缩小领域。旧版把这一层称为 Category；现有名称和调用参数继续兼容，返回体使用 `plugins`（不再返回 `categories` 别名）。
 2. 领域明确：`node skill-runtime.js list <plugin>`；跨领域或拿不准：`node skill-runtime.js catalog`。`catalog` 只做发现（`id` + `description` + `phase` + `group`），组合依赖 `uses` / `optionalUses` 由下一步的 `skill` 返回。
 3. 根据返回的 `description + phase` 选**唯一主 Skill**。如果仍有两个独立主交付物同时成立，先让用户选择；辅助能力不算主 Skill 冲突。

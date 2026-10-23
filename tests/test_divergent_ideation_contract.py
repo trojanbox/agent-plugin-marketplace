@@ -12,7 +12,7 @@ REFERENCE = SKILL.parent / 'references/ideation-lab.md'
 
 def runtime(*args: str) -> dict:
     result = subprocess.run(
-        ['node', str(ROOT / 'skill-runtime.js'), *args],
+        ['node', str(ROOT / 'skill-runtime.js'), *args, '--json'],
         cwd=ROOT,
         capture_output=True,
         check=True,

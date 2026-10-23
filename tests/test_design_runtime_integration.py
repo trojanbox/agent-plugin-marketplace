@@ -13,7 +13,7 @@ VENDOR = ROOT / "vendor/baoyu-design"
 class DesignRuntimeIntegrationTests(unittest.TestCase):
     def test_design_category_has_two_public_runtime_skills(self) -> None:
         out = subprocess.run(
-            ["node", str(ROOT / "skill-runtime.js"), "list", "design"],
+            ["node", str(ROOT / "skill-runtime.js"), "list", "design", "--json"],
             cwd=ROOT,
             check=True,
             capture_output=True,

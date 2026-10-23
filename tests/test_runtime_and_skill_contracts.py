@@ -32,7 +32,7 @@ def frontmatter(path: Path) -> str:
 
 def runtime_json(*args: str) -> dict:
     completed = subprocess.run(
-        ["node", str(RUNTIME), *args],
+        ["node", str(RUNTIME), *args, "--json"],
         cwd=ROOT,
         check=True,
         capture_output=True,
@@ -139,6 +139,49 @@ class RuntimeContractTests(unittest.TestCase):
         direct = runtime_json("skill", "development/github-bug-investigation")["skill"]
         self.assertNotIn("category", direct)
         self.assertEqual(direct["plugin"], "development")
+
+    def test_markdown_is_default_for_list_and_catalog(self) -> None:
+        def raw(*args: str) -> str:
+            completed = subprocess.run(
+                ["node", str(RUNTIME), *args],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            return completed.stdout
+
+        listing = raw("list")
+        self.assertTrue(listing.startswith("# Plugin List · 13 plugins"))
+        for name in ("ai-workflow", "development", "writing"):
+            self.assertIn(f"**{name}**", listing)
+        self.assertIn("v2.0.0", listing)
+        self.assertIn("Development", listing)
+
+        plugin = raw("list", "development")
+        self.assertTrue(plugin.startswith("# development · v2.0.0"))
+        self.assertIn("12 public skills", plugin)
+        self.assertIn("1 internal", plugin)
+        self.assertIn("## testing", plugin)
+        self.assertIn("用于软件研发", plugin)
+
+        catalog = raw("catalog")
+        self.assertTrue(catalog.startswith("# Catalog · 13 plugins · 63 public skills"))
+        self.assertIn("## development", catalog)
+        self.assertIn("`development/github-bug-investigation`", catalog)
+
+        json_listing = json.loads(raw("list", "--json"))
+        self.assertEqual(json_listing["pluginCount"], len(json_listing["plugins"]))
+
+    def test_unknown_flag_is_rejected(self) -> None:
+        completed = subprocess.run(
+            ["node", str(RUNTIME), "list", "--yaml"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+        self.assertNotEqual(completed.returncode, 0)
+        self.assertIn("未知参数", completed.stdout)
 
     def test_web_app_scaffolding_has_three_stack_specific_public_skills(self) -> None:
         plugin = runtime_json("list", "web-app-scaffolding")
