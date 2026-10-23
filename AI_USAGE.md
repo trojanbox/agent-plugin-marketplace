@@ -4,7 +4,7 @@
 
 ## 日常路由
 
-1. `node skill-runtime.js list`：只看已安装 Plugin 元数据，先缩小领域。旧版把这一层称为 Category；现有名称和调用参数继续兼容。
+1. `node skill-runtime.js list`：只看已安装 Plugin 元数据，先缩小领域。旧版把这一层称为 Category；现有名称和调用参数继续兼容，返回体使用 `plugins`（不再返回 `categories` 别名）。
 2. 领域明确：`node skill-runtime.js list <plugin>`；跨领域或拿不准：`node skill-runtime.js catalog`。
 3. 根据返回的 `description + phase` 选**唯一主 Skill**。如果仍有两个独立主交付物同时成立，先让用户选择；辅助能力不算主 Skill 冲突。
 4. `node skill-runtime.js skill <plugin>/<skill>`：读取命中的 `SKILL.md` 元信息和路径。现有 `<category>/<skill>` ID 因 Plugin 名沿用原 Category 名而保持不变。

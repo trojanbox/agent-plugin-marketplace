@@ -686,7 +686,6 @@ function groupPluginSkills(skills) {
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([name, items]) => ({
       name,
-      skillCount: items.length,
       skills: items.sort((a, b) => a.name.localeCompare(b.name)).map((item) => compactSkill(item, false)),
     }));
   return {
@@ -767,44 +766,29 @@ function main() {
 
     case "list": {
       if (argument === undefined) {
-        const { marketplace, plugins } = scanPlugins();
-        const compact = plugins.map(compactPlugin);
+        const { plugins } = scanPlugins();
         output({
           ok: true,
-          command,
           mode: "categories",
           architecture: "marketplace-plugin-skill",
-          marketplace: compactMarketplace(marketplace),
           pluginCount: plugins.length,
-          plugins: compact,
-          categoryCount: plugins.length,
-          categories: compact,
-          compatibility: { categoryAlias: true },
+          plugins: plugins.map(compactPlugin),
         });
       }
 
-      const { marketplace, plugin } = getPluginByName(argument);
+      const { plugin } = getPluginByName(argument);
       const allSkills = scanPluginSkills(plugin);
       const visibleSkills = allSkills.filter((skill) => skill.visibility !== "internal");
       const grouped = groupPluginSkills(visibleSkills);
-      const compactPluginInfo = { name: plugin.name, version: plugin.version, description: plugin.description };
       output({
         ok: true,
-        command,
         mode: "category",
         architecture: "marketplace-plugin-skill",
-        marketplace: compactMarketplace(marketplace),
-        plugin: compactPluginInfo,
-        category: { name: plugin.name, description: plugin.description },
-        skillCount: visibleSkills.length,
+        plugin: { name: plugin.name, version: plugin.version, description: plugin.description },
         publicSkillCount: visibleSkills.length,
         internalSkillCount: allSkills.length - visibleSkills.length,
-        groupCount: grouped.groups.length,
         groups: grouped.groups,
-        ungroupedSkillCount: grouped.ungroupedSkills.length,
         ungroupedSkills: grouped.ungroupedSkills,
-        hiddenInternalSkillCount: allSkills.length - visibleSkills.length,
-        compatibility: { categoryAlias: true },
       });
       break;
     }

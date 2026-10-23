@@ -45,7 +45,7 @@ class RuntimeContractTests(unittest.TestCase):
     def test_visibility_counts_are_explicit_and_consistent(self) -> None:
         doctor = runtime_json("doctor")
         catalog = runtime_json("catalog")
-        categories = runtime_json("list")
+        listing = runtime_json("list")
         development = runtime_json("list", "development")
 
         self.assertTrue(doctor["ok"])
@@ -58,16 +58,12 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertEqual(catalog["publicSkillCount"], doctor["publicSkillCount"])
         self.assertEqual(catalog["internalSkillCount"], doctor["internalSkillCount"])
         self.assertEqual(development["internalSkillCount"], 1)
-        self.assertEqual(
-            development["internalSkillCount"],
-            development["hiddenInternalSkillCount"],
+        development_plugin = next(
+            item for item in listing["plugins"] if item["name"] == "development"
         )
-        development_category = next(
-            item for item in categories["categories"] if item["name"] == "development"
-        )
-        self.assertTrue(development_category["skillCountIncludesInternal"])
+        self.assertTrue(development_plugin["skillCountIncludesInternal"])
         self.assertEqual(
-            development_category["skillCount"],
+            development_plugin["skillCount"],
             development["publicSkillCount"] + development["internalSkillCount"],
         )
 
@@ -91,17 +87,40 @@ class RuntimeContractTests(unittest.TestCase):
     def test_marketplace_plugin_architecture_preserves_legacy_cli_ids(self) -> None:
         listing = runtime_json("list")
         self.assertEqual(listing["architecture"], "marketplace-plugin-skill")
-        self.assertEqual(listing["pluginCount"], listing["categoryCount"])
-        self.assertEqual(
-            {item["name"] for item in listing["plugins"]},
-            {item["name"] for item in listing["categories"]},
-        )
+        self.assertEqual(listing["pluginCount"], len(listing["plugins"]))
         direct = runtime_json("skill", "development/github-bug-investigation")
         self.assertEqual(direct["skill"]["plugin"], "development")
         self.assertEqual(direct["skill"]["category"], "development")
         self.assertTrue(direct["skill"]["path"].endswith(
             "plugins/development/skills/github-bug-investigation/SKILL.md"
         ))
+
+    def test_list_output_omits_redundant_aliases_and_derived_counts(self) -> None:
+        listing = runtime_json("list")
+        for field in ("command", "categories", "categoryCount", "compatibility", "marketplace"):
+            self.assertNotIn(field, listing)
+        self.assertEqual(listing["pluginCount"], len(listing["plugins"]))
+
+        plugin = runtime_json("list", "development")
+        for field in (
+            "command",
+            "category",
+            "skillCount",
+            "hiddenInternalSkillCount",
+            "groupCount",
+            "ungroupedSkillCount",
+            "compatibility",
+            "marketplace",
+        ):
+            self.assertNotIn(field, plugin)
+        for group in plugin["groups"]:
+            self.assertNotIn("skillCount", group)
+        self.assertEqual(
+            plugin["publicSkillCount"],
+            sum(len(group["skills"]) for group in plugin["groups"])
+            + len(plugin["ungroupedSkills"]),
+        )
+        self.assertEqual(plugin["internalSkillCount"], 1)
 
     def test_web_app_scaffolding_has_three_stack_specific_public_skills(self) -> None:
         plugin = runtime_json("list", "web-app-scaffolding")
