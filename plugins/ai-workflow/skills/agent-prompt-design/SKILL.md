@@ -1,6 +1,6 @@
 ---
 name: agent-prompt-design
-description: "用于为 Codex、Browser/Test Agent、Research Agent 或其它可自主执行多步任务的模型设计可直接投喂的目标提示词/执行合同。适合‘给我一个 Codex 目标提示词/让另一个 Agent 按这个计划执行/把这些要求整理成自主执行 Prompt/加上持续进度汇报和验收条件’。重点定义 Goal、事实源、范围、执行顺序、工具/环境边界、进度汇报、证据、停止条件、完成标准和交付物；普通聊天提示词、单句润色或开发计划本身不使用本 Skill。"
+description: "用于为 Codex、Browser/Test Agent、Research Agent 或其它可自主执行多步任务的模型设计可直接投喂的目标提示词/执行合同。适合‘给我一个 Codex 目标提示词/让另一个 Agent 按这个计划执行/把这些要求整理成自主执行 Prompt/加上持续进度汇报和验收条件’。重点定义 Goal、事实源、范围、执行顺序、工具边界、进度、证据、停止条件和交付物；普通聊天提示词、单句润色或开发计划本身不使用本 Skill。"
 visibility: workflow
 phase: orchestration
 ---

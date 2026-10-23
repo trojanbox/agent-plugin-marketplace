@@ -1,6 +1,6 @@
 ---
 name: k12-lesson-differentiation
-description: "用于把已有 K-12 数学、ELA、科学或社会学科课程适配为不同 proficiency/learner needs 的分层学习路径。核心是保留同一标准、essential question 和认知要求，通过支架、入口与 extension 调整访问方式。新课从零创建时使用 k12-lesson-planning。"
+description: "用于把已有 K-12 数学、ELA、科学或社会学科课程适配为不同 proficiency/learner needs 的分层路径：保留同一标准、essential question 和认知要求，用支架、入口与 extension 调整访问方式。新课从零创建走 k12-lesson-planning。"
 visibility: workflow
 phase: adaptation
 ---

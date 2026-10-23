@@ -1,6 +1,6 @@
 ---
 name: design-system-authoring
-description: "用于创建、导入、编译和验证可复用设计系统/UI Kit：design tokens、字体、组件、starting points、Design Components，以及从 Figma .fig、GitHub 或现有 HTML/CSS 提取设计语言。目标是产出可被后续设计项目绑定和消费的设计系统资产时使用；普通页面设计使用 visual-artifact-design。"
+description: "用于创建、导入、编译和验证可复用设计系统/UI Kit：design tokens、字体、组件、starting points、Design Components，以及从 Figma .fig、GitHub 或现有 HTML/CSS 提取设计语言。目标是产出供后续设计项目绑定消费的设计系统资产；普通页面设计走 visual-artifact-design。"
 visibility: workflow
 phase: architecture
 ---

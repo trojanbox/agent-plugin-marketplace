@@ -1,6 +1,6 @@
 ---
 name: data-exploration
-description: "用于首次理解一个数据集、表格或数据文件：确认 grain/主键/时间范围、字段角色、缺失率、基数、分布、重复、异常值和潜在关系，并建议后续分析。若探索过程中同时要求画关键分布/概览图，仍以本 Skill 为主并组合 data-visualization；已有分析结果 QA 使用 data-validation，正式统计检验使用 statistical-analysis。"
+description: "用于首次理解一个数据集、表格或数据文件：确认 grain/主键/时间范围、字段角色、缺失率、基数、分布、重复、异常值和潜在关系，并建议后续分析。探索中同时要求画分布/概览图时仍以本 Skill 为主并组合 data-visualization；已有分析结果 QA 走 data-validation，正式统计检验走 statistical-analysis。"
 visibility: workflow
 phase: analysis
 optional_uses: "data/data-visualization"

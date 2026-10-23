@@ -1,6 +1,6 @@
 ---
 name: data-visualization
-description: "用于当可视化本身是主要交付物时选择、创建或审阅图表：趋势、分类比较、分布、相关、组成、地理、流程等，并检查可读性、无障碍和视觉误导。若图表只是探索、统计分析或验证的呈现步骤，由对应上游 Data Skill 保留主路由并组合本 Skill。"
+description: "用于可视化本身是主要交付物时选择、创建或审阅图表：趋势、分类比较、分布、相关、组成、地理、流程等，并检查可读性、无障碍和视觉误导。图表只是探索、统计分析或验证的呈现步骤时，由对应上游 Data Skill 保留主路由并组合本 Skill。"
 visibility: workflow
 phase: presentation
 ---

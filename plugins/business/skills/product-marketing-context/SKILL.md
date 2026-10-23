@@ -1,6 +1,6 @@
 ---
 name: product-marketing-context
-description: "用于创建、审阅或更新可长期复用的产品营销上下文，覆盖产品、目标客户、ICP/Persona、痛点、竞争格局、差异化、异议、切换动力、客户原话、品牌语气、证据与业务目标。适合用户说‘产品上下文/营销上下文/ICP/定位/目标客户/别让我每次重复介绍产品’时使用。若只是一次性市场研究或营销执行，不使用本 Skill。"
+description: "用于创建、审阅或更新可长期复用的产品营销上下文，覆盖产品、客户/ICP、痛点、竞争格局、差异化、异议、切换动力、客户原话、品牌语气、证据与业务目标。适合‘产品上下文/营销上下文/ICP/定位/目标客户/别让我每次重复介绍产品’。一次性市场研究或营销执行不使用本 Skill。"
 visibility: workflow
 phase: context
 optional_uses: "research/deep-research,research/knowledge-synthesis"

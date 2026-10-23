@@ -1,6 +1,6 @@
 ---
 name: data-validation
-description: "用于在分享数据分析、SQL、图表或结论前做 QA：检查问题定义、数据选择、grain、Join、过滤、聚合、分母、时间窗口、统计偏差、图表误导和结论是否被数据支持。若验证需要重跑关键检验或重做问题图表，本 Skill 保留主路由并按需组合 statistical-analysis / data-visualization。输出 Ready to share / Share with caveats / Needs revision。"
+description: "用于分享数据分析、SQL、图表或结论前做 QA：检查问题定义、数据选择、grain、Join、过滤、聚合、分母、时间窗口、统计偏差、图表误导和结论是否有数据支持。验证需重跑关键检验或重做问题图表时，本 Skill 保留主路由并组合 statistical-analysis / data-visualization。输出 Ready to share / Share with caveats / Needs revision。"
 visibility: workflow
 phase: verification
 optional_uses: "data/statistical-analysis,data/data-visualization"

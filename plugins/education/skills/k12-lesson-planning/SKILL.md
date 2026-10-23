@@ -1,6 +1,6 @@
 ---
 name: k12-lesson-planning
-description: "用于 K-12 教师从零创建数学、ELA、科学或社会学科的新课、mini-lesson、daily lesson 或 unit 中单课。即使新课同时要求 differentiated/tiered materials，也由本 Skill 统一设计。已有课程需要分层适配时使用 k12-lesson-differentiation；不用于单独评分、rubric、quiz 或作业反馈。"
+description: "用于 K-12 教师从零创建数学、ELA、科学或社会学科的新课、mini-lesson、daily lesson 或 unit 单课；新课同时要求 differentiated/tiered materials 也由本 Skill 统一设计。已有课程分层适配走 k12-lesson-differentiation；不用于单独评分、rubric、quiz 或作业反馈。"
 visibility: workflow
 phase: planning
 ---

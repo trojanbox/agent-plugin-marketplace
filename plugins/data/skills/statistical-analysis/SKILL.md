@@ -1,6 +1,6 @@
 ---
 name: statistical-analysis
-description: "用于描述统计、分布、趋势、异常值、相关性、假设检验、效应量、置信区间和统计结果解释。适合 A/B、前后对比、分组差异和时间序列；若同一请求还要求把统计结果画出来，本 Skill 保留主路由并组合 data-visualization。已有分析主要做 QA 时使用 data-validation。"
+description: "用于描述统计、分布、趋势、异常值、相关性、假设检验、效应量、置信区间和统计结果解释。适合 A/B、前后对比、分组差异和时间序列；同一请求还要求画统计图时，本 Skill 保留主路由并组合 data-visualization。已有分析主要做 QA 时走 data-validation。"
 visibility: workflow
 phase: analysis
 optional_uses: "data/data-visualization"

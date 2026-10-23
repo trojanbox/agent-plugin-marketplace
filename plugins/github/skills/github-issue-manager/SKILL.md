@@ -1,6 +1,6 @@
 ---
 name: github-issue-manager
-description: "用于当 GitHub Issue 生命周期写操作本身是主要目标、且待写内容/上游决定已经明确时执行创建、更新正文、评论、标签、指派、关闭或重开，并核对真实返回。明确创建/重开由本 Skill 承接并把 github-issue-triage 作为写前 Gate；若 Bug 调查、讨论、结论、计划、测试方案等领域工作仍是主任务，Issue 写入只是其持久化副作用，本 Skill 不抢主路由。"
+description: "用于 GitHub Issue 写操作本身是主要目标、且待写内容/上游决定已明确时，执行创建、更新正文、评论、标签、指派、关闭或重开，并核对真实返回。创建/重开由本 Skill 承接，github-issue-triage 作为写前 Gate；Bug 调查、讨论、结论、计划、测试方案仍是主任务时，Issue 写入只是持久化副作用，本 Skill 不抢主路由。"
 phase: operations
 optional_uses: "github/github-issue-triage"
 ---

@@ -1,6 +1,6 @@
 ---
 name: github-issue-triage
-description: "用于把‘查重/是否复发/复用还是新建/是否该重开’本身作为当前主要目标时，搜索目标仓库开放和已关闭 Issue，比较主题、交付边界和历史解决状态；缺陷类另比较根因与症状并给出决策。若用户已经明确要求创建/重开等写操作，主路由由 github-issue-manager 承接，本 Skill 作为写前 Triage Gate；无法读取 GitHub 时生成标准化查重交接条目。"
+description: "用于把‘查重/是否复发/复用还是新建/是否该重开’本身作为主要目标时，搜索目标仓库开放和已关闭 Issue，比较主题、交付边界和历史解决状态；缺陷类另比较根因与症状并给出决策。若用户已明确要求创建/重开等写操作，主路由由 github-issue-manager 承接，本 Skill 作为写前 Triage Gate；无法读取 GitHub 时生成标准化查重交接条目。"
 phase: operations
 ---
 

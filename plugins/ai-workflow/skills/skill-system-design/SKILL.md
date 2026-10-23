@@ -1,6 +1,6 @@
 ---
 name: skill-system-design
-description: "用于设计、创建、修改、拆分、合并、删除或审计 AI Skill Runtime 中的 Marketplace / Plugin / Group metadata / Skill / 路由 / 组合规则。适合‘缺不缺一个 Skill/一个 Plugin 该不该拆/这个 Skill 为什么触发不到/多个 Skill 会不会冲突/帮我新增或优化 Skill/整理 Plugin 与 Marketplace/打包最新版 Runtime’。执行时先盘点 Catalog 和现有回归样本，优先修路由/组合而非新增能力；涉及路由、Gate 或 Composition 的修改必须做语义路由 Eval，再运行 Runtime doctor 并交付可用产物。"
+description: "用于设计、创建、修改、拆分、合并、删除或审计 AI Skill Runtime 中的 Marketplace / Plugin / Group metadata / Skill / 路由 / 组合规则。适合‘缺不缺一个 Skill/一个 Plugin 该不该拆/这个 Skill 为什么触发不到/多个 Skill 会不会冲突/帮我新增或优化 Skill/整理 Plugin 与 Marketplace/打包最新版 Runtime’。执行时先盘点 Catalog 和回归样本，优先修路由/组合而非新增能力；涉及路由、Gate 或 Composition 的修改必须做语义路由 Eval，再运行 doctor 并交付可用产物。"
 visibility: workflow
 phase: architecture
 ---

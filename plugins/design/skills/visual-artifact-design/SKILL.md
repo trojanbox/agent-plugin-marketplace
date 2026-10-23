@@ -1,6 +1,6 @@
 ---
 name: visual-artifact-design
-description: "用于设计和交付视觉产物：高保真 UI、可点击原型、线框图、落地页、Dashboard、移动端界面、演示稿、视觉文档、动画或其他 HTML 设计稿。以用户要看到、比较、演示或交互的视觉结果为主目标时使用；若主要目标是数据图、研究、纯文本或生产代码实现，交给对应领域 Skill。"
+description: "用于设计和交付视觉产物：高保真 UI、可点击原型、线框图、落地页、Dashboard、移动端界面、演示稿、视觉文档、动画或其他 HTML 设计稿。以用户要看到、比较、演示或交互的视觉结果为主目标时使用；主要目标是数据图、研究、纯文本或生产代码实现时，交给对应领域 Skill。"
 visibility: workflow
 phase: presentation
 optional_uses: "research/deep-research,research/knowledge-synthesis,data/data-visualization"

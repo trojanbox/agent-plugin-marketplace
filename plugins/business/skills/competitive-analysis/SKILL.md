@@ -1,6 +1,6 @@
 ---
 name: competitive-analysis
-description: "用于基于证据分析竞争格局、直接/间接竞争对手、替代方案和 status quo，并比较定位、产品、价格、客户体验、商业模式与发展方向，最终形成差异化、机会/威胁和战略含义（Strategic Implications）。适合‘竞争分析/竞品分析/我们和 X 到底差在哪/这个市场怎么打/谁是真正竞争对手’。若只需要搜集外部资料，使用 research；若只需要综合已有材料，使用 `research/knowledge-synthesis`。"
+description: "用于基于证据分析竞争格局、直接/间接竞争对手、替代方案和 status quo，比较定位、产品、价格、客户体验、商业模式与发展方向，形成差异化、机会/威胁和战略含义。适合‘竞争分析/竞品分析/我们和 X 到底差在哪/这个市场怎么打/谁是真正竞争对手’。只搜集外部资料走 research；只综合已有材料走 `research/knowledge-synthesis`。"
 visibility: workflow
 phase: analysis
 optional_uses: "research/deep-research,research/knowledge-synthesis,reasoning/scientific-reasoning"

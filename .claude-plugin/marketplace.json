@@ -10,7 +10,7 @@
     {
       "name": "ai-workflow",
       "source": "./plugins/ai-workflow",
-      "description": "用于设计和维护 AI Skill Runtime、Skill 路由与组合规则，以及为 Codex、Browser/Test Agent、Research Agent 等自主执行模型编写可执行、可审计的目标提示词。当前包含 skill-system-design 与 agent-prompt-design；研发需求/计划/测试设计进入 development，真实 Coding/Test 执行由下游 Agent 完成，普通文字润色进入 writing。",
+      "description": "用于设计和维护 AI Skill Runtime、Skill 路由与组合规则，以及为 Codex、Browser/Test Agent、Research Agent 等自主执行模型编写可执行、可审计的目标提示词。研发需求/计划/测试设计进入 development，真实 Coding/Test 执行由下游 Agent 完成，普通文字润色进入 writing。",
       "version": "1.0.0",
       "author": {
         "name": "trojanbox",
@@ -22,7 +22,7 @@
     {
       "name": "business",
       "source": "./plugins/business",
-      "description": "用于商业与产品经营相关的长期业务上下文和竞争战略分析。当前包含 product-marketing-context 与 competitive-analysis；资料检索和已有材料综合仍进入 research。",
+      "description": "用于商业与产品经营相关的长期业务上下文和竞争战略分析。资料检索和已有材料综合进入 research。",
       "version": "1.0.0",
       "author": {
         "name": "trojanbox",
@@ -34,7 +34,7 @@
     {
       "name": "data",
       "source": "./plugins/data",
-      "description": "用于数据集探索、统计分析、分析结果 QA 与数据可视化。包含 data-exploration、statistical-analysis、data-validation、data-visualization；处理 CSV/Excel/数据库时遵循当前宿主的文件和数据工具规则，不假设存在特定 MCP 或数据仓库。",
+      "description": "用于数据集探索、统计分析、分析结果 QA 与数据可视化。处理 CSV/Excel/数据库时遵循当前宿主的文件和数据工具规则，不假设存在特定 MCP 或数据仓库。",
       "version": "1.0.0",
       "author": {
         "name": "trojanbox",
@@ -46,7 +46,7 @@
     {
       "name": "design",
       "source": "./plugins/design",
-      "description": "用于创建与维护视觉设计产物：高保真 UI、交互原型、线框图、演示稿、移动端界面，以及设计系统/UI Kit。普通数据图表、纯文本写作、外部调研和生产代码实现继续由各自 Plugin/领域能力保留主路由。",
+      "description": "用于创建与维护视觉设计产物：高保真 UI、交互原型、线框图、演示稿、移动端界面，以及设计系统/UI Kit。普通数据图表、纯文本写作、外部调研和生产代码实现由各自 Plugin/领域保留主路由。",
       "version": "1.0.0",
       "author": {
         "name": "trojanbox",
@@ -70,7 +70,7 @@
     {
       "name": "education",
       "source": "./plugins/education",
-      "description": "用于 K-12 教师教学设计。当前包含 k12-lesson-planning（从零创建新课）与 k12-lesson-differentiation（对已有课程做分层/支架适配）。不处理单独评分、rubric、作业反馈、quiz 或纯标准查询。",
+      "description": "用于 K-12 教师教学设计。不处理单独评分、rubric、作业反馈、quiz 或纯标准查询。",
       "version": "1.0.0",
       "author": {
         "name": "trojanbox",

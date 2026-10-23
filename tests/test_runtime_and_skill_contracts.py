@@ -183,6 +183,17 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertNotEqual(completed.returncode, 0)
         self.assertIn("未知参数", completed.stdout)
 
+    def test_description_budget_does_not_regress(self) -> None:
+        catalog = runtime_json("catalog")
+        skill_descriptions = [item["description"] for item in catalog["skills"]]
+        self.assertLessEqual(max(len(text) for text in skill_descriptions), 414)
+        self.assertLessEqual(sum(len(text) for text in skill_descriptions), 13861)
+
+        listing = runtime_json("list")
+        plugin_descriptions = [item["description"] for item in listing["plugins"]]
+        self.assertLessEqual(max(len(text) for text in plugin_descriptions), 393)
+        self.assertLessEqual(sum(len(text) for text in plugin_descriptions), 2083)
+
     def test_web_app_scaffolding_has_three_stack_specific_public_skills(self) -> None:
         plugin = runtime_json("list", "web-app-scaffolding")
         self.assertEqual(plugin["publicSkillCount"], 3)
