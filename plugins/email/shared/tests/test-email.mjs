@@ -385,6 +385,69 @@ test('repair does not invent credentials, override explicit restrictions or send
   await assert.rejects(() => fs.readFile(s.log, 'utf8'), /ENOENT/u);
 });
 
+test('default recipient lives in the existing config and is used when --to is omitted', async (t) => {
+  const s = await sandbox(t); s.setup();
+  const empty = s.cli(['default-to']);
+  assert.equal(empty.code, 0);
+  assert.equal(empty.value.default_recipient, null);
+
+  const set = s.cli(['default-to', '--set', 'default@example.com']);
+  assert.equal(set.code, 0);
+  assert.equal(set.value.default_recipient, 'default@example.com');
+  const config = configLocation(s.home).file;
+  assert.equal((await fs.stat(config)).mode & 0o777, 0o600);
+  assert.match(await fs.readFile(config, 'utf8'), /default_recipient = "default@example\.com"/u);
+
+  const sent = s.cli(['send', '--subject', '默认收件人'], { input: 'body' });
+  assert.equal(sent.code, 0);
+  assert.equal(sent.value.status, 'submitted');
+  assert.equal(sent.value.used_default_recipient, true);
+  assert.deepEqual(sent.value.to, ['default@example.com']);
+  const compose = (await s.logs()).find(x => x.args?.includes('message'));
+  assert.equal(compose.args[compose.args.indexOf('--to') + 1], 'default@example.com');
+
+  const explicit = s.cli(['send', '--to', 'other@example.com', '--subject', 'explicit'], { input: 'body' });
+  assert.equal(explicit.value.used_default_recipient, undefined);
+  assert.deepEqual(explicit.value.to, ['other@example.com']);
+  const last = (await s.logs()).filter(x => x.args?.includes('message')).at(-1);
+  assert.equal(last.args[last.args.indexOf('--to') + 1], 'other@example.com');
+
+  const cleared = s.cli(['default-to', '--clear']);
+  assert.equal(cleared.code, 0);
+  assert.equal(cleared.value.default_recipient, null);
+  const none = s.cli(['send', '--subject', 'no recipient'], { input: 'body' });
+  assert.equal(none.value.status, 'invalid_input');
+  assert.match(none.value.message, /default-to/u);
+});
+
+test('default recipient survives credential rotation and invalid values fail safely', async (t) => {
+  const s = await sandbox(t); s.setup();
+  s.cli(['default-to', '--set', 'default@example.com']);
+  const rotated = s.cli(['init', '--email', 'someone@qq.com', '--replace', 'yes'], { input: 'NEW_CODE\n' });
+  assert.equal(rotated.code, 0);
+  const config = configLocation(s.home).file;
+  const saved = await fs.readFile(config, 'utf8');
+  assert.ok(saved.includes('NEW_CODE'));
+  assert.match(saved, /default_recipient = "default@example\.com"/u);
+  assert.equal(s.cli(['default-to']).value.default_recipient, 'default@example.com');
+
+  assert.equal(s.cli(['default-to', '--set', 'not-an-email']).value.status, 'invalid_input');
+  assert.equal(s.cli(['default-to', '--set', 'a@b.com', '--clear']).value.status, 'invalid_input');
+  await fs.writeFile(config, saved.replace(/default_recipient = ".*"/u, 'default_recipient = "broken"'));
+  await fs.chmod(config, 0o600);
+  const broken = s.cli(['send', '--subject', 'x'], { input: 'body' });
+  assert.equal(broken.value.status, 'config_error');
+  assert.match(broken.value.message, /default-to/u);
+});
+
+test('default recipient commands require an existing configuration', async (t) => {
+  const s = await sandbox(t);
+  const result = s.cli(['default-to', '--set', 'a@example.com']);
+  assert.equal(result.code, 2);
+  assert.equal(result.value.status, 'config_missing');
+  await assert.rejects(() => fs.readFile(s.log, 'utf8'), /ENOENT/u);
+});
+
 test('symlinked configuration is not silently overwritten or repaired', async (t) => {
   const s = await sandbox(t); s.setup();
   const config = configLocation(s.home).file;
