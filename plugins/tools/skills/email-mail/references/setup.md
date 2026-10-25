@@ -19,12 +19,12 @@
 **由 Agent 在运行环境中执行以下命令**，用户无须自行敲命令、修改配置文件：
 
 ```sh
-node /path/to/plugins/email/shared/scripts/email.mjs repair
+node /path/to/plugins/tools/shared/scripts/email.mjs repair
 # 如果 repair 返回 authorization_required，Agent 获取 QQ 邮箱地址与授权码后执行：
-node /path/to/plugins/email/shared/scripts/email.mjs init --email your-account@qq.com
-node /path/to/plugins/email/shared/scripts/email.mjs doctor
+node /path/to/plugins/tools/shared/scripts/email.mjs init --email your-account@qq.com
+node /path/to/plugins/tools/shared/scripts/email.mjs doctor
 # 如果需要更换已失效授权码，由 Agent 在获得新代码后执行：
-node /path/to/plugins/email/shared/scripts/email.mjs init --email your-account@qq.com --replace yes
+node /path/to/plugins/tools/shared/scripts/email.mjs init --email your-account@qq.com --replace yes
 ```
 
 `repair` 不会发邮件；可自动创建/修复当前用户拥有的私有目录、收紧本地配置权限，并验证/安装 Himalaya。若仍缺 QQ 授权信息则返回 `authorization_required`，**Agent 仅向用户索取无法自行获取的 QQ 邮箱地址和客户端授权码**，然后由 Agent 调用 `init` 写入。`init` 使用**不回显的交互输入**或标准输入获取密钥，绝不可作为命令参数/日志/公开聊天内容。已存在配置只有在 `--replace yes` 并提供新授权码时才会被替换；无人授予新密码时不清空/捏造凭据。`doctor` 仅检查本地配置/二进制/TOML，**不连接真实 QQ 服务器**。

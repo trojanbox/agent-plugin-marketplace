@@ -419,3 +419,9 @@ SKD015,negative,另写一份从用户角度验收功能的业务测试方案，�
 SKD016,negative,开发结论正文已经写好了别修改，直接发到 GitHub 新 Issue。,github/github-issue-manager（完整现成正文的纯写入）
 SKD017,adversarial,我既要开发结论又要随后开发计划；先把完整自包含结论定下来再派工。,development/github-spec → development/github-development-plan-generator（按依赖顺序）
 SKD018,negative,帮我看一下最近的线上字体上传 Bug 是什么根因，先收集证据。,development/github-bug-investigation
+TOOLS001,tools-positive,下载这个 YouTube 视频文件，默认画质即可。,tools/youtube-download
+TOOLS002,tools-positive,我要中文字幕，缺少中文时不要换成英文。,tools/youtube-download：默认中文，同语言人工优先/自动后备，缺失时停止
+TOOLS003,tools-negative,下载收到的 QQ 邮件附件。,tools/email-mail
+TOOLS004,tools-negative,核查这个 YouTube 视频中的论据是否真实。,research/deep-research；素材获取仅为辅助
+TOOLS005,tools-gate,YouTube 没有中文，但提供从英文自动翻译的中文字幕。,tools/youtube-download：不采用翻译轨道，报告所选语言字幕不可用
+TOOLS006,tools-multi-turn,刚才中断的视频，用同样的参数继续下载。,tools/youtube-download：验证断点身份与校验值后恢复

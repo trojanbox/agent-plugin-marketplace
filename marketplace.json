@@ -70,8 +70,8 @@
       "category": "Productivity"
     },
     {
-      "name": "email",
-      "source": "./plugins/email",
+      "name": "tools",
+      "source": "./plugins/tools",
       "category": "Productivity"
     }
   ]

@@ -1,0 +1,11 @@
+{
+  "name": "tools",
+  "displayName": "Tools",
+  "version": "2.0.0",
+  "description": "日常工具：QQ 邮箱搜索、阅读、带附件发送及附件下载；YouTube 单视频的视频、字幕、音频下载。保留原邮箱配置，依赖由 Agent 安全自修复。GitHub 生命周期管理保持独立。",
+  "author": {
+    "name": "trojanbox",
+    "url": "https://github.com/trojanbox"
+  },
+  "repository": "https://github.com/trojanbox/agent-plugin-marketplace"
+}

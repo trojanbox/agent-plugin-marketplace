@@ -149,10 +149,10 @@
       "category": "Productivity"
     },
     {
-      "name": "email",
+      "name": "tools",
       "source": {
         "source": "local",
-        "path": "./plugins/email"
+        "path": "./plugins/tools"
       },
       "policy": {
         "installation": "AVAILABLE",

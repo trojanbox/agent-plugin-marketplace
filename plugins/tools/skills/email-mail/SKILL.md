@@ -1,10 +1,10 @@
 ---
 name: email-mail
-description: "通过 QQ 邮箱搜索、阅读、发送普通或带附件邮件（可配置默认收件人，未给 --to 时发往该地址）、下载附件，以及邮件发不出去、依赖缺失或配置失效时由 Agent 自主诊断修复。Himalaya 2.2.1 缺失时自动校验官方包并安装到用户家目录；已获授权任务可主动发信但结果未知绝不重发。不提供删除、移动、自动回复、群发营销、定时发送、多账号管理或其它邮箱服务。"
+description: "QQ 邮箱搜索、阅读、发送（含附件和默认收件人）、下载附件及故障自修复。Agent 校验安装 Himalaya 2.2.1、修复用户配置权限；复用原家目录配置。任务内可自主发送，结果未知绝不重发。不处理其他邮箱、删除移动、群发或定时任务；YouTube 媒体下载走 youtube-download。"
 phase: operations
 ---
 
-# QQ Email Plugin V1
+# QQ Email / Tools Plugin
 
 ## 目标与调用
 

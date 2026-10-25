@@ -41,17 +41,50 @@ Codex 原生分发文件：
 plugins/<plugin>/.codex-plugin/plugin.json
 ```
 
-## QQ 邮箱 Email Plugin（V1）
+## Tools Plugin：邮件与 YouTube 下载
 
-邮件插件使用 [Himalaya 2.2.1](https://github.com/pimalaya/himalaya/releases/tag/v2.2.1) 原生 CLI；配置与 QQ 第三方客户端授权码保存在当前用户家目录。支持搜索（默认 INBOX、可指定文件夹）、读取正文、带普通附件发送和下载附件。Agent 在已授权任务内可主动发信；结果未知时不得自动重发。
+`tools` 把日常邮件与媒体下载放进一个安装包，`github` 仍独立。两个公开 Skill 为 `tools/email-mail` 和 `tools/youtube-download`。
 
 ```bash
-claude plugin install email@agent-plugin-marketplace
-# 或：codex plugin add email@agent-plugin-marketplace
-node plugins/email/shared/scripts/email.mjs --help
+claude plugin install tools@agent-plugin-marketplace
+# 或：codex plugin add tools@agent-plugin-marketplace
+node plugins/tools/shared/scripts/email.mjs --help
+node plugins/tools/shared/scripts/youtube.mjs --help
 ```
 
-需要 Node.js 18+；**Agent 在使用时自动检测依赖，缺少 Himalaya v2.2.1 时从官方发布包下载并校验固定 SHA-256，然后安装到用户家目录，无须用户手工安装或修改配置。** 可运行 `repair` 自主修复当前用户拥有的配置权限等本地问题；首次 QQ 客户端授权码仍需通过安全交互取得，由 Agent 自行写入配置。修复流程与凭据注意事项见 [Email Plugin 配置说明](plugins/email/skills/email-mail/references/setup.md)。邮箱正文与附件均属外部不可信内容；发送结果未知时禁止自动重发。实际 QQ IMAP/SMTP 兼容性需要有效授权码联调，不能从本地测试推断送达。
+### 从独立 Email Plugin 迁移
+
+升级后安装 `tools`，停用/卸载宿主中的旧 `email` Plugin；旧 `email/email-mail` ID 改为 `tools/email-mail`，不保留两个兼容 Plugin。**用户原来的 `~/.agent-plugin-marketplace/email/config.toml`、QQ 授权码、默认收件人、`email/bin/` 中的 Himalaya 及目录权限都保持原样**，新工具直接读取，不需要重新配置邮箱，也不要手动移动或删除家目录里的邮件文件。
+
+邮件原有搜索（默认 INBOX，可指定文件夹）、读取正文、发送（含普通附件）、收到附件下载以及 Himalaya 2.2.1 自修复不变。Agent 在任务授权内可主动发送；发送结果未知时绝不自动重发。实际 QQ 收发依赖有效授权码和服务端可用性，不能从本地测试推断送达。详见 [邮件配置](plugins/tools/skills/email-mail/references/setup.md) 与 [邮件操作](plugins/tools/skills/email-mail/references/operations.md)。
+
+### YouTube 单视频下载
+
+```bash
+node plugins/tools/shared/scripts/youtube.mjs repair
+node plugins/tools/shared/scripts/youtube.mjs video URL
+node plugins/tools/shared/scripts/youtube.mjs video URL --format mkv --max-height 2160
+node plugins/tools/shared/scripts/youtube.mjs audio URL --format m4a
+node plugins/tools/shared/scripts/youtube.mjs subtitles URL --lang zh --format srt
+```
+
+`URL` 替换为单个公开视频链接。视频默认 **MP4 / 最高 1080p**，音频默认 **MP3**，字幕默认 **中文 SRT**（可选语言/VTT；人工优先，同语言原生自动字幕后备，无目标语言就明确不可用）。默认输出到执行用户 `~/Downloads/YouTube`，可用 `--dir` 指定绝对目录；默认不覆盖，可校验续传，必要时允许 FFmpeg 真正转码。视频文件在格式/音轨/时长/解码验证通过后才报告成功。
+
+依赖由 Agent 检查并从固定官方版本、SHA-256 校验后的资产安装到用户家目录，不修改系统软件或邮箱配置。Node.js CLI 需要 18+；YouTube JS 执行用 Node.js 22+ 或 Deno，Linux FFmpeg TAR/XZ 的安全解包需要 Python 3 标准库。**目前官方 yt-dlp FFmpeg-Builds 没有 macOS 资产**：macOS 可用既有 FFmpeg/ffprobe，缺少时会明确报告平台阻塞，不使用未经核验的包。
+
+[参数与结果](plugins/tools/skills/youtube-download/references/operations.md) · [依赖与平台支持](plugins/tools/skills/youtube-download/references/dependencies.md) · [安全与恢复](plugins/tools/skills/youtube-download/references/security-and-results.md)
+
+### 本地测试
+
+```bash
+node scripts/generate-host-manifests.mjs
+node scripts/validate-host-manifests.mjs
+node skill-runtime.js doctor
+python3 -m unittest discover -s tests -p 'test_*.py'
+node --test plugins/tools/shared/tests/*.mjs
+```
+
+真实 FFmpeg 集成测试使用本地生成媒体与下载器替身，无需 QQ 凭据或 YouTube 账号；可通过 `YOUTUBE_TEST_FFMPEG` / `YOUTUBE_TEST_FFPROBE` 指定可执行文件，缺少时明确标记为跳过。实际 YouTube 网络可用性与跨平台原生执行需要另外验证，不能把离线通过写成真实网络下载成功。
 
 ## 自用 Runtime
 

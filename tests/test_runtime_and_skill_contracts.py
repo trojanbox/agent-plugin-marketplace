@@ -166,7 +166,7 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertIn("用于软件研发", plugin)
 
         catalog = raw("catalog")
-        self.assertTrue(catalog.startswith("# Catalog · 13 plugins · 63 public skills"))
+        self.assertTrue(catalog.startswith("# Catalog · 13 plugins · 64 public skills"))
         self.assertIn("## development", catalog)
         self.assertIn("`development/github-bug-investigation`", catalog)
 
@@ -187,7 +187,16 @@ class RuntimeContractTests(unittest.TestCase):
         catalog = runtime_json("catalog")
         skill_descriptions = [item["description"] for item in catalog["skills"]]
         self.assertLessEqual(max(len(text) for text in skill_descriptions), 414)
-        self.assertLessEqual(sum(len(text) for text in skill_descriptions), 13861)
+        # Preserve the historical budget for existing Skills. A single new public
+        # downloader gets an explicit bounded allocation rather than disabling QA.
+        existing = [item["description"] for item in catalog["skills"]
+                    if item["id"] != "tools/youtube-download"]
+        added = [item["description"] for item in catalog["skills"]
+                 if item["id"] == "tools/youtube-download"]
+        self.assertEqual(len(added), 1)
+        self.assertLessEqual(len(added[0]), 200)
+        self.assertLessEqual(sum(len(text) for text in existing), 13861)
+        self.assertLessEqual(sum(len(text) for text in skill_descriptions), 14061)
 
         listing = runtime_json("list")
         plugin_descriptions = [item["description"] for item in listing["plugins"]]

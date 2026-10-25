@@ -152,10 +152,10 @@
       "category": "Productivity"
     },
     {
-      "name": "email",
-      "source": "./plugins/email",
-      "description": "QQ 邮箱本地 CLI 和自修复能力：Himalaya 2.2.1 缺失时验证官方哈希并安装；Agent 自行修复当前用户配置权限和可恢复故障，负责搜索、阅读、附件发送与下载；可配置默认收件人，send 未指定 --to 时使用。凭据仅存用户家目录，发送结果未知禁止自动重发。",
-      "version": "1.1.0",
+      "name": "tools",
+      "source": "./plugins/tools",
+      "description": "日常工具：QQ 邮箱搜索、阅读、带附件发送及附件下载；YouTube 单视频的视频、字幕、音频下载。保留原邮箱配置，依赖由 Agent 安全自修复。GitHub 生命周期管理保持独立。",
+      "version": "2.0.0",
       "author": {
         "name": "trojanbox",
         "url": "https://github.com/trojanbox"
