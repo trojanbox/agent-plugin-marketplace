@@ -208,4 +208,4 @@ vendor/
 
 `github` 提供 Issue 管理、查重与交接同步；这三个 Skill 的 canonical ID 统一为 `github/github-issue-manager`、`github/github-issue-triage`、`github/github-issue-handoff-sync`，不保留旧 Development 实现。跨 Plugin 资源按已安装 Skill 路径定位。
 
-`reasoning/divergent-ideation` 负责跨领域创意种子、反套路和开放式发散；`scientific-reasoning` 负责真实现象的竞争假设、机制与预测；`structured-debate` 负责观点攻防与命题版本。选定小说后进入 Writing 的创作讨论；仅在要求 GitHub 留档时组合 github Plugin，辩论 Issue 必须使用 `【辩论】` 前缀。研发源码、决策、测试与 Patch 规则仍由 Development 持有。
+`reasoning/divergent-ideation` 负责跨领域创意发散；`scientific-reasoning` 负责事实、竞争假设、因果机制与预测；`first-principles` 负责从基本事实和约束重新构建方案；`systems-thinking` 负责反馈回路、反身性和动态演化；`structured-debate` 负责观点攻防与命题版本。选定小说后进入 Writing 的创作讨论；仅在要求 GitHub 留档时组合 github Plugin，辩论 Issue 必须使用 `【辩论】` 前缀。研发源码、决策、测试与 Patch 规则仍由 Development 持有。

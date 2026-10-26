@@ -29,7 +29,7 @@ class DivergentIdeationContractTests(unittest.TestCase):
         self.assertEqual(found['uses'], [])
         self.assertEqual(found['optionalUses'], [])
         listing = runtime('list', 'reasoning')
-        self.assertEqual(listing['publicSkillCount'], 3)
+        self.assertEqual(listing['publicSkillCount'], 5)
         self.assertIn('divergent-ideation', {s['name'] for s in listing['ungroupedSkills']})
 
     def test_ideation_is_bounded_to_seeds_and_branches(self) -> None:

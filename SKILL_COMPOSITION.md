@@ -94,6 +94,10 @@ Skill Composition 只解决“一个主任务需要哪些辅助能力”。它�
 
 ## Reasoning Composition 示例
 
+- `reasoning/first-principles` 对“从零重构现有方案”保留主目标：校验基础事实、区分硬约束与惯例，再推导替代方案和低成本验证；需要科学机制证伪时才辅助组合 `reasoning/scientific-reasoning`，需要系统性的外部事实核验时才组合 `research/deep-research`。
+- `reasoning/systems-thinking` 对“反馈、行为适应、反身性及时间演化”保留主目标：辨别增强/平衡回路、预期→行动→现实→预期链条、时滞与二阶后果；关键因果连线有争议时才辅助组合 `reasoning/scientific-reasoning`，外部证据缺失时按需组合 `research/deep-research`。
+- 如果任务只是解释事实与竞争性因果假设，仍由 `reasoning/scientific-reasoning` 主导；领域中的软件/教育/金融正式交付由其领域 Skill 主导，新的思维 Skill 不能越权。
+
 - `reasoning/divergent-ideation` 只生成广域创意种子或单点变体，用户选中后才进入写作、设计、研发等相应领域的决策流程；小说人物、主线、结局等 Canon 决定交给 `writing/fiction-discussion`，不把开放式发散升级成创作定稿。
 - 真实因果/证据解释以 `reasoning/scientific-reasoning` 为主，观点攻防以 `reasoning/structured-debate` 为主；“想象一种反常规则”才使用 `divergent-ideation`，避免把虚构脑洞误当机制证据。
 - `reasoning/scientific-reasoning` 在解释现实世界现象时，如果缺少外部证据，可按需加载 `research/deep-research`；Research 只负责找证据，Scientific Reasoning 保留假设、机制、预测、证伪与模型更新语义。

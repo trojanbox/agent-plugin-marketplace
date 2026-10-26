@@ -18,7 +18,7 @@ optional_uses: "research/deep-research,data/statistical-analysis"
 
 主要任务是查外部资料 → research；主要做统计检验 → data；检查已有数据分析 → data-validation；具体软件 Bug 根因 → development。
 
-用户已有明确观点并要求站在反方逐轮攻防、记录修改历史时，以 `reasoning/structured-debate` 为主；本 Skill 的主目标是解释模型与预测，不主持辩论轮次。
+用户已有明确观点并要求站在反方逐轮攻防、记录修改历史时，以 `reasoning/structured-debate` 为主；从基本事实与硬约束重新设计方案时交给 `reasoning/first-principles`；研究变量之间的反馈回路、行为适应和反身性时交给 `reasoning/systems-thinking`。本 Skill 保留事实机制、竞争假设、证伪和预测的主目标。
 
 ## Skill Composition / 能力组合
 

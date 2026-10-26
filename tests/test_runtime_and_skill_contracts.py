@@ -166,7 +166,7 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertIn("用于软件研发", plugin)
 
         catalog = raw("catalog")
-        self.assertTrue(catalog.startswith("# Catalog · 13 plugins · 66 public skills"))
+        self.assertTrue(catalog.startswith("# Catalog · 13 plugins · 68 public skills"))
         self.assertIn("## development", catalog)
         self.assertIn("`development/github-bug-investigation`", catalog)
 
@@ -187,16 +187,21 @@ class RuntimeContractTests(unittest.TestCase):
         catalog = runtime_json("catalog")
         skill_descriptions = [item["description"] for item in catalog["skills"]]
         self.assertLessEqual(max(len(text) for text in skill_descriptions), 414)
-        # Preserve the historical budget for existing Skills. The three new
-        # tools receive bounded allocations without disabling description QA.
+        # Keep the historical budget for all pre-existing Skills. New public
+        # reasoning Skills each receive their own bounded description allocation.
+        tool_ids = {"tools/youtube-download", "tools/x-download", "tools/onedrive-files"}
+        reasoning_ids = {"reasoning/first-principles", "reasoning/systems-thinking"}
         existing = [item["description"] for item in catalog["skills"]
-                    if item["id"] not in {"tools/youtube-download", "tools/x-download", "tools/onedrive-files"}]
-        added = [item["description"] for item in catalog["skills"]
-                 if item["id"] in {"tools/youtube-download", "tools/x-download", "tools/onedrive-files"}]
-        self.assertEqual(len(added), 3)
-        self.assertTrue(all(len(text) <= 200 for text in added))
+                    if item["id"] not in tool_ids | reasoning_ids]
+        tools_added = [item["description"] for item in catalog["skills"]
+                       if item["id"] in tool_ids]
+        reasoning_added = [item["description"] for item in catalog["skills"]
+                           if item["id"] in reasoning_ids]
+        self.assertEqual(len(tools_added), 3)
+        self.assertEqual(len(reasoning_added), 2)
+        self.assertTrue(all(len(text) <= 200 for text in tools_added + reasoning_added))
         self.assertLessEqual(sum(len(text) for text in existing), 13861)
-        self.assertLessEqual(sum(len(text) for text in skill_descriptions), 14461)
+        self.assertLessEqual(sum(len(text) for text in skill_descriptions), 14861)
 
         listing = runtime_json("list")
         plugin_descriptions = [item["description"] for item in listing["plugins"]]

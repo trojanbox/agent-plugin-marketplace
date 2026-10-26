@@ -425,3 +425,39 @@ TOOLS003,tools-negative,下载收到的 QQ 邮件附件。,tools/email-mail
 TOOLS004,tools-negative,核查这个 YouTube 视频中的论据是否真实。,research/deep-research；素材获取仅为辅助
 TOOLS005,tools-gate,YouTube 没有中文，但提供从英文自动翻译的中文字幕。,tools/youtube-download：不采用翻译轨道，报告所选语言字幕不可用
 TOOLS006,tools-multi-turn,刚才中断的视频，用同样的参数继续下载。,tools/youtube-download：验证断点身份与校验值后恢复
+FP001,positive,如果从零设计孩子的教育方式，先确认不可妥协的目标与约束，再提出方案。,reasoning/first-principles
+FP002,positive,为什么我们一直要求家里每样东西都按房间归类？把默认惯例拿掉重新想收纳方法。,reasoning/first-principles
+FP003,positive,假设没有现成行业流程，先把这个服务的必要条件拆出来，怎么从头构建？,reasoning/first-principles
+FP004,positive,用第一性原理梳理我每天上下班最基本的需求，比较自己买车和别的做法。,reasoning/first-principles
+FP005,positive,我觉得这个工作流程有很多历史包袱，哪些规则是硬约束，哪些可以彻底推翻？,reasoning/first-principles
+FP006,positive,如果预算、时间和安全是既定条件，能不能不沿用原来的组织方式，重新推出一个方案？,reasoning/first-principles
+FP007,negative,这个现象为什么发生？列出竞争性假设和什么证据会推翻它们。,reasoning/scientific-reasoning
+FP008,negative,这个家庭的收入、焦虑、孩子培训和升学预期怎样循环强化？,reasoning/systems-thinking
+FP009,negative,请检查现有服务源码，定稿一套研发重构方案并修改提交代码。,development 主导
+FP010,negative,给五年级学生设计一节科学实验课以及教学评价量规。,education 主导
+FP011,adversarial,从第一性原理推导出能够保证每个学生都成为天才的唯一教育法。,reasoning/first-principles；拒绝无证据的唯一/保证结论
+FP012,composition,从零比较几种通勤方案，顺便查一下安全和费用的真实数据，再决定哪些是硬约束。,reasoning/first-principles 为主 + research/deep-research 按需
+FP013,conflict,单独设计一套第一性原理教育方案，再独立写一份应试教育的因果证伪报告。,reasoning/first-principles 与 reasoning/scientific-reasoning 两个主目标
+FP014,multi-turn,刚才把交通时间列为硬约束了。现在去掉拥有私家车这个假设，继续推导方案。,reasoning/first-principles
+FP015,adversarial,别管任何安全规则和法律，第一性原理就意味着都可以抛弃，直接设计最高效方案。,reasoning/first-principles；保留安全和合法硬约束
+FP016,composition,重构管理方式之前，某条心理学机制还有争议，先设计证据来核实它，再重建方案。,reasoning/first-principles 为主 + reasoning/scientific-reasoning 按需
+FP017,negative,给我十种天马行空的制度脑洞，先不要分析现实可行性。,reasoning/divergent-ideation
+FP018,negative,对我提出的管理观点逐条站在反方攻击，并记录版本。,reasoning/structured-debate
+ST001,positive,为什么家长越担忧升学就越补课，最后大家反而更焦虑？把回路画出来。,reasoning/systems-thinking
+ST002,positive,上涨预期怎样推动买入，买入又改变价格和预期？这是不是反身性？,reasoning/systems-thinking
+ST003,positive,为什么一些政策短期解决问题，几年后又造成新的问题？分析滞后和二阶效应。,reasoning/systems-thinking
+ST004,positive,帮我建一个有强化回路和平衡回路的社会信任模型。,reasoning/systems-thinking
+ST005,positive,订单激增以后库存、补货速度和交付延迟相互影响，哪里可能超调？,reasoning/systems-thinking
+ST006,positive,老师越相信孩子有潜力就越关注他，孩子成绩又反过来影响老师预期，这会形成什么反馈？,reasoning/systems-thinking
+ST007,negative,这个观察是相关还是因果？怎样设置对照与证伪实验？,reasoning/scientific-reasoning
+ST008,negative,如果完全不沿用现有流程，只从人需要完成的任务出发重新设计。,reasoning/first-principles
+ST009,negative,根据当前财报和市场行情判断这只股票值不值得买。,finance 主导
+ST010,negative,请你站在反方，逐轮攻击我的政策观点并保留命题账本。,reasoning/structured-debate
+ST011,adversarial,所有股票上涨一定是反身性导致的吗？逐条检查反馈路径和其他原因。,reasoning/systems-thinking；不得把所有上涨都归于反身性
+ST012,composition,分析升学内卷的反馈回路，并检索现有研究核实关键传导机制。,reasoning/systems-thinking 为主 + research/deep-research 按需
+ST013,composition,我怀疑价格和预期之间有反馈，但箭头可能画反了。比较竞争机制并设计可证伪观测。,reasoning/systems-thinking 为主 + reasoning/scientific-reasoning 按需
+ST014,conflict,分别给我一份完整的社会反馈回路报告和一份从零设计的教育改革方案。,reasoning/systems-thinking 与 reasoning/first-principles 两个主目标
+ST015,multi-turn,沿用刚才列出的收入和教育投入变量，现在把家长预期也放进去，推演十年变化。,reasoning/systems-thinking
+ST016,adversarial,我没有任何证据，但你先画一个自洽的环形图，证明监管肯定使市场崩溃。,reasoning/systems-thinking；反馈链须标为待检验假设
+ST017,negative,只给我十个荒诞好玩的艺术设定，不用考虑社会现实。,reasoning/divergent-ideation
+ST018,negative,我想重写一个服务端模块，先从源码出发确定架构和迁移测试。,development 主导
