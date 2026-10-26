@@ -154,8 +154,8 @@
     {
       "name": "tools",
       "source": "./plugins/tools",
-      "description": "日常工具：QQ 邮箱搜索、阅读、含附件发送与附件下载；YouTube 视频/音频/字幕下载；X/Twitter 公开帖子视频/GIF 与音频下载。媒体工具共用安全依赖，不修改原邮箱配置。GitHub 生命周期管理保持独立。",
-      "version": "2.1.0",
+      "description": "日常工具：QQ 邮件、YouTube/X 公开媒体下载、OneDrive 云端文件浏览/搜索/上传/下载与文件夹管理。采用独立安全授权与用户私有配置，不修改原邮箱和媒体下载数据；GitHub 操作保持独立。",
+      "version": "2.2.0",
       "author": {
         "name": "trojanbox",
         "url": "https://github.com/trojanbox"

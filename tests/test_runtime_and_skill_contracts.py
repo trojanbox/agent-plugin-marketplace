@@ -166,7 +166,7 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertIn("用于软件研发", plugin)
 
         catalog = raw("catalog")
-        self.assertTrue(catalog.startswith("# Catalog · 13 plugins · 65 public skills"))
+        self.assertTrue(catalog.startswith("# Catalog · 13 plugins · 66 public skills"))
         self.assertIn("## development", catalog)
         self.assertIn("`development/github-bug-investigation`", catalog)
 
@@ -187,16 +187,16 @@ class RuntimeContractTests(unittest.TestCase):
         catalog = runtime_json("catalog")
         skill_descriptions = [item["description"] for item in catalog["skills"]]
         self.assertLessEqual(max(len(text) for text in skill_descriptions), 414)
-        # Preserve the historical budget for existing Skills. Two public
-        # downloaders each get an explicit bounded allocation rather than disabling QA.
+        # Preserve the historical budget for existing Skills. The three new
+        # tools receive bounded allocations without disabling description QA.
         existing = [item["description"] for item in catalog["skills"]
-                    if item["id"] not in {"tools/youtube-download", "tools/x-download"}]
+                    if item["id"] not in {"tools/youtube-download", "tools/x-download", "tools/onedrive-files"}]
         added = [item["description"] for item in catalog["skills"]
-                 if item["id"] in {"tools/youtube-download", "tools/x-download"}]
-        self.assertEqual(len(added), 2)
+                 if item["id"] in {"tools/youtube-download", "tools/x-download", "tools/onedrive-files"}]
+        self.assertEqual(len(added), 3)
         self.assertTrue(all(len(text) <= 200 for text in added))
         self.assertLessEqual(sum(len(text) for text in existing), 13861)
-        self.assertLessEqual(sum(len(text) for text in skill_descriptions), 14261)
+        self.assertLessEqual(sum(len(text) for text in skill_descriptions), 14461)
 
         listing = runtime_json("list")
         plugin_descriptions = [item["description"] for item in listing["plugins"]]

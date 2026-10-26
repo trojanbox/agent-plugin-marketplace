@@ -41,9 +41,9 @@ Codex 原生分发文件：
 plugins/<plugin>/.codex-plugin/plugin.json
 ```
 
-## Tools Plugin：邮件、YouTube 与 X 下载
+## Tools Plugin：邮件、媒体下载与 OneDrive 云存储
 
-`tools` 把日常邮件与媒体下载放进一个安装包，`github` 仍独立。三个公开 Skill 为 `tools/email-mail`、`tools/youtube-download` 和 `tools/x-download`。
+`tools` 把日常邮件、媒体下载与当前用户的 OneDrive 云文件管理放在一个安装包，`github` 仍独立。四个公开 Skill 为 `tools/email-mail`、`tools/youtube-download`、`tools/x-download` 和 `tools/onedrive-files`。
 
 ```bash
 claude plugin install tools@agent-plugin-marketplace
@@ -51,6 +51,7 @@ claude plugin install tools@agent-plugin-marketplace
 node plugins/tools/shared/scripts/email.mjs --help
 node plugins/tools/shared/scripts/youtube.mjs --help
 node plugins/tools/shared/scripts/x.mjs --help
+node plugins/tools/shared/scripts/onedrive.mjs --help
 ```
 
 ### 从独立 Email Plugin 迁移
@@ -88,6 +89,28 @@ node plugins/tools/shared/scripts/x.mjs video 'https://x.com/user/status/1234567
 
 [X 操作与返回结果](plugins/tools/skills/x-download/references/operations.md) · [依赖与平台限制](plugins/tools/skills/x-download/references/dependencies.md) · [X 安全与错误处理](plugins/tools/skills/x-download/references/security-and-results.md)
 
+### OneDrive 云文件管理（微软 Graph v1.0）
+
+使用当前微软账号的委派 `Files.ReadWrite` 权限。需要用户自行注册微软 Entra **Public Client** 应用并提供公开 Client ID；应用可选择允许个人、工作/学校账号。工具不收集密码、Client Secret 或 Cookie。
+
+```bash
+node plugins/tools/shared/scripts/onedrive.mjs configure CLIENT_ID --tenant common
+node plugins/tools/shared/scripts/onedrive.mjs auth start
+# 用户在微软网页输入设备码、完成授权后：
+node plugins/tools/shared/scripts/onedrive.mjs auth complete
+node plugins/tools/shared/scripts/onedrive.mjs list /
+node plugins/tools/shared/scripts/onedrive.mjs search '笔记'
+node plugins/tools/shared/scripts/onedrive.mjs info 'Documents/笔记.txt'
+node plugins/tools/shared/scripts/onedrive.mjs download 'Documents/笔记.txt'
+node plugins/tools/shared/scripts/onedrive.mjs upload /absolute/report.pdf 'Documents'
+node plugins/tools/shared/scripts/onedrive.mjs mkdir 'Documents/备份'
+node plugins/tools/shared/scripts/onedrive.mjs trash 'Documents/旧稿.txt' --confirm yes
+```
+
+以上 `CLIENT_ID` 是占位符。所有云端路径相对于当前用户 OneDrive 根目录；默认下载到 `~/Downloads/OneDrive`，并防止未经确认覆盖。上传采用分片会话；下载校验大小和可用远端摘要后才发布。Token 存入私有 `~/.agent-plugin-marketplace/onedrive/`，与原 QQ 邮件和视频配置隔离。首版不处理共享站点、跨账号同步或永久删除。**没有用户的 Client ID/设备码授权时，只能进行模拟接口测试，不能宣称真实 OneDrive 联调成功。**
+
+[OneDrive 操作与结果](plugins/tools/skills/onedrive-files/references/operations.md) · [首次授权配置](plugins/tools/skills/onedrive-files/references/auth.md) · [安全与风险边界](plugins/tools/skills/onedrive-files/references/security-and-results.md)
+
 ### 本地测试
 
 ```bash
@@ -98,7 +121,7 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 node --test plugins/tools/shared/tests/*.mjs
 ```
 
-真实 FFmpeg 集成测试使用本地生成媒体与下载器替身，无需 QQ 凭据或 YouTube/X 账号；可通过 `YOUTUBE_TEST_FFMPEG` / `YOUTUBE_TEST_FFPROBE` 指定可执行文件，缺少时明确标记为跳过。实际 YouTube/X 网络可用性与跨平台原生执行需要另外验证，不能把离线通过写成真实网络下载成功。
+真实 FFmpeg 集成测试使用本地生成媒体与下载器替身，无需 QQ 凭据或 YouTube/X 账号；可通过 `YOUTUBE_TEST_FFMPEG` / `YOUTUBE_TEST_FFPROBE` 指定可执行文件，缺少时明确标记为跳过。OneDrive 使用模拟 Microsoft Graph HTTP/OAuth 响应测试，不能替代用户授权的真实云端联调。实际 YouTube/X 网络可用性与跨平台原生执行也需要另外验证。
 
 ## 自用 Runtime
 

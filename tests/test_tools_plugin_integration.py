@@ -17,7 +17,7 @@ def node_json(*arguments: str, check: bool = True) -> dict:
 
 
 class ToolsPluginIntegrationTests(unittest.TestCase):
-    def test_tools_is_single_plugin_with_three_public_skills(self) -> None:
+    def test_tools_is_single_plugin_with_four_public_skills(self) -> None:
         manifest = json.loads((ROOT / 'marketplace.json').read_text(encoding='utf-8'))
         names = [p['name'] for p in manifest['plugins']]
         self.assertEqual(names.count('tools'), 1)
@@ -25,8 +25,8 @@ class ToolsPluginIntegrationTests(unittest.TestCase):
         self.assertIn('github', names)
         self.assertFalse((ROOT / 'plugins' / 'email').exists())
         plugin = node_json('skill-runtime.js', 'list', 'tools', '--json')
-        self.assertEqual(plugin['publicSkillCount'], 3)
-        self.assertEqual({s['name'] for s in plugin['ungroupedSkills']}, {'email-mail', 'youtube-download', 'x-download'})
+        self.assertEqual(plugin['publicSkillCount'], 4)
+        self.assertEqual({s['name'] for s in plugin['ungroupedSkills']}, {'email-mail', 'youtube-download', 'x-download', 'onedrive-files'})
         self.assertEqual(plugin['internalSkillCount'], 0)
 
     def test_old_email_id_is_not_exposed_and_new_ids_are_discoverable(self) -> None:
@@ -35,10 +35,11 @@ class ToolsPluginIntegrationTests(unittest.TestCase):
         self.assertIn('tools/email-mail', ids)
         self.assertIn('tools/youtube-download', ids)
         self.assertIn('tools/x-download', ids)
+        self.assertIn('tools/onedrive-files', ids)
         self.assertNotIn('email/email-mail', ids)
         self.assertIn('github/github-issue-manager', ids)
-        self.assertEqual(catalog['publicSkillCount'], 65)
-        for name in ('email-mail', 'youtube-download', 'x-download'):
+        self.assertEqual(catalog['publicSkillCount'], 66)
+        for name in ('email-mail', 'youtube-download', 'x-download', 'onedrive-files'):
             data = node_json('skill-runtime.js', 'skill', 'tools/' + name)
             self.assertEqual(data['skill']['phase'], 'operations')
             self.assertEqual(data['skill']['pluginRoot'], str(TOOLS))
@@ -75,6 +76,12 @@ console.log(JSON.stringify({linux:configLocation('/home/user'),windows:configLoc
         self.assertIn('audio URL', x_help['help'])
         x_invalid = node_json(x_script, 'video', 'https://example.com/not-a-tweet', check=False)
         self.assertEqual(x_invalid['status'], 'unsupported_url')
+        onedrive_script = str(TOOLS / 'shared' / 'scripts' / 'onedrive.mjs')
+        onedrive_help = node_json(onedrive_script, '--help')
+        self.assertTrue(onedrive_help['ok'])
+        self.assertIn('auth start', onedrive_help['help'])
+        invalid_onedrive = node_json(onedrive_script, 'trash', '/', '--confirm', 'yes', check=False)
+        self.assertEqual(invalid_onedrive['status'], 'invalid_input')
 
     def test_runtime_and_skill_entry_remain_thin_and_focused(self) -> None:
         skill = (TOOLS / 'skills' / 'youtube-download' / 'SKILL.md').read_text(encoding='utf-8')
@@ -90,9 +97,15 @@ console.log(JSON.stringify({linux:configLocation('/home/user'),windows:configLoc
             self.assertTrue((TOOLS / 'skills' / 'x-download' / 'references' / reference).exists())
         self.assertIn('phase: operations', x_skill)
         self.assertLess(len(x_skill), 5000)
+        od_skill = (TOOLS / 'skills' / 'onedrive-files' / 'SKILL.md').read_text(encoding='utf-8')
+        for reference in ('operations.md', 'auth.md', 'security-and-results.md'):
+            self.assertIn('references/' + reference, od_skill)
+            self.assertTrue((TOOLS / 'skills' / 'onedrive-files' / 'references' / reference).exists())
+        self.assertIn('phase: operations', od_skill)
+        self.assertLess(len(od_skill), 5000)
         doctor = node_json('skill-runtime.js', 'doctor')
         self.assertTrue(doctor['ok'])
-        self.assertEqual(doctor['skillCount'], 66)
+        self.assertEqual(doctor['skillCount'], 67)
         self.assertEqual(doctor['contractIssues'], [])
 
     def test_email_migration_documents_do_not_change_user_data_root(self) -> None:
