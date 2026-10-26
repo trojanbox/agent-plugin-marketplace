@@ -166,7 +166,7 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertIn("用于软件研发", plugin)
 
         catalog = raw("catalog")
-        self.assertTrue(catalog.startswith("# Catalog · 13 plugins · 68 public skills"))
+        self.assertTrue(catalog.startswith("# Catalog · 13 plugins · 60 public skills"))
         self.assertIn("## development", catalog)
         self.assertIn("`development/github-bug-investigation`", catalog)
 
@@ -719,89 +719,79 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
         self.assertIn("本 Skill 为主，组合 `data/data-visualization`", statistical)
         self.assertIn("本 Skill 为主，组合 `data/statistical-analysis`", validation)
 
-    def test_writing_humanizer_is_explicit_style_composition(self) -> None:
+    def test_writing_text_modes_have_single_public_owner(self) -> None:
         doctor = runtime_json("doctor")
         by_name = {skill["name"]: skill for skill in doctor["skills"]}
-        for name in (
-            "executive-communication",
-            "popular-science-explainer",
-            "practical-usage-guide",
-        ):
-            self.assertIn(
-                "writing/humanizer",
-                by_name[name].get("optionalUses", []),
-                name,
-            )
-
-        executive = (PLUGINS / "writing/skills/executive-communication/SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("本 Skill 保留主路由", executive)
-        humanizer = (PLUGINS / "writing/skills/humanizer/SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("更具体的内容交付物", humanizer)
-        self.assertIn(
-            "writing/clear-writing",
-            by_name["humanizer"].get("optionalUses", []),
-        )
+        self.assertIn("writing/clear-writing",
+                      by_name["executive-communication"].get("optionalUses", []))
+        explainer = by_name["explanatory-writing"]
+        self.assertEqual(explainer["phase"], "explanation")
+        self.assertEqual(set(explainer.get("optionalUses", [])), {
+            "research/deep-research", "research/knowledge-synthesis", "writing/clear-writing",
+        })
+        self.assertNotIn("humanizer", by_name)
+        self.assertNotIn("popular-science-explainer", by_name)
+        self.assertNotIn("practical-usage-guide", by_name)
+        main = (PLUGINS / "writing/skills/clear-writing/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("Humanizer", main)
+        humanizer = (PLUGINS / "writing/skills/clear-writing/references/humanizer-mode.md").read_text(encoding="utf-8")
+        self.assertIn("False-positive Guard", humanizer)
+        self.assertIn("写作样本优先", humanizer)
+        self.assertIn("fiction-prose-editing", main)
 
     def test_fiction_workflow_and_review_skills_replace_three_stage_workflow(self) -> None:
         doctor = runtime_json("doctor")
         by_name = {skill["name"]: skill for skill in doctor["skills"]}
-
         expected = {
             "fiction-discussion": "discussion",
             "fiction-conclusion": "specification",
             "fiction-outline": "planning",
-            "fiction-manuscript-readiness": "verification",
             "fiction-manuscript-drafting": "generation",
             "fiction-prose-editing": "editing",
-            "fiction-character-review": "verification",
-            "fiction-continuity-review": "verification",
-            "fiction-expression-review": "verification",
-            "fiction-readability-review": "verification",
-            "fiction-pacing-review": "verification",
+            "fiction-review": "verification",
             "fiction-revision-validation": "verification",
-            "fiction-final-review": "verification",
         }
         for name, phase in expected.items():
             self.assertIn(name, by_name)
             self.assertEqual(by_name[name]["phase"], phase)
-
-        for old in ("fiction-story-architecture", "fiction-story-development", "fiction-writing"):
+        removed = (
+            "fiction-story-architecture", "fiction-story-development", "fiction-writing",
+            "fiction-manuscript-readiness", "fiction-character-review",
+            "fiction-continuity-review", "fiction-expression-review",
+            "fiction-readability-review", "fiction-pacing-review", "fiction-final-review",
+        )
+        for old in removed:
             self.assertNotIn(old, by_name)
-
         writing = runtime_json("list", "writing")
-        groups = {group["name"]: {item["name"] for item in group["skills"]} for group in writing["groups"]}
+        self.assertEqual(writing["publicSkillCount"], 10)
+        groups = {
+            group["name"]: {item["name"] for item in group["skills"]}
+            for group in writing["groups"]
+        }
         self.assertEqual(groups["fiction"], set(expected))
-
+        self.assertEqual(groups["general-writing"], {
+            "clear-writing", "executive-communication", "explanatory-writing",
+        })
         discussion = (PLUGINS / "writing/skills/fiction-discussion/SKILL.md").read_text(encoding="utf-8")
         conclusion = (PLUGINS / "writing/skills/fiction-conclusion/SKILL.md").read_text(encoding="utf-8")
         outline = (PLUGINS / "writing/skills/fiction-outline/SKILL.md").read_text(encoding="utf-8")
-        readiness = (PLUGINS / "writing/skills/fiction-manuscript-readiness/SKILL.md").read_text(encoding="utf-8")
         drafting = (PLUGINS / "writing/skills/fiction-manuscript-drafting/SKILL.md").read_text(encoding="utf-8")
-        final_review = (PLUGINS / "writing/skills/fiction-final-review/SKILL.md").read_text(encoding="utf-8")
+        review = (PLUGINS / "writing/skills/fiction-review/SKILL.md").read_text(encoding="utf-8")
         self.assertIn("creative_open", discussion)
         self.assertIn("Standalone Reader Gate", conclusion)
-        self.assertIn("Rolling Plan", outline)
         self.assertIn("可选 Planning Layer", outline)
-        self.assertIn("Creative Open", outline)
         self.assertIn("没有持久化 Outline 文件本身不是 Not Ready 理由", outline)
         self.assertIn("manuscript-readiness.md", outline)
-        self.assertIn("不定义小说文本风格", readiness)
-        self.assertIn("Not Ready", readiness)
-        self.assertIn("没有逐章章纲本身不构成 Not Ready", readiness)
-        self.assertIn("不把 `shared/fiction/references/drafting-quality.md`", readiness)
-        self.assertIn("fiction-manuscript-drafting", readiness)
-        self.assertIn("不定义小说文本风格", readiness)
+        self.assertIn("READINESS_ONLY", drafting)
+        self.assertIn("不定义小说文本风格", drafting)
         self.assertIn("Voice Calibration", drafting)
-        self.assertIn("没有独立 Outline / Scene List 不构成停止理由", drafting)
-        self.assertIn("局部反馈", drafting)
-        self.assertIn("manuscript-drafting.md", drafting)
-        self.assertIn("writing/fiction-manuscript-readiness", by_name["fiction-manuscript-drafting"].get("uses", []))
-        self.assertIn("组合型", final_review)
-
+        self.assertNotIn("writing/fiction-manuscript-readiness", by_name["fiction-manuscript-drafting"].get("uses", []))
+        self.assertIn("writing/fiction-prose-editing", by_name["fiction-manuscript-drafting"].get("optionalUses", []))
+        self.assertIn("Full-book", review)
+        self.assertIn("Protect / No Change", review)
         genre = PLUGINS / "writing/shared/fiction/genres/psychological-horror.md"
         self.assertTrue(genre.exists())
         self.assertIn("不提供固定结构", genre.read_text(encoding="utf-8"))
-
         self.assertFalse((PLUGINS / "writing/shared/horror").exists())
 
     def test_github_remote_write_recovery_precedes_handoff(self) -> None:

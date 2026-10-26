@@ -1,6 +1,6 @@
 ---
 name: fiction-prose-editing
-description: "小说纯文笔精修。已有小说正文读起来生硬、中文不自然、句子衔接别扭、细节不够细腻，或用户要求‘剧情不要改只打磨文字/出版向语言润色/和成熟小说相比文笔差在哪’，使用本 Skill 诊断并定向润色遣词、句法、视角下的感知顺序与段落呼吸，保留剧情、人物、信息和已成立的 Work Voice。正式整章初稿成稿后可被 fiction-manuscript-drafting 组合；只审查 Voice 漂移用 fiction-expression-review，概念看不懂用 fiction-readability-review，普通非文学去 AI 味用 humanizer。"
+description: "小说纯文笔精修。已有小说正文读起来生硬、汉语不自然、句际衔接别扭、细节不够细腻，或要求‘剧情不要改只打磨文字/出版向语言润色’，由本 Skill 定向调整遣词、句法、感知顺序与段落呼吸，保留 Canon、人物、信息及 Work Voice。正式整章初稿后可由 fiction-manuscript-drafting 组合；只审查文风漂移或可读性时走 fiction-review；普通非文学去 AI 味走 clear-writing。"
 visibility: workflow
 phase: editing
 ---
@@ -15,8 +15,8 @@ phase: editing
 
 - 主路由：“小说剧情别动，只把文笔打磨舒服”“这段遣词别扭”“文字太干/不细腻”“像出版小说那样自然流畅”“做一次纯文笔 A/B 精修”。
 - 由 fiction-manuscript-drafting 组合：**完成正式整章初稿以后**，作为后置语言编辑阶段；不进入起稿时的逐句生成清单。
-- 只问“文风有没有漂、像不像当前作品” → fiction-expression-review；只问“读者是否看懂术语/因果” → fiction-readability-review。
-- 纯事实说明的清晰压缩 → clear-writing；一般公文或文章去 AI 味 → humanizer。已经写好的小说若仅要求删除通用 AI 套话，且没有文学质感目标，humanizer 仍可主导。
+- 只问“文风有没有漂、像不像当前作品” → `writing/fiction-review` 的 Expression 模式；只问“读者是否看懂术语/因果” → `writing/fiction-review` 的 Readability 模式。
+- 纯事实说明的清晰压缩或一般文章去 AI 味 → `writing/clear-writing`（Humanizer 模式）。已经写好的小说若只要求删除一般套话且没有文学质感目标，可由该通用模式主导。
 - 用户要求改变主要情节、人物、POV、信息释放或章节结构时，由 fiction-discussion / fiction-manuscript-drafting 的对应 Owner 主导。本 Skill 不借润色暗改高影响内容。
 
 ## 准备与冻结

@@ -31,7 +31,7 @@ phase: orchestration
 - 用户仍在讨论需求本身 → 对应 discussion/spec/planning Skill；
 - 用户要求先把代码改动拆成研发任务 → `development/github-development-plan-generator`；如果已经有明确开发/测试计划，只是要把它转换成 Coding/Test Agent 执行合同，本 Skill 可以直接承接；
 - 只是把一句普通 Prompt 写顺 → writing/clear-writing；
-- 用户要的是人类操作手册 → writing/practical-usage-guide。
+- 用户要的是人类操作手册 → writing/explanatory-writing 的 Practical Guide 模式。
 
 ---
 

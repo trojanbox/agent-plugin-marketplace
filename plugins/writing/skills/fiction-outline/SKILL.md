@@ -79,6 +79,6 @@ Routine Rolling Plan 不强制创建 Issue。用户明确要求 GitHub 持久化
 
 - 高影响上游合同缺失 → 回【创作·讨论】。
 - 用户已经明确要求直接开始 / 继续正式正文，且 Readiness 没有高影响阻塞 → 转 `writing/fiction-manuscript-drafting`，不要为了流程完整强制补章纲。
-- 用户只要求检查能否开始正文 → `writing/fiction-manuscript-readiness`。
+- 用户只要求检查能否开始正文 → `writing/fiction-manuscript-drafting` 的 READINESS_ONLY 模式，完成 Ready/Not Ready 后停止，不生成正文。
 - 开始写完整对白 / 正式叙述 → 停止，当前 Skill 不负责 Manuscript。
 - Planning 未持久化但用户没有要求持久化 → 不构成阻塞。

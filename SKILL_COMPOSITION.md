@@ -129,16 +129,15 @@ Skill Composition 只解决“一个主任务需要哪些辅助能力”。它�
 
 ## Writing Composition 示例
 
-- 已有小说正文的主要要求是“剧情不变、只把用词、句际连贯和细腻感打磨舒服” → writing/fiction-prose-editing 主导；一般去 AI 套话仍归 humanizer，说明/报告清晰化仍归 clear-writing。
-- “继续写完整下一章 / 整章重写” → writing/fiction-manuscript-drafting 主导，Readiness 先行；**正式整章完成初稿和 Reader Pass 后**，按 Drafting 的 optional_uses 条件自动组合 fiction-prose-editing 一次；无收益允许 Protect / No Change，用户只要未经润色草稿时跳过。
-- “只看文风漂移” → fiction-expression-review；用户明确要求“审查并修纯文笔” → expression-review 诊断后按条件组合 prose-editing；纯术语理解诊断归 readability-review。
-- “精修后的 A/B 哪一版更好 / 有没有损坏原文” → fiction-revision-validation 独立验收，不能仅据长度或工整程度判定。
-
-
-- “董事会/CEO 决策沟通 + 去 AI 味”以 `writing/executive-communication` 为主，组合 `writing/humanizer`；Humanizer 只处理表达模式，不改决策结构和 ask。
-- “科普/原理解释 + 去 AI 味”以 `writing/popular-science-explainer` 为主，组合 `writing/humanizer`；事实模型和解释路径仍由科普 Skill 决定。
-- “实操使用指南 + 去 AI 味”以 `writing/practical-usage-guide` 为主，它始终 `uses: writing/clear-writing`，并在用户明确要求时可选组合 `writing/humanizer`。
-- 如果用户只给现成文本要求“humanize / 别像 ChatGPT”，没有更具体的内容/受众目标，`writing/humanizer` 自己就是主 Skill；若同时只附带一般“更清楚/更简洁”要求，可按需组合 `writing/clear-writing`。
+- Writing 公共入口 10 个：fiction 下保留 Discussion / Conclusion / Outline / Manuscript Drafting（内置 Readiness Only）/ Prose Editing / Review（六专项 + 全书）/ Revision Validation；general-writing 下保留 Clear Writing（内置 Humanizer）、Executive Communication、Explanatory Writing（Science Explanation + Practical Guide）。**旧 Skill 的专项方法放在按需 references，不注册重复公开入口**。
+- 小说长期 Canon / Story / Character / Style 决定仍由 `writing/fiction-discussion` 主导；用户明确要求冻结已确认创作讨论、生成独立可执行结论时使用 `writing/fiction-conclusion`；章节规划为可选 `writing/fiction-outline`，不能强制要求整本逐章章纲。
+- 只问“现在能不能开始正文” → `writing/fiction-manuscript-drafting` 的 READINESS_ONLY：只读当前权威并返回 Ready / Not Ready、真正高影响阻塞 Owner 与 Creative Open；**不写正文**。用户明确开始/继续/重写正式章节 → 同一个 Drafting 的 DRAFT 模式，必须先过 Readiness；Readiness 不定义文本风格。
+- 正式整章初稿 + Reader Pass 后，Drafting 依 `optional_uses` 条件组合 `writing/fiction-prose-editing` 完成受控语言精修；用户明确只要未经润色草稿时跳过，No Change 应受保护。
+- 审查当前小说的人物逻辑 / 知识边界、Canon 连续性、Work Voice / POV、可读性、Reader Pull/节奏、整本 Publication Readiness → `writing/fiction-review`，按需求只读对应专项 reference；同一审查请求跨几个维度时仍是一个主 Skill。Full-book 必须完整通读并绑定版本；普通审查默认仅诊断。
+- 有原稿与新稿并要判断“本轮改得更好了吗、有没有新回归” → `writing/fiction-revision-validation` 独立主导，优先真实 Diff 与 Preserve Set。用户只要对现成小说语言做直接精修 → `writing/fiction-prose-editing`；用户只要求审查“文风漂了没”，仍由 `fiction-review` 的 Expression 模式主导。审查并明确要求纯文笔修复时可以先 Review 再按条件组合 Prose Editing。
+- 一般非文学现成文本的清晰改写 / 去 AI 味 → `writing/clear-writing` 的 Clear / Humanizer 模式：Humanizer 仅按需加载其专项 reference，保留事实与作者个人声音；小说细腻感仍归 `fiction-prose-editing`。
+- CEO/董事会决策沟通 → `writing/executive-communication`；若有明确去 AI 味要求，可按需组合 `writing/clear-writing` 的 Humanizer 模式，不能改变事实、风险、取舍和 ask。
+- 科学原理科普与实操使用指南 → `writing/explanatory-writing` 的 Science Explanation / Practical Guide；缺多来源事实时可选组合 `research/deep-research`，已有多资料归并可选 `research/knowledge-synthesis`，用户要求最终文本清晰化 / 去 AI 味时可选 `writing/clear-writing`。模式按需读取，不把产品不存在的步骤写成既有能力。
 
 ## Design Composition 示例
 

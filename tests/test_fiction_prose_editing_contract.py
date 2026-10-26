@@ -31,7 +31,9 @@ class FictionProseEditingContractTest(unittest.TestCase):
 
     def test_drafting_uses_post_draft_prose_pass(self):
         draft = read(SKILLS / "fiction-manuscript-drafting" / "SKILL.md")
-        self.assertIn('uses: "writing/fiction-manuscript-readiness"', draft)
+        self.assertIn("READINESS_ONLY", draft)
+        self.assertIn("Manuscript Readiness", draft)
+        self.assertNotIn('uses: "writing/fiction-manuscript-readiness"', draft)
         self.assertIn('optional_uses: "writing/fiction-prose-editing"', draft)
         self.assertIn("默认触发（必须执行）", draft)
         self.assertIn("正式小说 Manuscript", draft)
@@ -39,21 +41,23 @@ class FictionProseEditingContractTest(unittest.TestCase):
         self.assertIn("Protect / No Change", draft)
 
     def test_expression_review_opt_in(self):
-        expression = read(SKILLS / "fiction-expression-review" / "SKILL.md")
-        self.assertIn('optional_uses: "writing/fiction-prose-editing"', expression)
-        self.assertIn("只要审查时", expression)
+        review = read(SKILLS / "fiction-review" / "SKILL.md")
+        expression = read(WRITING / "shared/fiction/references/review-expression-mode.md")
+        self.assertIn('optional_uses: "writing/fiction-prose-editing"', review)
+        self.assertIn("只审查", review)
         self.assertIn("直接纯文笔润色", expression)
+        self.assertIn("State-conditioned Voice Gate", expression)
 
     def test_neighbor_routing_points_to_new_skill(self):
-        for name in (
-            "fiction-readability-review",
-            "fiction-revision-validation",
-            "fiction-final-review",
-            "humanizer",
-            "clear-writing",
+        for path in (
+            WRITING / "shared/fiction/references/review-readability-mode.md",
+            WRITING / "shared/fiction/references/review-full-book-mode.md",
+            WRITING / "skills/fiction-revision-validation/SKILL.md",
+            WRITING / "skills/clear-writing/references/humanizer-mode.md",
+            WRITING / "skills/clear-writing/SKILL.md",
         ):
-            with self.subTest(name=name):
-                self.assertIn("writing/fiction-prose-editing", read(SKILLS / name / "SKILL.md"))
+            with self.subTest(path=path.name):
+                self.assertIn("writing/fiction-prose-editing", read(path))
 
     def test_boundaries_and_no_change(self):
         prose = read(NEW_SKILL)

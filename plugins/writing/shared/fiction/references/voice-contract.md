@@ -160,5 +160,5 @@ Voice Gate 失败时，优先改**观察焦点、信息顺序、人物反应和�
 ## 六、停止边界
 
 - 如果为了形成 Work Voice 必须改 Genre、POV、核心关系、Story Movement、终点或其它高层合同，回到 `writing/fiction-discussion`；
-- 如果当前只是在已有 Work Voice 内检查作品是否漂移，使用 `writing/fiction-expression-review`；实际正文修改由当前项目的 Manuscript 工作流按本书合同执行；
+- 如果当前只是在已有 Work Voice 内检查作品是否漂移，使用 `writing/fiction-review` 的 Expression 模式；实际正文修改由当前项目的 Manuscript 工作流按本书合同执行；
 - 不因为某一本书成功就把它的表层风格自动升级成所有后续作品的通用规则。

@@ -204,6 +204,15 @@ vendor/
 
 更多设计约束见 [`PLUGIN_MODEL.md`](./PLUGIN_MODEL.md) 与 [`SKILL_COMPOSITION.md`](./SKILL_COMPOSITION.md)。
 
+## Writing v4.0：十个公开入口
+
+Writing 现有 7 个小说流程 Skill（讨论、冻结结论、章纲、正文/可写性、文笔精修、统一审查、修订验收）与 3 个通用写作 Skill（清晰化/去 AI 味、管理层沟通、科普/使用指南）。
+
+- 小说人物、连续性、表达、可读性、节奏和全书终审统一通过 `writing/fiction-review` 按需选择专项模式；Full-book 仍需完整通读和版本绑定。
+- `writing/fiction-manuscript-drafting` 现在有 READINESS_ONLY（只查可写性）和 DRAFT（成文）两种模式，后者必须先通过同一 Readiness Gate。
+- `writing/clear-writing` 提供普通清晰化与 Humanizer 模式；`writing/explanatory-writing` 分别提供科学原理讲解与实操指南模式。
+- 旧逻辑 ID 不支持自动别名；完整映射、迁移边界及验收见 [Writing v4.0 迁移说明](plugins/writing/MIGRATION-v4.0.md)。
+
 ## GitHub 与 Reasoning 边界
 
 `github` 提供 Issue 管理、查重与交接同步；这三个 Skill 的 canonical ID 统一为 `github/github-issue-manager`、`github/github-issue-triage`、`github/github-issue-handoff-sync`，不保留旧 Development 实现。跨 Plugin 资源按已安装 Skill 路径定位。

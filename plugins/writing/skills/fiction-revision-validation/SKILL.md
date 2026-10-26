@@ -64,4 +64,4 @@ Canon → 是否冲突
 
 ## 边界
 
-只回答本轮修订是否合格，不重新做一次完整小说审查；全书交付状态由 `writing/fiction-final-review` 判断。
+只回答本轮修订是否合格，不重新做一次完整小说审查；全书交付状态由 `writing/fiction-review` 的 Full-book 模式判断。

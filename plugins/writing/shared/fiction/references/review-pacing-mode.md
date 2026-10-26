@@ -1,9 +1,4 @@
----
-name: fiction-pacing-review
-description: "节奏审查。用于连续多章或全书阅读后判断为什么会疲劳、为什么还想不想继续读，重点发现重复场景机制、案例集/教程化、情绪同温、Reader Pull 不足、情感投资不足、生活场景工具化、中段疲劳和后段赶进度。适合‘前十章有没有吸引力/中段为什么累/是不是一直查核等/故事讲完了但还没共情’。单章句子难读用 fiction-readability-review。"
-visibility: workflow
-phase: verification
----
+<!-- 专项参考：只有 fiction-review 选择该审查模式时读取；用户仅要综合审查时仍可按问题相关性按需读取。 -->
 
 # 节奏审查
 
@@ -11,7 +6,7 @@ phase: verification
 
 **连续读下去为什么会不会累，为什么还想不想继续读？**
 
-先读取 `../../shared/fiction/references/review-contract.md`。本 Skill 以连续阅读为前提，优先连续多章、Story Movement 或全书，不把单章“快/慢”当主要判断。
+先读取 `review-contract.md`。本审查模式 以连续阅读为前提，优先连续多章、Story Movement 或全书，不把单章“快/慢”当主要判断。
 
 ## 检查
 
@@ -25,7 +20,7 @@ phase: verification
 - 生活场景是否承担人物、关系、现实压力和存在感；
 - 中段疲劳、后段赶进度、扩写只拆章不增加经历。
 
-详细连续通读方法读取 `../../shared/fiction/references/revision-methods.md` 与 `scenes-information-world.md`。
+详细连续通读方法读取 `revision-methods.md` 与 `scenes-information-world.md`。
 
 ## Reader Pull 的证据路径
 

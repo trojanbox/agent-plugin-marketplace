@@ -1,4 +1,6 @@
-# Fiction Prose Editing · 语义路由评估（2026-10-09）
+# Fiction Prose Editing · 语义路由评估（2026-10-09，Writing 3.x 历史快照）
+
+> 此文保留原始审计预期和旧 Skill 名称；Writing v4.0 现行 owner 见 `plugins/writing/MIGRATION-v4.0.md` 与 `tests/writing-v4-semantic-routing-eval.md`。
 
 ## 范围
 

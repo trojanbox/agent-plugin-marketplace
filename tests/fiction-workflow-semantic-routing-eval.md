@@ -1,4 +1,6 @@
-# Fiction Workflow & Review Skills：人工语义路由 Eval
+# Fiction Workflow & Review Skills：人工语义路由 Eval（Writing 3.x 历史快照）
+
+> 历史材料：本报告记录 Writing 3.x 的旧公开 Skill 路由判定。Writing v4.0 已合并部分入口；现行映射与模式以 `plugins/writing/MIGRATION-v4.0.md`、`tests/writing-v4-semantic-routing-eval.md` 和当前 Runtime 为准。保留旧名称以追溯原始评估，不作为当前可调用 ID。
 
 日期：2026-09-29。基于既有 Writing 3.3.0 回归基线与本轮 3.4.0 Fiction QA 增强，冻结 FIC001–FIC096 预期，再逐条对照 Skill description、phase、邻居边界与 composition。本文是当前规则的人工语义一致性证据，不声称未来模型准确率。
 

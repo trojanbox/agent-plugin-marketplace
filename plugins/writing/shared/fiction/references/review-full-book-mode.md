@@ -1,9 +1,4 @@
----
-name: fiction-final-review
-description: "全书终审。用于整本小说从头到尾连续阅读后的最终综合审查，把人物、连续性、表达、可读性、节奏和当前修订回归结果合并为版本绑定的 Publication Readiness 判断。适合‘整本从头到尾审一遍/出版终校/这本书达到发布标准了吗/来一轮终校/以前已经终审过但后来又重写了，原结论还算吗’。发布前文本校对按需加载专项终校 reference；它是组合型总审查，不重新发明另一套人物或文风规则。"
-visibility: workflow
-phase: verification
----
+<!-- 专项参考：只有 fiction-review 选择该审查模式时读取；用户仅要综合审查时仍可按问题相关性按需读取。 -->
 
 # 全书终审
 
@@ -11,9 +6,9 @@ phase: verification
 
 完成整本连续阅读，按专项审查维度汇总跨维度问题，并把 Publication Readiness **绑定到这一次实际审过的 Manuscript 版本**，避免旧终审结论在后续实质改稿后被误继承。
 
-先读取 `../../shared/fiction/references/review-contract.md`；有 Storybook 时读取 Book README、World / Characters / Story / Style、当前完整 Manuscript、长期 Revisions 结果与 Preserve Set。
+先读取 `review-contract.md`；有 Storybook 时读取 Book README、World / Characters / Story / Style、当前完整 Manuscript、长期 Revisions 结果与 Preserve Set。
 
-用户明确说“出版终校 / 发布前最后一遍 / 最终校对 / 来一轮终校”，或任务包含标点、空格、章标题、编号、固定结尾等成书层检查时，再读取 `../../shared/fiction/references/publication-proofread.md`。
+用户明确说“出版终校 / 发布前最后一遍 / 最终校对 / 来一轮终校”，或任务包含标点、空格、章标题、编号、固定结尾等成书层检查时，再读取 `publication-proofread.md`。
 
 ## 组合视角
 
@@ -26,7 +21,7 @@ phase: verification
 5. **节奏**：重复机制、Reader Pull、情绪曲线、情感投资；
 6. **修订回归**：重要 Preserve Set 与历史已修问题。
 
-需要细化某一维时使用对应专项 Review 的合同与 shared references；本 Skill 不维护第二套标准。
+需细化某一维时，仍由同一个 `writing/fiction-review` 按需加载 `review-character-mode.md`、`review-continuity-mode.md`、`review-expression-mode.md`、`review-readability-mode.md` 或 `review-pacing-mode.md`；本模式不维护第二套标准。
 
 ## Version Binding Gate
 

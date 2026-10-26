@@ -1,6 +1,6 @@
 ---
 name: clear-writing
-description: "用于把已有或内容目标已经明确的人类可读文本写得更清晰、简洁、具体和易扫读：报告、说明、邮件、文档、摘要、界面文案等。重点是结构、主动语态、具体措辞、删除无用词和保持信息完整。用户明确要求去 AI 味时使用 humanizer；高层/董事会决策沟通使用 executive-communication；从系统/工具/工作流事实创建‘平时怎么用’的实操指南使用 practical-usage-guide。"
+description: "通用文本编辑统一入口：已有报告、邮件、文档、说明、界面文案等要求清晰、简洁、具体时走 Clear 模式；要求去 AI 味、人性化、保留作者语气时走 Humanizer 模式并按需加载专项参考。两种模式都不改事实与限定条件；小说文学文笔精修归 fiction-prose-editing，董事会/高层决策沟通归 executive-communication，原理科普/实操指南归 explanatory-writing。"
 visibility: workflow
 phase: editing
 ---
@@ -9,7 +9,7 @@ phase: editing
 
 ## 目标
 
-在**不改变事实和意图**的前提下，让文本更容易理解、更快读完、更难误解。
+在**不改变事实和意图**的前提下，以两种模式编辑已有文本：Clear 模式提高准确度、可读性与信息密度；Humanizer 模式消除有证据的公式化 AI 表达，同时保留真实作者声音。
 
 本 Skill 参考 `softaworks/agent-toolkit` 的 `writing-clearly-and-concisely`，吸收 Strunk 的清晰写作原则，并按当前 Runtime 做了可移植适配。它不依赖上游的 subagent 或固定 reference 加载机制。
 
@@ -24,11 +24,14 @@ phase: editing
 
 不要把它当成事实校验器。用户要验证事实、研究来源或检查数据时，进入对应 research/data Skill。
 
-如果用户的主目标是从已有系统、工具、Skill 集合或工作流事实**创建一份实操使用指南**，使用 `practical-usage-guide`；本 Skill 可以作为其清晰写作基础能力，不与它争主路由。
+从已有系统/工具/工作流事实**创建一份实操使用指南**，或生成科普/原理讲解文章时，使用 `writing/explanatory-writing` 为主；本 Skill 只在其显式需要清晰化/去 AI 味编辑时按需提供语言后处理。
 
-## 小说邻接路由
+## 模式选择与小说边界
 
-已有小说在剧情不变的前提下需要自然、细腻、有呼吸的中文叙述时，使用 writing/fiction-prose-editing。本 Skill 继续负责说明、报告等事实文本的清晰化与精简；小说文笔的质量不能只靠压缩字数或结论提前判断。
+- **Clear（默认）**：写清楚 / 精简报告 / 说明不够直接 / 删除重复。依本 Skill 的通用结构与句法原则编辑。
+- **Humanizer（按需）**：去 AI 味 / humanize / 保留我的表达习惯 / 清除机械套话。仅在用户有此明确目标时读取 `references/humanizer-mode.md`，先标记成组出现的特征、保留作者已有声音、逐条核对事实；不能靠句子缩短、随机口语化或单个破折号判 AI。
+- 用户同时要“清楚 + 去 AI 味”时由本 Skill 一次完成：先冻结事实，修必要结构，再按 Humanizer 模式检查后处理，避免双入口重复编辑。
+- 已有小说在剧情不变的前提下需要自然、细腻、有呼吸的中文叙述时，使用 `writing/fiction-prose-editing`；只要求判断小说是否像本书的声音、而不要求动笔时使用 `writing/fiction-review` 表达模式。本 Skill 继续处理一般非文学文本。
 
 ## 不可破坏的内容
 
@@ -98,8 +101,6 @@ phase: editing
 - 是否误删必要 caveat？
 - 是否新增了来源没有提供的事实？
 
-## 输出
+## 输出与真实性
 
-默认直接给清理后的版本。若用户要求解释修改，再简要说明最重要的结构/清晰度调整。
-
-不要把编辑过程强加给用户，也不要声称文本来自 AI 检测结果。
+默认直接给编辑后的完整版本；用户要求时再说明具体修改，保留关键事实、风险、名称、数字、链接目标、结构化代码/数据及作者立场。Humanizer 模式不得添加虚构的个人经历、引用或口头禅，不声称能够可靠识别 AI 作者身份。若只是审查、不允许改动，给具体模式证据后停止。

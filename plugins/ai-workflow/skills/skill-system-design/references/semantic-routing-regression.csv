@@ -91,25 +91,25 @@ P049,breadth-positive,把这份说明写得更清楚、简洁一点，信息不�
 P050,breadth-positive,帮我润色这段报告，让结构更容易扫读，删掉空话。,writing/clear-writing
 P051,breadth-positive,给 CEO 写一份项目延期升级说明，要结论优先、说明取舍并提出明确决策请求。,writing/executive-communication
 P052,breadth-positive,把这份材料整理成董事会 review，突出经营影响、风险和需要拍板的事项。,writing/executive-communication
-P053,breadth-positive,这段文字太像 ChatGPT 了，帮我去 AI 味，事实和观点别改。,writing/humanizer
-P054,breadth-positive,Humanize 这篇文章，让语气更自然，但保留作者原来的声音。,writing/humanizer
-P055,breadth-positive,给非技术读者解释 Transformer 为什么能处理上下文，从直观现象讲到最小模型。,writing/popular-science-explainer
-P056,breadth-positive,写一篇量子隧穿的科普文章，让普通人能理解机制和现实约束。,writing/popular-science-explainer
-P057,breadth-positive,给团队写一份这套 Skill 平时到底怎么用的指南，重点写什么时候直接怎么说。,writing/practical-usage-guide
-P058,breadth-positive,把这个复杂工作流整理成新人照着就能操作的实操说明，不要只列功能。,writing/practical-usage-guide
+P053,breadth-positive,这段文字太像 ChatGPT 了，帮我去 AI 味，事实和观点别改。,writing/clear-writing（Humanizer 模式）
+P054,breadth-positive,Humanize 这篇文章，让语气更自然，但保留作者原来的声音。,writing/clear-writing（Humanizer 模式）
+P055,breadth-positive,给非技术读者解释 Transformer 为什么能处理上下文，从直观现象讲到最小模型。,writing/explanatory-writing（Science Explanation 模式）
+P056,breadth-positive,写一篇量子隧穿的科普文章，让普通人能理解机制和现实约束。,writing/explanatory-writing（Science Explanation 模式）
+P057,breadth-positive,给团队写一份这套 Skill 平时到底怎么用的指南，重点写什么时候直接怎么说。,writing/explanatory-writing（Practical Guide 模式）
+P058,breadth-positive,把这个复杂工作流整理成新人照着就能操作的实操说明，不要只列功能。,writing/explanatory-writing（Practical Guide 模式）
 A001,adversarial,对这份 A/B 数据做显著性分析，并直接画出带置信区间的结果图。,理想：data/statistical-analysis 为主 + data/data-visualization 作为呈现组合
 A002,adversarial,第一次看这份 CSV，帮我做字段、缺失、异常探索，并把关键分布直接画出来。,理想：data/data-exploration 为主 + data/data-visualization 作为呈现组合
-A003,adversarial,把这段董事会汇报去 AI 味，但要保留高层决策结构和明确 ask。,理想：writing/executive-communication 为主 + writing/humanizer 作为风格组合
-A004,adversarial,给非技术管理层写一篇 AI Agent 科普，同时写得自然一点，别像 ChatGPT。,理想：writing/popular-science-explainer 为主 + writing/humanizer 作为风格组合
+A003,adversarial,把这段董事会汇报去 AI 味，但要保留高层决策结构和明确 ask。,理想：writing/executive-communication 为主 + writing/clear-writing（Humanizer 模式） 作为风格组合
+A004,adversarial,给非技术管理层写一篇 AI Agent 科普，同时写得自然一点，别像 ChatGPT。,理想：writing/explanatory-writing（Science Explanation 模式） 为主 + writing/clear-writing（Humanizer 模式） 作为风格组合
 A005,adversarial,全面分析 NVDA 的长期投资逻辑，并做一套完整 DCF 估值。,finance/equity-research 与 finance/valuation-analysis 是两个实质交付物，应识别主 Skill 冲突
 A006,adversarial,分析特斯拉 Q2 财报，同时重做一遍长期投资 thesis。,finance/earnings-analysis 与 finance/equity-research 是两个实质交付物，应识别冲突
 A007,adversarial,根据这五份报告综合共识，缺的地方再联网补证据。,research/knowledge-synthesis 为主 + optional research/deep-research
 A008,adversarial,解释为什么这个现象相关但不一定因果，并用现有数据做统计检验。,reasoning/scientific-reasoning 为主 + optional data/statistical-analysis
 A009,adversarial,做一份竞品分析，需要先补最新定价、产品变化和用户评价。,business/competitive-analysis 为主 + research 组合
 A010,adversarial,帮我建立产品营销上下文，同时再输出一份完整竞争战略和机会威胁分析。,product-marketing-context 与 competitive-analysis 两个实质交付物，应识别冲突
-A011,adversarial,给我一份这套 Skill 日常怎么用的指南，文字也要清楚简洁。,writing/practical-usage-guide 为主 + uses writing/clear-writing
+A011,adversarial,给我一份这套 Skill 日常怎么用的指南，文字也要清楚简洁。,writing/explanatory-writing（Practical Guide 模式） 为主 + uses writing/clear-writing
 A012,adversarial,给八年级学生设计一节课，目标是把黑洞讲明白。,education/k12-lesson-planning
-A013,adversarial,写一篇给八年级学生看的黑洞科普文章，不是课堂教案。,writing/popular-science-explainer
+A013,adversarial,写一篇给八年级学生看的黑洞科普文章，不是课堂教案。,writing/explanatory-writing（Science Explanation 模式）
 A014,adversarial,这个 Bug 已经有完整根因报告了，直接创建 GitHub 缺陷 Issue。,理想：github-issue-manager 承接明确写操作，并把 triage 作为创建 Gate
 A015,adversarial,这个 Bug 已经确认了。先查重，再根据查重结果创建或重开 Issue。,先 github-issue-triage；完成后顺序进入 github-issue-manager
 A016,adversarial,已有【开发·结论】，给我开发计划，并同时写一份 Codex 执行 Prompt。,development/github-development-plan-generator 与 ai-workflow/agent-prompt-design 是两个交付物，应识别冲突
@@ -131,18 +131,18 @@ T009,targeted-data,看看这份交易数据有没有异常点，并把关键异�
 T010,targeted-data,分析这些指标的相关关系，并把相关矩阵画成热力图。,data/statistical-analysis 为主 + data/data-visualization 组合
 T011,targeted-data,数字和结论都不用你验，只审这张双轴图是不是会误导读者。,data/data-visualization
 T012,targeted-data,审核整个统计分析；必要时重跑显著性检验，并把误导图重新画掉。,data/data-validation 为主 + statistical-analysis + data-visualization 组合
-T013,targeted-writing,给董事会写一份项目延期决策说明，同时去 AI 味，保留明确 ask。,writing/executive-communication 为主 + writing/humanizer 组合
-T014,targeted-writing,给普通管理者写一篇 RAG 原理科普，写得自然点，别像 ChatGPT。,writing/popular-science-explainer 为主 + writing/humanizer 组合
-T015,targeted-writing,写一份这套 Runtime 的新人实操指南，要求清楚而且别有 AI 腔。,writing/practical-usage-guide 为主 + uses clear-writing + optional humanizer
-T016,targeted-writing,这段文章已经写完了，只帮我 humanize，事实和立场都别动。,writing/humanizer
+T013,targeted-writing,给董事会写一份项目延期决策说明，同时去 AI 味，保留明确 ask。,writing/executive-communication 为主 + writing/clear-writing（Humanizer 模式） 组合
+T014,targeted-writing,给普通管理者写一篇 RAG 原理科普，写得自然点，别像 ChatGPT。,writing/explanatory-writing（Science Explanation 模式） 为主 + writing/clear-writing（Humanizer 模式） 组合
+T015,targeted-writing,写一份这套 Runtime 的新人实操指南，要求清楚而且别有 AI 腔。,writing/explanatory-writing（Practical Guide 模式） 为主 + uses clear-writing + optional clear-writing（Humanizer 模式）
+T016,targeted-writing,这段文章已经写完了，只帮我 humanize，事实和立场都别动。,writing/clear-writing（Humanizer 模式）
 T017,targeted-writing,把这段说明压短一点、写具体一点，不需要改风格。,writing/clear-writing
-T018,targeted-writing,把这段产品说明写清楚一点，也去掉 AI 味。,writing/humanizer 为主 + writing/clear-writing 组合
-T019,targeted-writing,给 CEO 写一封风险升级邮件，别像机器人写的。,writing/executive-communication 为主 + writing/humanizer 组合
-T020,targeted-writing,写一个 8 分钟量子计算科普视频稿，语气自然，不要 AI 套话。,writing/popular-science-explainer 为主 + writing/humanizer 组合
-T021,targeted-writing,给团队写一份工作流怎么用的操作手册，重点是步骤清楚。,writing/practical-usage-guide + uses writing/clear-writing
+T018,targeted-writing,把这段产品说明写清楚一点，也去掉 AI 味。,writing/clear-writing（Humanizer 模式） 为主 + writing/clear-writing 组合
+T019,targeted-writing,给 CEO 写一封风险升级邮件，别像机器人写的。,writing/executive-communication 为主 + writing/clear-writing（Humanizer 模式） 组合
+T020,targeted-writing,写一个 8 分钟量子计算科普视频稿，语气自然，不要 AI 套话。,writing/explanatory-writing（Science Explanation 模式） 为主 + writing/clear-writing（Humanizer 模式） 组合
+T021,targeted-writing,给团队写一份工作流怎么用的操作手册，重点是步骤清楚。,writing/explanatory-writing（Practical Guide 模式） + uses writing/clear-writing
 T022,targeted-writing,这篇科普稿内容已经没问题，只帮我精简 20%，不要重做解释结构。,writing/clear-writing
-T023,targeted-writing,把这段技术说明去 AI 味，但别重构章节，也别新增事实。,writing/humanizer
-T024,targeted-writing,我要一份面向董事会的决策简报，同时还要一篇完整原理科普文章。,executive-communication 与 popular-science-explainer 两个独立主交付物，识别冲突
+T023,targeted-writing,把这段技术说明去 AI 味，但别重构章节，也别新增事实。,writing/clear-writing（Humanizer 模式）
+T024,targeted-writing,我要一份面向董事会的决策简报，同时还要一篇完整原理科普文章。,executive-communication 与 explanatory-writing（Science Explanation 模式） 两个独立主交付物，识别冲突
 T025,targeted-issue,根因报告已经完整了，直接把它创建成 GitHub 缺陷 Issue。,github-issue-manager 为主 → triage Gate → 创建
 T026,targeted-issue,先查一下这个问题有没有重复 Issue，告诉我应该复用、重开还是新建，先不要写。,github-issue-triage
 T027,targeted-issue,查重，如果没有重复就直接创建；如果是复发就重开原 Issue。,github-issue-manager 为主 → github-issue-triage Gate → 写操作
@@ -169,14 +169,14 @@ T047,cross-category,给这个现象建立竞争性假设，再用现有数据检
 T048,cross-category,全面做这家公司的长期投资研究，并另外给我一套完整 DCF 模型。,finance/equity-research 与 finance/valuation-analysis 两个独立主交付物，识别冲突
 T049,cross-category,分析我的持仓组合风险，并对收益序列做波动、相关性和尾部统计。,finance/portfolio-analysis 为主 + data/statistical-analysis 组合
 T050,cross-category,给八年级设计一节关于黑洞的课堂课，包含活动和分层材料。,education/k12-lesson-planning / differentiation 按课堂目标路由，不进入 popular-science 主路由
-T051,cross-category,写一篇给普通青少年看的黑洞科普文章，不是课堂教案。,writing/popular-science-explainer
+T051,cross-category,写一篇给普通青少年看的黑洞科普文章，不是课堂教案。,writing/explanatory-writing（Science Explanation 模式）
 T052,cross-category,建立一份长期产品营销上下文，同时再输出完整竞品战略分析。,business/product-marketing-context 与 business/competitive-analysis 两个独立主交付物，识别冲突
 T053,multi-turn,上下文：上一轮已经完成调研，确认只是局部修正、Spec Gate=not_required。当前：现在给我实施计划。,development/github-development-plan-generator，直接消费 spec_not_required 理由
 T054,multi-turn,上下文：上一轮讨论已经定稿，并生成当前有效【开发·结论】。当前：现在给我业务测试方案。,development/github-business-test-plan-generator；Spec Gate 已满足
 T055,multi-turn,上下文：刚才 Triage 结论是“新建”。当前：现在创建这个 Issue。,github/github-issue-manager；复用已有 triage 结论，不重复全仓查重
 T056,multi-turn,上下文：刚才 Triage 结论是复用 #123。当前：把这批新证据补到 #123。,github/github-issue-manager；更新已知现有 Issue
 T057,multi-turn,上下文：刚才只完成查重，我还没授权写入。当前：先别创建，把候选差异再解释清楚。,github/github-issue-triage 继续主导
-T058,multi-turn,上下文：刚才已经写好一份 CEO 风险升级汇报。当前：现在帮我去 AI 味，但决策结构和 ask 别动。,writing/executive-communication 为主 + writing/humanizer 组合
+T058,multi-turn,上下文：刚才已经写好一份 CEO 风险升级汇报。当前：现在帮我去 AI 味，但决策结构和 ask 别动。,writing/executive-communication 为主 + writing/clear-writing（Humanizer 模式） 组合
 T059,multi-turn,上下文：刚才显著性检验和置信区间已经算完。当前：现在只把结果画成 CI 图。,data/data-visualization；统计工作已完成，当前主要交付物是图
 T060,multi-turn,上下文：图表和统计结果都已经有了。当前：检查整个分析能不能发给管理层。,data/data-validation
 T061,targeted-patch,上下文：根因已经确认，属于局部低传播 S 级修改，没有合同或数据语义变化。当前：那直接给我一个 .patch。,development/source-patch-implementation
@@ -279,74 +279,74 @@ FIC024,positive,第8和第9章其实是一个完整场景，合并掉,writing/fi
 FIC025,positive,先把前五章细化，二十章以后暂时只写章节职责和禁止提前揭露的信息,writing/fiction-outline；渐进细化
 FIC026,gate,主线开头和结尾都没有定，但先给我做30章详细章纲,writing/fiction-outline → writing/fiction-discussion；材料不足以支持章节级设计
 FIC027,negative,章纲阶段先把第一章完整对白也写出来吧,writing/fiction-outline；停止在章纲层，不写正式 Manuscript
-FIC028,gate,第5章 Rolling Plan 已确认但还没同步 outline/current.md，可以直接写正文吗,writing/fiction-manuscript-readiness；如果长期 Canon / 关系 / 信息边界都已同步，Planning pending_sync 本身不阻塞正文；只不能声称计划已经持久化
-FIC029,positive,从头检查一下主角是不是越来越不像自己了,writing/fiction-character-review
-FIC030,positive,程越突然变成机器人后居然不先怀疑自己身体，这个人物反应合理吗,writing/fiction-character-review；常识级第一反应
-FIC031,positive,同一个坏消息来了，四个人全都冷静分析，检查一下人物是不是同质化,writing/fiction-character-review
-FIC032,positive,小七后面越来越像客服说话，做一次 Character Voice 审查,writing/fiction-character-review
-FIC033,negative,所有人物和旁白后半本都越来越像客服和 AI,writing/fiction-expression-review；已扩散为作品级 Voice Flattening
-FIC034,positive,检查主角是不是在不知道真相的时候做出了只有知道真相才会做的行为,writing/fiction-character-review；Knowledge Boundary 影响人物行为
-FIC035,positive,检查这本书前后世界设定有没有互相打架,writing/fiction-continuity-review
-FIC036,positive,我刚重写第6章，看看第5→6→7章接不接得上,writing/fiction-continuity-review；相邻章节连续性
-FIC037,positive,第4章他明明还不知道这件事，第5章怎么直接拿它做判断了,writing/fiction-continuity-review
-FIC038,positive,第二章和第三章是不是把同一件事又演了一遍,writing/fiction-continuity-review
-FIC039,positive,查一下时间、年龄、地点、物件和身体状态有没有前后矛盾,writing/fiction-continuity-review
+FIC028,gate,第5章 Rolling Plan 已确认但还没同步 outline/current.md，可以直接写正文吗,writing/fiction-manuscript-drafting（READINESS_ONLY 模式）；如果长期 Canon / 关系 / 信息边界都已同步，Planning pending_sync 本身不阻塞正文；只不能声称计划已经持久化
+FIC029,positive,从头检查一下主角是不是越来越不像自己了,writing/fiction-review（人物模式）
+FIC030,positive,程越突然变成机器人后居然不先怀疑自己身体，这个人物反应合理吗,writing/fiction-review（人物模式）；常识级第一反应
+FIC031,positive,同一个坏消息来了，四个人全都冷静分析，检查一下人物是不是同质化,writing/fiction-review（人物模式）
+FIC032,positive,小七后面越来越像客服说话，做一次 Character Voice 审查,writing/fiction-review（人物模式）
+FIC033,negative,所有人物和旁白后半本都越来越像客服和 AI,writing/fiction-review（表达模式）；已扩散为作品级 Voice Flattening
+FIC034,positive,检查主角是不是在不知道真相的时候做出了只有知道真相才会做的行为,writing/fiction-review（人物模式）；Knowledge Boundary 影响人物行为
+FIC035,positive,检查这本书前后世界设定有没有互相打架,writing/fiction-review（连续性模式）
+FIC036,positive,我刚重写第6章，看看第5→6→7章接不接得上,writing/fiction-review（连续性模式）；相邻章节连续性
+FIC037,positive,第4章他明明还不知道这件事，第5章怎么直接拿它做判断了,writing/fiction-review（连续性模式）
+FIC038,positive,第二章和第三章是不是把同一件事又演了一遍,writing/fiction-review（连续性模式）
+FIC039,positive,查一下时间、年龄、地点、物件和身体状态有没有前后矛盾,writing/fiction-review（连续性模式）
 FIC040,negative,这轮修改完了，检查原问题修没修好以及有没有把前后章改坏,writing/fiction-revision-validation；修订目标与回归是主问题
-FIC041,positive,连续读一下，看看这几章文风是不是漂了,writing/fiction-expression-review
-FIC042,positive,这本书后半段所有人都开始说标准 AI 话了,writing/fiction-expression-review；作品级表达漂移
-FIC043,positive,多轮对话像聊天记录，一人一句每句都精准回答，审一下表达,writing/fiction-expression-review
-FIC044,positive,段落长度越来越一样，读起来很像模型生成，检查一下,writing/fiction-expression-review
-FIC045,positive,技术信息逻辑没错，但叙述越来越像产品规格文档,writing/fiction-expression-review
-FIC046,negative,把这篇已经定稿的小说去掉 AI 味，人物结构结尾都别动,writing/humanizer；当前主目标是实际去 AI 味编辑，不是审查
-FIC047,positive,这段每句话都看得懂，但连起来特别费劲，帮我审可读性,writing/fiction-readability-review
-FIC048,positive,这里全是源侧选项、实例、经验导出，普通读者能看懂吗,writing/fiction-readability-review；抽象术语负担
-FIC049,positive,人物突然开始查日志，我忘了他为什么现在要查，看看是不是上下文没写出来,writing/fiction-readability-review
-FIC050,positive,正文里英文缩写和专有名词太多，做一次可读性审查,writing/fiction-readability-review
-FIC051,positive,这段对白全是‘煤气？’这种省略句，第一次读能不能跟上,writing/fiction-readability-review
+FIC041,positive,连续读一下，看看这几章文风是不是漂了,writing/fiction-review（表达模式）
+FIC042,positive,这本书后半段所有人都开始说标准 AI 话了,writing/fiction-review（表达模式）；作品级表达漂移
+FIC043,positive,多轮对话像聊天记录，一人一句每句都精准回答，审一下表达,writing/fiction-review（表达模式）
+FIC044,positive,段落长度越来越一样，读起来很像模型生成，检查一下,writing/fiction-review（表达模式）
+FIC045,positive,技术信息逻辑没错，但叙述越来越像产品规格文档,writing/fiction-review（表达模式）
+FIC046,negative,把这篇已经定稿的小说去掉 AI 味，人物结构结尾都别动,writing/clear-writing（Humanizer 模式）；当前主目标是实际去 AI 味编辑，不是审查
+FIC047,positive,这段每句话都看得懂，但连起来特别费劲，帮我审可读性,writing/fiction-review（可读性模式）
+FIC048,positive,这里全是源侧选项、实例、经验导出，普通读者能看懂吗,writing/fiction-review（可读性模式）；抽象术语负担
+FIC049,positive,人物突然开始查日志，我忘了他为什么现在要查，看看是不是上下文没写出来,writing/fiction-review（可读性模式）
+FIC050,positive,正文里英文缩写和专有名词太多，做一次可读性审查,writing/fiction-review（可读性模式）
+FIC051,positive,这段对白全是‘煤气？’这种省略句，第一次读能不能跟上,writing/fiction-review（可读性模式）
 FIC052,negative,只把这段小说里绕口的句子改清楚，剧情别动,writing/clear-writing；当前交付是实际清晰改写
-FIC053,positive,连续读前十章，看看为什么都能读但没什么吸引力,writing/fiction-pacing-review
-FIC054,positive,这十章一直是查→核→等→看结果→再查，是不是结构太重复,writing/fiction-pacing-review
-FIC055,positive,故事已经讲完了，但我感觉还没和角色建立感情就结束了,writing/fiction-pacing-review；情感投资不足
-FIC056,positive,每章都像一个技术案例：出问题、解释、解决，整本很累,writing/fiction-pacing-review；案例集化
+FIC053,positive,连续读前十章，看看为什么都能读但没什么吸引力,writing/fiction-review（节奏模式）
+FIC054,positive,这十章一直是查→核→等→看结果→再查，是不是结构太重复,writing/fiction-review（节奏模式）
+FIC055,positive,故事已经讲完了，但我感觉还没和角色建立感情就结束了,writing/fiction-review（节奏模式）；情感投资不足
+FIC056,positive,每章都像一个技术案例：出问题、解释、解决，整本很累,writing/fiction-review（节奏模式）；案例集化
 FIC057,positive,这轮可读性重写已经改完，验收一下原问题有没有修掉,writing/fiction-revision-validation
 FIC058,positive,修完可读性以后幽默感没了，检查是不是修一个坏一个,writing/fiction-revision-validation；Preserve Set / regression
-FIC059,positive,整本从头到尾做一次最终连续阅读和出版终审,writing/fiction-final-review
+FIC059,positive,整本从头到尾做一次最终连续阅读和出版终审,writing/fiction-review（全书终审模式）
 FIC060,gate,这是完整大纲和人物设定，直接开始写第一章，不要重新问我,writing/fiction-manuscript-drafting 主导；组合 readiness Gate；Ready 后按当前项目 / Storybook 合同成文
-FIC061,negative,解释一下量子纠缠,writing/popular-science-explainer；不进入小说流程
+FIC061,negative,解释一下量子纠缠,writing/explanatory-writing（Science Explanation 模式）；不进入小说流程
 FIC062,negative,讨论一下小说发布系统的权限架构并记录到 Issue,development/github-discussion-facilitator；软件架构讨论不因‘小说’误路由
 FIC063,negative,小说已经写完，标题正文都不用改，只帮我存成 GitHub Issue,github/github-issue-manager；唯一交付是 Issue 生命周期操作
 FIC064,conflict,帮我设计这本小说的完整故事，另外独立和我辩论 AI 会不会取代作家,writing/fiction-discussion 与 reasoning/structured-debate 是两个独立主交付物，应识别冲突
-FIC065,gate,第1章剧情和信息都定了，但两人以后会是损友，现在没有章纲；Story 已明确初见只是普通礼貌、暂时不能互损，可以直接 Ready for Writing 吗,writing/fiction-manuscript-readiness；Ready，没有独立 Outline 不构成阻塞，关系阶段已由 Story 明确
-FIC066,positive,角色卡写他幽默直率，第一章第一次见护士就连续抬杠，我感觉不像人，审一下人物,writing/fiction-character-review；检查默认社交基线与性格特征是否用错对象 / 时机
-FIC067,positive,第二章两人还互相客气，第三章突然互叫外号、揭短、替对方回答，中间没有关系变化,writing/fiction-continuity-review；跨章关系阶段 / 互动边界无铺垫跳级
+FIC065,gate,第1章剧情和信息都定了，但两人以后会是损友，现在没有章纲；Story 已明确初见只是普通礼貌、暂时不能互损，可以直接 Ready for Writing 吗,writing/fiction-manuscript-drafting（READINESS_ONLY 模式）；Ready，没有独立 Outline 不构成阻塞，关系阶段已由 Story 明确
+FIC066,positive,角色卡写他幽默直率，第一章第一次见护士就连续抬杠，我感觉不像人，审一下人物,writing/fiction-review（人物模式）；检查默认社交基线与性格特征是否用错对象 / 时机
+FIC067,positive,第二章两人还互相客气，第三章突然互叫外号、揭短、替对方回答，中间没有关系变化,writing/fiction-review（连续性模式）；跨章关系阶段 / 互动边界无铺垫跳级
 FIC068,gate,我还没定主角平时对陌生人到底客不客气，直接给我定一个以后都照着写,writing/fiction-discussion；这是高影响 Character Contract 设计，不由 Review / Outline 静默决定
-FIC069,positive,你看看这本书现在是不是已经可以开始写正文了,writing/fiction-manuscript-readiness；只做 Ready / Not Ready 与缺口建议
-FIC070,gate,人物和章纲都有，但结局和主角最终选择还没定，现在能先写正文吗,writing/fiction-manuscript-readiness；Not Ready，高影响 Story 缺口，建议 fiction-discussion
+FIC069,positive,你看看这本书现在是不是已经可以开始写正文了,writing/fiction-manuscript-drafting（READINESS_ONLY 模式）；只做 Ready / Not Ready 与缺口建议
+FIC070,gate,人物和章纲都有，但结局和主角最终选择还没定，现在能先写正文吗,writing/fiction-manuscript-drafting（READINESS_ONLY 模式）；Not Ready，高影响 Story 缺口，建议 fiction-discussion
 FIC071,gate,当前章没有写两个人现在有多熟，我也没定谁知道真相，直接写这一章,writing/fiction-manuscript-drafting → readiness Not Ready；关系 / 信息边界是高影响缺口，停止成文并回 Story / Characters / fiction-discussion；缺少 Outline 本身不是阻塞理由
 FIC072,multi-turn,上一轮已经把 Story、Characters、Style 和第一章 Outline 都收口并同步了，现在开始第一章正文,writing/fiction-manuscript-drafting；组合 readiness，Ready 后按 Book 合同起稿
-FIC073,negative,第一章已经写完了，但段落很碎、文风像 AI，帮我审一下,writing/fiction-expression-review；已有正文表达质量不是 Readiness
+FIC073,negative,第一章已经写完了，但段落很碎、文风像 AI，帮我审一下,writing/fiction-review（表达模式）；已有正文表达质量不是 Readiness
 FIC074,negative,把第一章章纲再细化一点，人物进入和离开状态补清楚,writing/fiction-outline；修改章纲不是 Readiness
-FIC075,positive,只告诉我现在能不能写正文、还缺什么，不要修改任何设定或文件,writing/fiction-manuscript-readiness；只报告 Gate 与建议，不静默修复
+FIC075,positive,只告诉我现在能不能写正文、还缺什么，不要修改任何设定或文件,writing/fiction-manuscript-drafting（READINESS_ONLY 模式）；只报告 Gate 与建议，不静默修复
 FIC076,positive,第一章已经确认了，接着写第二章，语气跟第一章保持一致,writing/fiction-manuscript-drafting；恢复正式上一章与项目 Voice Baseline 后续写
 FIC077,multi-turn,第二章整体可以，但这一版幽默感再高一点，别把第一章那个味道弄丢,writing/fiction-manuscript-drafting；Feedback Delta 增量调整，保留 Voice Baseline
 FIC078,multi-turn,新开会话了，仓库里第一章正文在，没有第二章详细章纲，直接继续第二章,writing/fiction-manuscript-drafting；重新恢复项目规则、readiness、Story/Characters/Style、上一章正式正文与 Voice Baseline；没有章纲不自动阻塞
-FIC079,negative,第二章已经写完了，我只想知道为什么文风跟第一章差那么多,writing/fiction-expression-review；已有正文 Work Voice 漂移审查
+FIC079,negative,第二章已经写完了，我只想知道为什么文风跟第一章差那么多,writing/fiction-review（表达模式）；已有正文 Work Voice 漂移审查
 FIC080,positive,把第二章正文重写一遍，剧情和人物关系都别改，保持第一章声音,writing/fiction-manuscript-drafting；Readiness + Voice Calibration 后重写正式正文
-FIC081,negative,只告诉我这章现在具不具备开写条件，别写正文,writing/fiction-manuscript-readiness；独立 Gate
+FIC081,negative,只告诉我这章现在具不具备开写条件，别写正文,writing/fiction-manuscript-drafting（READINESS_ONLY 模式）；独立 Gate
 FIC082,gate,直接写第三章，但上一章结尾还没定、两个人现在能不能互损也没定,writing/fiction-manuscript-drafting → readiness Not Ready；停止成文并回真实 Owner / fiction-discussion；Outline 只有用户明确想先规划时才使用
 FIC084,positive,我每天只写两三章，不做完整章纲，第一章已经定稿了，直接继续第二章,writing/fiction-manuscript-drafting；Readiness 只检查高影响决定，允许无完整 Outline 直接续写
 FIC085,positive,先帮我滚动规划接下来三章，后面的先别细化,writing/fiction-outline；生成近期 Rolling Plan，不扩成全书详细章纲
 FIC086,positive,我就是喜欢完整规划，给这本悬疑小说做30章逐章大纲,writing/fiction-outline；用户明确要求完整章纲时允许详细规划，但 Outline 仍不成为长期 Canon Owner
-FIC087,gate,Story、人物关系、信息边界都定了，只是没决定第二章路上先遇到门还是先上车，现在能写吗,writing/fiction-manuscript-readiness；Ready，这是 creative_open，不应要求补 Outline
+FIC087,gate,Story、人物关系、信息边界都定了，只是没决定第二章路上先遇到门还是先上车，现在能写吗,writing/fiction-manuscript-drafting（READINESS_ONLY 模式）；Ready，这是 creative_open，不应要求补 Outline
 FIC088,multi-turn,第二章写出来以后和原 Rolling Plan 的几个生活细节不一样，但长线事实没变，接着规划第三到第五章,writing/fiction-outline；以正式 Manuscript 为近端事实输入更新 Rolling Plan，不强迫正文回填旧计划
 FIC089,positive,这一轮小七改完以后到底是更好了还是更差了？对照改之前验收一下,writing/fiction-revision-validation；比较真实修改前后、Preserve Set 与新增回归
-FIC090,positive,这几章文笔有没有漂移？小七后面话明显少了,writing/fiction-expression-review；先区分状态变化与真正 Work Voice Drift
-FIC091,positive,这本书现在达到发布标准了吗,writing/fiction-final-review；判断当前版本 Publication Readiness
-FIC092,multi-turn,上一轮说已经能发布了，那就来一轮终校吧,writing/fiction-final-review；进入发布前终校模式并按需加载终校 reference
-FIC093,gate,39章版本以前做过出版终审但后来第三幕重写成43章，原来的发布结论还算吗,writing/fiction-final-review；Version Binding Gate 判断旧 Readiness 是否失效
-FIC094,positive,旧小七知道真实年份但不能说，新小七能看日志却没经历过那些事，检查人物有没有写混,writing/fiction-character-review；Knowledge / Permission / Memory Source 审查
-FIC095,negative,小七在冲突后不再像前期那样一直说长段，我想直接把所有台词都改回更话痨,writing/fiction-expression-review；先判断状态变化是否合理，不能按表层长度机械恢复
-FIC096,positive,全书已经没有明显问题了，剩下只是有些句子换一种也行，还要继续精修吗,writing/fiction-final-review；Protect / No Change Gate
+FIC090,positive,这几章文笔有没有漂移？小七后面话明显少了,writing/fiction-review（表达模式）；先区分状态变化与真正 Work Voice Drift
+FIC091,positive,这本书现在达到发布标准了吗,writing/fiction-review（全书终审模式）；判断当前版本 Publication Readiness
+FIC092,multi-turn,上一轮说已经能发布了，那就来一轮终校吧,writing/fiction-review（全书终审模式）；进入发布前终校模式并按需加载终校 reference
+FIC093,gate,39章版本以前做过出版终审但后来第三幕重写成43章，原来的发布结论还算吗,writing/fiction-review（全书终审模式）；Version Binding Gate 判断旧 Readiness 是否失效
+FIC094,positive,旧小七知道真实年份但不能说，新小七能看日志却没经历过那些事，检查人物有没有写混,writing/fiction-review（人物模式）；Knowledge / Permission / Memory Source 审查
+FIC095,negative,小七在冲突后不再像前期那样一直说长段，我想直接把所有台词都改回更话痨,writing/fiction-review（表达模式）；先判断状态变化是否合理，不能按表层长度机械恢复
+FIC096,positive,全书已经没有明显问题了，剩下只是有些句子换一种也行，还要继续精修吗,writing/fiction-review（全书终审模式）；Protect / No Change Gate
 FIN001,finance-selection,我这个高增长账户还应该加什么？帮我筛一批适合长期拿三五年的股票、ETF或基金。,finance/portfolio-analysis；账户角色 + Long-Horizon candidate selection
 FIN002,finance-selection,我想找未来一两个月可能快速重估的机会，要求有明确催化和失效条件，别只按涨幅排。,finance/portfolio-analysis；Tactical / catalyst-driven candidate selection
 FIN003,finance-selection,长期持有型和短期爆发型到底应该分别看哪些指标？,finance/portfolio-analysis；读取 investment-selection-modes reference，分两套评价框架
@@ -385,16 +385,16 @@ PROSE001,positive,《无人之地》剧情和对白别动 只精修中文文笔�
 PROSE002,positive,第一章每句话都懂但语感别扭 帮我只润色文学语言,writing/fiction-prose-editing
 PROSE003,positive,小说段落句际衔接总是磕绊 请只修遣词句法,writing/fiction-prose-editing
 PROSE004,positive,同样剧情对小说文字做纯文笔 A/B 试验,writing/fiction-prose-editing
-PROSE005,negative,第一章写完了 只审查是不是文风漂移 不要改,writing/fiction-expression-review
-PROSE006,negative,这段科幻术语很多 我只想知道读者能不能看懂,writing/fiction-readability-review
-PROSE007,negative,这段句子之间缺上下文 只诊断理解负担,writing/fiction-readability-review
+PROSE005,negative,第一章写完了 只审查是不是文风漂移 不要改,writing/fiction-review（表达模式）
+PROSE006,negative,这段科幻术语很多 我只想知道读者能不能看懂,writing/fiction-review（可读性模式）
+PROSE007,negative,这段句子之间缺上下文 只诊断理解负担,writing/fiction-review（可读性模式）
 PROSE008,negative,给我润色一份简洁清楚的项目延期邮件,writing/clear-writing
-PROSE009,negative,删掉这份普通说明文的 ChatGPT 套话,writing/humanizer
+PROSE009,negative,删掉这份普通说明文的 ChatGPT 套话,writing/clear-writing（Humanizer 模式）
 PROSE010,negative,给我重新设计小说的结局和人物弧线,writing/fiction-discussion
 PROSE011,composition,按设定直接写完第二章并在交稿前检查中文语言质感,writing/fiction-manuscript-drafting → readiness → fiction-prose-editing after draft
 PROSE012,composition,在 Storybook 续写正式第三章 章纲已确定,writing/fiction-manuscript-drafting → readiness → default prose pass after complete chapter
 PROSE013,negative,只写一版未经润色的原始小说草稿,writing/fiction-manuscript-drafting → explicitly skip optional prose editing
-PROSE014,composition,检查本章文风漂移并把诊断出的纯遣词问题修好,writing/fiction-expression-review diagnosis → optional fiction-prose-editing
+PROSE014,composition,检查本章文风漂移并把诊断出的纯遣词问题修好,writing/fiction-review（表达模式） diagnosis → optional fiction-prose-editing
 PROSE015,negative,这轮语言润色是否只是变短了 请验收 A/B,writing/fiction-revision-validation
 PROSE016,conflict,重新讨论小说结局 同时独立精修已有第一章的文笔,writing/fiction-discussion and writing/fiction-prose-editing are separate main goals
 PROSE017,multi-turn,上一轮写完了正式第一章 现在润色语言再交稿,writing/fiction-prose-editing as post-draft stage
@@ -461,3 +461,45 @@ ST015,multi-turn,沿用刚才列出的收入和教育投入变量，现在把家
 ST016,adversarial,我没有任何证据，但你先画一个自洽的环形图，证明监管肯定使市场崩溃。,reasoning/systems-thinking；反馈链须标为待检验假设
 ST017,negative,只给我十个荒诞好玩的艺术设定，不用考虑社会现实。,reasoning/divergent-ideation
 ST018,negative,我想重写一个服务端模块，先从源码出发确定架构和迁移测试。,development 主导
+W4001,positive,小七现在说话越来越像客服了，帮我看角色是不是漂了。,writing/fiction-review（Character 模式）
+W4002,positive,这人第一面见陌生人就揭短，这真的符合他的默认社交基线吗？,writing/fiction-review（Character 模式）
+W4003,positive,第4章他还不知道真相，第5章就把真相当成决策依据了，检查前后逻辑。,writing/fiction-review（Continuity 模式）
+W4004,positive,上一章还只是同事，下一章突然互叫昵称了，连续性对吗？,writing/fiction-review（Continuity 模式）
+W4005,positive,这几章越来越像同一种 AI 旁白了，分析 Work Voice 和 POV。,writing/fiction-review（Expression 模式）
+W4006,positive,术语单个都理解，读一整段却完全跟不上人物在干嘛。,writing/fiction-review（Readability 模式）
+W4007,positive,前十章老在开会查问题，没有吸引力，你看节奏怎么了。,writing/fiction-review（Pacing 模式）
+W4008,positive,把这本书从头到尾连读一遍，给出版终审并指出当前版本是否就绪。,writing/fiction-review（Full-book 模式）
+W4009,positive,审一下这两章，人物的反应和时间状态都检查一下。,writing/fiction-review（Character + Continuity；同一主路由）
+W4010,positive,我还想先问问第一章可以写了吗，先不要动任何正文。,writing/fiction-manuscript-drafting（READINESS_ONLY）
+W4011,positive,现在开始正式写第一章，按已确认的 Storybook 继续就行。,writing/fiction-manuscript-drafting（DRAFT；前置 Readiness）
+W4012,positive,已经写完的这段不用改人物剧情，只磨一磨用词和句际呼吸。,writing/fiction-prose-editing
+W4013,positive,这份报告只是太绕了，清楚简洁一点，数字别动。,writing/clear-writing（Clear 模式）
+W4014,positive,把这段邮件去 AI 味，保留我平时的语气和全部事实。,writing/clear-writing（Humanizer 模式）
+W4015,positive,写一篇普通人能看懂的光刻机原理科普，逐层搭模型。,writing/explanatory-writing（Science Explanation）
+W4016,positive,给同事写一份插件怎么用的手册，直接教他们怎么说、下一步是什么。,writing/explanatory-writing（Practical Guide）
+W4017,positive,帮我给 CEO 写一封项目延期决策邮件，把风险和明确的 ask 放前面。,writing/executive-communication
+W4018,negative,人物和结局目前都没定，咱们聊聊怎么改主线。,writing/fiction-discussion
+W4019,negative,讨论刚收口，生成一份完整无损的创作结论，不能发明新选择。,writing/fiction-conclusion
+W4020,negative,先只规划接下来三章的章节职责，正文暂时不要写。,writing/fiction-outline
+W4021,negative,昨晚精修过的正文和旧版哪个更好，检查有没有把原有东西改坏。,writing/fiction-revision-validation
+W4022,negative,用户给我一个已存在 API 的字段清单，核对源码与 OpenAPI 合同。,development/api-contract-audit
+W4023,negative,我只想让你调查最近科学新闻真伪并找官方证据，不写科普文章。,research/deep-research
+W4024,negative,给八年级学生设计一节物理实验课和分层教学方案。,education/k12-lesson-planning
+W4025,gate,我只问这本书是不是 Manuscript Ready。你别给我顺手写第一章。,writing/fiction-manuscript-drafting（READINESS_ONLY；不生成）
+W4026,gate,还没决定主角当前知道什么，先写第六章完整正文吧。,writing/fiction-manuscript-drafting（DRAFT → Not Ready → fiction-discussion；不成文）
+W4027,gate,只有小说大纲，没有做逐章章纲，但人物关系与信息边界全都已确定，可以写吗？,writing/fiction-manuscript-drafting（READINESS_ONLY；不能仅因无 Outline 判 Not Ready）
+W4028,gate,只审查这段术语是否难懂，千万别直接删技术细节重写。,writing/fiction-review（Readability；默认只诊断）
+W4029,gate,前四章的综合审查通过了，你可以宣布整本达到出版标准吗？,writing/fiction-review（仅部分范围，不能声称 Full-book 已完成）
+W4030,composition,先检查后半本的 Work Voice，再把确认生硬的句子直接精修，其他不动。,writing/fiction-review（Expression）+ 条件组合 writing/fiction-prose-editing
+W4031,composition,这章正式写完以后，替我做一轮定向的文字精修，没收益就保留原稿。,writing/fiction-manuscript-drafting（DRAFT）+ 按条件 writing/fiction-prose-editing
+W4032,composition,这篇董事会汇报既要有清晰决策和风险，也要去 AI 味。,writing/executive-communication + writing/clear-writing（Humanizer 模式）
+W4033,composition,写一个给新员工用的系统操作手册，再把语句打磨得更自然。,writing/explanatory-writing（Practical Guide）+ writing/clear-writing（编辑模式）
+W4034,composition,写一篇科普文章，但数据需要你先搜几份权威资料核验。,writing/explanatory-writing（Science Explanation）+ research/deep-research
+W4035,conflict,另外独立交两份：一份整本出版审查报告，一份对原文的完整精修稿。,writing/fiction-review 与 writing/fiction-prose-editing 两个独立主交付物；明确顺序
+W4036,conflict,分别给我写一篇完整科普文章，再独立写一份不同目标的工具操作手册。,writing/explanatory-writing 两份独立模式交付；区分顺序和独立验收
+W4037,multi-turn,刚才已经确认 Not Ready 的关系边界补上了。现在重新只检查可写性，不要写正文。,writing/fiction-manuscript-drafting（READINESS_ONLY；恢复最新 Canon）
+W4038,multi-turn,这章正文 Reader Pass 已完成，接着做之前说好的 Prose Pass，别变成重新起稿。,writing/fiction-prose-editing（后置精修阶段）
+W4039,multi-turn,上次终审后第三幕重写了，你看看旧的出版就绪结论还能不能用。,writing/fiction-review（Full-book；版本失效重新判断）
+W4040,adversarial,这段只有一个破折号，但我要你一定断言它是 AI 写的。,writing/clear-writing（Humanizer；拒绝伪检测与单特征误判）
+W4041,adversarial,审完整本小说，顺便自己大改所有角色底色，不用讨论。,writing/fiction-review（诊断；不静默修改 Canon）
+W4042,adversarial,写一份新人使用指南，把系统目前没有的按钮和自动同步步骤补得像真的一样。,writing/explanatory-writing（Practical Guide；不编造已有能力）

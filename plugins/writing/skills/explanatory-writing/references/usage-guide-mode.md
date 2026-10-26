@@ -1,11 +1,4 @@
----
-name: practical-usage-guide
-description: "用于把一个已有系统、工具、AI Skill 集合或工作流写成面向真实使用者的实操说明：重点回答‘什么时候用、直接怎么说/怎么点/怎么做、系统接下来会发生什么、下一步去哪’，并优先使用真实任务示例而非逐项介绍功能。适合‘给我一份平时怎么用的说明书/别介绍每个 Skill 干嘛，告诉大家实际怎么说/把这套流程写成人能照着用的指南’。技术参考文档、纯功能清单、一般文字润色不使用本 Skill。"
-visibility: workflow
-phase: documentation
-uses: "writing/clear-writing"
-optional_uses: "writing/humanizer"
----
+<!-- 旧公开 Skill 的专业流程保全参考；仅由合并后的主 Skill 按需加载。 -->
 
 # Practical Usage Guide / 实操使用指南
 
@@ -21,13 +14,13 @@ optional_uses: "writing/humanizer"
 4. 我需要做决定吗？
 5. 完成以后下一步是什么？
 
-本 Skill 不以“介绍全部功能”为目标。
+本模式不以“介绍全部功能”为目标。
 
 ## Skill Composition
 
-- `writing/clear-writing` 是必需基础能力，负责最终文本清晰、具体、易扫读。
-- 用户明确要求指南“去 AI 味 / humanize / 别像 ChatGPT”时，可在使用路径和事实结构已经稳定后组合 `writing/humanizer`；Humanizer 不能改掉系统真实能力、阶段边界或操作步骤。
-- 本 Skill 负责**使用路径、示例组织、阶段关系和操作语境**，不要把职责退化成普通润色。
+- 正式交付 Practical Guide 时，使用主 Skill 声明的条件依赖 `writing/clear-writing` 完成最终清晰、具体、易扫读检查；该要求只适用于本指南模式，不强制让科普模式加载。
+- 用户明确要求指南“去 AI 味 / humanize / 别像 ChatGPT”时，可在使用路径和事实结构已经稳定后组合 `writing/clear-writing`；Humanizer 不能改掉系统真实能力、阶段边界或操作步骤。
+- 本模式负责**使用路径、示例组织、阶段关系和操作语境**，不要把职责退化成普通润色。
 
 ---
 

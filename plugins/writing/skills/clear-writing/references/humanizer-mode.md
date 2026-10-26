@@ -1,10 +1,4 @@
----
-name: humanizer
-description: "现成一般文本去 AI 味 / humanize / 消除公式化表达，保留原有事实和作者声音。用户明确要求小说纯文笔、中文叙述细腻、句际连贯或出版向文字精修时转 writing/fiction-prose-editing；仅需通用 AI 套话清理而无文学质地目标时仍使用本 Skill。"
-visibility: workflow
-phase: editing
-optional_uses: "writing/clear-writing"
----
+<!-- 旧公开 Skill 的专业流程保全参考；仅由合并后的主 Skill 按需加载。 -->
 
 # Humanizer
 
@@ -12,19 +6,18 @@ optional_uses: "writing/clear-writing"
 
 让已有文本读起来更像作者本人，减少公式化 AI 写作模式，同时**保持每个事实性主张的忠实度**。
 
-本 Skill 基于 `blader/humanizer`（MIT）的“Signs of AI writing”方法，本地版本压缩模式目录并保留其关键防误判规则。
+本模式基于 `blader/humanizer`（MIT）的“Signs of AI writing”方法，本地版本压缩模式目录并保留其关键防误判规则。
 
-## Skill Composition / 能力组合
+## 组合与路由边界
 
-- 只有“让现成文本更自然、减少 AI 痕迹”本身是主要目标时，本 Skill 作为主 Skill。
-- 如果用户同时要求一个更具体的内容交付物，例如董事会/CEO 决策沟通、科普文章或实操指南，内容/受众 Skill 拥有主路由，本 Skill 作为后处理组合能力。
-- 被组合时只处理表达模式，不接管事实选择、业务判断、受众目标、解释结构或操作流程。
-- 用户同时要求“清楚/精简”与“去 AI 味”，但没有更具体的文体/受众主任务时：本 Skill 保留主路由，并按需组合 `writing/clear-writing`；明确 anti-AI 目标属于更具体的编辑约束。
-- 用户只说“写得清楚、简洁、具体”，没有 AI 痕迹目标时，使用 `writing/clear-writing`。
+- 只有“让现成文本更自然、减少 AI 痕迹”本身是主要目标时，由 `writing/clear-writing` 作为唯一主 Skill，激活本 Humanizer 模式。
+- 用户同时要求“清楚/精简”和“去 AI 味”时，在同一个 `writing/clear-writing` 内先保护事实并改善结构，再执行本模式；不加载自己作为依赖。
+- 如果用户要 CEO 决策沟通、科普文章或实操指南，仍由更具体的内容/受众 Skill 主导，需要时再调用 `writing/clear-writing` 的 Humanizer 模式做后处理。
+- 被组合时只处理表达，不接管事实选择、业务判断、受众目标、解释结构或操作流程。
 
 ## 小说邻接路由
 
-已有小说主要想解决“字句不舒服、细腻感不足、句际过渡生硬”，使用 writing/fiction-prose-editing；只要求清除一般 AI 套话且没有小说文学语言目标时继续本 Skill。不得把通用去 AI 味工作流作为文学精修的替代品。
+已有小说主要想解决“字句不舒服、细腻感不足、句际过渡生硬”，使用 writing/fiction-prose-editing；只要求清除一般 AI 套话且没有小说文学语言目标时继续本模式。不得把通用去 AI 味工作流作为文学精修的替代品。
 
 ## 核心规则
 
@@ -99,6 +92,6 @@ optional_uses: "writing/clear-writing"
 
 - **粘贴文本**：默认返回最终重写；如果用户明确要诊断，可附 3–6 条主要模式。
 - **文件编辑**：只改 prose；代码块、YAML、数据、链接目标等结构内容保持原样，除非用户另有要求。
-- **嵌入式调用**：如果另一个任务明确要求本 Skill 作为编辑步骤，只返回最终文本。
+- **嵌入式调用**：如果另一个任务明确要求本模式作为编辑步骤，只返回最终文本。
 
-不要声称能可靠“检测 AI 作者身份”。本 Skill 处理的是写作模式和可读性。
+不要声称能可靠“检测 AI 作者身份”。本模式处理的是写作模式和可读性。

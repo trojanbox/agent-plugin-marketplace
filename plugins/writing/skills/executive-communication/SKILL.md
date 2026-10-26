@@ -1,9 +1,9 @@
 ---
 name: executive-communication
-description: "用于面向 CEO、管理层、董事会或关键决策者的高风险沟通：项目/经营汇报、决策请求、取舍、坏消息、升级说明、Board/Executive Review。强调受众、结论优先、决策价值和明确 ask。若同一请求还明确要求去 AI 味/写得更自然，本 Skill 保留主路由并组合 humanizer；只有单纯处理已有文本的 AI 痕迹时才由 humanizer 主导。"
+description: "用于面向 CEO、管理层、董事会或关键决策者的高风险沟通：决策请求、项目/经营汇报、取舍、坏消息与升级说明，强调结论优先、事实风险和明确 ask。若同一交付物还要求去 AI 味，本 Skill 保留主路由，按需组合 clear-writing 的 Humanizer 模式；仅清理现成文本时由 clear-writing 主导。"
 visibility: workflow
 phase: communication
-optional_uses: "writing/humanizer"
+optional_uses: "writing/clear-writing"
 ---
 
 # Executive Communication
@@ -16,9 +16,9 @@ optional_uses: "writing/humanizer"
 
 ## Skill Composition / 能力组合
 
-- 用户既要求“给 CEO/董事会写决策沟通”，又明确要求“去 AI 味 / humanize / 写得自然一点”时：本 Skill 保留主路由，先保证结论、风险、取舍和 ask 正确，再组合 `writing/humanizer` 做风格清理。
-- `humanizer` 不能删除关键事实、风险、caveat、决策请求或为了“像人”弱化坏消息。
-- 如果用户只提供一段现有文本，主要目标只是去 AI 痕迹，没有高层决策结构任务，直接使用 `writing/humanizer`。
+- 用户既要求“给 CEO/董事会写决策沟通”，又明确要求“去 AI 味 / humanize / 写得自然一点”时：本 Skill 保留主路由，先保证结论、风险、取舍和 ask 正确，再按需组合 `writing/clear-writing` 的 Humanizer 模式做风格清理。
+- Humanizer 模式不能删除关键事实、风险、caveat、决策请求或为了“像人”弱化坏消息。
+- 用户仅提供现成文本、主要目标只是去 AI 痕迹而没有高层决策结构任务 → `writing/clear-writing` 作为主 Skill。
 
 ## 工作流
 

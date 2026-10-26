@@ -1,10 +1,4 @@
----
-name: fiction-expression-review
-description: "小说表达审查。检查 Work Voice、POV、叙事距离、角色/旁白 AI 腔、机械对白与风格漂移。适合‘文风有没有漂/越来越像 AI/这几章还像这本书吗’，默认仅诊断。已有小说只要求修遣词、句际衔接和细腻感时转 fiction-prose-editing；用户明确要求审查并修复纯文笔时，可先诊断再条件组合。"
-visibility: workflow
-phase: verification
-optional_uses: "writing/fiction-prose-editing"
----
+<!-- 专项参考：只有 fiction-review 选择该审查模式时读取；用户仅要综合审查时仍可按问题相关性按需读取。 -->
 
 # 表达审查
 
@@ -12,13 +6,13 @@ optional_uses: "writing/fiction-prose-editing"
 
 **这本书现在还像这本书吗？**
 
-先读取 `../../shared/fiction/references/review-contract.md`；有 Storybook 时读取 `style/` 当前合同、必要 Character Voice 与连续正文。项目声明 Voice Baseline 时，必须同时读取其指向的已确认正式 Manuscript；抽象 Style 用于判断边界，正式样本用于判断实现层是否漂移。
+先读取 `review-contract.md`；有 Storybook 时读取 `style/` 当前合同、必要 Character Voice 与连续正文。项目声明 Voice Baseline 时，必须同时读取其指向的已确认正式 Manuscript；抽象 Style 用于判断边界，正式样本用于判断实现层是否漂移。
 
 ## Skill Composition｜纯文笔问题交接
 
 - 用户只要审查时，**不加载编辑 Skill**；先区分 Voice Drift 与单纯汉语语感问题。
-- 用户明确要求“审查并修复”且缺陷限于遣词、叙述衔接或细腻感时：先完成本 Skill 诊断与 Protect Set，再加载 writing/fiction-prose-editing 定向修改。高影响 Story / Character 缺陷回 Owner。
-- 用户仅要求直接纯文笔润色时，writing/fiction-prose-editing 独立主导，本 Skill 不争主路由。
+- 用户明确要求“审查并修复”且缺陷限于遣词、叙述衔接或细腻感时：先完成本审查模式诊断与 Protect Set，再加载 writing/fiction-prose-editing 定向修改。高影响 Story / Character 缺陷回 Owner。
+- 用户仅要求直接纯文笔润色时，writing/fiction-prose-editing 独立主导，本审查模式不争主路由。
 
 ## 检查
 
@@ -58,8 +52,8 @@ optional_uses: "writing/fiction-prose-editing"
 
 如果只是状态合理改变了表层长度 / 幽默强度，判为**人物状态变化**，不要为了“恢复 Voice”把高压场景改回早期轻松说法。真正 Drift 是底层观察、信息顺序、人物欲望和说话机制一起换了。
 
-详细 Work Voice Gate 读取 `../../shared/fiction/references/voice-contract.md`；长区间 Voice Flattening 读取 `revision-methods.md`。
+详细 Work Voice Gate 读取 `voice-contract.md`；长区间 Voice Flattening 读取 `revision-methods.md`。
 
 ## 边界
 
-可以读取 Character Voice 作为约束，但不重新定义人物 Voice。具体读者认知负担由 `writing/fiction-readability-review` 判断。
+可以读取 Character Voice 作为约束，但不重新定义人物 Voice。具体读者认知负担由同一个 `writing/fiction-review` 的 Readability 模式判断。

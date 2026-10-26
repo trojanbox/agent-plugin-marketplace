@@ -1,6 +1,6 @@
 # Manuscript Readiness Gate / 正文可写性合同
 
-用于 `fiction-manuscript-readiness` 的独立正文前置检查，也供 `fiction-outline` 检查近期 Planning 是否存在真正阻塞。
+用于 `writing/fiction-manuscript-drafting` 的 READINESS_ONLY（只评估不写）和 DRAFT（正式成文前强制 Gate）两种模式，也供 `fiction-outline` 检查近期 Planning 是否有真正阻塞。
 
 ## 1. 判定原则
 
