@@ -37,16 +37,16 @@ node <plugin>/shared/scripts/youtube.mjs subtitles URL --lang en --format vtt
 
 ## 文件与下载结果
 
-默认目录为实际执行用户的 `~/Downloads/YouTube`。文件命名不使用远端标题，避免标题变动、路径注入和跨平台非法字符：
+默认目录为实际执行用户的 `~/Downloads/YouTube`。从已经验证的单视频元数据读取标题，规范化为安全的跨平台文件名（保留中文，替换路径/保留字符、移除控制与格式字符，UTF-8 标题主体最多 180 字节；超长时尽量在句末截断并添加省略号；标题缺失或清理后为空则回退视频 ID）：
 
 ```text
-<video-id>.video.h1080.mp4
-<video-id>.video.h2160.mkv
-<video-id>.audio.mp3
-<video-id>.subtitles.zh.srt
+<安全化视频标题>.h1080.mp4
+<安全化视频标题>.h2160.mkv
+<安全化视频标题>.mp3
+<安全化视频标题>.zh.srt
 ```
 
-`h1080` 表示请求上限；实际视频可能为 720p，以结果的 `height` 为准。不同媒体类型、容器、分辨率上限、字幕语言有独立目标，不互相覆盖。
+`h1080` 表示请求上限；实际视频可能为 720p，以结果的 `height` 为准。不同媒体类型、容器、分辨率上限、字幕语言有独立目标。视频 ID 用于请求身份/锁/安全续传，不再作为正常文件名。标题可能更改，重新下载会采用当次标题；不会自动重命名或删除旧成品。
 
 成功结果示意（字段值仅作结构演示）：
 
@@ -56,7 +56,7 @@ node <plugin>/shared/scripts/youtube.mjs subtitles URL --lang en --format vtt
   "status": "downloaded",
   "mode": "video",
   "video_id": "VIDEO_ID_11",
-  "file": "/home/user/Downloads/YouTube/VIDEO_ID_11.video.h1080.mp4",
+  "file": "/home/user/Downloads/YouTube/示例视频标题.h1080.mp4",
   "format": "mp4",
   "size": 12345,
   "sha256": "<实际文件摘要>",
@@ -77,7 +77,7 @@ node <plugin>/shared/scripts/youtube.mjs subtitles URL --lang en --format vtt
 
 ## 同名与续传
 
-遇到成品返回 `file_exists`（退出码 1），原文件保持不变。用户明确要求替换才传 `--overwrite yes`；工具先在临时目录生成并校验新文件，再安全替换旧成品，转换失败不会删除旧文件。
+遇到同名成品返回 `file_exists`（退出码 1），即使是另一个同名视频也不覆盖，原文件保持不变。用户明确要求替换才传 `--overwrite yes`；工具先在临时目录生成并校验新文件，再安全替换同名旧成品，转换失败不会删除旧文件。使用标题后同名视频可能发生碰撞；明确覆盖前需核对 `existing_file` 是预期目标。
 
 恢复材料在目标目录的 `.youtube-partials/<request-key>/`：状态包含视频、媒体模式、格式/分辨率/语言、固定流标识以及每个部分文件的大小和 SHA-256。重试相同命令时，先验证完整状态，再下载。请求来源、参数、字幕来源或部分文件改变时返回 `resume_invalid`，禁止强制使用旧断点。中断和超时保留可验证材料，但完整性不明的强制进程终止可能留下无法自动恢复的状态，必须如实说明。
 

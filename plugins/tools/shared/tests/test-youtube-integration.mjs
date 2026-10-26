@@ -18,6 +18,7 @@ const ffprobe = process.env.YOUTUBE_TEST_FFPROBE || 'ffprobe';
 const available = spawnSync(ffmpeg,['-version'],{stdio:'ignore'}).status===0 && spawnSync(ffprobe,['-version'],{stdio:'ignore'}).status===0;
 const opt={skip:available?false:'Real FFmpeg/ffprobe not available; set YOUTUBE_TEST_FFMPEG and YOUTUBE_TEST_FFPROBE'};
 const ID='BaW_jenozKc',URL=`https://www.youtube.com/watch?v=${ID}`;
+const TITLE='示例：中文 / 影音讲座';
 const VTT='WEBVTT\n\n00:00.000 --> 00:00.500\n第一句 hello\n\n00:00.500 --> 00:01.000\n第二句 world\n';
 const deps={ytdlp:{path:'/fixture/yt-dlp',source:'managed'},ffmpeg:{path:ffmpeg},ffprobe:{path:ffprobe},js:{type:'node',path:process.execPath}};
 let root, webm, mp4;
@@ -41,7 +42,8 @@ async function context(t,settings={}){
     if(args.includes('--dump-single-json')){
       metadataCount++;
       if(settings.metadataError)return{code:1,stdout:'',stderr:settings.metadataError};
-      const info={id:ID,extractor_key:'Youtube',availability:'public',duration:1.2,
+      const info={id:ID,title:settings.changeTitle&&metadataCount>1?'更新后的标题':TITLE,
+        extractor_key:'Youtube',availability:'public',duration:1.2,
         format_id:settings.changePlan&&metadataCount>1?'changed':'fixture',height:180,vcodec:settings.mp4?'h264':'vp8',acodec:settings.mp4?'aac':'opus',ext:settings.mp4?'mp4':'webm',
         subtitles:settings.noCaptions||settings.auto?{}:{'zh-Hans':[{ext:'vtt',url:'https://www.youtube.com/api/timedtext?lang=zh-Hans'}]},
         automatic_captions:settings.auto?{'zh-orig':[{ext:'vtt',url:'https://www.youtube.com/api/timedtext?lang=zh&kind=asr'}]}:{}};
@@ -73,6 +75,7 @@ for(const format of ['mp4','mkv'])test(`real video ${format}: streams, container
   const s=await context(t);const request=s.request(['video',URL,'--format',format]);
   const result=await executeRequest(request,s.ctx);
   assert.equal(result.ok,true);assert.equal(result.status,'downloaded');assert.equal(result.height,180);assert.equal(result.format,format);
+  assert.equal(path.basename(result.file),outputName(request,TITLE));
   assert.equal(result.sha256,await hashFile(result.file));assert.equal(result.transcoded,format==='mp4');
   assert.equal(result.audio_codec,format==='mp4'?'aac':'opus');
   assert.equal(s.calls.filter(c=>c.bin===deps.ytdlp.path).length,2);
@@ -87,11 +90,13 @@ test('compatible MP4 is actually stream-copied instead of needlessly transcoded'
 for(const format of ['mp3','m4a'])test(`real audio ${format}: conversion, no video stream, duration and digest`,opt,async t=>{
   const s=await context(t);const result=await executeRequest(s.request(['audio',URL,'--format',format]),s.ctx);
   assert.equal(result.format,format);assert.equal(result.audio_codec,format==='mp3'?'mp3':'aac');assert.equal(result.height,undefined);
+  assert.equal(path.basename(result.file),outputName(s.request(['audio',URL,'--format',format]),TITLE));
   assert.equal(result.transcoded,true);assert.equal(result.sha256,await hashFile(result.file));
 });
 for(const format of ['srt','vtt'])test(`real subtitles ${format}: selected native language and valid cue conversion`,opt,async t=>{
   const s=await context(t);const result=await executeRequest(s.request(['subtitles',URL,'--format',format]),s.ctx);
   assert.equal(result.language,'zh-Hans');assert.equal(result.requested_language,'zh');assert.equal(result.subtitle_source,'manual');
+  assert.equal(path.basename(result.file),outputName(s.request(['subtitles',URL,'--format',format]),TITLE));
   assert.ok((await fs.readFile(result.file,'utf8')).includes('第一句'));
   await verifySubtitle(result.file,format);
   const request=s.calls.find(c=>c.args.includes('--sub-langs'));
@@ -114,6 +119,22 @@ test('network interruption writes a checksum-bound recovery state and second att
   const result=await executeRequest(request,s.ctx);assert.equal(result.recovered,true);assert.equal(s.downloadCount(),2);
   await assert.rejects(()=>fs.stat(stage),{code:'ENOENT'});
 });
+test('title updates across a verified retry do not invalidate ID-bound resume state',opt,async t=>{
+  const s=await context(t,{interruptOnce:true,changeTitle:true});const request=s.request(['audio',URL]);
+  await assert.rejects(()=>executeRequest(request,s.ctx),e=>e.status==='network_error');
+  const result=await executeRequest(request,s.ctx);
+  assert.equal(result.recovered,true);
+  assert.equal(path.basename(result.file),'更新后的标题.mp3');
+});
+test('a matching filename never overwrites a completed file without permission',opt,async t=>{
+  const s=await context(t),request=s.request(['audio',URL]);
+  await fs.mkdir(request.directory,{recursive:true});
+  const existing=path.join(request.directory,outputName(request,TITLE));
+  await fs.writeFile(existing,'belongs to a different source video');
+  await assert.rejects(()=>executeRequest(request,s.ctx),e=>e.status==='file_exists'&&e.details.existing_file===existing);
+  assert.equal(await fs.readFile(existing,'utf8'),'belongs to a different source video');
+  assert.equal(s.downloadCount(),0);
+});
 test('tampered partial files and changed source stream selections are rejected before resuming',opt,async t=>{
   for(const alter of ['bytes','plan']){
     const s=await context(t,{interruptOnce:true,changePlan:alter==='plan'});const request=s.request(['video',URL]);
@@ -124,18 +145,18 @@ test('tampered partial files and changed source stream selections are rejected b
 });
 test('failed overwrite keeps the old completed file intact until new output is verified',opt,async t=>{
   const s=await context(t,{corrupt:true});const request=s.request(['video',URL,'--overwrite','yes']);
-  await fs.mkdir(request.directory,{recursive:true});const old=path.join(request.directory,outputName(request));await fs.writeFile(old,'old data');
+  await fs.mkdir(request.directory,{recursive:true});const old=path.join(request.directory,outputName(request,TITLE));await fs.writeFile(old,'old data');
   await assert.rejects(()=>executeRequest(request,s.ctx),e=>e.status==='verification_failed');assert.equal(await fs.readFile(old,'utf8'),'old data');
 });
 test('successful explicit overwrite replaces only the selected completed target',opt,async t=>{
   const s=await context(t);const request=s.request(['audio',URL,'--overwrite','yes']);
-  await fs.mkdir(request.directory,{recursive:true});const old=path.join(request.directory,outputName(request));await fs.writeFile(old,'old data');
+  await fs.mkdir(request.directory,{recursive:true});const old=path.join(request.directory,outputName(request,TITLE));await fs.writeFile(old,'old data');
   const result=await executeRequest(request,s.ctx);assert.equal(result.file,old);assert.equal(result.sha256,await hashFile(old));
 });
 test('corrupt captions, escaped backend paths and claimed non-existent files cannot become successes',opt,async t=>{
   for(const [settings,mode,expected] of [[{corrupt:true},'subtitles','verification_failed'],[{outside:true},'video','file_security'],[{missing:true},'video','verification_failed']]){
     const s=await context(t,settings);const request=s.request([mode,URL]);await assert.rejects(()=>executeRequest(request,s.ctx),e=>e.status===expected);
-    await assert.rejects(()=>fs.stat(path.join(request.directory,outputName(request))),{code:'ENOENT'});
+    await assert.rejects(()=>fs.stat(path.join(request.directory,outputName(request,TITLE))),{code:'ENOENT'});
   }
 });
 test('access restriction is final and is not retried with cookies or authentication',opt,async t=>{

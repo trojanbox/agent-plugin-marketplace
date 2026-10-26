@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { normalizeUrl, parseRequest, normalizeLanguage, selectSubtitle, validateMetadata,
-  selectedFormats, requestKey, requestIdentity, outputName, mediaSelector, classifyBackendFailure,
+  selectedFormats, requestKey, requestIdentity, outputName, safeTitle, mediaSelector, classifyBackendFailure,
   safeDiagnostic, publicError, YoutubeError } from '../scripts/youtube-core.mjs';
 import { backendArgs, safeChildEnv } from '../scripts/youtube.mjs';
 
@@ -49,7 +49,28 @@ test('task identities distinguish media, height, language and format, but not re
   assert.equal(requestKey(a), requestKey(b)); assert.deepEqual(requestIdentity(a), requestIdentity(b));
   assert.notEqual(requestKey(a), requestKey(parseRequest(['video',URL,'--max-height','720'])));
   assert.notEqual(outputName(a), outputName(parseRequest(['audio',URL])));
-  assert.match(outputName(parseRequest(['subtitles',URL])), /^BaW_jenozKc\.subtitles\.zh\.srt$/u);
+  assert.equal(outputName(parseRequest(['subtitles',URL])), `${ID}.zh.srt`);
+});
+test('download filenames use readable YouTube titles for video, audio and subtitles', () => {
+  const title = '立党讲座32：如何挖掘孩子的天赋？';
+  assert.equal(outputName(parseRequest(['video',URL]),title),`${title}.h1080.mp4`);
+  assert.equal(outputName(parseRequest(['audio',URL]),title),`${title}.mp3`);
+  assert.equal(outputName(parseRequest(['subtitles',URL]),title),`${title}.zh.srt`);
+  assert.equal(outputName(parseRequest(['audio',URL])),`${ID}.mp3`);
+});
+test('untrusted metadata titles cannot escape directories or create non-portable filenames', () => {
+  assert.equal(safeTitle(' ../目录\\\\病?毒:影音*<标题>|"  ',ID),'目录 病 毒 影音 标题');
+  assert.equal(safeTitle('CON',ID),'_CON');
+  assert.equal(safeTitle('LPT1.test',ID),'_LPT1.test');
+  assert.equal(safeTitle('..',ID),ID);
+  assert.equal(safeTitle('\u202ehello\u0000world\n',ID),'hello world');
+  assert.equal(safeTitle('  e\u0301  ',ID),'é');
+  const long = safeTitle('书'.repeat(300), ID);
+  assert.ok(Buffer.byteLength(long,'utf8') <= 180);
+  assert.equal(long,'书'.repeat(59)+'…');
+  const lecture = '立党讲座：先谈基础！接着分析计算机教育的重要性？最后介绍更多推荐资料与实践方法'.repeat(10);
+  assert.match(safeTitle(lecture,ID), /[！？。；]…$/u);
+  assert.equal(safeTitle(null,ID),ID);
 });
 test('height is a strict selection cap; audio selection always requests an audio-bearing resource', () => {
   assert.equal(mediaSelector(parseRequest(['video',URL])), 'bv*[height<=1080]+ba/b[height<=1080]');

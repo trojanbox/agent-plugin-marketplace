@@ -102,9 +102,29 @@ export function requestIdentity(request) {
 export function requestKey(request) {
   return createHash('sha256').update(JSON.stringify(requestIdentity(request))).digest('hex').slice(0, 20);
 }
-export function outputName(request) {
+/** Remote titles are untrusted. Keep readable Unicode within portable filesystem limits. */
+export function safeTitle(title, fallback) {
+  let text = typeof title === 'string' ? title.normalize('NFC') : '';
+  text = text.replace(/[\\/:*?"<>|\u0000-\u001f\u007f-\u009f]/gu, ' ')
+    .replace(/\p{Cf}/gu, '').replace(/\s+/gu, ' ').replace(/^[.\s]+|[.\s]+$/gu, '');
+  if (/^(?:CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\.|$)/iu.test(text)) text = '_' + text;
+  const truncated = Buffer.byteLength(text, 'utf8') > 180;
+  const limit = truncated ? 177 : 180; // Leave room for a visible ellipsis.
+  let limited = '';
+  for (const character of text) {
+    if (Buffer.byteLength(limited + character, 'utf8') > limit) break;
+    limited += character;
+  }
+  if (truncated) {
+    const boundary = Math.max(...['。', '！', '？', '；'].map(mark => limited.lastIndexOf(mark)));
+    if (boundary >= Math.floor(limited.length * 0.55)) limited = limited.slice(0, boundary + 1);
+    limited = limited.replace(/[.\s]+$/gu, '') + '…';
+  }
+  return limited.replace(/[.\s]+$/gu, '') || fallback;
+}
+export function outputName(request, title) {
   const suffix = request.mode === 'video' ? `.h${request.maxHeight}` : request.mode === 'subtitles' ? `.${request.language}` : '';
-  return `${request.id}.${request.mode}${suffix}.${request.format}`;
+  return `${safeTitle(title, request.id)}${suffix}.${request.format}`;
 }
 export function mediaSelector(request) {
   if (request.mode === 'video') return `bv*[height<=${request.maxHeight}]+ba/b[height<=${request.maxHeight}]`;

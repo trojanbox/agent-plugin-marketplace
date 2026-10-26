@@ -17,7 +17,7 @@ export const HELP = `YouTube 工具（单视频 URL，JSON 结果）
   subtitles URL [--lang zh|en|ja|zh-Hans|...] [--format srt|vtt] [--dir ABS] [--overwrite yes|no]
   doctor   仅本地检查依赖，不下载媒体，不自动安装
   repair   由 Agent 安全检查并安装/修复缺失或不兼容依赖
-默认目录：当前执行用户 ~/Downloads/YouTube；默认不覆盖。超时时间单位为秒。
+默认目录：当前执行用户 ~/Downloads/YouTube；文件名取视频标题并安全处理，默认不覆盖。超时时间单位为秒。
 字幕只用所选语言的人工/原生自动字幕，不翻译；默认中文 SRT。
 不支持播放列表批量任务、登录、Cookie、付费/私有资源或直播录制。
 宿主可用 YOUTUBE_AUTO_INSTALL=0 禁止安装。新依赖与旧 Email 配置隔离。`;
@@ -125,17 +125,11 @@ export async function executeRequest(request, context = {}) {
     return { ok: true, status: 'local_dependencies_ready', network_verified: false, dependencies };
   }
   const directory = await outputDirectory(request.directory, home);
-  const finalPath = path.join(directory, outputName(request));
-  if (!request.overwrite && await lstatOrNull(finalPath)) {
-    throw new YoutubeError('file_exists', '成品已存在；默认不覆盖', { existing_file: finalPath });
-  }
   const stateRoot = await safeDirectory(path.join(directory, '.youtube-partials'), { privateLeaf: true });
   const key = requestKey(request);
   const release = await acquireLock(path.join(stateRoot, key + '.lock'));
-  let stage, plan, mayCheckpoint = false, published = false;
+  let stage, plan, finalPath, mayCheckpoint = false, published = false;
   try {
-    if (!request.overwrite && await lstatOrNull(finalPath)) throw new YoutubeError('file_exists', '成品已存在；默认不覆盖', { existing_file: finalPath });
-    if (request.overwrite && await lstatOrNull(finalPath)) await regularFile(finalPath, { allowEmpty: true });
     stage = await safeDirectory(path.join(stateRoot, key), { privateLeaf: true });
     const previous = await openState(stage, request);
     let deps = await resolver({ home, env, runner });
@@ -148,6 +142,11 @@ export async function executeRequest(request, context = {}) {
       deps = await resolver({ home, env, runner, force: true });
       info = await metadata(request, deps, runner, options);
     }
+    finalPath = path.join(directory, outputName(request, info.title));
+    if (!request.overwrite && await lstatOrNull(finalPath)) {
+      throw new YoutubeError('file_exists', '成品已存在；默认不覆盖', { existing_file: finalPath });
+    }
+    if (request.overwrite && await lstatOrNull(finalPath)) await regularFile(finalPath, { allowEmpty: true });
     plan = sourcePlan(info, request);
     if (previous && JSON.stringify(previous.plan) !== JSON.stringify(plan)) {
       throw new YoutubeError('resume_invalid', '视频选定流/字幕来源已变化，旧断点不再匹配，拒绝继续写入');
