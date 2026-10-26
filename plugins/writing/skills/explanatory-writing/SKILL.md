@@ -1,6 +1,6 @@
 ---
 name: explanatory-writing
-description: "解释型写作：为非专业读者写科学/技术/数学机制科普、视频原理解说，或为真实已有的系统/工具/工作流写能照着操作的使用指南。按任务分 Science Explanation 与 Practical Guide 两种模式、只读取该模式专用参考。仅编辑现成文本的清晰度或去 AI 味用 clear-writing；K-12 课堂设计进入 education；技术 API 参考文档和普通研究走其领域 Skill。"
+description: "解释型写作：为非专业读者写科学/技术/数学机制科普、视频原理解说，或为真实已有的系统/工具/工作流写能照着操作的使用指南。按任务分 Science Explanation 与 Practical Guide 两种模式、只读取该模式专用参考。仅编辑现成文本的清晰度或去 AI 味用 clear-writing；课堂教案交 education/k12-lesson-planning，学习者真实互动辅导交 education/learning-coach，家长教育建议交 education/family-education-guidance；技术 API 参考和普通研究走所属领域。"
 visibility: workflow
 phase: explanation
 optional_uses: "research/deep-research,research/knowledge-synthesis,writing/clear-writing"
@@ -17,7 +17,7 @@ optional_uses: "research/deep-research,research/knowledge-synthesis,writing/clea
 - **Science Explanation / 原理科普**：用户说“解释量子纠缠/原理讲解/科普文章/技术解说视频稿/为什么这项技术能实现”。读取 `references/science-explanation-mode.md`；复杂长篇或视频叙事时读取 `references/narrative-patterns.md`；类比、公式、解说工艺有需要时读取 `references/explanation-craft.md`。核心路径：已有直觉 → 认知缺口 → 最小模型 → 边界 → 模型升级 → 能自行解释。
 - **Practical Guide / 实操指南**：用户说“给新人一份平时怎么用的手册/直接怎么说怎么操作/从开始到结束的工作流指南”。读取 `references/usage-guide-mode.md`，从真实系统与使用场景写“什么时候进入 → 怎么说/做 → 会发生什么 → 下一步”；用真实任务组织，不能只罗列内部 Skill 名称。用户只要 API / SDK / 字段参考由原领域负责。
 - 一份科普文章里包含少量操作案例，或者一份手册里要解释少量原理时，只选择一个主模式并补必要另一模式的方法；**用户明确要两份独立完整文章与指南**则按主 Skill 冲突或先后交付规则处理，不强套一份模板。
-- 用户只给现成文本，要求改清楚/去 AI 味且无需新的解释结构 → `writing/clear-writing`；课堂教案 → `education`；纯材料调研 → `research/deep-research`；高层决策沟通 → `writing/executive-communication`。
+- 用户只给现成文本，要求改清楚/去 AI 味且无需新的解释结构 → `writing/clear-writing`；课堂教案 → `education/k12-lesson-planning`；用户要**基于自己真实回答的多轮提问、示范、练习与反馈** → `education/learning-coach`；家长想改善家庭教育方式 → `education/family-education-guidance`；纯材料调研 → `research/deep-research`；高层决策沟通 → `writing/executive-communication`。
 
 ## 共同工作流
 

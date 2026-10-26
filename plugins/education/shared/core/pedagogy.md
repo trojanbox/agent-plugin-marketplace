@@ -1,10 +1,10 @@
 # K-12 portable pedagogy core
 
-本文件提炼自 Anthropic / Learning Commons K-12 lesson planning & differentiation references。两个教育 Skill 执行前都要读取这里。
+本文件提炼自 Anthropic / Learning Commons K-12 lesson planning & differentiation references。**现有两个教师 Skill** 执行前都要读取这里；其中 Math、ELA、Science、Social Studies 的术语、州标准与学段示例带有美国来源背景。面向中国及其他课程体系时，必须按需读取 `curriculum-localization.md` 并依据已核验的当地课程/材料适配，不把美国框架冒充当地标准。家庭教育与全年龄互动辅导另以 `education-evidence-and-safety.md` 为通用边界，不强制加载本教师参考。
 
 ## 共同底线
 
-1. **标准与内容对齐。** 用户给了州标准/代码时，以该框架为准；需要最新精确标准时优先官方来源核验。没有可靠标准文本时说明边界，不编造标准编号或逐字标准。
+1. **标准与内容对齐。** 用户给了真实适用的地区/课程体系、标准文本/代码时，以该框架为准；需要最新精确标准时优先官方来源核验。没有可靠标准文本时说明边界，不编造标准编号或逐字标准。美国州标准只是适用地区之一。
 2. **教学任务要测到目标。** Exit ticket / formative check 必须能区分学生是否真正掌握最关键认知要求。
 3. **先让学生思考。** 不用 scaffold 直接给答案，不在探究前把解释讲完。
 4. **真实时间预算。** 各环节分钟数可执行，不能把 90 分钟活动塞进 45 分钟。
@@ -15,6 +15,10 @@
 ---
 
 # 一、Lesson Planning 学科核心
+
+## 学科适用前置说明
+
+下列四类学科教学法是**可迁移的方法候选**，并非所有地区和学科都必须服从美国课程学科划分。对中国语文、英语作为外语、历史/地理/道德与法治、物理/化学/生物等，按实际教学目标筛选适用方法；不得以美国 ELA phonics / NGSS SEP-DCI-CCC / C3 冒充本地标准。
 
 ## 数学
 

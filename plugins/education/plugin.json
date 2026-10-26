@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "name": "education",
-  "version": "1.0.0",
-  "description": "用于 K-12 教师教学设计。不处理单独评分、rubric、作业反馈、quiz 或纯标准查询。",
+  "version": "1.1.0",
+  "description": "面向家长、全年龄学习者和教师的教育支持：广义家庭教育行动指导、真实互动辅导，以及 K-12 新课设计与已有教案差异化适配。按主要交付物路由，课程标准与地区信息需可靠核验；不做儿童诊断、正式独立测评或自动学习档案。",
   "skills": "./skills",
   "shared": "./shared",
   "compatibility": {

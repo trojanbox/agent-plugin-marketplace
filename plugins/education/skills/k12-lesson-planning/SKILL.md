@@ -1,13 +1,13 @@
 ---
 name: k12-lesson-planning
-description: "用于 K-12 教师从零创建数学、ELA、科学或社会学科的新课、mini-lesson、daily lesson 或 unit 单课；新课同时要求 differentiated/tiered materials 也由本 Skill 统一设计。已有课程分层适配走 k12-lesson-differentiation；不用于单独评分、rubric、quiz 或作业反馈。"
+description: "教师从零创建 K–12 单课或教学活动（数学、语文/ELA、科学、社会学科等），包含学习目标、活动、材料和形成性检查；新课要求分层时由本 Skill 内处理。根据用户实际学段、地区与真实课程标准/教材适配中国及其他地区，不伪造课标；已有课程的调整进入 k12-lesson-differentiation，学习者直接互动辅导归 learning-coach。"
 visibility: workflow
 phase: planning
 ---
 
 # K-12 Lesson Planning
 
-执行前读取 `../../shared/core/pedagogy.md`。确定主学科后，再读取对应 `references/<subject>-pedagogy.md`（math / ela / science / social-studies）；这一步是教学法的按需加载，不要一次加载四科。
+执行前读取 `../../shared/core/pedagogy.md`。只有主学科适用时，才选择 `references/<subject>-pedagogy.md`（math / ela / science / social-studies）中的**教学方法**；非美国地区或不同学科体系不得把美国 ELA/NGSS/C3 方法冒充当地官方课标，按下方 Locale Gate 决定是否加载本地化参考。不要一次加载四科。
 
 ## 目标
 
@@ -17,7 +17,7 @@ phase: planning
 
 ## Step 1. Route Subject
 
-识别 Math / ELA / Science / Social Studies。跨学科时确定主要学习目标，必要时再补次要学科。
+识别当前地区实际的学科与教学目标（美国常见 Math / ELA / Science / Social Studies；中国可出现数学、语文、英语、科学、物理、化学、历史、地理等）；跨学科时确定主要学习目标，必要时再补次要学科。不能为了适配四个旧 reference 强行改变课程科目。
 
 只问真正阻塞设计的信息，优先：
 
@@ -30,12 +30,16 @@ phase: planning
 
 ## Step 2. Ground the Lesson
 
+### Locale & Standards Gate
+
+若用户要求适配中国或任何非美国课程体系、给定当地教材/课标，或有标准版本歧义，按需读取 `../../shared/core/curriculum-localization.md`；保留真实地区、学段、学科、教材及版本，不默认套用美国州标准。中国语文不能直接等同美国英语母语 ELA，学校英语也不能自动照搬母语 Phonics；历史/道德与法治的具体标准不来自美国 C3。
+
 ### Standards
 
-- 用户提供标准文本/代码：以用户材料为准；
+- 用户提供适用的当前标准文本/代码：以该材料为本轮事实基础，并明确版本与当地适用条件；
 - 任务需要当前精确标准时，使用可用官方来源核验；
 - 当前无法核验时，说明“标准文本/代码需要教师本地确认”，**不声称**已通过某 KG 或数据库验证；
-- Social Studies 若要求 state alignment 且 state 未知，需要获取州信息。
+- **只有确实使用美国州标准且需要精确州级对齐时**才向教师确认州；中国及其他地区应获取对应的实际课程体系，不默认追问美国州名。
 
 ### Curriculum
 
@@ -43,7 +47,7 @@ phase: planning
 
 ## Step 3. Build
 
-严格使用 `shared/core/pedagogy.md` 中对应学科的核心：
+优先保持 `shared/core/pedagogy.md` 中可跨课程体系复用的教学原则；美国专项内容**仅在实际适用时**使用，不得覆盖用户所在地区的真实教学目标：
 
 - Math：结构案例覆盖、学生先尝试、视觉表示、最能暴露 misconception 的 Exit Ticket；
 - ELA：按 grade band，complex text / decoding / text-dependent evidence 等；
@@ -55,6 +59,12 @@ phase: planning
 如果教师在创建新课时同时说“要分层 / below-at-above / ELL / IEP 支持”，仍留在本 Skill。应用 `shared/core/pedagogy.md` 的 differentiation invariants：保留同一标准和核心任务，改变 access/support，并明确哪些是 universal supports、哪些针对具体 learner needs。
 
 不要再额外路由 `k12-lesson-differentiation`。
+
+## 任务与相邻 Skill 边界
+
+用户是教师但主要要求直接给学习者提问、根据真实回答开展互动 → `education/learning-coach`。家长需要亲子沟通与家庭教育方案 → `education/family-education-guidance`。新课设计与新课内分层仍由本 Skill 主导，不与旧教案改造抢主路由。
+
+学生材料涉及未成年人个人信息、敏感行为或真实个体记录时，按需读取 `../../shared/core/education-evidence-and-safety.md`；仅使用与当前课程设计必要的最少资料，不因教师身份默认建立学情档案。
 
 ## Copyright Guardrail
 

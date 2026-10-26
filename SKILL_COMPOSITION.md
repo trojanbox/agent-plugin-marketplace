@@ -139,6 +139,15 @@ Skill Composition 只解决“一个主任务需要哪些辅助能力”。它�
 - CEO/董事会决策沟通 → `writing/executive-communication`；若有明确去 AI 味要求，可按需组合 `writing/clear-writing` 的 Humanizer 模式，不能改变事实、风险、取舍和 ask。
 - 科学原理科普与实操使用指南 → `writing/explanatory-writing` 的 Science Explanation / Practical Guide；缺多来源事实时可选组合 `research/deep-research`，已有多资料归并可选 `research/knowledge-synthesis`，用户要求最终文本清晰化 / 去 AI 味时可选 `writing/clear-writing`。模式按需读取，不把产品不存在的步骤写成既有能力。
 
+## Education Composition 示例
+
+- Education 四个公开入口按**本轮主交付物**选择：`education/k12-lesson-planning` 新建教师课案（新课内自带差异化）、`education/k12-lesson-differentiation` 需要真实源教案的改造、`education/family-education-guidance` 家长广义教育决策、`education/learning-coach` 全年龄学习者的多轮互动辅导。不能因请求发起者是家长就把孩子直接互动辅导归家庭教育 Skill。
+- 教师两个 Skill 保留原稳定 ID、必须的课案/原教案 Gate、共享 `pedagogy.md` 与专科学科方法；涉及中国或其他非美国课程体系时，按需加载 `education/shared/core/curriculum-localization.md`。不能以美国 ELA/NGSS/C3 框架冒充地区标准；需要精确对齐时需核实官方或真实用户教材资料。
+- 家庭教育的默认输出是“实际观察/不确定→少量可选行动→反馈/调整信号”；仅明确要求跨周计划才启用阶段尝试，不自动记录/监控。其争议性证据缺口才可选组合 `research/deep-research`，竞争性现实机制分析时才可选组合 `reasoning/scientific-reasoning`，二者不得接管家庭建议 Owner。
+- Learning Coach 的主目标是**真实互动**：根据已知起点选择提问或必要讲解、独立练习、基于回答反馈与迁移检查；静态一次性科普仍归 `writing/explanatory-writing`，陌生领域长期认知/决策地图仍归 `research/domain-knowledge-builder`。只有新的可靠外部事实必要时才可选组合 `research/deep-research`。
+- 未成年人适龄与监护以真实宿主规则为准；不伪造年龄核验、心理/障碍诊断、固定学习风格、正式考试分数或自动学习档案。当前学习摘要只在用户主动要求时生成；持久化还要求真实工具及明确写入授权。
+- 同一用户同时需要独立教师教案和家庭教育支持，若确实是两个独立主交付物，按用户指定顺序处理，不通过 `optional_uses` 假装只有一个主目标。
+
 ## Design Composition 示例
 
 - `design/visual-artifact-design` 在视觉交付需要最新外部事实时，可按需组合 `research/deep-research`；Research 负责证据，Design 保留信息架构、视觉方向与最终交付。

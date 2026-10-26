@@ -22,6 +22,7 @@ optional_uses: "research/deep-research,research/knowledge-synthesis,research/com
 - 已有多份材料的去重与综合 → `research/knowledge-synthesis`；
 - 最近真实社区/从业者在说什么 → `research/community-research`；
 - 一个现象的机制、竞争假设与证伪 → `reasoning/scientific-reasoning`；
+- 用户要按真实回答逐轮学习具体知识或技能，而不是建长期领域决策地图 → `education/learning-coach`；
 - 具体产品 ICP、定位、客户、证据等长期营销 Context → `business/product-marketing-context`。
 
 ## Skill Composition / 能力组合

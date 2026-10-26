@@ -213,6 +213,12 @@ Writing 现有 7 个小说流程 Skill（讨论、冻结结论、章纲、正文
 - `writing/clear-writing` 提供普通清晰化与 Humanizer 模式；`writing/explanatory-writing` 分别提供科学原理讲解与实操指南模式。
 - 旧逻辑 ID 不支持自动别名；完整映射、迁移边界及验收见 [Writing v4.0 迁移说明](plugins/writing/MIGRATION-v4.0.md)。
 
+## Education v1.1.0：教师、家长与全年龄学习者
+
+Education 由 2 个公开 Skill 扩展为 **4 个**：保留 `education/k12-lesson-planning`（从零设计课程）与 `education/k12-lesson-differentiation`（必须基于可读的现有教案做分层改造），新增 `education/family-education-guidance`（广义家庭教育行动指导）和 `education/learning-coach`（儿童、青少年和成人的真实互动学习辅导）。
+
+课堂设计可以按提供的中国及其他地区真实课程体系和教材适配，精确标准必须核验；不把美国州标准或 NGSS/C3 方法照搬当成本地官方课标。学习辅导按真实回答选择提示、讲解、练习与反馈，不凭静态文章宣称学会；家长建议按需提供数周尝试计划，不自动追踪儿童，不做心理/学习障碍诊断或正式考试评分。具体权限和适龄要求仍服从当前宿主。
+
 ## GitHub 与 Reasoning 边界
 
 `github` 提供 Issue 管理、查重与交接同步；这三个 Skill 的 canonical ID 统一为 `github/github-issue-manager`、`github/github-issue-triage`、`github/github-issue-handoff-sync`，不保留旧 Development 实现。跨 Plugin 资源按已安装 Skill 路径定位。
