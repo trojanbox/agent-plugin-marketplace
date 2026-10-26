@@ -1,6 +1,6 @@
 ---
 name: fiction-discussion
-description: "【创作·讨论】小说创作的宽入口。用于从新点子、角色、场景、主题、结局、已有 Storybook、章纲、正文、半成品或阅读反馈出发，围绕 World / Characters / Story / Style 与高影响章节结构做多轮决策讨论。适合‘咱们聊聊这个故事/这个人物不对/这段为什么不好看/重新讨论结局/把这轮创作讨论记录下来’。不要求先有 Book 或 Issue；需要形成独立可执行冻结结果时进入 fiction-conclusion；用户明确需要章节规划时进入 fiction-outline；高影响决定已经稳定且用户要直接开始/继续正文时可直接进入 fiction-manuscript-drafting，不强制先做完整章纲。"
+description: "【创作·讨论】小说创作的宽入口。用于从新点子、角色、场景、主题、结局、已有 Storybook、章纲、正文、半成品或阅读反馈出发，围绕 World / Characters / Story / Style 与高影响章节结构做多轮决策讨论。适合‘咱们聊聊这个故事/这个人物不对/这段为什么不好看/重新讨论结局/把这轮创作讨论记录下来’。不要求先有 Book 或 Issue；需要形成独立可执行冻结结果时先问用户，明确授权后才进入 fiction-conclusion；用户明确需要章节规划时进入 fiction-outline；高影响决定已经稳定且用户要直接开始/继续正文时可直接进入 fiction-manuscript-drafting，不强制先做完整章纲。"
 visibility: workflow
 phase: discussion
 optional_uses: "github/github-issue-manager"
@@ -20,7 +20,7 @@ optional_uses: "github/github-issue-manager"
 4. **建立 Q-xxx 决策树**：按依赖关系找最高杠杆问题；一次主要推进一个会真实改变后续的决策，已经能从材料确认的事实不反问用户。
 5. **记录 D-xxx**：用户确认后记录选择、理由、主 Owner、传播影响、边界/非目标、creative_open、未决项、来源、depends_on / supersedes。
 6. **重算待决项**：剪枝已失效分支；如果继续细化不会改善正文或避免真实错误，停止扩张。
-7. **收口检查**：当前 Scope 的结构性未知已清除或明确 blocked；剩余项只能是 deferred / creative_open；需要冻结成独立执行合同时进入 `writing/fiction-conclusion`。
+7. **收口检查**：当前 Scope 的结构性未知已清除或明确 blocked；剩余项只能是 deferred / creative_open；需要冻结成独立执行合同时**先问用户是否创建【创作·结论】**；仅明确获得本轮授权后才进入 `writing/fiction-conclusion`。
 
 ## Creative YAGNI Gate
 
@@ -49,7 +49,7 @@ optional_uses: "github/github-issue-manager"
 
 ## 停止边界
 
-- 当前需要的是已经确认讨论的独立权威结论 → 转 `writing/fiction-conclusion`。
+- 当前讨论已具备生成独立权威结论的条件 → **先告知并询问用户是否创建**。除非用户当前或此前明确授权，不转 `writing/fiction-conclusion`，不自动生成/持久化结论；“能收口吗”不等于创建授权。
 - 用户明确要求先做章节规划、拆合或复杂近端路线 → 转 `writing/fiction-outline`。
 - 高影响决定已稳定，用户明确要求开始 / 继续正式正文 → 转 `writing/fiction-manuscript-drafting`；**不强制补完整章纲**。
 - 当前只是人物/连续性/表达/可读性/节奏等质量检查 → 转对应 Review Skill。

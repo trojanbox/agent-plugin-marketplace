@@ -52,7 +52,7 @@ class WritingV4ContractTest(unittest.TestCase):
         }, {"fiction": FICTION, "general-writing": GENERAL})
         self.assertEqual({p.parent.name for p in SKILLS.glob("*/SKILL.md")}, FICTION | GENERAL)
         manifest = json.loads(read(WRITING / "plugin.json"))
-        self.assertEqual(manifest["version"], "4.0.0")
+        self.assertEqual(manifest["version"], "4.0.1")
         self.assertEqual({k: set(v) for k, v in manifest["groups"].items()}, {
             "fiction": FICTION, "general-writing": GENERAL,
         })

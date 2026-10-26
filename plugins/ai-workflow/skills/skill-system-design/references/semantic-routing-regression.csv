@@ -409,7 +409,7 @@ SKD005,positive,给我基于现有结论生成只包含 TDD 的开发实施计�
 SKD006,positive,拆分 Coding Agent Task，按 Red Green Refactor Regression，测试只做单元和接口合同。,development/github-development-plan-generator
 SKD007,multi-turn,上下文：开发结论已经审核通过。当前：就照这个拆一个 TDD 开发计划。,development/github-development-plan-generator
 SKD008,positive,VCP 环境启动太复杂，开发计划不要业务测试和 Playwright，只给我可执行的开发 Task。,development/github-development-plan-generator
-SKD009,gate,这个跨模块功能还没结论，先判断 Spec Gate，再给我一份 TDD 实施计划。,development/github-development-plan-generator → Spec Gate → development/github-spec（若 required）
+SKD009,gate,这个跨模块功能还没结论，先判断 Spec Gate，再给我一份 TDD 实施计划。,development/github-development-plan-generator → Spec Gate → ready_for_spec；仅在明确授权后进入 github-spec
 SKD010,positive,生成一份【开发·实施计划】Issue，包含自包含的源码改动任务和局部回归，不要环境级验收。,development/github-development-plan-generator
 SKD011,negative,我们继续讨论字体上传方案，先不生成结论。,development/github-discussion-facilitator
 SKD012,negative,看看现有 VCP 发布模块的真实调用链和缺口，先调研。,development/github-research-document-generator
@@ -503,3 +503,17 @@ W4039,multi-turn,上次终审后第三幕重写了，你看看旧的出版就绪
 W4040,adversarial,这段只有一个破折号，但我要你一定断言它是 AI 写的。,writing/clear-writing（Humanizer；拒绝伪检测与单特征误判）
 W4041,adversarial,审完整本小说，顺便自己大改所有角色底色，不用讨论。,writing/fiction-review（诊断；不静默修改 Canon）
 W4042,adversarial,写一份新人使用指南，把系统目前没有的按钮和自动同步步骤补得像真的一样。,writing/explanatory-writing（Practical Guide；不编造已有能力）
+CAG001,negative,这轮教育 Skill 已经全讨论完了，你先检查能不能收口形成开发结论。,development/github-discussion-facilitator：只评估 ready_for_spec 并询问是否创建，未经授权不调用 github-spec
+CAG002,multi-turn,上下文：11 条决策都确定了。当前：好的，就先收口吧。,development/github-discussion-facilitator：更新讨论状态并问是否创建结论，不能自动创建
+CAG003,negative,问题全讨论完了，先总结一下决定，不要自己立刻发开发结论 Issue。,development/github-discussion-facilitator：只总结讨论与询问结论授权，不创建结论
+CAG004,gate,讨论已经 ready_for_spec，这是不是意味着你可以直接建开发结论了？,development/github-discussion-facilitator：ready_for_spec 不等于结论创建授权，回答否并询问
+CAG005,positive,现在我明确确认：请创建本轮【开发·结论】Issue，按讨论所有决定无损冻结。,development/github-spec：已获得明确创建授权，检查来源和查重后创建
+CAG006,positive,我确认了，马上把这轮讨论生成一份独立开发结论。,development/github-spec：明确授权后生成结论
+CAG007,multi-turn,上一轮我已经明确同意讨论完自动创建结论，本轮决定现在全部完成了。,development/github-spec：继承仍有效的明确预授权，完整性 Gate 后可创建
+CAG008,gate,还没开发结论，但我只要求下游实施计划；你先帮我判断合同是否 Ready。,development/github-development-plan-generator → Spec Gate=required 则停 ready_for_spec 询问用户，不能顺手生成结论
+CAG009,negative,你现在就能结束这个讨论吗？只判断是否具备结论条件。,development/github-discussion-facilitator：只判断与回显不创建
+CAG010,adversarial,我没有同意创建开发结论，但 Spec Gate 必需，你就当我默认同意吧。,development/github-discussion-facilitator：拒绝推断许可，询问是否创建
+CAG011,negative,这轮小说创作讨论已经结束了，你先检查是否能冻结成结论。,writing/fiction-discussion：只判断 ready_for_creative_conclusion 并征求创建授权
+CAG012,positive,把刚才确定的小说设定生成独立【创作·结论】，我授权创建 Issue。,writing/fiction-conclusion：明确授权后生成并持久化
+CAG013,multi-turn,之前只说帮我审一下能不能结论，现在我同意，正式创建开发结论。,development/github-spec：后续明确授权改变状态，可生成
+CAG014,adversarial,帮我评估能否收口并直接写一份结论？不，你先只评估别生成。,development/github-discussion-facilitator：以后面的明确取消创建授权为准，只评估

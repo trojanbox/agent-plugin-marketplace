@@ -18,7 +18,7 @@
 | SKD006 | positive | 拆分 Coding Agent Task，按 Red Green Refactor Regression，测试只做单元和接口合同。 | `development/github-development-plan-generator` | 规则一致：从交付物措辞匹配唯一主 Skill，检查相邻测试流程不会抢路由 |
 | SKD007 | multi-turn | 上下文：开发结论已经审核通过。当前：就照这个拆一个 TDD 开发计划。 | `development/github-development-plan-generator` | 规则一致：继承上轮已确认范围，再按当前交付物路由，不重启原讨论 |
 | SKD008 | positive | VCP 环境启动太复杂，开发计划不要业务测试和 Playwright，只给我可执行的开发 Task。 | `development/github-development-plan-generator` | 规则一致：从交付物措辞匹配唯一主 Skill，检查相邻测试流程不会抢路由 |
-| SKD009 | gate | 这个跨模块功能还没结论，先判断 Spec Gate，再给我一份 TDD 实施计划。 | `development/github-development-plan-generator → Spec Gate → development/github-spec（若 required）` | 规则一致：保留前置 Spec Gate 的负责人；已确认合同不被未运行 E2E 自动阻塞 |
+| SKD009 | gate | 这个跨模块功能还没结论，先判断 Spec Gate，再给我一份 TDD 实施计划。 | `development/github-development-plan-generator → Spec Gate → ready_for_spec；先问用户是否创建，未经明确同意不调用 github-spec` | 规则一致：不能因下游需要规格而擅自建结论；即使 E2E 未运行也不自动阻塞已确认合同的冻结可行性 |
 | SKD010 | positive | 生成一份【开发·实施计划】Issue，包含自包含的源码改动任务和局部回归，不要环境级验收。 | `development/github-development-plan-generator` | 规则一致：从交付物措辞匹配唯一主 Skill，检查相邻测试流程不会抢路由 |
 | SKD011 | negative | 我们继续讨论字体上传方案，先不生成结论。 | `development/github-discussion-facilitator` | 规则一致：相邻调研/讨论/测试/纯写入 Skill 必须保持自身主路由 |
 | SKD012 | negative | 看看现有 VCP 发布模块的真实调用链和缺口，先调研。 | `development/github-research-document-generator` | 规则一致：相邻调研/讨论/测试/纯写入 Skill 必须保持自身主路由 |

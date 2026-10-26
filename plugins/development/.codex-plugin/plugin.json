@@ -1,6 +1,6 @@
 {
   "name": "development",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "用于软件研发：调研文档/【开发·调研】Issue、把刚才调研留档到 Issue 走 github-research-document-generator；发起【开发·讨论】走 github-discussion-facilitator；生成或创建【开发·结论】Issue、独立交接规格走 github-spec（人话总结且正文自包含、不链接讨论）；生成或创建【开发·实施计划】、TDD 开发任务走 github-development-plan-generator（仅代码 TDD，不包含业务测试/E2E）；业务测试和系统/E2E 测试各走对应独立测试 Skill；独立 Bug 进根因调查，现成 Issue 的纯 GitHub 写操作走 github 插件。只有 S 级局部源码 Patch Fast Lane 可直接实施源码修改，M/L 开发由下游 Coding Agent 执行。",
   "author": {
     "name": "trojanbox",

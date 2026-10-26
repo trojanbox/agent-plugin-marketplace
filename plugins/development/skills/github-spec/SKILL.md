@@ -19,6 +19,14 @@ optional_uses: "github/github-issue-manager,development/github-incidental-bug-ca
 
 整理结论时若证据中确认独立生产 Bug，组合 `development/github-incidental-bug-capture` 查重留痕；缺口、未决合同、测试问题不能伪装成 Bug。
 
+## 明确创建授权 Gate（强制）
+
+在阅读来源、生成独立规格或写入结论 Issue **之前**，核对用户已明确要求创建/生成本轮【开发·结论】（也允许前文仍有效的明确预授权）。**“讨论完了”“能否收口形成结论”“Spec Gate=required”“开发计划需要结论”均不构成创建授权。**
+
+- 没有明确授权：只告知结论已经就绪、询问“是否现在创建”，停留于 `development/github-discussion-facilitator` / `ready_for_spec`；不得自行生成正式结论正文、创建/更新 Issue、关闭讨论或将 `ready_for_spec` 冒充 `spec_source`。
+- 用户明确答应或直接要求创建：按真实来源执行现有完整性与查重流程；用户指定只起草本地预览时不得写入 GitHub。
+- 用户明确跳过结论与用户明确要求创建是**两个不同的授权**，不能混用。
+
 ## Spec Gate
 
 - `required`：API/数据/事件/状态生命周期/模块职责/安全/失败恢复/并发/幂等/跨服务职责等高传播合同变化，需要当前有效【开发·结论】。
@@ -26,7 +34,7 @@ optional_uses: "github/github-issue-manager,development/github-incidental-bug-ca
 - `undetermined`：会改变最终产品/API/数据/安全合同的关键事实或决定仍缺失，返回调研/讨论。
 - **开发结论不以 E2E、真实外部联调或文件容量实测已经通过为默认前提**。合同已确认时可以在结论中标出未验证事实及后续验收门槛；只有关键事实缺失已使最终方案无法成立或无法选择时才阻塞冻结。
 
-用户明确点名【开发·实施计划】（开发计划）、【开发·业务测试】（业务测试方案）或【开发·技术测试】（技术测试方案）时，由对应下游 Skill 先承接并执行 Gate；进入 `ready_for_spec` 后再转本 Skill。用户直接要求“结论/规格/冻结合同”时，本 Skill 主导。
+用户明确点名【开发·实施计划】（开发计划）、【开发·业务测试】（业务测试方案）或【开发·技术测试】（技术测试方案）时，由对应下游 Skill 先承接并执行 Gate；进入 `ready_for_spec` 后**先征得结论创建授权**，再转本 Skill。用户明确要求“生成/创建结论/规格冻结”时，本 Skill 主导。
 
 ## 核心流程
 

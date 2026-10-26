@@ -20,11 +20,20 @@
 
 如果下一步是定义 Unit/Integration/Contract/E2E 分层、Harness/Fixture/Reset、自动化迁移、故障注入、并发/恢复、Evidence 或 Fresh Run，并且目标合同已经明确，候选交接状态为 `ready_for_technical_test_plan`，转交 `github-technical-test-plan-generator`。技术测试方案不能替用户决定产品业务行为。
 
+### 结论创建的用户授权 Gate（先于任何结论写入）
+
+**收口就绪与创建授权是两个独立判断。** 讨论可以先收口、保存全部 D-xxx 和当前 `ready_for_spec` 状态；这只表示已具备形成规格的条件，**不构成**对 `【开发·结论】` 的生成、创建、更新或讨论 Issue 关闭的授权。
+
+- 只问“讨论能否收口 / 是否可以形成结论 / 检查能不能出开发结论”，仅评估与回显结论所需的充分性，**随后明确问用户是否现在创建**。等用户明确答复后再路由 `development/github-spec`；不能把问题本身当“同意创建”。
+- 只有用户明确说“创建/生成一份开发结论”“我确认，现在创建【开发·结论】”，或此前清楚且未被撤回地授权**本轮讨论结束时自动创建**，才允许真正进入结论生成和远端写入。需要明确目标与范围；不能从沉默或问题已决推定同意。
+- 未授权时停在 `ready_for_spec`，只回报判断与待确认动作。不要因计划/测试流程需要 Spec 而隐式补建；如已存在有效结论则可读取并按既有 Gate 使用，**读取不等于写入**。
+- 用户拒绝或延后：记录 `spec_creation_not_authorized`（仅本轮标识，不创建结论），继续保留讨论/待办状态；不能自行跳过必需 Spec Gate，也不能把“未获创建授权”解释成“用户已明确同意跳过规格”。
+
 ### 对所有下游计划执行 Spec Gate
 
 确定目标交付物后，按主 `SKILL.md` 已声明的共享研发协作策略与 `github-spec` 对实施计划、业务测试方案、技术测试方案执行同一套 Gate：
 
-- `required`：已有当前有效【开发·结论】完整覆盖时，记录 `spec_source` 后进入所选计划；尚无有效结论时状态进入 `ready_for_spec`；
+- `required`：已有当前有效【开发·结论】完整覆盖时，记录 `spec_source` 后进入所选计划；尚无有效结论时状态进入 `ready_for_spec` 并**先询问创建授权，不自动调用 github-spec**；
 - `not_required`：记录 `spec_not_required` 与具体理由后，进入所选计划；
 - `undetermined`：继续补事实或讨论，不能进入任一下游计划。
 
@@ -59,11 +68,11 @@
 - `discussion_in_progress`：仍需继续讨论；
 - `ready_for_business_test_plan`：业务目标和关键不变量已明确，且已有当前有效 `spec_source`、Spec Gate=`not_required` 已记录理由，或用户已明确记录 `spec_skipped_by_user`；
 - `ready_for_technical_test_plan`：技术测试目标、目标合同和主要风险已明确，且已有当前有效 `spec_source`、Spec Gate=`not_required` 已记录理由，或用户已明确记录 `spec_skipped_by_user`；
-- `ready_for_spec`：所选下游计划涉及高传播合同、当前尚无有效【开发·结论】，可以生成正式结论；
+- `ready_for_spec`：高传播合同已可冻结、当前尚无有效【开发·结论】，**待用户明确授权后才能生成**；
 - `ready_for_development_plan`：实施目标已明确，且已有当前有效 `spec_source`、Spec Gate=`not_required` 已记录理由，或用户已明确记录 `spec_skipped_by_user`；信息已足以生成实施计划；
 - `blocked`：缺少源码、外部决定或关键事实，无法可靠进入目标下一阶段。
 
-需要业务测试方案时转交 `github-business-test-plan-generator`；需要技术测试方案时转交 `github-technical-test-plan-generator`；需要结论时转交 `github-spec`；需要实施计划时转交 `github-development-plan-generator`。本 Skill 不自动创建后续计划或修改源码。
+需要业务测试方案时转交 `github-business-test-plan-generator`；需要技术测试方案时转交 `github-technical-test-plan-generator`；**需要结论时，只有通过用户明确授权 Gate 后才能转交 `github-spec`**；需要实施计划时转交 `github-development-plan-generator`。本 Skill 不自动创建后续结论、计划或修改源码。
 
 ## 安全与真实性
 

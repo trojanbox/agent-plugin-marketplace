@@ -59,6 +59,8 @@ supersedes：
 
 ## 5. 收口 Gate
 
+`ready_for_creative_conclusion` 只表示可形成独立冻结结果，**不是用户已授权创建【创作·结论】**。收口后先询问用户是否创建；用户仅问“能否收口”或“可以生成结论了吗”时停在评估与询问阶段，不能自行进入 `fiction-conclusion` 或写 GitHub。
+
 结束一轮前检查：
 
 - Scope / 非目标清楚；
