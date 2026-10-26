@@ -20,7 +20,9 @@ export async function processMedia(source, target, request, deps, options = {}) 
   const data = await probeMedia(source, deps, options);
   const video = data.streams.find(s => s.codec_type === 'video' && !s.disposition?.attached_pic);
   const audio = data.streams.find(s => s.codec_type === 'audio');
-  if (!audio) throw new YoutubeError('verification_failed', '下载媒体没有正常音轨');
+  if (!audio && !(request.mode === 'video' && options.allowSilentVideo === true)) {
+    throw new YoutubeError('verification_failed', '下载媒体没有正常音轨');
+  }
   if (request.mode === 'video' && (!video || !video.height || video.height > request.maxHeight)) {
     throw new YoutubeError('verification_failed', '实际视频分辨率缺失或超出请求上限');
   }
@@ -35,7 +37,7 @@ export async function processMedia(source, target, request, deps, options = {}) 
   } else {
     // Let the actual muxer determine compatibility; avoid needless quality loss based on a codec guess.
     transcoded = false;
-    args = [...common, '-map', '0:v:0', '-map', '0:a:0', '-map_metadata', '-1'];
+    args = [...common, '-map', '0:v:0', ...(audio ? ['-map', '0:a:0'] : []), '-map_metadata', '-1'];
     args.push('-c', 'copy');
     if (request.format === 'mp4') args.push('-movflags', '+faststart');
   }
@@ -46,9 +48,10 @@ export async function processMedia(source, target, request, deps, options = {}) 
     && /not.*supported.*container|could not find tag|codec.*not supported|muxer does not support/iu.test(result.stderr)) {
     await fs.rm(target, { force: true });
     transcoded = true;
-    const transcode = [...common, '-map', '0:v:0', '-map', '0:a:0', '-map_metadata', '-1',
+    const transcode = [...common, '-map', '0:v:0', ...(audio ? ['-map', '0:a:0'] : []), '-map_metadata', '-1',
       '-c:v', 'libx264', '-crf', '20', '-preset', 'medium', '-pix_fmt', 'yuv420p',
-      '-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2', '-c:a', 'aac', '-b:a', '192k'];
+      '-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2'];
+    if (audio) transcode.push('-c:a', 'aac', '-b:a', '192k');
     if (request.format === 'mp4') transcode.push('-movflags', '+faststart');
     result = await run(deps.ffmpeg.path, [...transcode, target], { timeoutMs: request.timeoutMs, signal: options.signal });
   }
@@ -92,7 +95,8 @@ export async function verifyMedia(file, request, deps, expectedDuration, options
   const validFormat = request.format === 'mkv' ? containers.includes('matroska')
     : request.format === 'mp3' ? containers.includes('mp3') && audio?.codec_name === 'mp3'
     : containers.includes('mp4');
-  if (!validFormat || !audio || (request.mode === 'audio' && video)) throw new YoutubeError('verification_failed', '最终媒体容器/音轨不符合请求');
+  if (!validFormat || (!audio && !(request.mode === 'video' && options.allowSilentVideo === true))
+    || (request.mode === 'audio' && video)) throw new YoutubeError('verification_failed', '最终媒体容器/音轨不符合请求');
   if (request.format === 'mkv') {
     const f = await fs.open(file, 'r');
     const header = Buffer.alloc(256);
@@ -101,16 +105,16 @@ export async function verifyMedia(file, request, deps, expectedDuration, options
   }
   if (request.format === 'm4a' && !['aac', 'alac'].includes(audio.codec_name)) throw new YoutubeError('verification_failed', 'M4A 音轨编码不匹配');
   if (request.mode === 'video' && (!video || !video.height || video.height > request.maxHeight)) throw new YoutubeError('verification_failed', '最终视频分辨率未知或超出上限');
-  const duration = Number(data.format.duration || audio.duration || video?.duration);
+  const duration = Number(data.format.duration || audio?.duration || video?.duration);
   if (!(duration > 0) || (Number.isFinite(expectedDuration) && expectedDuration > 0
     && Math.abs(duration - expectedDuration) > Math.max(1, expectedDuration * 0.03))) {
     throw new YoutubeError('verification_failed', '最终媒体时长无效或与源视频明显不一致，可能下载不完整');
   }
   const run = options.runner || runProcess;
   const decoded = await run(deps.ffmpeg.path, ['-nostdin', '-v', 'error', '-xerror', '-protocol_whitelist', 'file,pipe',
-    '-i', file, '-map', '0:a:0', ...(request.mode === 'video' ? ['-map', '0:v:0'] : []), '-f', 'null', '-'],
+    '-i', file, ...(audio ? ['-map', '0:a:0'] : []), ...(request.mode === 'video' ? ['-map', '0:v:0'] : []), '-f', 'null', '-'],
   { timeoutMs: request.timeoutMs, signal: options.signal });
   if (decoded.code !== 0) throw new YoutubeError('verification_failed', '最终媒体解码校验失败：' + safeDiagnostic(decoded.stderr));
   return { size: (await regularFile(file)).size, sha256: await hashFile(file), duration,
-    ...(video ? { width: video.width, height: video.height, video_codec: video.codec_name } : {}), audio_codec: audio.codec_name };
+    ...(video ? { width: video.width, height: video.height, video_codec: video.codec_name } : {}), audio_codec: audio?.codec_name || null };
 }

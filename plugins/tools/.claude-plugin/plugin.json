@@ -1,8 +1,8 @@
 {
   "name": "tools",
   "displayName": "Tools",
-  "version": "2.0.0",
-  "description": "日常工具：QQ 邮箱搜索、阅读、带附件发送及附件下载；YouTube 单视频的视频、字幕、音频下载。保留原邮箱配置，依赖由 Agent 安全自修复。GitHub 生命周期管理保持独立。",
+  "version": "2.1.0",
+  "description": "日常工具：QQ 邮箱搜索、阅读、含附件发送与附件下载；YouTube 视频/音频/字幕下载；X/Twitter 公开帖子视频/GIF 与音频下载。媒体工具共用安全依赖，不修改原邮箱配置。GitHub 生命周期管理保持独立。",
   "author": {
     "name": "trojanbox",
     "url": "https://github.com/trojanbox"

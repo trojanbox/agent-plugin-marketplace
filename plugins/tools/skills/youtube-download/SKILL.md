@@ -32,4 +32,4 @@ phase: operations
 
 仅支持单个视频；频道和纯播放列表链接不处理，含视频 ID 的列表上下文链接仅取该视频。拒绝登录、Cookie 管理、私人/付费/受限内容和直播录制，不通过代理策略、换凭据或平台规避扩展访问权限。
 
-视频观点核查、摘要或社区研究由对应研究 Skill 保持主任务；本 Skill 只提供所需素材文件。邮件附件下载属于 `tools/email-mail`。本 Skill 不自行发邮件、不改 QQ 邮箱配置、不创建 GitHub Issue 或后台任务。
+视频观点核查、摘要或社区研究由对应研究 Skill 保持主任务；本 Skill 只提供所需素材文件。X/Twitter 帖子媒体下载使用 `tools/x-download`，邮件附件下载属于 `tools/email-mail`。本 Skill 不自行发邮件、不改 QQ 邮箱配置、不创建 GitHub Issue 或后台任务。

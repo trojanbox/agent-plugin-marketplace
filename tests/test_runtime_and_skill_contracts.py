@@ -166,7 +166,7 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertIn("用于软件研发", plugin)
 
         catalog = raw("catalog")
-        self.assertTrue(catalog.startswith("# Catalog · 13 plugins · 64 public skills"))
+        self.assertTrue(catalog.startswith("# Catalog · 13 plugins · 65 public skills"))
         self.assertIn("## development", catalog)
         self.assertIn("`development/github-bug-investigation`", catalog)
 
@@ -187,16 +187,16 @@ class RuntimeContractTests(unittest.TestCase):
         catalog = runtime_json("catalog")
         skill_descriptions = [item["description"] for item in catalog["skills"]]
         self.assertLessEqual(max(len(text) for text in skill_descriptions), 414)
-        # Preserve the historical budget for existing Skills. A single new public
-        # downloader gets an explicit bounded allocation rather than disabling QA.
+        # Preserve the historical budget for existing Skills. Two public
+        # downloaders each get an explicit bounded allocation rather than disabling QA.
         existing = [item["description"] for item in catalog["skills"]
-                    if item["id"] != "tools/youtube-download"]
+                    if item["id"] not in {"tools/youtube-download", "tools/x-download"}]
         added = [item["description"] for item in catalog["skills"]
-                 if item["id"] == "tools/youtube-download"]
-        self.assertEqual(len(added), 1)
-        self.assertLessEqual(len(added[0]), 200)
+                 if item["id"] in {"tools/youtube-download", "tools/x-download"}]
+        self.assertEqual(len(added), 2)
+        self.assertTrue(all(len(text) <= 200 for text in added))
         self.assertLessEqual(sum(len(text) for text in existing), 13861)
-        self.assertLessEqual(sum(len(text) for text in skill_descriptions), 14061)
+        self.assertLessEqual(sum(len(text) for text in skill_descriptions), 14261)
 
         listing = runtime_json("list")
         plugin_descriptions = [item["description"] for item in listing["plugins"]]

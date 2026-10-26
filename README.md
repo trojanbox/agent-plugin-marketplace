@@ -41,15 +41,16 @@ Codex 原生分发文件：
 plugins/<plugin>/.codex-plugin/plugin.json
 ```
 
-## Tools Plugin：邮件与 YouTube 下载
+## Tools Plugin：邮件、YouTube 与 X 下载
 
-`tools` 把日常邮件与媒体下载放进一个安装包，`github` 仍独立。两个公开 Skill 为 `tools/email-mail` 和 `tools/youtube-download`。
+`tools` 把日常邮件与媒体下载放进一个安装包，`github` 仍独立。三个公开 Skill 为 `tools/email-mail`、`tools/youtube-download` 和 `tools/x-download`。
 
 ```bash
 claude plugin install tools@agent-plugin-marketplace
 # 或：codex plugin add tools@agent-plugin-marketplace
 node plugins/tools/shared/scripts/email.mjs --help
 node plugins/tools/shared/scripts/youtube.mjs --help
+node plugins/tools/shared/scripts/x.mjs --help
 ```
 
 ### 从独立 Email Plugin 迁移
@@ -74,6 +75,19 @@ node plugins/tools/shared/scripts/youtube.mjs subtitles URL --lang zh --format s
 
 [参数与结果](plugins/tools/skills/youtube-download/references/operations.md) · [依赖与平台支持](plugins/tools/skills/youtube-download/references/dependencies.md) · [安全与恢复](plugins/tools/skills/youtube-download/references/security-and-results.md)
 
+### X / Twitter 公开视频下载
+
+```bash
+node plugins/tools/shared/scripts/x.mjs doctor
+node plugins/tools/shared/scripts/x.mjs video 'https://x.com/user/status/1234567890123456789'
+node plugins/tools/shared/scripts/x.mjs audio 'https://x.com/user/status/1234567890123456789'
+node plugins/tools/shared/scripts/x.mjs video 'https://x.com/user/status/1234567890123456789/video/2' --max-height 720
+```
+
+仅支持单条**公开视频**及其音轨，默认 MP4（最高 1080p）或 MP3；无声动画 GIF 保存为无声 MP4，无法提取音频。多视频帖需在 URL 中用 `/video/N` 选择一个，不下载用户主页、图片、Spaces、付费/私有内容或批量帖子。默认保存到 `~/Downloads/X`，以安全化标题命名；与 YouTube 共享已校验的 yt-dlp/FFmpeg 依赖，但锁与断点目录独立。**不会登录 X、读取 Cookie 或绕过访问限制**，实际能否下载取决于该帖子及 X 当前公开接口。
+
+[X 操作与返回结果](plugins/tools/skills/x-download/references/operations.md) · [依赖与平台限制](plugins/tools/skills/x-download/references/dependencies.md) · [X 安全与错误处理](plugins/tools/skills/x-download/references/security-and-results.md)
+
 ### 本地测试
 
 ```bash
@@ -84,7 +98,7 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 node --test plugins/tools/shared/tests/*.mjs
 ```
 
-真实 FFmpeg 集成测试使用本地生成媒体与下载器替身，无需 QQ 凭据或 YouTube 账号；可通过 `YOUTUBE_TEST_FFMPEG` / `YOUTUBE_TEST_FFPROBE` 指定可执行文件，缺少时明确标记为跳过。实际 YouTube 网络可用性与跨平台原生执行需要另外验证，不能把离线通过写成真实网络下载成功。
+真实 FFmpeg 集成测试使用本地生成媒体与下载器替身，无需 QQ 凭据或 YouTube/X 账号；可通过 `YOUTUBE_TEST_FFMPEG` / `YOUTUBE_TEST_FFPROBE` 指定可执行文件，缺少时明确标记为跳过。实际 YouTube/X 网络可用性与跨平台原生执行需要另外验证，不能把离线通过写成真实网络下载成功。
 
 ## 自用 Runtime
 

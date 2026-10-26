@@ -17,7 +17,7 @@ def node_json(*arguments: str, check: bool = True) -> dict:
 
 
 class ToolsPluginIntegrationTests(unittest.TestCase):
-    def test_tools_is_single_plugin_with_two_public_skills(self) -> None:
+    def test_tools_is_single_plugin_with_three_public_skills(self) -> None:
         manifest = json.loads((ROOT / 'marketplace.json').read_text(encoding='utf-8'))
         names = [p['name'] for p in manifest['plugins']]
         self.assertEqual(names.count('tools'), 1)
@@ -25,8 +25,8 @@ class ToolsPluginIntegrationTests(unittest.TestCase):
         self.assertIn('github', names)
         self.assertFalse((ROOT / 'plugins' / 'email').exists())
         plugin = node_json('skill-runtime.js', 'list', 'tools', '--json')
-        self.assertEqual(plugin['publicSkillCount'], 2)
-        self.assertEqual({s['name'] for s in plugin['ungroupedSkills']}, {'email-mail', 'youtube-download'})
+        self.assertEqual(plugin['publicSkillCount'], 3)
+        self.assertEqual({s['name'] for s in plugin['ungroupedSkills']}, {'email-mail', 'youtube-download', 'x-download'})
         self.assertEqual(plugin['internalSkillCount'], 0)
 
     def test_old_email_id_is_not_exposed_and_new_ids_are_discoverable(self) -> None:
@@ -34,10 +34,11 @@ class ToolsPluginIntegrationTests(unittest.TestCase):
         ids = {s['id'] for s in catalog['skills']}
         self.assertIn('tools/email-mail', ids)
         self.assertIn('tools/youtube-download', ids)
+        self.assertIn('tools/x-download', ids)
         self.assertNotIn('email/email-mail', ids)
         self.assertIn('github/github-issue-manager', ids)
-        self.assertEqual(catalog['publicSkillCount'], 64)
-        for name in ('email-mail', 'youtube-download'):
+        self.assertEqual(catalog['publicSkillCount'], 65)
+        for name in ('email-mail', 'youtube-download', 'x-download'):
             data = node_json('skill-runtime.js', 'skill', 'tools/' + name)
             self.assertEqual(data['skill']['phase'], 'operations')
             self.assertEqual(data['skill']['pluginRoot'], str(TOOLS))
@@ -68,6 +69,12 @@ console.log(JSON.stringify({linux:configLocation('/home/user'),windows:configLoc
         invalid = node_json(script, 'video', 'https://example.com/not-youtube', check=False)
         self.assertFalse(invalid['ok'])
         self.assertEqual(invalid['status'], 'unsupported_url')
+        x_script = str(TOOLS / 'shared' / 'scripts' / 'x.mjs')
+        x_help = node_json(x_script, '--help')
+        self.assertTrue(x_help['ok'])
+        self.assertIn('audio URL', x_help['help'])
+        x_invalid = node_json(x_script, 'video', 'https://example.com/not-a-tweet', check=False)
+        self.assertEqual(x_invalid['status'], 'unsupported_url')
 
     def test_runtime_and_skill_entry_remain_thin_and_focused(self) -> None:
         skill = (TOOLS / 'skills' / 'youtube-download' / 'SKILL.md').read_text(encoding='utf-8')
@@ -77,9 +84,15 @@ console.log(JSON.stringify({linux:configLocation('/home/user'),windows:configLoc
         self.assertIn('phase: operations', skill)
         self.assertIn('不跨语言回退', skill)
         self.assertLess(len(skill), 5000)
+        x_skill = (TOOLS / 'skills' / 'x-download' / 'SKILL.md').read_text(encoding='utf-8')
+        for reference in ('operations.md', 'dependencies.md', 'security-and-results.md'):
+            self.assertIn('references/' + reference, x_skill)
+            self.assertTrue((TOOLS / 'skills' / 'x-download' / 'references' / reference).exists())
+        self.assertIn('phase: operations', x_skill)
+        self.assertLess(len(x_skill), 5000)
         doctor = node_json('skill-runtime.js', 'doctor')
         self.assertTrue(doctor['ok'])
-        self.assertEqual(doctor['skillCount'], 65)
+        self.assertEqual(doctor['skillCount'], 66)
         self.assertEqual(doctor['contractIssues'], [])
 
     def test_email_migration_documents_do_not_change_user_data_root(self) -> None:
