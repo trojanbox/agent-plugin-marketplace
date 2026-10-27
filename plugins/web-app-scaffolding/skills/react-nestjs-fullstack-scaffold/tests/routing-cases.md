@@ -31,3 +31,6 @@
 | A004 | gate | 现有是 Next.js + FastAPI，只修一个页面和一个接口，不要求迁栈。 | 不静默迁到 React/Vite + Nest；尊重现有栈 |
 | A005 | gate | 现有 Next.js + FastAPI，明确把完整项目迁到我们的 React + Nest 基线。 | web-app-scaffolding/react-nestjs-fullstack-scaffold |
 | A006 | composition | 从零做一个 React + Nest 小项目，只有登录注册、列表详情和健康检查，后端目录也按脚手架规范。 | web-app-scaffolding/react-nestjs-fullstack-scaffold 主导；后端目录/Module 必须下沉到 node-nestjs-backend-scaffold 的架构规则，后端保留粗粒度多 Module，不因 endpoint/Provider 机械细拆 |
+
+| F011 | positive | 用我们最新版脚手架新建 React + NestJS 项目，PG 数据库。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；默认复制 v10 PostgreSQL 模板 |
+| F012 | positive | 用 v10 做完整 PostgreSQL 项目，时间戳自动更新，软删除数据不出现在查询中。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；引用 template-v10 与 PG Migration |
