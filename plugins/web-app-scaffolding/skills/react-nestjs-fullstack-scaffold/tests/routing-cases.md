@@ -10,6 +10,10 @@
 | F004 | positive | 给我做一套 React SaaS + Nest API，全链路 Session、分页、E2E 都按规范。 | web-app-scaffolding/react-nestjs-fullstack-scaffold |
 | F005 | positive | 前后端一起实现 websites CRUD，共享 Zod Contract，跑真实全链路 E2E。 | web-app-scaffolding/react-nestjs-fullstack-scaffold |
 | F006 | multi-turn | 前端和 Node 后端合同都已经定了，现在一起把整个项目骨架落下来。 | web-app-scaffolding/react-nestjs-fullstack-scaffold |
+| F007 | positive | 以后创建新的 React + Nest 项目直接从上次保存的 v9 模板复制。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；优先读取 assets 中的完整源码 |
+| F008 | positive | 用全栈 v9 的 SQLite 结构初始化项目，适当删除 items 示例。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；SQLite 优先，不套 PostgreSQL 默认配置 |
+| F009 | positive | 只从全栈 v9 中抽取登录、Session、共享合同和相关测试组成一个小工程。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；按真实依赖闭合地选择源码 |
+| F010 | positive | 用 React + NestJS，不过数据库明确换成 PostgreSQL，并以 v9 为出发点迁移。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；必须明确迁移 DB Schema/Repository/Migration/测试 |
 | S001 | negative | 只给我做 React 管理后台页面。 | web-app-scaffolding/react-typescript-frontend-scaffold |
 | S002 | negative | 只初始化 NestJS API 和 PostgreSQL。 | web-app-scaffolding/node-nestjs-backend-scaffold |
 | S003 | negative | 用 Java Spring Boot 做后端脚手架。 | 当前 pack 无匹配 Java Skill；不得命中 Node/Nest Skill |

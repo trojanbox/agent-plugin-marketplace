@@ -1,0 +1,10 @@
+packages:
+  - apps/*
+  - packages/*
+
+# Explicit lifecycle-script policy. better-sqlite3 v13 ships supported prebuilt
+# binaries, so pnpm must not force a local node-gyp rebuild. esbuild's install
+# script is allowed because Vite/Drizzle tooling relies on it.
+allowBuilds:
+  better-sqlite3: false
+  esbuild: true

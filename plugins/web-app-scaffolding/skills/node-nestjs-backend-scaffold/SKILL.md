@@ -25,16 +25,20 @@ Oxlint + Prettier
 
 默认不预装 Redis、Queue/Worker、CQRS、Event Bus、Outbox/Saga、APM/Metrics、S3、Search/Feature Flag 等平台能力。
 
+## 组合适配：Fullstack v9 SQLite
+
+本 Skill 独立承接 Node/Nest 后端新项目时默认 PostgreSQL/Drizzle。被 `web-app-scaffolding/react-nestjs-fullstack-scaffold` 作为 `uses` 加载，并且目标明确是其内置 v9 模板时，**允许 SQLite/better-sqlite3/Drizzle**：沿用本 Skill 的 NestJS Module、Controller/Service/Repository、鉴权、质量与测试分层规则；数据库实现、Migration、真实测试数据库和 Session 持久化细节以 v9 模板的 `AGENTS.md`、源码及全栈 Skill 为准。不得套入本 Skill 的 PostgreSQL 专属配置和测试步骤。此组合例外不会把独立后端的默认数据库改成 SQLite。
+
 ## 每次执行流程
 
 1. **读项目事实**：先看 `AGENTS.md`、workspace、tsconfig、Nest bootstrap/module、DB schema/migration、测试与目标 Feature；已有明确合同优先于新项目默认值。
-2. **确认栈匹配**：不是 Node/Nest/PostgreSQL/Drizzle 且用户未明确要求迁移时，只指出差异，不静默换栈。
+2. **确认栈匹配**：独立后端任务默认匹配 Node/Nest/PostgreSQL/Drizzle；来自全栈 v9 的 SQLite 组合任务按上面的适配边界执行。其他栈未经迁移授权时只指出差异，不静默换栈。
 3. **确认主任务**：只承接后端实现/迁移/重构/规范审查；Bug、调研、讨论、Spec、计划让对应 development Skill 主导。
 4. **按需读 reference**：只加载当前主题。
 5. **粗粒度多 Module、目录按职责分层**：`AppModule` 只做 Composition Root；新建 API 默认保留少量粗粒度领域/基础设施 Module。强相关功能合并到同一 Module，Controller / Service / Repository 分别进入该 Module 的 `controllers/`、`services/`、`repositories/`；禁止一接口、一 Provider、一小功能一个 Module。
 6. **沿边界实现**：Controller → Service → Repository → Database；跨 Module/Package 只走公开 API；Node/Nest 官方能力优先。
 7. **不预造平台**：无真实需求不装 Redis/Worker/Queue/Cache/HTTP Client，也不继续设计其体系。
-8. **真实验证**：至少跑相关 lint/typecheck/test；Persistence 用真实 PostgreSQL，HTTP 用真实 Nest pipeline。未真实验证不得声称通过。
+8. **真实验证**：至少跑相关 lint/typecheck/test；Persistence 用真实数据库（独立后端默认 PostgreSQL；全栈 v9 使用隔离的 SQLite 测试数据库），HTTP 用真实 Nest pipeline。未真实验证不得声称通过。
 
 ## 按需读取
 
@@ -63,7 +67,7 @@ Oxlint + Prettier
 - Controller 不注入 Repository；Service 定事务但不写 Drizzle；Repository 持有查询且默认私有。
 - DB lower snake_case，应用 camelCase；普通查询 Query Builder First。
 - JSON API 统一 Envelope：详情 `data:T`，分页 `data:{list,page}`。
-- Browser 默认 PostgreSQL Opaque Session + HttpOnly Cookie，服务端 Default Deny。
+- Browser 默认持久化 Opaque Session + HttpOnly Cookie，服务端 Default Deny；独立后端默认以 PostgreSQL 存储，全栈 v9 组合以其 SQLite 模板为准。
 - 后端纯 Unit Test 与生产源码 Owner 共置为 `*.test.ts`；根 `tests/` 只承载 Integration、E2E、Support 等跨层测试。真实数据库 Repository Test 属于 Integration，不放回源码目录。
 - Comments 只保留代码无法可靠表达的约束/原因/外部怪异行为；不为显而易见实现写常规说明，修改时清理附近过期注释。
 - 新建或迁移项目时采用保守文档策略：`docs/` 只保存长期有效、源码难以快速可靠推导且未来会重复使用的项目知识；AI 调研、计划、TODO、Debug、Handoff、执行日志等任务级产物默认不进入 `docs/`。确需落盘的临时材料使用被 Git 和项目格式化工具忽略的 `.agents/work/`，创建正式 Markdown 前执行“六个月后是否仍必需”与单一事实来源检查；README/AGENTS 保持简洁。

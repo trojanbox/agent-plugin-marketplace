@@ -39,6 +39,30 @@ web-app-scaffolding/react-spring-boot-fullstack-scaffold
 
 其 `uses` 指向对应 frontend/backend Skill，避免复制两套规则。不要创建一个枚举所有语言的万能 Fullstack Skill。
 
+## v9 可复制项目源码基线
+
+全栈 Skill 已内置用户确认的 `fullstack-monorepo-template-v9.zip` 解压源码：
+
+```text
+skills/react-nestjs-fullstack-scaffold/
+├── SKILL.md
+├── references/template-v9.md
+└── assets/fullstack-monorepo-template-v9/
+    ├── AGENTS.md
+    ├── README.md
+    ├── apps/web/
+    ├── apps/api/
+    ├── packages/contracts/
+    ├── packages/ui/
+    ├── packages/i18n/
+    ├── tests/
+    └── pnpm-lock.yaml
+```
+
+新建全栈工程默认从 v9 实际源码复制或按需复用，默认数据库为 SQLite/Drizzle。完整复制时保留隐藏目录和配置；局部复用应同步处理 Workspace、Contracts、imports、Migration、Lockfile 与测试依赖。具体使用边界见 `references/template-v9.md`。
+
+v9 原始资产作为冻结基线保留；未来有意修改模板时另存版本，避免影响后续追溯。
+
 ## Marketplace 登记
 
 本 Plugin 的 Canonical Source 位于：
