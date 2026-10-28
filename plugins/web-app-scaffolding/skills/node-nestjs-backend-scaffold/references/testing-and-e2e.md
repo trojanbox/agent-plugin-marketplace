@@ -57,9 +57,10 @@ Unit 测试显式 override 真正 collaborator；默认不 broad auto-mock 所�
 
 ```text
 Repository + DatabaseService + Drizzle + PostgreSQL + Production Migrations
+Fullstack Auth Integration 还包含 RedisSessionRepository + 真 Redis + TTL/限流
 ```
 
-不要 Mock Drizzle/SQL、不要用 SQLite/in-memory fake 冒充 PostgreSQL Integration。
+不要 Mock Drizzle/SQL、不要用 SQLite/in-memory fake 冒充 PostgreSQL Integration；Fullstack 的 Redis Session 和限流同样必须使用真实 Redis 验证。
 
 验证 schema mapping、constraint、join、transaction、pagination/sort、snake_case↔camelCase、Raw SQL exception。
 
@@ -131,7 +132,7 @@ RawResponse bypass
 Playwright Browser
 → Real apps/web
 → Real apps/api
-→ Real PostgreSQL Test DB
+→ Real PostgreSQL Test DB + Real Redis Test DB（Fullstack）
 ```
 
 Mock API 不替代核心 E2E。第三方 API failure/极难稳定构造的外部边界可以受控 mock。

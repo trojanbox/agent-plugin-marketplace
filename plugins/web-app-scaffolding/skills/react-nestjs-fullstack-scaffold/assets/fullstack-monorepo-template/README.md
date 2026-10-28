@@ -1,6 +1,6 @@
 # Fullstack Monorepo Template
 
-这是一个可直接复制作为新项目起点的 React + NestJS 全栈 Monorepo 模板，内置登录注册、Session、列表、详情、PostgreSQL Migration、Redis Session/限流、分层测试和 CI 基线。
+这是一个可直接复制作为新项目起点的 React + NestJS 全栈 Monorepo 模板，内置登录注册、列表、详情、PostgreSQL Migration、Redis Session/限流、分层测试和 CI 基线。
 
 ## 技术基线
 

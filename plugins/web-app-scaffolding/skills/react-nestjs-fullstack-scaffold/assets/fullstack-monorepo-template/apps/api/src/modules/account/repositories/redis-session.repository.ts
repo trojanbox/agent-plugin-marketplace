@@ -4,7 +4,6 @@ import { z } from 'zod'
 import { RedisService } from '../../infrastructure/redis/redis.service.js'
 
 const sessionSchema = z.object({
-  sessionId: z.string().uuid(),
   userId: z.string().uuid(),
   csrfTokenHash: z.string().min(1),
 })

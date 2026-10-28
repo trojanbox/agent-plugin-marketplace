@@ -50,15 +50,6 @@ export class DatabaseService implements OnModuleDestroy {
     return this.client.transaction((transaction) => this.transactionScope.run(transaction, work))
   }
 
-  async ping(): Promise<boolean> {
-    try {
-      await this.pool.query('SELECT 1')
-      return true
-    } catch {
-      return false
-    }
-  }
-
   async ready(): Promise<boolean> {
     try {
       const expected = readMigrationFiles({ migrationsFolder: migrationFolder })

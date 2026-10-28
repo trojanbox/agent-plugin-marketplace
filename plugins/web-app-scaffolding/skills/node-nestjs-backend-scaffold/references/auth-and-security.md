@@ -8,9 +8,9 @@
 Browser
 → HttpOnly Session Cookie
 → Global SessionAuthGuard
-→ AuthService
-→ AuthRepository
-→ Redis Session（当前 Fullstack 模板）
+→ AuthService.authenticate()
+├─ RedisSessionRepository → Redis Session
+└─ AuthRepository        → PostgreSQL 当前用户
 ```
 
 默认不用 JWT 存 localStorage/sessionStorage；浏览器 JS 不持有认证 credential。
@@ -25,9 +25,9 @@ Browser
 randomBytes(32).toString('base64url')
 ```
 
-Cookie 保存 raw token；当前 Fullstack 的 Redis key 采用 `SHA-256(token)`。Fullstack Session 存 sessionId、userId、csrfTokenHash，Redis Key 的 TTL 控制绝对过期；不保留 PostgreSQL Session 技术表。
+Cookie 保存 raw token；当前 Fullstack 的 Redis key 采用 `SHA-256(token)`。Fullstack Session 存 userId、csrfTokenHash，Redis Key 的 TTL 控制绝对过期；不保留 PostgreSQL Session 技术表。
 
-Session authenticate 必须检查 expiry/revoke/user active state；logout 立即 revoke；登录/注册自动登录/权限提升时 rotate，防 fixation。
+当前 Fullstack 通过 Redis TTL 检查过期、DEL 撤销 Session，每次认证仍从 PostgreSQL 验证用户启用/未软删除；登录及注册都新生成随机 Session Token。
 
 Absolute TTL 由 typed config 管理；idle timeout 仅真实需要时增加。
 
@@ -43,13 +43,13 @@ Path=/
 No Domain
 ```
 
-HTTPS production 优先 `__Host-session`。开发 HTTP 可用普通 cookie name；Cookie 拼装集中在 Auth Infrastructure，Controller 不手写字符串。
+HTTPS production 优先 `__Host-session`。开发 HTTP 可用普通 cookie name；Cookie 处理集中在认证边界：当前 Fullstack 由 AuthController.writeSessionCookies 统一设置，logout 显式清除；其他业务 Controller 不复制 Cookie 逻辑。
 
 ## 4. CSRF
 
 Cookie Session 的 POST/PUT/PATCH/DELETE 默认必须 CSRF 验证；GET/HEAD/OPTIONS 不要求。
 
-Nest Express 场景按官方安全文档优先 `csrf-csrf`。前端 mutation 携带稳定 CSRF header。SameSite 是 defense-in-depth，不代替 CSRF。
+当前 Fullstack 的 SessionAuthGuard 校验随机 CSRF Token 的 SHA-256 摘要，前端 mutation 携带 `X-CSRF-Token`；不预装未使用的 `csrf-csrf`。SameSite 是 defense-in-depth，不代替 CSRF。
 
 ## 5. Default Deny
 
@@ -63,6 +63,8 @@ Nest Express 场景按官方安全文档优先 `csrf-csrf`。前端 mutation 携
 Login/Register/Health 等显式 Public。不能为了修 401 随手加 `@Public()`。
 
 ## 6. Authentication / Authorization 分离
+
+当前 Fullstack 模板只有身份认证，没有 PermissionGuard、RBAC、租户隔离或 `@RequirePermissions`。以下示例是将来具体业务确实需要权限校验时的约束，而非已实现的功能。
 
 ```text
 SessionAuthGuard → 你是谁
@@ -109,11 +111,11 @@ salt >= 16 random bytes
 maxmem >= 128 MiB
 ```
 
-保存自描述格式，例如 `scrypt$32768$8$3$<salt>$<hash>`，未来 work factor 提升后登录成功自动 rehash。
+保存自描述格式，例如 `scrypt$32768$8$3$<salt>$<hash>`。当前 Fullstack 只接受固定 scrypt 参数，没有自动 rehash；不能把未来参数升级逻辑当成现有能力。
 
 不存在用户仍执行 dummy derivation；登录统一返回“邮箱或密码错误”，降低 user enumeration/timing 差异。
 
-scrypt 并发通过 typed config 限制，防 CPU/内存耗尽。
+当前 Fullstack 已配置登录/注册 Redis 请求限流，但尚无独立的 scrypt 并发配置；二者并不等价。
 
 ## 9. Rate Limit
 

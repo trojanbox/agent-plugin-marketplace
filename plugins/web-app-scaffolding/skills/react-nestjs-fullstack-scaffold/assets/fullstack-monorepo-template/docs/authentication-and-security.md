@@ -12,11 +12,9 @@
   ▼
 SessionAuthGuard
   ▼
-AuthService
-  ▼
-RedisSessionRepository（Redis Session）
-  ▼
-AuthRepository（PostgreSQL 用户状态）
+AuthService.authenticate()
+  ├── RedisSessionRepository → Redis 校验会话及 TTL
+  └── AuthRepository        → PostgreSQL 校验用户启用、未软删除
 ```
 
 前端不把 Session credential 保存到 Local Storage、Session Storage 或 JavaScript 状态中。
@@ -36,7 +34,7 @@ AuthRepository（PostgreSQL 用户状态）
 
 Redis 与 PostgreSQL 不支持共同的本地数据库事务。即使 PG 失败后的 DEL 也失败，未披露的 Session 不可能通过 PG 用户校验，最终自动到期。
 
-登录流程与注册后的 Session 创建过程一致。
+登录首先从 PostgreSQL 查询用户并验证密码，成功后创建 Redis Session；不同于注册，登录不会再写入新用户。
 
 为降低“用户是否存在”带来的明显时序差异，登录不存在用户时仍执行一次固定参数的 dummy scrypt 派生，然后返回与错误密码相同的认证失败结果。
 
@@ -59,7 +57,7 @@ max memory = 128 MiB
 
 ## 4. Session Token
 
-Session Token 是 32 字节随机 opaque token，浏览器持有原值；Redis key 为 `auth:session:SHA256(token)`，Value 保存 sessionId、userId、csrfTokenHash，不保存原始凭据。
+Session Token 是 32 字节随机 opaque token，浏览器持有原值；Redis key 为 `auth:session:SHA256(token)`，Value 仅保存 userId、csrfTokenHash，不保存原始凭据。
 
 一个 Session 只有在以下条件同时成立时有效：
 

@@ -21,7 +21,6 @@ import { AuthRepository } from '../repositories/auth.repository.js'
 import { RedisSessionRepository } from '../repositories/redis-session.repository.js'
 
 export type AuthPrincipal = {
-  sessionId: string
   sessionTokenHash: string
   csrfTokenHash: string
   user: UserDto
@@ -96,7 +95,6 @@ export class AuthService {
     const user = await this.repository.findActiveUserById(session.userId)
     if (!user) throw this.unauthenticated()
     return {
-      sessionId: session.sessionId,
       sessionTokenHash: tokenHash,
       csrfTokenHash: session.csrfTokenHash,
       user: this.userDto(user),
@@ -127,11 +125,9 @@ export class AuthService {
     const csrfToken = randomOpaqueToken()
     const sessionTokenHash = hashOpaqueToken(sessionToken)
     const csrfTokenHash = hashOpaqueToken(csrfToken)
-    const sessionId = randomUUID()
     await this.sessions.createSession(
       sessionTokenHash,
       {
-        sessionId,
         userId: user.id,
         csrfTokenHash,
       },
@@ -139,7 +135,6 @@ export class AuthService {
     )
 
     return {
-      sessionId,
       sessionTokenHash,
       sessionToken,
       csrfToken,

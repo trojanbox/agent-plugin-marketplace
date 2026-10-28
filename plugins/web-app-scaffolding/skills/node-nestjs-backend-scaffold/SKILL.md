@@ -18,7 +18,7 @@ Node 24 LTS + TypeScript + ESM + pnpm Workspace
 NestJS + Express
 PostgreSQL + Drizzle ORM
 Zod + Nest StandardSchemaValidationPipe
-@nestjs/config + @nestjs/swagger + @nestjs/terminus
+按实际需求选择 @nestjs/config / @nestjs/swagger / @nestjs/terminus（当前 Fullstack 模板未安装）
 Vitest + @nestjs/testing + Supertest
 Oxlint + Prettier
 ```

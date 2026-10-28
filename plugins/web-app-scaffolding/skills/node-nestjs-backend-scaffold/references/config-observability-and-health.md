@@ -4,19 +4,18 @@
 
 ## 1. Config
 
-默认官方 `@nestjs/config` + Zod。流程：
+配置由统一入口和 Zod 负责。当前 Fullstack 使用 `dotenv/config` + `app.config.ts` 启动校验，不依赖 `@nestjs/config`。需要 DI/分组配置的独立后端项目可选择官方 `@nestjs/config`。流程：
 
 ```text
 Environment/.env
-→ ConfigModule.forRoot + Zod startup validation
-→ registerAs namespaced config
-→ ConfigType<typeof config>
-→ Nest DI
+→ app.config.ts + Zod startup validation
+→ typed appConfig
+→ Nest providers consume validated config
 ```
 
 Required 配置缺失在 bootstrap fail fast。不要再引 Joi 形成第二套校验。
 
-`process.env` 只允许在 config/tool boundary；Feature 不到处 `ConfigService.get('DATABASE_URL')`。优先：
+`process.env` 只允许在 config/tool boundary；Feature 不到处 `ConfigService.get('DATABASE_URL')`。当明确使用 ConfigModule 时可采用：
 
 ```ts
 constructor(
@@ -96,7 +95,7 @@ Expected 4xx 不需要 full stack；Unexpected 5xx 统一边界记录 stack + sa
 
 ## 7. Health / Ready
 
-官方 `@nestjs/terminus`。
+当前 Fullstack 使用轻量 `HealthController` 检查 PostgreSQL Migration 和 Redis PING；仅需要更复杂的健康聚合时才考虑 `@nestjs/terminus`。
 
 ```text
 /health → Liveness：进程是否活着，保持轻量

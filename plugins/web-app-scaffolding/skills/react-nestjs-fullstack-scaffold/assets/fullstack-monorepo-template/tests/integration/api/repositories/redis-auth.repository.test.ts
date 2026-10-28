@@ -32,7 +32,6 @@ describe('Redis session and rate limits', () => {
   it('creates hashed-token sessions with Redis TTL and revokes immediately', async () => {
     const hash = randomUUID()
     const session = {
-      sessionId: randomUUID(),
       userId: randomUUID(),
       csrfTokenHash: randomUUID(),
     }
@@ -50,7 +49,6 @@ describe('Redis session and rate limits', () => {
     await sessions.createSession(
       hash,
       {
-        sessionId: randomUUID(),
         userId: randomUUID(),
         csrfTokenHash: randomUUID(),
       },

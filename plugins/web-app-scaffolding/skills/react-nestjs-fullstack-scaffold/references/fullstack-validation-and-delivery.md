@@ -11,10 +11,11 @@ Frontend
 Backend
 → Oxlint + typecheck + Vitest
 → Repository Integration: real, isolated PostgreSQL database
+→ Session / Rate Limit Integration: real, isolated Redis test DB
 → HTTP Integration: real Nest application
 
 Fullstack critical flow
-→ Playwright Browser + real apps/web + real apps/api + real test DB
+→ Playwright Browser + real apps/web + real apps/api + isolated PostgreSQL / Redis test DBs
 ```
 
 未真实运行的层不能写“通过”。
@@ -60,7 +61,7 @@ build
 
 API 进程不在 startup 自动改 Schema。Web 不直接感知 migration ledger。
 
-高风险 Schema change 使用 backward-compatible Expand/Contract，避免新旧 API replica 在滚动发布期间互相破坏。
+高风险 Schema change 使用 backward-compatible Expand/Contract，避免新旧 API replica 在滚动发布期间互相破坏。当前 `0002_move_auth_state_to_redis` 含 DROP TABLE，旧版 API 与新 Schema 不兼容；已有旧实例的部署必须先安排受控切换或拆分迁移，不能让旧版继续访问已删除的表。
 
 ## 5. Contract Change Review
 

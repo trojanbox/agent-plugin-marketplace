@@ -37,9 +37,6 @@ const redisUrl =
 function redisIdentity(value: string): string {
   const url = new URL(value)
   if (!['redis:', 'rediss:'].includes(url.protocol)) throw new Error('Redis URL required')
-  if (url.username || url.password) {
-    // Credentials are supported; never return them in errors.
-  }
   const db = url.pathname.slice(1) || '0'
   if (!/^(0|[1-9][0-9]*)$/.test(db) || Number(db) > 15)
     throw new Error('Redis database index must be between 0 and 15')
