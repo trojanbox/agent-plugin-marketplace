@@ -59,6 +59,22 @@ def sample_spec() -> dict:
 
 
 class SpecValidationTests(unittest.TestCase):
+    @unittest.skipUnless(importlib.util.find_spec("genanki"), "install scripts/requirements.txt")
+    def test_note_models_inherit_anki_font_and_night_mode_without_custom_css(self):
+        import genanki
+        from build_deck import make_models
+
+        models = make_models(genanki)
+        self.assertEqual(set(models), {"basic", "cloze", "reversed"})
+        for kind, model in models.items():
+            with self.subTest(kind=kind):
+                self.assertEqual(model.css, "", "card templates must inherit Anki theme styling")
+                for template in model.templates:
+                    self.assertIn('<hr id="answer">', template["afmt"])
+                    self.assertIn("{{#Source}}", template["afmt"])
+                    for part in ("qfmt", "afmt"):
+                        self.assertNotRegex(template[part], r"(?i)<style\b|\bstyle\s*=|\bclass\s*=")
+
     def test_basic_cloze_reverse_count_and_stable_numeric_identity(self):
         from deck_spec import expected_ordinals
         spec = validate_spec(sample_spec())
@@ -247,6 +263,10 @@ class PackageIntegrationTests(unittest.TestCase):
             self.assertEqual(conn.execute("SELECT count(*) FROM cards").fetchone()[0], 5)
             cols = conn.execute("SELECT flds FROM notes").fetchall()
             self.assertTrue(any("经济学讨论" in row[0] for row in cols))
+            models = json.loads(conn.execute("SELECT models FROM col LIMIT 1").fetchone()[0])
+            self.assertEqual(len(models), 3)
+            for model in models.values():
+                self.assertEqual(model["css"], "", "APKG must not embed any card CSS")
 
     def test_guids_stay_stable_after_content_correction(self):
         first = self.build()

@@ -15,15 +15,10 @@ from deck_spec import (
     source_label, validate_revision,
 )
 
-CSS = """
-.card { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", sans-serif;
-        font-size: 20px; text-align: left; color: #222; background: #fff; line-height: 1.5; }
-.extra { font-size: 16px; margin-top: 16px; color: #555; }
-.source { font-size: 13px; margin-top: 20px; color: #777; }
-"""
+# Keep templates unstyled so Anki controls fonts, colors and light/dark themes.
 BACK_ADDITION = (
-    "{{#Extra}}<div class=\"extra\">{{Extra}}</div>{{/Extra}}"
-    "{{#Source}}<div class=\"source\">来源：{{Source}}</div>{{/Source}}"
+    "{{#Extra}}<div>{{Extra}}</div>{{/Extra}}"
+    "{{#Source}}<div>来源：{{Source}}</div>{{/Source}}"
 )
 
 
@@ -34,7 +29,6 @@ def make_models(genanki) -> dict:
             fields=[{"name": field} for field in ("Front", "Back", "Extra", "Source")],
             templates=[{"name": "Question", "qfmt": "{{Front}}",
                         "afmt": "{{FrontSide}}<hr id=\"answer\">{{Back}}" + BACK_ADDITION}],
-            css=CSS,
         ),
         "reversed": genanki.Model(
             numeric_id("model", "reversed"), "Education Anki Reversed v1",
@@ -45,14 +39,13 @@ def make_models(genanki) -> dict:
                 {"name": "Reverse", "qfmt": "{{Back}}",
                  "afmt": "{{FrontSide}}<hr id=\"answer\">{{Front}}" + BACK_ADDITION},
             ],
-            css=CSS,
         ),
         "cloze": genanki.Model(
             numeric_id("model", "cloze"), "Education Anki Cloze v1",
             fields=[{"name": field} for field in ("Text", "Back", "Extra", "Source")],
             templates=[{"name": "Cloze", "qfmt": "{{cloze:Text}}",
                         "afmt": "{{cloze:Text}}<hr id=\"answer\">{{Back}}" + BACK_ADDITION}],
-            model_type=genanki.Model.CLOZE, css=CSS,
+            model_type=genanki.Model.CLOZE,
         ),
     }
 
