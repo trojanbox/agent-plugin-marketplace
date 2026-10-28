@@ -39,35 +39,11 @@ web-app-scaffolding/react-spring-boot-fullstack-scaffold
 
 其 `uses` 指向对应 frontend/backend Skill，避免复制两套规则。不要创建一个枚举所有语言的万能 Fullstack Skill。
 
-## 默认可复制全栈源码基线（v10 PostgreSQL）
+## 唯一全栈工程模板
 
-新项目优先使用 `skills/react-nestjs-fullstack-scaffold/assets/fullstack-monorepo-template-v10/` 的完整源码或按需复用模块。v10 统一 PostgreSQL 17 + Drizzle、毫秒 UTC TIMESTAMPTZ、数据库 Trigger 自动维护 updated_at、软删除过滤、独立 Integration/E2E 数据库和 CI PostgreSQL 服务。具体规则见 `skills/react-nestjs-fullstack-scaffold/references/template-v10.md`。
+全栈 Skill 直接维护 `skills/react-nestjs-fullstack-scaffold/assets/fullstack-monorepo-template/`。项目结构包括 React/Vite、NestJS、PostgreSQL/Drizzle、共享 Contract、Auth Session、UI/i18n、自动审计字段、事务、限流和 CI/测试。该目录持续维护，代码变更通过 Git 历史追溯。详情见 `skills/react-nestjs-fullstack-scaffold/references/template.md`。
 
-历史 v9 SQLite 模板仍然保留，需明确指定版本才能选用。
-
-## v9 可复制项目源码基线
-
-全栈 Skill 已内置用户确认的 `fullstack-monorepo-template-v9.zip` 解压源码：
-
-```text
-skills/react-nestjs-fullstack-scaffold/
-├── SKILL.md
-├── references/template-v9.md
-└── assets/fullstack-monorepo-template-v9/
-    ├── AGENTS.md
-    ├── README.md
-    ├── apps/web/
-    ├── apps/api/
-    ├── packages/contracts/
-    ├── packages/ui/
-    ├── packages/i18n/
-    ├── tests/
-    └── pnpm-lock.yaml
-```
-
-明确需要历史 v9/SQLite 时，可以从该版本源码复制或按需复用；全栈新项目的默认基线已升级为 v10/PostgreSQL。完整复制时保留隐藏目录和配置；局部复用应同步处理 Workspace、Contracts、imports、Migration、Lockfile 与测试依赖。具体使用边界见 `references/template-v9.md`。
-
-v9 原始资产作为冻结基线保留；未来有意修改模板时另存版本，避免影响后续追溯。
+新工程全量复制应保留隐藏配置、Migration 与测试；复制后运行 `pnpm scaffold:init <project-name>` 初始化，不修改 Skill 中的共享模板。
 
 ## Marketplace 登记
 

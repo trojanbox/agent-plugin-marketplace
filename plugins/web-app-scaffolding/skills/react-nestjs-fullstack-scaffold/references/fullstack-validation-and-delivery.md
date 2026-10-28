@@ -10,7 +10,7 @@ Frontend
 
 Backend
 → Oxlint + typecheck + Vitest
-→ Repository Integration: real, isolated PostgreSQL database for v10（明确使用历史 v9 时按冻结的 SQLite 模板规则）
+→ Repository Integration: real, isolated PostgreSQL database
 → HTTP Integration: real Nest application
 
 Fullstack critical flow

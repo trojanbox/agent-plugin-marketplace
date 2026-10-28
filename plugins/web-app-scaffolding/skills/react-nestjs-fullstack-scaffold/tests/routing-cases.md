@@ -10,10 +10,10 @@
 | F004 | positive | 给我做一套 React SaaS + Nest API，全链路 Session、分页、E2E 都按规范。 | web-app-scaffolding/react-nestjs-fullstack-scaffold |
 | F005 | positive | 前后端一起实现 websites CRUD，共享 Zod Contract，跑真实全链路 E2E。 | web-app-scaffolding/react-nestjs-fullstack-scaffold |
 | F006 | multi-turn | 前端和 Node 后端合同都已经定了，现在一起把整个项目骨架落下来。 | web-app-scaffolding/react-nestjs-fullstack-scaffold |
-| F007 | positive | 以后创建新的 React + Nest 项目直接从上次保存的 v9 模板复制。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；优先读取 assets 中的完整源码 |
-| F008 | positive | 用全栈 v9 的 SQLite 结构初始化项目，适当删除 items 示例。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；SQLite 优先，不套 PostgreSQL 默认配置 |
-| F009 | positive | 只从全栈 v9 中抽取登录、Session、共享合同和相关测试组成一个小工程。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；按真实依赖闭合地选择源码 |
-| F010 | positive | 用 React + NestJS，不过数据库明确换成 PostgreSQL，并以 v9 为出发点迁移。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；必须明确迁移 DB Schema/Repository/Migration/测试 |
+| F007 | positive | 以后新建 React + Nest 项目直接复用我们维护的脚手架。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；读取固定模板源码 |
+| F008 | positive | 初始化 React + Nest + PostgreSQL 项目，保留必要示例。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；PostgreSQL + Migration |
+| F009 | positive | 只从脚手架中抽取登录、Session、共享合同和测试组成小工程。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；依赖闭合地取用 |
+| F010 | positive | 用 React + NestJS，从脚手架出发扩展自己的网站。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；默认 PostgreSQL |
 | S001 | negative | 只给我做 React 管理后台页面。 | web-app-scaffolding/react-typescript-frontend-scaffold |
 | S002 | negative | 只初始化 NestJS API 和 PostgreSQL。 | web-app-scaffolding/node-nestjs-backend-scaffold |
 | S003 | negative | 用 Java Spring Boot 做后端脚手架。 | 当前 pack 无匹配 Java Skill；不得命中 Node/Nest Skill |
@@ -32,5 +32,5 @@
 | A005 | gate | 现有 Next.js + FastAPI，明确把完整项目迁到我们的 React + Nest 基线。 | web-app-scaffolding/react-nestjs-fullstack-scaffold |
 | A006 | composition | 从零做一个 React + Nest 小项目，只有登录注册、列表详情和健康检查，后端目录也按脚手架规范。 | web-app-scaffolding/react-nestjs-fullstack-scaffold 主导；后端目录/Module 必须下沉到 node-nestjs-backend-scaffold 的架构规则，后端保留粗粒度多 Module，不因 endpoint/Provider 机械细拆 |
 
-| F011 | positive | 用我们最新版脚手架新建 React + NestJS 项目，PG 数据库。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；默认复制 v10 PostgreSQL 模板 |
-| F012 | positive | 用 v10 做完整 PostgreSQL 项目，时间戳自动更新，软删除数据不出现在查询中。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；引用 template-v10 与 PG Migration |
+| F011 | positive | 用我们最新版脚手架新建 React + NestJS 项目，PG 数据库。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；使用统一模板 |
+| F012 | positive | 初始化带审计字段和软删除查询的全栈工程。 | web-app-scaffolding/react-nestjs-fullstack-scaffold；参考模板相关源码 |
