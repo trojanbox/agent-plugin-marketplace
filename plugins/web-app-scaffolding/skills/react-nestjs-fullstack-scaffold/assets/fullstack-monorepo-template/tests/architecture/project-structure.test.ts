@@ -142,6 +142,34 @@ describe('project structure contract', () => {
     expect(orphanTests).toEqual([])
   })
 
+  it('ships one initial PostgreSQL migration and schema snapshot without history replay', async () => {
+    const migrationsDir = resolve(root, 'apps/api/drizzle')
+    const metadataDir = resolve(migrationsDir, 'meta')
+    const sqlFiles = (await readdir(migrationsDir)).filter((file) => file.endsWith('.sql'))
+    const snapshots = (await readdir(metadataDir)).filter((file) => file.endsWith('_snapshot.json'))
+    const sql = await readFile(resolve(migrationsDir, '0000_initial_schema.sql'), 'utf8')
+    const journal = JSON.parse(await readFile(resolve(metadataDir, '_journal.json'), 'utf8')) as {
+      entries: { tag: string }[]
+    }
+    const snapshot = JSON.parse(
+      await readFile(resolve(metadataDir, '0000_snapshot.json'), 'utf8'),
+    ) as { tables: Record<string, unknown> }
+
+    expect(sqlFiles).toEqual(['0000_initial_schema.sql'])
+    expect(snapshots).toEqual(['0000_snapshot.json'])
+    expect(journal.entries.map((entry) => entry.tag)).toEqual(['0000_initial_schema'])
+    expect(Object.keys(snapshot.tables).sort()).toEqual(['public.items', 'public.users'])
+    expect(sql).toContain('CREATE TABLE "users"')
+    expect(sql).toContain('CREATE TABLE "items"')
+    expect(sql).toContain('"created_by" uuid')
+    expect(sql).toContain('"updated_by" uuid')
+    expect(sql).toContain('users_touch_updated_at')
+    expect(sql).toContain('items_touch_updated_at')
+    expect(sql).not.toContain('DROP TABLE')
+    expect(sql).not.toContain('auth_sessions')
+    expect(sql).not.toContain('auth_rate_limits')
+  })
+
   it('keeps curated long-term documentation separate from task-level agent notes', async () => {
     const agentGuide = await readFile(resolve(root, 'AGENTS.md'), 'utf8')
     const readme = await readFile(resolve(root, 'README.md'), 'utf8')

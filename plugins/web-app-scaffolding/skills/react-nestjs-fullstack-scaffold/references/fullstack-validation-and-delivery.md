@@ -61,7 +61,7 @@ build
 
 API 进程不在 startup 自动改 Schema。Web 不直接感知 migration ledger。
 
-高风险 Schema change 使用 backward-compatible Expand/Contract，避免新旧 API replica 在滚动发布期间互相破坏。当前 `0002_move_auth_state_to_redis` 含 DROP TABLE，旧版 API 与新 Schema 不兼容；已有旧实例的部署必须先安排受控切换或拆分迁移，不能让旧版继续访问已删除的表。
+高风险 Schema change 使用 backward-compatible Expand/Contract，避免新旧 API replica 在滚动发布期间互相破坏。脚手架的单一初始 Migration 只供新数据库创建；若现有项目已运行过其他 Migration，应维护原项目的迁移路径，不能在已部署数据库直接运行这份初始化基线。
 
 ## 5. Contract Change Review
 

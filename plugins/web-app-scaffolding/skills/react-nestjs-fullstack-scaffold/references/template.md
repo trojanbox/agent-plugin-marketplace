@@ -7,7 +7,7 @@
 
 ## 默认规则
 
-- React/Vite + NestJS + PostgreSQL 17 / Drizzle + Redis 7.4+；数据库 `TIMESTAMPTZ(3)` 和软删除过滤按模板。
+- React/Vite + NestJS + PostgreSQL 17 / Drizzle + Redis 7.4+；数据库 `TIMESTAMPTZ(3)` 和软删除过滤按模板。模板只提供单一初始 SQL Migration + Snapshot + Journal，用于全新数据库；实际项目上线后须保留其自己的增量迁移。
 - Service 负责 PostgreSQL 内事务；Redis 会话与 PostgreSQL 用户之间不能共用事务。注册先在 Redis 创建尚未披露的 Session，再创建 PG 用户，失败清理 Session。
 - HTTP Request Context 为业务存储 userId、requestId；需要写入 `createdBy` / `updatedBy` 的 Repository 调用 `AuditFields`，缺可信用户上下文立即拒绝。禁止直接从用户请求采信审计身份。
 - `activeRecord(table)` 统一软删除条件，列表、详情、更新、删除范围以及列表总数使用相同过滤。

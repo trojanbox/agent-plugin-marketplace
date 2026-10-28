@@ -23,7 +23,7 @@
 ## 测试与验证
 
 - 前端组件测试与源码共置；后端纯 Unit Test 同样与被测源码共置。根 `tests/` 只承载 Architecture、Integration、Support 和 E2E。
-- Integration 和 E2E 使用独立 PostgreSQL 数据库和 Redis 测试 DB 14/15，并从正式 Migration Ledger 重建；不得复用开发数据库。
+- Integration 和 E2E 使用独立 PostgreSQL 数据库和 Redis 测试 DB 14/15，并从唯一的初始 Drizzle Migration 重建；不得复用开发数据库。
 - users/items 的 created_at、updated_at 使用 TIMESTAMPTZ(3)，deleted_at 可空；更新由 PostgreSQL Trigger 同步维护，业务查询过滤 deleted_at IS NULL。
 - 禁止固定 sleep 或无依据重试掩盖异步问题。
 - 修改后至少执行受影响范围的 lint / typecheck / test；提交前默认执行 `pnpm verify`。
@@ -42,11 +42,16 @@
 
 ## Redis 会话与故障边界
 
-- Session、CSRF 哈希、登录限流只存 Redis；users 和业务数据存 PostgreSQL，PG 两张技术表已通过正式迁移删除。
+- Session、CSRF 哈希、登录限流只存 Redis；PostgreSQL 当前基线只创建 users、items（以及相应 Trigger），不存在 Session/限流技术表。
 - 认证请求 Redis 会话命中后，还须查询 PG 的 isActive、deletedAt。任何存储不可用时必须拒绝认证或返回错误，禁止使用无认证回退。
 - Session Redis Key 为 SHA-256 Token，TTL 绝对过期；退出登录必须 DEL。用户注册先存不可公开 Redis Session，再写 PG 用户，PG 写入失败时删除未公开 Session。两库之间没有分布式事务。
 - 测试 Redis 使用专用 DB 14/15，reset 会 FLUSHDB；不要连接生产实例。生产 Redis 应配置 noeviction、适当持久化与备份。
 - 新项目初始化有 --redis-port 参数，可以单独设置本机 Redis 端口；CI 固定使用服务自己的 6379 端口。
+
+## 数据库基线边界
+
+- 当前脚手架仅保留一个初始 SQL Migration、一个 Snapshot 和 Journal 中的一条记录；SQL 必须直接创建当前 Schema 中的表及必要的 Trigger，不得包含旧表的创建、删除或历史增量步骤。
+- 该初始基线只适用于新数据库；已部署项目必须保留其自己的历史 Migration，不得用模板初始化脚本覆盖现有数据。
 
 ## 文档管理
 

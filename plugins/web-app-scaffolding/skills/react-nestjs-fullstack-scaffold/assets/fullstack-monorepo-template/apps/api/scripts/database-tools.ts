@@ -55,7 +55,7 @@ export async function seedDemoData(url: string): Promise<number> {
         title: '浏览器认证使用 Session Cookie',
         summary: '会话凭据留在 HttpOnly Cookie，前端不保存 token。',
         content:
-          '登录和注册创建随机 Session Token，数据库只保存摘要。\n\n受保护的写请求额外验证 CSRF Token。',
+          '登录和注册创建随机 Session Token，Redis 通过 Token 摘要保存有 TTL 的会话，PostgreSQL 不存 Session。\n\n受保护的写请求额外验证 CSRF Token。',
       },
       {
         id: '55555555-5555-4555-8555-555555555555',

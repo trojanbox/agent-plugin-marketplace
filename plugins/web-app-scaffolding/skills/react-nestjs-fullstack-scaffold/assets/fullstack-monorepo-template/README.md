@@ -104,12 +104,11 @@ Compose 首次初始化会创建 fullstack_dev、fullstack_integration_test、fu
 
 具体字段、错误码、数据库列和国际化文案优先查机器可读源码，不在 Markdown 中维护第二份副本。
 
-## Session 技术表迁移
+## 数据库初始基线
 
-通过独立追加的 Drizzle Migration 删除 PostgreSQL 的 auth_sessions、auth_rate_limits，保留历史迁移流水。
-升级后既有 PostgreSQL 会话全部失效，用户必须重新登录。Redis 的 Session/限流状态与 PG 用户数据不可通过一个数据库事务原子提交，注册采用先创建不可对外获取的会话、后写用户，PG 失败时清理会话的顺序。测试专用 Redis DB 14/15 在测试 reset 时会被清空，禁止与生产或其他项目共用。
+本脚手架只维护一份初始 Drizzle Migration（`apps/api/drizzle/0000_initial_schema.sql`）、一个配套 Snapshot 和仅含一条记录的 Journal。SQL 从当前 Schema 一步创建 `users`、`items` 和必要的 `updated_at` Trigger；Redis 保存 Session 与登录限流，不创建对应的 PostgreSQL 技术表。
 
-**生产滚动发布注意**：本迁移会实际 DROP 两张技术表，旧版 API 不能和新 Schema 同时运行。有现存生产实例时，需安排受控停机切换或两阶段迁移；不能先 DROP 表、再让旧 API 继续接收请求。
+此基线只用于**全新数据库**。已经执行过其他 Migration 的现有数据库不能直接套用这份新的 Journal；正式项目投入使用后必须保留自身的迁移历史，不应覆盖或重置已部署数据库。脚手架维护时可重新生成单一初始基线，修改只通过 Git 追溯。Redis 与 PostgreSQL 间仍无共享事务，注册先保存未公开会话，再创建用户。测试专用 Redis DB 14/15 会在测试 reset 时被清空，禁止与生产环境共用。
 
 ## 作为新项目模板
 

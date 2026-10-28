@@ -142,13 +142,13 @@ Radix 负责行为、Focus、Keyboard、ARIA、Portal 和 Dismiss；视觉由 CS
 
 ## 6. 数据库边界
 
-PostgreSQL 连接池由 `InfrastructureModule` 管理连接生命周期，Drizzle Schema 描述当前模型，正式 Migration Ledger 描述数据库演进历史。
+PostgreSQL 连接池由 `InfrastructureModule` 管理连接生命周期，Drizzle Schema 描述当前模型，模板的一份初始 Migration 与 Snapshot 负责从零建库。
 
 关键约束：
 
 - API 启动不自动执行 Migration；
 - Migration 是显式部署/初始化步骤；
-- 开发库、Integration DB、E2E DB 都使用同一套正式 Migration Ledger；
+- 新建的开发库、Integration DB、E2E DB 都使用同一份初始 Migration；
 - 数据库物理字段使用 lower_snake_case，TypeScript 与 HTTP JSON 使用 camelCase。
 
 数据库测试和生命周期细节见 [testing-strategy.md](./testing-strategy.md)。
@@ -181,7 +181,7 @@ AccountModule 的 RedisSessionRepository 与 AuthRateLimitRepository 只保存�
 | HTTP Contract    | `packages/contracts`                                   |
 | API Module 组装  | `apps/api/src/app.module.ts` 与各 `*.module.ts`        |
 | 数据库当前模型   | Drizzle Schema                                         |
-| 数据库演进历史   | `apps/api/drizzle`                                     |
+| 数据库初始化基线 | `apps/api/drizzle`                                     |
 | 前端路由         | `apps/web/src/router.tsx`                              |
 | UI Primitive     | `packages/ui`                                          |
 | 国际化资源       | `packages/i18n`                                        |

@@ -98,19 +98,13 @@ Dedicated PostgreSQL E2E DB + Redis E2E DB
 
 ## 2. 数据库生命周期
 
-数据库当前结构由 Drizzle Schema 描述，历史演进由：
-
-```text
-apps/api/drizzle/
-```
-
-中的正式 Migration Ledger 描述。
+数据库当前结构由 Drizzle Schema 描述，脚手架只保留 `apps/api/drizzle/` 中的一份初始 SQL Migration、一个 Snapshot 和仅一条记录的 Journal，用于从零创建当前数据库。派生后的真实项目必须独立维护自身的增量迁移，不覆盖已部署数据库的历史。
 
 关键约束：
 
 - API 启动不自动 migrate；
 - 开发环境显式执行 `pnpm db:migrate` / `pnpm db:setup`；
-- Integration 和 E2E 都从同一套正式 Migration 重建测试数据库；
+- Integration 和 E2E 都从同一份初始 Migration 重建专用测试数据库；
 - 测试不得复用开发 PostgreSQL / Redis。
 
 当前独立数据库：
@@ -138,7 +132,7 @@ Reset 流程：
         ↓
 清空专用 Redis DB 14/15；清理 PG public/drizzle Schema
         ↓
-执行正式 Migration Ledger
+执行唯一的初始 Migration
         ↓
 按测试类型决定是否 Seed
 ```

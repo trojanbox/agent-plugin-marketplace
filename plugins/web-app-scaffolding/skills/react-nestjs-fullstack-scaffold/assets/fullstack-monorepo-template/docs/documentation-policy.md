@@ -83,7 +83,7 @@
 | --------------------------------- | ----------------------------------------------------- |
 | HTTP 序列化结构、错误码、输入校验 | `packages/contracts`                                  |
 | 数据库表结构                      | `apps/api/src/modules/infrastructure/database/schema` |
-| 数据库演进历史                    | `apps/api/drizzle`                                    |
+| 数据库初始化基线                  | `apps/api/drizzle`                                    |
 | 国际化资源                        | `packages/i18n/src/locales`                           |
 | UI Primitive 实现                 | `packages/ui`                                         |
 | 可执行测试合同                    | 对应 Unit / Integration / E2E / Architecture Test     |

@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1793101869816,
-      "tag": "0000_initial_postgresql",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1793110918072,
-      "tag": "0001_auth_rate_limits_audit_fields",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1793155771008,
-      "tag": "0002_move_auth_state_to_redis",
+      "when": 1793158823977,
+      "tag": "0000_initial_schema",
       "breakpoints": true
     }
   ]

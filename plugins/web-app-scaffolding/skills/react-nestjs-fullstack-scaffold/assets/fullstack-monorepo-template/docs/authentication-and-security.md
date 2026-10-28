@@ -145,7 +145,7 @@ RequestContext 为每个请求生成/验证 X-Request-Id，并只记录方法、
 ## 10. Redis 持久化与部署
 
 Redis 既负责 Session，又负责限流，必须明确生产持久化、备份、权限和 noeviction 策略。Redis 故障时不降级为无鉴权或不限流；Readiness 返回 503。
-切换到 Redis 后，旧 PostgreSQL Session 全部失效，需要用户重新登录。用户禁用/软删除仍由 PostgreSQL 及时验证，不能只缓存 Redis 用户快照。
+Redis Session 数据丢失时，用户需重新登录；用户禁用/软删除仍由 PostgreSQL 及时验证，不能只缓存 Redis 用户快照。
 
 ## 11. 安全相关权威来源
 

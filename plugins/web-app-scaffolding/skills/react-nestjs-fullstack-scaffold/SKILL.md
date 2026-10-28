@@ -58,7 +58,7 @@ Quality → Oxlint + Prettier + Vitest + Playwright
 ## 始终生效的跨栈硬边界
 
 - **模板资产唯一来源**：`assets/fullstack-monorepo-template/` 存放完整可复制源码。唯一基线为 PostgreSQL；直接维护当前模板目录，用 Git 历史追溯修改；复制后在目标项目派生改造。
-- **数据库职责**：本全栈模板用 PostgreSQL/Drizzle 管理用户与业务，Redis 管理 Session/CSRF 和认证限流。两个技术表已通过 Drizzle 迁移删除；跨 Redis/PG 不声明原子事务。
+- **数据库职责**：本全栈模板用 PostgreSQL/Drizzle 管理用户与业务，Redis 管理 Session/CSRF 和认证限流。模板只维护单一初始 Migration/Snapshot/Journal（从零建当前 Schema），不记录旧表历史；跨 Redis/PG 不声明原子事务。
 
 - `apps/web` 不能 import `apps/api` 源码；`apps/api` 也不能 import `apps/web`。
 - 真正跨应用的 serialized schema/type 才进入 `packages/contracts`；Repository Row、Nest Provider、UI Props 不进入。`src/` 根只保留 Public API，多个真实 Contract 领域按功能目录组织。
