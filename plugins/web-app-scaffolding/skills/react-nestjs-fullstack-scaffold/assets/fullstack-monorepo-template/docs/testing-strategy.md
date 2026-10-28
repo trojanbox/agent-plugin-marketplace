@@ -67,7 +67,7 @@ Integration Test 使用真实：
 - `AppModule` wiring；
 - Nest HTTP Pipeline；
 - Guard / Validation Pipe / Exception Filter；
-- PostgreSQL + Drizzle；
+- PostgreSQL + Drizzle 与真实 Redis；
 - 正式 Migration Ledger。
 
 Repository 和 HTTP 行为不使用内存伪实现代替数据库。
@@ -89,7 +89,7 @@ Real Vite Web
        ↓
 Real Nest API
        ↓
-Dedicated PostgreSQL E2E DB
+Dedicated PostgreSQL E2E DB + Redis E2E DB
 ```
 
 核心业务 API 不 mock。第三方外部系统在未来真实接入后，可以在明确边界处使用可控替身。
@@ -111,7 +111,7 @@ apps/api/drizzle/
 - API 启动不自动 migrate；
 - 开发环境显式执行 `pnpm db:migrate` / `pnpm db:setup`；
 - Integration 和 E2E 都从同一套正式 Migration 重建测试数据库；
-- 测试不得复用开发数据库。
+- 测试不得复用开发 PostgreSQL / Redis。
 
 当前独立数据库：
 
@@ -121,17 +121,22 @@ Integration: fullstack_integration_test
 E2E:         fullstack_e2e_test
 ```
 
-## 3. 测试数据库重置安全
+## 3. 测试 PostgreSQL 与 Redis 重置安全
 
-破坏性测试库 reset 有两层保护：
+破坏性测试库 reset 必须对两种存储执行独立安全检查：
 
 1. `NODE_ENV` 必须为 `test`，并显式配置独立测试数据库连接串；
 2. 数据库名必须同时包含 test 及 integration/e2e 标记，且 Host/Port/Database 身份不得与 DATABASE_URL 相同。
 
+Redis 测试环境使用独立的 `TEST_REDIS_URL`（DB 14）和 `E2E_REDIS_URL`（DB 15），不得指向开发/生产 Redis。
+脚本在执行 FLUSHDB 前校验 NODE_ENV=test、Redis 目标 DB 是对应的 14/15，且不等于 REDIS_URL。建议单独的测试 Redis 实例。
+
 Reset 流程：
 
 ```text
-仅清理专用测试数据库的 public/drizzle Schema
+校验 PG、Redis 两个专用测试目标
+        ↓
+清空专用 Redis DB 14/15；清理 PG public/drizzle Schema
         ↓
 执行正式 Migration Ledger
         ↓
@@ -142,7 +147,7 @@ Reset 流程：
 
 ## 4. E2E 生命周期
 
-E2E 执行前会 reset + migrate + seed 独立 E2E DB，然后由 Playwright 启动真实 API 和 Web Server。
+E2E 执行前会 reset + migrate + seed 独立 PostgreSQL E2E DB，并清理 Redis E2E DB 15，然后由 Playwright 启动真实 API 和 Web Server。
 
 测试用例必须自行准备或依赖明确的 fixture，不能依赖测试执行顺序，也不能通过固定 sleep 掩盖异步问题。
 
@@ -229,6 +234,6 @@ E2E 失败时上传 Playwright 报告和测试结果，便于保留失败证据�
 | API Integration          | `tests/integration/api`             |
 | Test App / Cookie helper | `tests/support/api`                 |
 | Browser E2E              | `tests/e2e`、`playwright.config.ts` |
-| 测试库 reset             | `apps/api/scripts/reset-test-db.ts` |
+| 测试库与 Redis reset     | `apps/api/scripts/reset-test-db.ts` |
 | Migration                | `apps/api/drizzle`                  |
 | CI Gate                  | `.github/workflows/ci.yml`          |

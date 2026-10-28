@@ -23,7 +23,7 @@
 ## 测试与验证
 
 - 前端组件测试与源码共置；后端纯 Unit Test 同样与被测源码共置。根 `tests/` 只承载 Architecture、Integration、Support 和 E2E。
-- Integration 和 E2E 使用独立 PostgreSQL 数据库，并从正式 Migration Ledger 重建；不得复用开发数据库。
+- Integration 和 E2E 使用独立 PostgreSQL 数据库和 Redis 测试 DB 14/15，并从正式 Migration Ledger 重建；不得复用开发数据库。
 - users/items 的 created_at、updated_at 使用 TIMESTAMPTZ(3)，deleted_at 可空；更新由 PostgreSQL Trigger 同步维护，业务查询过滤 deleted_at IS NULL。
 - 禁止固定 sleep 或无依据重试掩盖异步问题。
 - 修改后至少执行受影响范围的 lint / typecheck / test；提交前默认执行 `pnpm verify`。
@@ -35,10 +35,18 @@
 - 事务由 Service 使用 DatabaseService.transaction() 声明，Repository 自动复用当前事务；单个业务操作不得把必须原子提交的 SQL 拆到多个事务。
 - RequestContext 的 actorId 只由已认证 Guard 设置；Repository 使用 AuditFields 写入 createdBy/updatedBy，禁止把客户端字段当成可信身份。
 - 普通业务表列表/详情/更新/软删除均复用 activeRecord(table) 的显式条件，包含分页 totalRows。
-- 认证限流用 PostgreSQL 原子窗口，按可信客户端 IP 校验，TRUSTED_PROXY_IPS 只能写实际受信任代理地址；维护作业通过 db:prune-rate-limits 清理旧键。
-- /health 只看进程存活，/ready 检查 PG Migration Ledger；应用启动不得自动迁移。
+- 认证限流用 Redis Lua 原子计数 + TTL，按可信客户端 IP 校验，TRUSTED_PROXY_IPS 只能写实际受信任代理地址；Redis 通过 TTL 清理过期键。
+- /health 只看进程存活，/ready 检查 PG Migration Ledger 和 Redis PING；应用启动不得自动迁移。
 - ApiClient 统一封装 HTTP 方法、CSRF、AbortSignal、JSON/无内容与非 JSON 错误；业务接口不要再造 fetch wrapper。
 - 模板唯一来源为本目录；复制后使用 scaffold:init 生成新项目的名称、数据库和环境配置。
+
+## Redis 会话与故障边界
+
+- Session、CSRF 哈希、登录限流只存 Redis；users 和业务数据存 PostgreSQL，PG 两张技术表已通过正式迁移删除。
+- 认证请求 Redis 会话命中后，还须查询 PG 的 isActive、deletedAt。任何存储不可用时必须拒绝认证或返回错误，禁止使用无认证回退。
+- Session Redis Key 为 SHA-256 Token，TTL 绝对过期；退出登录必须 DEL。用户注册先存不可公开 Redis Session，再写 PG 用户，PG 写入失败时删除未公开 Session。两库之间没有分布式事务。
+- 测试 Redis 使用专用 DB 14/15，reset 会 FLUSHDB；不要连接生产实例。生产 Redis 应配置 noeviction、适当持久化与备份。
+- 新项目初始化有 --redis-port 参数，可以单独设置本机 Redis 端口；CI 固定使用服务自己的 6379 端口。
 
 ## 文档管理
 
@@ -58,4 +66,4 @@
 
 ## 复杂度边界
 
-没有真实需求时，不提前加入 Redis、Queue / Worker、CQRS、Event Bus、GraphQL、S3、Search、微服务或额外全局 Store。
+没有真实需求时，不提前加入 Queue / Worker、CQRS、Event Bus、GraphQL、S3、Search、微服务或额外全局 Store。

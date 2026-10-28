@@ -14,9 +14,9 @@ SessionAuthGuard
   ▼
 AuthService
   ▼
-AuthRepository
+RedisSessionRepository（Redis Session）
   ▼
-auth_sessions / users
+AuthRepository（PostgreSQL 用户状态）
 ```
 
 前端不把 Session credential 保存到 Local Storage、Session Storage 或 JavaScript 状态中。
@@ -29,13 +29,12 @@ auth_sessions / users
 
 注册流程：
 
-1. 规范化邮箱；
-2. 使用 scrypt 派生密码摘要；
-3. 创建用户；
-4. 生成随机 Session Token 和 CSRF Token；
-5. 数据库只保存两个 Token 的摘要；
-6. Session Token 通过 HttpOnly Cookie 返回；
-7. CSRF Token 通过可读取 Cookie 返回，供浏览器在写请求时回传 Header。
+1. 规范化邮箱并使用 scrypt 派生密码摘要；
+2. Redis 保存随机 Session Token 摘要对应的会话和 CSRF 摘要，设置绝对 TTL；
+3. PostgreSQL 插入用户，成功后才返回 HttpOnly Session Cookie 和 CSRF Cookie；
+4. Redis 写失败时不创建 PG 用户；PG 插入失败时清理未对外返回的 Session。
+
+Redis 与 PostgreSQL 不支持共同的本地数据库事务。即使 PG 失败后的 DEL 也失败，未披露的 Session 不可能通过 PG 用户校验，最终自动到期。
 
 登录流程与注册后的 Session 创建过程一致。
 
@@ -60,18 +59,17 @@ max memory = 128 MiB
 
 ## 4. Session Token
 
-Session Token 是 32 字节随机 opaque token，浏览器持有原值，数据库只保存 SHA-256 摘要。
+Session Token 是 32 字节随机 opaque token，浏览器持有原值；Redis key 为 `auth:session:SHA256(token)`，Value 保存 sessionId、userId、csrfTokenHash，不保存原始凭据。
 
 一个 Session 只有在以下条件同时成立时有效：
 
-- Token 摘要匹配；
-- `revoked_at` 为空；
-- `expires_at` 晚于当前时间；
-- 所属用户仍处于启用状态。
+- Redis Session Key 存在、结构有效；
+- Redis 绝对 TTL 尚未过期；
+- 对应 PostgreSQL 用户存在、启用且未软删除。
 
 Session TTL 来自 `SESSION_TTL_HOURS`，默认 168 小时。
 
-退出登录时服务端先撤销数据库 Session，再清除浏览器 Session Cookie 和 CSRF Cookie。
+退出登录时服务端先 DEL Redis Session Key，再清除浏览器 Session Cookie 和 CSRF Cookie。Redis 故障时不能伪装成服务端已登出。
 
 ## 5. Cookie 合同
 
@@ -87,7 +85,7 @@ CSRF Cookie：
 
 - `HttpOnly=false`，前端需要读取；
 - 其余生命周期参数与 Session Cookie 保持一致；
-- Cookie 原值不作为服务端持久化凭据，数据库只保存摘要。
+- Cookie 原值不作为服务端持久化凭据，Redis 只保存 CSRF 摘要。
 
 如果未来改成跨站前后端部署，需要重新评估 SameSite、CORS、Cookie Domain 和 CSRF 模型，不能只放宽浏览器配置。
 
@@ -140,13 +138,18 @@ Session 查询、退出登录以及业务资源默认受保护。
 
 ## 9. 认证限流与代理边界
 
-认证端点在密码推导前通过 PostgreSQL 原子窗口按可信客户端 IP 限流，登录 12 次/分钟、注册 6 次/分钟，返回 429 和 Retry-After。限流 key 使用哈希摘要；数据库不可用时请求失败，不绕过限流。
+认证端点在密码推导前通过 Redis Lua INCR+PEXPIRE 原子窗口按可信客户端 IP 限流，登录 12 次/分钟、注册 6 次/分钟，返回 429 和 Retry-After。限流 key 使用哈希摘要；Redis 不可用时请求失败，不绕过限流。
 
-默认忽略未经验证的转发 IP；若使用反向代理，应把受信任代理 IP 配置到 TRUSTED_PROXY_IPS。原始 X-Forwarded-For 不直接作为身份依据。每天按需运行 pnpm db:prune-rate-limits 清理超过 24 小时的过期窗口。
+默认忽略未经验证的转发 IP；若使用反向代理，应把受信任代理 IP 配置到 TRUSTED_PROXY_IPS。原始 X-Forwarded-For 不直接作为身份依据。Redis TTL 自动删除过期限流窗口，无需额外的 PG 表或清理脚本。
 
 RequestContext 为每个请求生成/验证 X-Request-Id，并只记录方法、路径、响应状态和耗时；禁止记录密码、Cookie、原始请求体、Token。记录 actorId 前必须完成 Session Guard 的服务端认证。
 
-## 10. 安全相关权威来源
+## 10. Redis 持久化与部署
+
+Redis 既负责 Session，又负责限流，必须明确生产持久化、备份、权限和 noeviction 策略。Redis 故障时不降级为无鉴权或不限流；Readiness 返回 503。
+切换到 Redis 后，旧 PostgreSQL Session 全部失效，需要用户重新登录。用户禁用/软删除仍由 PostgreSQL 及时验证，不能只缓存 Redis 用户快照。
+
+## 11. 安全相关权威来源
 
 | 主题                        | 权威来源                                                    |
 | --------------------------- | ----------------------------------------------------------- |
@@ -154,6 +157,6 @@ RequestContext 为每个请求生成/验证 X-Request-Id，并只记录方法、
 | Cookie 名称与 Session TTL   | `apps/api/src/config/app.config.ts`                         |
 | 密码与 Token 加密实现       | `apps/api/src/modules/account/security/auth.crypto.ts`      |
 | Session / CSRF 认证规则     | `apps/api/src/modules/account/guards/session-auth.guard.ts` |
-| Session 生命周期            | `AuthService` / `AuthRepository`                            |
-| 数据库存储模型              | Drizzle Auth Schema + Migration                             |
+| Session 生命周期            | `AuthService` / `RedisSessionRepository`                    |
+| PostgreSQL 用户模型         | Drizzle Auth Schema + Migration                             |
 | 浏览器 Header / Cookie 行为 | `apps/web/src/infrastructure/http/api.client.ts`            |

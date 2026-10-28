@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
-import { and, eq, gt, isNull } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 
 import { DatabaseService } from '../../infrastructure/database/database.service.js'
 import { activeRecord } from '../../infrastructure/database/active-record.js'
-import { authSessions, users } from '../../infrastructure/database/schema/index.js'
+import { users } from '../../infrastructure/database/schema/index.js'
 
 @Injectable()
 export class AuthRepository {
@@ -18,6 +18,15 @@ export class AuthRepository {
     return user
   }
 
+  async findActiveUserById(userId: string) {
+    const [user] = await this.database.db
+      .select({ id: users.id, email: users.email, createdAt: users.createdAt })
+      .from(users)
+      .where(and(eq(users.id, userId), eq(users.isActive, true), activeRecord(users)))
+      .limit(1)
+    return user
+  }
+
   async createUser(input: { id: string; email: string; passwordHash: string; createdAt: Date }) {
     const [user] = await this.database.db
       .insert(users)
@@ -25,47 +34,5 @@ export class AuthRepository {
       .onConflictDoNothing({ target: users.email })
       .returning()
     return user
-  }
-
-  async createSession(input: {
-    id: string
-    userId: string
-    tokenHash: string
-    csrfTokenHash: string
-    createdAt: Date
-    expiresAt: Date
-  }): Promise<void> {
-    await this.database.db.insert(authSessions).values(input)
-  }
-
-  async findActiveSessionByTokenHash(tokenHash: string, now: Date) {
-    const [session] = await this.database.db
-      .select({
-        sessionId: authSessions.id,
-        csrfTokenHash: authSessions.csrfTokenHash,
-        userId: users.id,
-        email: users.email,
-        userCreatedAt: users.createdAt,
-      })
-      .from(authSessions)
-      .innerJoin(users, eq(authSessions.userId, users.id))
-      .where(
-        and(
-          eq(authSessions.tokenHash, tokenHash),
-          isNull(authSessions.revokedAt),
-          gt(authSessions.expiresAt, now),
-          eq(users.isActive, true),
-          activeRecord(users),
-        ),
-      )
-      .limit(1)
-    return session
-  }
-
-  async revokeSession(sessionId: string, revokedAt: Date): Promise<void> {
-    await this.database.db
-      .update(authSessions)
-      .set({ revokedAt })
-      .where(eq(authSessions.id, sessionId))
   }
 }

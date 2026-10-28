@@ -31,26 +31,28 @@
     "pretest:integration:coverage": "pnpm test:prepare",
     "test:integration:coverage": "cross-env NODE_ENV=test DB_TEST_KIND=integration vitest run --coverage --config vitest.integration.config.ts",
     "pretest:watch": "pnpm test:prepare",
-    "test:watch": "vitest --config vitest.unit.config.ts",
-    "db:prune-rate-limits": "tsx scripts/prune-auth-rate-limits.ts"
+    "test:watch": "vitest --config vitest.unit.config.ts"
   },
   "dependencies": {
-    "@repo/contracts": "workspace:*",
     "@nestjs/common": "12.0.1",
     "@nestjs/core": "12.0.1",
     "@nestjs/platform-express": "12.0.1",
-    "drizzle-orm": "0.45.2",
+    "@repo/contracts": "workspace:*",
     "dotenv": "^17.2.0",
+    "drizzle-orm": "0.45.2",
     "helmet": "^8.1.0",
+    "pg": "8.16.3",
+    "redis": "6.3.0",
     "reflect-metadata": "0.2.2",
     "rxjs": "^7.8.2",
-    "zod": "4.6.1",
-    "pg": "8.16.3"
+    "zod": "4.6.1"
   },
   "devDependencies": {
+    "@nestjs/cli": "12.0.0",
     "@nestjs/testing": "12.0.1",
     "@types/express": "^5.0.0",
     "@types/node": "^24.0.0",
+    "@types/pg": "^8.15.0",
     "@types/supertest": "7.2.1",
     "@vitest/coverage-v8": "5.0.0",
     "cross-env": "^10.1.0",
@@ -59,8 +61,6 @@
     "supertest": "7.2.2",
     "tsx": "4.23.13",
     "typescript": "6.0.2",
-    "vitest": "5.0.0",
-    "@nestjs/cli": "12.0.0",
-    "@types/pg": "^8.15.0"
+    "vitest": "5.0.0"
   }
 }

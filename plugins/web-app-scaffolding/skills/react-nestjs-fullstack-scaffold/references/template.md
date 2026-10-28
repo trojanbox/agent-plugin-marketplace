@@ -7,14 +7,14 @@
 
 ## 默认规则
 
-- React/Vite + NestJS + PostgreSQL 17 / Drizzle；数据库 `TIMESTAMPTZ(3)` 和软删除过滤按模板。
-- Service 负责事务声明、Repository 使用当前事务执行器；注册用户与建 Session 必须原子提交。
+- React/Vite + NestJS + PostgreSQL 17 / Drizzle + Redis 7.4+；数据库 `TIMESTAMPTZ(3)` 和软删除过滤按模板。
+- Service 负责 PostgreSQL 内事务；Redis 会话与 PostgreSQL 用户之间不能共用事务。注册先在 Redis 创建尚未披露的 Session，再创建 PG 用户，失败清理 Session。
 - HTTP Request Context 为业务存储 userId、requestId；需要写入 `createdBy` / `updatedBy` 的 Repository 调用 `AuditFields`，缺可信用户上下文立即拒绝。禁止直接从用户请求采信审计身份。
 - `activeRecord(table)` 统一软删除条件，列表、详情、更新、删除范围以及列表总数使用相同过滤。
-- 认证限流使用 PostgreSQL 原子计数；无需 Redis，部署生产时要明确代理 IP 可信边界、速率阈值及定期清理过期限流键。
+- 认证限流使用 Redis Lua 原子计数及 TTL，客户端 IP 仅来自可信代理边界；Redis 不可用时认证必须失败，不降级到无限制访问。
 - 前端所有 HTTP 经过 ApiClient，重用错误、Session Cookie、CSRF、AbortSignal；分页查询由 Route loader 提交参数和消费服务端页信息。
-- 运行 `pnpm scaffold:init <name> --display-name "Name"` 完成工程名称与示例环境初始化；初始化命令自动衍生数据库名称，可使用 --db-port 设置宿主机 PostgreSQL 端口；必须在首次启动数据库前执行。
-- 真实数据库集成测试只连接独立的 Integration/PostgreSQL 数据库，关键浏览器流程连真实前后端。未知是否通过的验证必须明确标出。
+- 运行 `pnpm scaffold:init <name> --display-name "Name"` 完成工程名称与示例环境初始化；初始化命令自动衍生数据库名称，可使用 --db-port 和 --redis-port 分别设置本机端口（CI 不继承本地端口）；必须在首次启动数据库前执行。
+- 真实集成测试使用独立 PostgreSQL Integration 数据库与 Redis 测试 DB 14，E2E 使用独立 PG 库和 Redis DB 15，关键浏览器流程连真实前后端。未知是否通过的验证必须明确标出。
 
 ## 交付
 

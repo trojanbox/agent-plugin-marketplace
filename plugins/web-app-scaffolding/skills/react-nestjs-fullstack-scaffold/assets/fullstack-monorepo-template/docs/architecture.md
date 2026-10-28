@@ -54,7 +54,7 @@ AppModule
 
 - `AccountModule`：账户、登录、注册、会话和认证；
 - `CatalogModule`：列表、详情及同一业务域能力；
-- `InfrastructureModule`：数据库生命周期、Health、Readiness 等基础设施能力。
+- `InfrastructureModule`：PostgreSQL / Redis 生命周期、Health、Readiness 等基础设施能力。
 
 Module 可以随着真实业务扩展增加，例如 `WebsitesModule`、`BillingModule`、`OrganizationsModule`，但新增 Module 必须代表真实领域、独立基础设施生命周期、稳定公开 API 或明确的运行/安全边界。
 
@@ -65,7 +65,7 @@ Module 可以随着真实业务扩展增加，例如 `WebsitesModule`、`Billing
 依赖方向固定为：
 
 ```text
-Controller → Service → Repository → Database
+Controller → Service → Repository → PostgreSQL / Redis
 ```
 
 约束：
@@ -158,6 +158,10 @@ PostgreSQL 连接池由 `InfrastructureModule` 管理连接生命周期，Drizzl
 Service 通过 DatabaseService.transaction 定义业务原子边界。Repository 读取当前作用域的 Drizzle 事务执行器；多请求、并行测试保持 AsyncLocalStorage 隔离。RequestContext 只传递认证后可信的 actorId、请求 ID；需要审计字段时 Repository 调用 AuditFields。缺失 actor 时操作失败，后台操作需先确立可信系统主体。
 
 软删除是 Repository 的明确 SQL 条件；activeRecord(table) 提供统一的类型安全表达式，但不会悄悄修改 Drizzle 原生查询。列表、详情、更新、软删除和 totalRows 均使用它。使用 SQL Schema 约束保障一致性，PostgreSQL Trigger 维护 updated_at。
+
+### Redis 认证基础设施
+
+AccountModule 的 RedisSessionRepository 与 AuthRateLimitRepository 只保存登录会话、CSRF 摘要和限流计数；InfrastructureModule 统一管理 Redis 连接生命周期。用户与业务仍在 PostgreSQL。每次鉴权 Redis 命中 Session 后，PG 查询验证用户仍启用且未软删除。跨 PostgreSQL 和 Redis 不声明伪原子事务；注册先写 Redis 不公开的 Session，再写 PG 用户，PG 失败就删除未公开 Session。
 
 ## 7. 什么时候提升边界
 

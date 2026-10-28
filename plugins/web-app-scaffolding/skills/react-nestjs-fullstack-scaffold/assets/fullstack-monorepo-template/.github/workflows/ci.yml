@@ -19,7 +19,16 @@ jobs:
         options: >-
           --health-cmd "pg_isready -U app -d fullstack_integration_test"
           --health-interval 5s --health-timeout 5s --health-retries 10
+      redis:
+        image: redis:7.4-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 5s --health-retries 10
     env:
+      REDIS_URL: redis://127.0.0.1:6379/0
+      TEST_REDIS_URL: redis://127.0.0.1:6379/14
+      E2E_REDIS_URL: redis://127.0.0.1:6379/15
       DATABASE_URL: postgresql://app:app@127.0.0.1:5432/fullstack_dev
       TEST_DATABASE_URL: postgresql://app:app@127.0.0.1:5432/fullstack_integration_test
       E2E_DATABASE_URL: postgresql://app:app@127.0.0.1:5432/fullstack_e2e_test
@@ -48,7 +57,16 @@ jobs:
         options: >-
           --health-cmd "pg_isready -U app -d fullstack_e2e_test"
           --health-interval 5s --health-timeout 5s --health-retries 10
+      redis:
+        image: redis:7.4-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 5s --health-retries 10
     env:
+      REDIS_URL: redis://127.0.0.1:6379/0
+      TEST_REDIS_URL: redis://127.0.0.1:6379/14
+      E2E_REDIS_URL: redis://127.0.0.1:6379/15
       DATABASE_URL: postgresql://app:app@127.0.0.1:5432/fullstack_dev
       TEST_DATABASE_URL: postgresql://app:app@127.0.0.1:5432/fullstack_integration_test
       E2E_DATABASE_URL: postgresql://app:app@127.0.0.1:5432/fullstack_e2e_test

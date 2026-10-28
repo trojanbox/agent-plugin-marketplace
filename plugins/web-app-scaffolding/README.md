@@ -41,7 +41,7 @@ web-app-scaffolding/react-spring-boot-fullstack-scaffold
 
 ## 唯一全栈工程模板
 
-全栈 Skill 直接维护 `skills/react-nestjs-fullstack-scaffold/assets/fullstack-monorepo-template/`。项目结构包括 React/Vite、NestJS、PostgreSQL/Drizzle、共享 Contract、Auth Session、UI/i18n、自动审计字段、事务、限流和 CI/测试。该目录持续维护，代码变更通过 Git 历史追溯。详情见 `skills/react-nestjs-fullstack-scaffold/references/template.md`。
+全栈 Skill 直接维护 `skills/react-nestjs-fullstack-scaffold/assets/fullstack-monorepo-template/`。项目结构包括 React/Vite、NestJS、PostgreSQL/Drizzle、Redis Session/CSRF/限流、共享 Contract、UI/i18n、自动审计字段、事务、限流和 CI/测试。该目录持续维护，代码变更通过 Git 历史追溯。详情见 `skills/react-nestjs-fullstack-scaffold/references/template.md`。
 
 新工程全量复制应保留隐藏配置、Migration 与测试；复制后运行 `pnpm scaffold:init <project-name>` 初始化，不修改 Skill 中的共享模板。
 

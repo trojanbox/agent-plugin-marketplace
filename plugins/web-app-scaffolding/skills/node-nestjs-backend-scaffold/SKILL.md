@@ -23,7 +23,7 @@ Vitest + @nestjs/testing + Supertest
 Oxlint + Prettier
 ```
 
-默认不预装 Redis、Queue/Worker、CQRS、Event Bus、Outbox/Saga、APM/Metrics、S3、Search/Feature Flag 等平台能力。
+独立后端项目无需求时不预装 Redis、Queue/Worker、CQRS、Event Bus、Outbox/Saga、APM/Metrics、S3、Search/Feature Flag 等平台能力。
 
 ## 每次执行流程
 
@@ -33,7 +33,7 @@ Oxlint + Prettier
 4. **按需读 reference**：只加载当前主题。
 5. **粗粒度多 Module、目录按职责分层**：`AppModule` 只做 Composition Root；新建 API 默认保留少量粗粒度领域/基础设施 Module。强相关功能合并到同一 Module，Controller / Service / Repository 分别进入该 Module 的 `controllers/`、`services/`、`repositories/`；禁止一接口、一 Provider、一小功能一个 Module。
 6. **沿边界实现**：Controller → Service → Repository → Database；跨 Module/Package 只走公开 API；Node/Nest 官方能力优先。
-7. **不预造平台**：无真实需求不装 Redis/Worker/Queue/Cache/HTTP Client，也不继续设计其体系。
+7. **不预造平台**：无真实需求不预造 Worker/Queue/Cache/HTTP Client（Fullstack 已有 Redis Session），也不继续设计其体系。
 8. **真实验证**：至少跑相关 lint/typecheck/test；Persistence 用真实 PostgreSQL 测试数据库，HTTP 用真实 Nest pipeline。未真实验证不得声称通过。
 
 ## 按需读取
@@ -63,7 +63,7 @@ Oxlint + Prettier
 - Controller 不注入 Repository；Service 定事务但不写 Drizzle；Repository 持有查询且默认私有。
 - DB lower snake_case，应用 camelCase；普通查询 Query Builder First。
 - JSON API 统一 Envelope：详情 `data:T`，分页 `data:{list,page}`。
-- Browser 默认持久化 Opaque Session + HttpOnly Cookie，服务端 Default Deny；默认以 PostgreSQL 存储。
+- Browser 默认持久化 Opaque Session + HttpOnly Cookie，服务端 Default Deny；当前 Fullstack 组合由 Redis 存会话，PostgreSQL 存用户状态，独立后端按目标项目实际栈执行。
 - 后端纯 Unit Test 与生产源码 Owner 共置为 `*.test.ts`；根 `tests/` 只承载 Integration、E2E、Support 等跨层测试。真实数据库 Repository Test 属于 Integration，不放回源码目录。
 - Comments 只保留代码无法可靠表达的约束/原因/外部怪异行为；不为显而易见实现写常规说明，修改时清理附近过期注释。
 - 新建或迁移项目时采用保守文档策略：`docs/` 只保存长期有效、源码难以快速可靠推导且未来会重复使用的项目知识；AI 调研、计划、TODO、Debug、Handoff、执行日志等任务级产物默认不进入 `docs/`。确需落盘的临时材料使用被 Git 和项目格式化工具忽略的 `.agents/work/`，创建正式 Markdown 前执行“六个月后是否仍必需”与单一事实来源检查；README/AGENTS 保持简洁。

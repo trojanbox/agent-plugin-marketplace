@@ -44,8 +44,7 @@
     "test:e2e:install:deps": "playwright install --with-deps chromium firefox webkit",
     "test:architecture": "vitest run --config vitest.architecture.config.ts",
     "scaffold:init": "node scripts/init-project.mjs",
-    "test:scaffold": "node --test scripts/init-project.test.mjs",
-    "db:prune-rate-limits": "pnpm --filter @repo/api db:prune-rate-limits"
+    "test:scaffold": "node --test scripts/init-project.test.mjs"
   },
   "devDependencies": {
     "@nestjs/common": "12.0.1",

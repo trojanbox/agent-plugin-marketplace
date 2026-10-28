@@ -10,7 +10,7 @@ Browser
 → Global SessionAuthGuard
 → AuthService
 → AuthRepository
-→ PostgreSQL auth_sessions
+→ Redis Session（当前 Fullstack 模板）
 ```
 
 默认不用 JWT 存 localStorage/sessionStorage；浏览器 JS 不持有认证 credential。
@@ -25,7 +25,7 @@ Browser
 randomBytes(32).toString('base64url')
 ```
 
-Cookie 保存 raw token；DB 只保存 `SHA-256(token)`。基础字段：id、user_id、token_hash、created_at、last_seen_at、expires_at、revoked_at。
+Cookie 保存 raw token；当前 Fullstack 的 Redis key 采用 `SHA-256(token)`。Fullstack Session 存 sessionId、userId、csrfTokenHash，Redis Key 的 TTL 控制绝对过期；不保留 PostgreSQL Session 技术表。
 
 Session authenticate 必须检查 expiry/revoke/user active state；logout 立即 revoke；登录/注册自动登录/权限提升时 rotate，防 fixation。
 
@@ -117,9 +117,9 @@ scrypt 并发通过 typed config 限制，防 CPU/内存耗尽。
 
 ## 9. Rate Limit
 
-敏感入口默认 Nest 官方 `@nestjs/throttler`：login/register/password reset 等更严格，可组合 peer/IP + account identifier。
+当前 Fullstack 的 login/register 使用 Redis Lua 原子窗口计数 + TTL；独立后端可依据真实部署使用 Nest 官方 `@nestjs/throttler`。
 
-默认 memory store 只保护单实例；多 replica 若需要 cluster-wide protection，使用 Gateway/WAF/shared storage。不要为未来扩容提前装 Redis。
+Redis 计数可跨多个 API 实例共享；Redis 不可用时不降级为不限流。生产要限制可信代理 IP、配置 noeviction 和监控。
 
 ## 10. HTTP Security
 

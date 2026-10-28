@@ -57,7 +57,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('logout')
   async logout(@CurrentAuth() auth: AuthPrincipal, @Res({ passthrough: true }) response: Response) {
-    await this.authService.logout(auth.sessionId)
+    await this.authService.logout(auth.sessionTokenHash)
     response.clearCookie(appConfig.sessionCookieName, { path: '/' })
     response.clearCookie('csrf_token', { path: '/' })
     return success({})

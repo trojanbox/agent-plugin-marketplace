@@ -8,7 +8,7 @@ describe('AuthRateLimitService', () => {
   it('rejects excessive requests with retry time while hashing the IP', async () => {
     const consume = vi.fn().mockResolvedValue({
       attempts: 7,
-      windowEndsAt: new Date(Date.now() + 30_000),
+      retryAfterMs: 30_000,
     })
     const moduleRef = await Test.createTestingModule({
       providers: [

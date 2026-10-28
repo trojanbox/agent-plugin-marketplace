@@ -30,12 +30,18 @@ test('initializes a copied project once without overwriting existing data', asyn
     ]) {
       await put(path, await readFile(new URL('../' + path, import.meta.url), 'utf8'))
     }
-    await initialize(root, 'new-product', 'New Product', 5543)
+    await initialize(root, 'new-product', 'New Product', 5543, 6380)
     const pkg = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'))
     assert.equal(pkg.name, 'new-product')
     assert.match(await readFile(join(root, 'apps/web/index.html'), 'utf8'), /New Product/)
     assert.match(await readFile(join(root, 'apps/api/.env'), 'utf8'), /new_product_dev/)
     assert.match(await readFile(join(root, 'apps/api/.env'), 'utf8'), /:5543/)
+    assert.match(await readFile(join(root, 'apps/api/.env'), 'utf8'), /:6380\/14/)
+    assert.match(await readFile(join(root, 'compose.yaml'), 'utf8'), /127.0.0.1:6380:6379/)
+    assert.match(
+      await readFile(join(root, '.github/workflows/ci.yml'), 'utf8'),
+      /127.0.0.1:6379\/14/,
+    )
     assert.match(
       await readFile(join(root, 'apps/api/.env.test.example'), 'utf8'),
       /new_product_integration_test/,

@@ -15,6 +15,13 @@
       "when": 1793110918072,
       "tag": "0001_auth_rate_limits_audit_fields",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793155771008,
+      "tag": "0002_move_auth_state_to_redis",
+      "breakpoints": true
     }
   ]
 }

@@ -2,45 +2,50 @@ import { Test } from '@nestjs/testing'
 import { describe, expect, it, vi } from 'vitest'
 
 import { ApplicationError } from '../../../errors/application-error.js'
-import { DatabaseService } from '../../infrastructure/database/database.service.js'
 import { AuthRepository } from '../repositories/auth.repository.js'
+import { RedisSessionRepository } from '../repositories/redis-session.repository.js'
 import { hashOpaqueToken } from '../security/auth.crypto.js'
 import { AuthService, type AuthPrincipal } from './auth.service.js'
 
 describe('AuthService', () => {
-  it('maps an active session to an authenticated principal', async () => {
-    const repository = {
-      findActiveSessionByTokenHash: vi.fn().mockResolvedValue({
-        sessionId: 'session-1',
-        csrfTokenHash: hashOpaqueToken('csrf-token'),
-        userId: '11111111-1111-4111-8111-111111111111',
+  it('authenticates Redis session only when the PostgreSQL user is active', async () => {
+    const stored = {
+      sessionId: '11111111-1111-4111-8111-111111111111',
+      userId: '22222222-2222-4222-8222-222222222222',
+      csrfTokenHash: hashOpaqueToken('csrf-token'),
+    }
+    const users = {
+      findActiveUserById: vi.fn().mockResolvedValue({
+        id: stored.userId,
         email: 'user@example.com',
-        userCreatedAt: new Date('2026-01-01T00:00:00.000Z'),
+        createdAt: new Date('2026-01-01T00:00:00.000Z'),
       }),
     }
+    const sessions = { findByTokenHash: vi.fn().mockResolvedValue(stored) }
 
     const moduleRef = await Test.createTestingModule({
       providers: [
         AuthService,
-        { provide: AuthRepository, useValue: repository },
-        {
-          provide: DatabaseService,
-          useValue: { transaction: (fn: () => Promise<unknown>) => fn() },
-        },
+        { provide: AuthRepository, useValue: users },
+        { provide: RedisSessionRepository, useValue: sessions },
       ],
     }).compile()
-
-    const service = moduleRef.get(AuthService)
-    const principal = await service.authenticate('session-token')
-
-    expect(repository.findActiveSessionByTokenHash).toHaveBeenCalledOnce()
-    expect(principal.user).toEqual({
-      id: '11111111-1111-4111-8111-111111111111',
-      email: 'user@example.com',
-      createdAt: '2026-01-01T00:00:00.000Z',
-    })
-
-    await moduleRef.close()
+    try {
+      const principal = await moduleRef.get(AuthService).authenticate('session-token')
+      expect(sessions.findByTokenHash).toHaveBeenCalledWith(hashOpaqueToken('session-token'))
+      expect(users.findActiveUserById).toHaveBeenCalledWith(stored.userId)
+      expect(principal.user).toEqual({
+        id: stored.userId,
+        email: 'user@example.com',
+        createdAt: '2026-01-01T00:00:00.000Z',
+      })
+      users.findActiveUserById.mockResolvedValue(undefined)
+      await expect(moduleRef.get(AuthService).authenticate('session-token')).rejects.toMatchObject({
+        code: 'UNAUTHENTICATED',
+      })
+    } finally {
+      await moduleRef.close()
+    }
   })
 
   it('rejects an invalid CSRF token', async () => {
@@ -48,25 +53,48 @@ describe('AuthService', () => {
       providers: [
         AuthService,
         { provide: AuthRepository, useValue: {} },
-        {
-          provide: DatabaseService,
-          useValue: { transaction: (fn: () => Promise<unknown>) => fn() },
-        },
+        { provide: RedisSessionRepository, useValue: {} },
       ],
     }).compile()
-
-    const service = moduleRef.get(AuthService)
-    const principal: AuthPrincipal = {
-      sessionId: 'session-1',
-      csrfTokenHash: hashOpaqueToken('expected'),
-      user: {
-        id: '11111111-1111-4111-8111-111111111111',
-        email: 'user@example.com',
-        createdAt: '2026-01-01T00:00:00.000Z',
-      },
+    try {
+      const principal: AuthPrincipal = {
+        sessionId: '11111111-1111-4111-8111-111111111111',
+        sessionTokenHash: hashOpaqueToken('token'),
+        csrfTokenHash: hashOpaqueToken('expected'),
+        user: {
+          id: '22222222-2222-4222-8222-222222222222',
+          email: 'user@example.com',
+          createdAt: '2026-01-01T00:00:00.000Z',
+        },
+      }
+      expect(() => moduleRef.get(AuthService).verifyCsrfToken(principal, 'wrong')).toThrow(
+        ApplicationError,
+      )
+    } finally {
+      await moduleRef.close()
     }
+  })
 
-    expect(() => service.verifyCsrfToken(principal, 'wrong')).toThrow(ApplicationError)
-    await moduleRef.close()
+  it('never inserts a PostgreSQL user if saving a Redis session fails', async () => {
+    const users = { createUser: vi.fn() }
+    const sessions = { createSession: vi.fn().mockRejectedValue(new Error('Redis unavailable')) }
+    const moduleRef = await Test.createTestingModule({
+      providers: [
+        AuthService,
+        { provide: AuthRepository, useValue: users },
+        { provide: RedisSessionRepository, useValue: sessions },
+      ],
+    }).compile()
+    try {
+      await expect(
+        moduleRef.get(AuthService).register({
+          email: 'new@example.com',
+          password: 'a-long-strong-password',
+        }),
+      ).rejects.toThrow('Redis unavailable')
+      expect(users.createUser).not.toHaveBeenCalled()
+    } finally {
+      await moduleRef.close()
+    }
   })
 })

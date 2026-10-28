@@ -9,7 +9,9 @@ import { eq, sql } from 'drizzle-orm'
 import { vi } from 'vitest'
 import { AuthRepository } from '../../../../apps/api/src/modules/account/repositories/auth.repository.js'
 import { AuthService } from '../../../../apps/api/src/modules/account/services/auth.service.js'
-import { authRateLimits } from '../../../../apps/api/src/modules/infrastructure/database/schema/auth.schema.js'
+import { RedisSessionRepository } from '../../../../apps/api/src/modules/account/repositories/redis-session.repository.js'
+import { AuthRateLimitRepository } from '../../../../apps/api/src/modules/account/repositories/auth-rate-limit.repository.js'
+import { RedisService } from '../../../../apps/api/src/modules/infrastructure/redis/redis.service.js'
 import { users } from '../../../../apps/api/src/modules/infrastructure/database/schema/auth.schema.js'
 import { items } from '../../../../apps/api/src/modules/infrastructure/database/schema/item.schema.js'
 import { cookieValue } from '../../../support/api/cookies.js'
@@ -21,7 +23,7 @@ describe('HTTP integration', () => {
   beforeEach(async () => {
     app = await createTestApp()
     const database = app.get(DatabaseService)
-    await database.db.delete(authRateLimits)
+    await app.get(RedisService).client.flushDb()
     await database.db.delete(items)
     await database.db.insert(items).values({
       id: '11111111-1111-4111-8111-111111111111',
@@ -110,24 +112,47 @@ describe('HTTP integration', () => {
       .send({ email, password: 'a-strong-integration-password' })
       .expect(401)
   })
-  it('rolls back user creation if the session insert fails', async () => {
-    const repository = app.get(AuthRepository)
+  it('does not create a user if Redis session creation fails', async () => {
+    const sessions = app.get(RedisSessionRepository)
     const auth = app.get(AuthService)
     const email = 'atomic-' + randomUUID() + '@example.com'
     const spy = vi
-      .spyOn(repository, 'createSession')
-      .mockRejectedValueOnce(new Error('session insert failed'))
+      .spyOn(sessions, 'createSession')
+      .mockRejectedValueOnce(new Error('Redis unavailable'))
     try {
       await expect(
         auth.register({ email, password: 'a-strong-integration-password' }),
-      ).rejects.toThrow('session insert failed')
-      expect(await repository.findUserByEmail(email)).toBeUndefined()
+      ).rejects.toThrow('Redis unavailable')
+      expect(await app.get(AuthRepository).findUserByEmail(email)).toBeUndefined()
     } finally {
       spy.mockRestore()
     }
   })
 
-  it('limits excessive registration attempts using the shared database window', async () => {
+  it('cleans up undisclosed Redis session if PostgreSQL rejects registration', async () => {
+    const sessions = app.get(RedisSessionRepository)
+    const users = app.get(AuthRepository)
+    const auth = app.get(AuthService)
+    const email = 'duplicate-' + randomUUID() + '@example.com'
+    await auth.register({ email, password: 'a-strong-integration-password' })
+    const createSpy = vi.spyOn(sessions, 'createSession')
+    const deleteSpy = vi.spyOn(sessions, 'revokeSession')
+    try {
+      await expect(
+        auth.register({ email, password: 'a-strong-integration-password' }),
+      ).rejects.toMatchObject({ code: 'EMAIL_ALREADY_EXISTS' })
+      expect(createSpy).toHaveBeenCalledOnce()
+      expect(deleteSpy).toHaveBeenCalledOnce()
+      const tokenHash = deleteSpy.mock.calls[0]![0]
+      expect(await sessions.findByTokenHash(tokenHash)).toBeUndefined()
+      expect(await users.findUserByEmail(email)).toBeDefined()
+    } finally {
+      createSpy.mockRestore()
+      deleteSpy.mockRestore()
+    }
+  })
+
+  it('limits excessive registration attempts using a shared Redis window', async () => {
     const agent = request.agent(app.getHttpServer())
     for (let i = 0; i < 6; i++) {
       await agent
@@ -210,5 +235,44 @@ describe('HTTP integration', () => {
       )
     }
     await request(app.getHttpServer()).get('/api/v1/ready').expect(200)
+  })
+  it('fails readiness when Redis is unavailable', async () => {
+    const redis = app.get(RedisService)
+    const spy = vi.spyOn(redis, 'ready').mockResolvedValueOnce(false)
+    try {
+      await request(app.getHttpServer()).get('/api/v1/ready').expect(503)
+      await request(app.getHttpServer()).get('/api/v1/health').expect(200)
+    } finally {
+      spy.mockRestore()
+    }
+  })
+
+  it('does not retain Session and Rate Limit tables in PostgreSQL', async () => {
+    const database = app.get(DatabaseService)
+    const result = await database.db.execute(
+      sql.raw(
+        "SELECT to_regclass('public.auth_sessions') AS session_table, " +
+          "to_regclass('public.auth_rate_limits') AS limits_table",
+      ),
+    )
+    expect(result.rows[0]).toMatchObject({ session_table: null, limits_table: null })
+  })
+
+  it('fails closed when Redis rate limiting cannot run', async () => {
+    const rateLimits = app.get(AuthRateLimitRepository)
+    const users = app.get(AuthRepository)
+    const email = 'denied-' + randomUUID() + '@example.com'
+    const spy = vi
+      .spyOn(rateLimits, 'consume')
+      .mockRejectedValueOnce(new Error('Redis unavailable'))
+    try {
+      await request(app.getHttpServer())
+        .post('/api/v1/auth/register')
+        .send({ email, password: 'a-strong-integration-password' })
+        .expect(500)
+      expect(await users.findUserByEmail(email)).toBeUndefined()
+    } finally {
+      spy.mockRestore()
+    }
   })
 })

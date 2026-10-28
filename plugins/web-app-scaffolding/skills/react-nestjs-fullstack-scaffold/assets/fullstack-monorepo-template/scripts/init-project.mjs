@@ -6,7 +6,13 @@ import { dirname, resolve } from 'node:path'
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const baseName = 'fullstack-monorepo-template'
 
-export async function initialize(projectRoot, name, displayName = name, dbPort = 5432) {
+export async function initialize(
+  projectRoot,
+  name,
+  displayName = name,
+  dbPort = 5432,
+  redisPort = 6379,
+) {
   if (!/^[a-z0-9][a-z0-9._-]*$/.test(name) || name.length > 46) {
     throw new Error(
       'Project name must be a lowercase npm-safe name (max 46 chars for PostgreSQL database identifiers)',
@@ -17,6 +23,9 @@ export async function initialize(projectRoot, name, displayName = name, dbPort =
   }
   if (!Number.isInteger(dbPort) || dbPort < 1024 || dbPort > 65535) {
     throw new Error('Database port must be between 1024 and 65535')
+  }
+  if (!Number.isInteger(redisPort) || redisPort < 1024 || redisPort > 65535) {
+    throw new Error('Redis port must be between 1024 and 65535')
   }
   const packagePath = resolve(projectRoot, 'package.json')
   const titlePath = resolve(projectRoot, 'apps/web/index.html')
@@ -49,9 +58,9 @@ export async function initialize(projectRoot, name, displayName = name, dbPort =
   ]
   const contents = await Promise.all(files.map((path) => readFile(path, 'utf8')))
   const expectedMarkers = [
-    ['fullstack_dev', 'fullstack_integration_test', 'fullstack_e2e_test'],
-    ['fullstack_dev', 'fullstack_integration_test', 'fullstack_e2e_test'],
-    ['fullstack_dev'],
+    ['fullstack_dev', 'fullstack_integration_test', 'fullstack_e2e_test', 'REDIS_URL'],
+    ['fullstack_dev', 'fullstack_integration_test', 'fullstack_e2e_test', 'TEST_REDIS_URL'],
+    ['fullstack_dev', 'redis:7.4-alpine'],
     ['fullstack_integration_test', 'fullstack_e2e_test'],
     ['fullstack_dev', 'fullstack_integration_test', 'fullstack_e2e_test'],
     ['fullstack_dev'],
@@ -76,7 +85,11 @@ export async function initialize(projectRoot, name, displayName = name, dbPort =
       .replaceAll('fullstack_integration_test', dbPrefix + '_integration_test')
       .replaceAll('fullstack_e2e_test', dbPrefix + '_e2e_test')
       .replaceAll('fullstack_dev', dbPrefix + '_dev')
-    return localPort ? renamed.replaceAll('127.0.0.1:5432', '127.0.0.1:' + dbPort) : renamed
+    return localPort
+      ? renamed
+          .replaceAll('127.0.0.1:5432', '127.0.0.1:' + dbPort)
+          .replaceAll('127.0.0.1:6379', '127.0.0.1:' + redisPort)
+      : renamed
   }
 
   pkg.name = name
@@ -101,7 +114,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   let valid = !!name && args.length % 2 === 0
   for (let i = 0; i < args.length; i += 2) {
     if (
-      !['--display-name', '--db-port'].includes(args[i]) ||
+      !['--display-name', '--db-port', '--redis-port'].includes(args[i]) ||
       !args[i + 1] ||
       opts[args[i]] !== undefined
     ) {
@@ -112,7 +125,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   }
   if (!valid) {
     console.error(
-      'Usage: pnpm scaffold:init <project-name> [--display-name "Display Name"] [--db-port 5432]',
+      'Usage: pnpm scaffold:init <project-name> [--display-name "Display Name"] [--db-port 5432] [--redis-port 6379]',
     )
     process.exitCode = 1
   } else {
@@ -122,6 +135,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
         name,
         opts['--display-name'] ?? name,
         opts['--db-port'] ? Number(opts['--db-port']) : 5432,
+        opts['--redis-port'] ? Number(opts['--redis-port']) : 6379,
       )
       console.log('Project initialized: ' + name)
     } catch (error) {

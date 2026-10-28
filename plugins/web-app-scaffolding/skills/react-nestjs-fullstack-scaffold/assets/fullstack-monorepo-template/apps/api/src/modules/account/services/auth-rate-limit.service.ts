@@ -20,11 +20,11 @@ export class AuthRateLimitService {
     const key = createHash('sha256')
       .update(action + ':' + (ip || 'unknown'))
       .digest('hex')
-    const { attempts, windowEndsAt } = await this.repository.consume(key, limits[action].windowMs)
+    const { attempts, retryAfterMs } = await this.repository.consume(key, limits[action].windowMs)
     if (attempts > limits[action].attempts) {
       throw new ApplicationError('rate_limited', API_ERROR_CODE.RateLimited, 'Too many requests', {
         numericCode: 429,
-        retryAfterSeconds: Math.max(1, Math.ceil((windowEndsAt.getTime() - Date.now()) / 1000)),
+        retryAfterSeconds: Math.max(1, Math.ceil(retryAfterMs / 1000)),
       })
     }
   }
