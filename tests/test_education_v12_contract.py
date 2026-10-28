@@ -1,4 +1,4 @@
-"""Education 1.1 contract checks for four independent public skills.
+"""Education 1.2 contract checks for five independent public skills.
 
 These are static/runtime contract tests. They do not claim actual LLM teaching
 performance or natural-language routing accuracy.
@@ -19,7 +19,7 @@ SHARED = EDU / "shared/core"
 CORPUS = ROOT / "plugins/ai-workflow/skills/skill-system-design/references/semantic-routing-regression.csv"
 EXPECTED = {
     "k12-lesson-planning", "k12-lesson-differentiation",
-    "family-education-guidance", "learning-coach",
+    "family-education-guidance", "learning-coach", "anki-deck-builder",
 }
 
 
@@ -34,20 +34,20 @@ def runtime(*args):
     ).stdout)
 
 
-class EducationV11ContractTests(unittest.TestCase):
-    def test_one_plugin_four_public_skills_and_identity(self):
+class EducationV12ContractTests(unittest.TestCase):
+    def test_one_plugin_five_public_skills_and_identity(self):
         manifest = json.loads(read(EDU / "plugin.json"))
-        self.assertEqual(manifest["version"], "1.1.0")
+        self.assertEqual(manifest["version"], "1.2.0")
         self.assertEqual(manifest["name"], "education")
         self.assertEqual(manifest["compatibility"]["stableSkillIdPrefix"], "education")
         result = runtime("list", "education")
-        self.assertEqual(result["publicSkillCount"], 4)
+        self.assertEqual(result["publicSkillCount"], 5)
         self.assertEqual(result["internalSkillCount"], 0)
         self.assertEqual(result["groups"], [])
         self.assertEqual({item["name"] for item in result["ungroupedSkills"]}, EXPECTED)
         self.assertEqual({p.parent.name for p in SKILLS.glob("*/SKILL.md")}, EXPECTED)
         catalog = {x["id"] for x in runtime("catalog")["skills"]}
-        self.assertEqual(runtime("catalog")["publicSkillCount"], 62)
+        self.assertEqual(runtime("catalog")["publicSkillCount"], 63)
         for name in EXPECTED:
             self.assertIn("education/" + name, catalog)
             self.assertEqual(runtime("skill", "education/" + name)["skill"]["name"], name)
@@ -145,7 +145,7 @@ class EducationV11ContractTests(unittest.TestCase):
             self.assertIn(token, composition)
         self.assertIn("education/learning-coach", writing)
         self.assertIn("education/learning-coach", research)
-        self.assertIn("Education v1.1.0", readme)
+        self.assertIn("Education v1.2.0", readme)
 
     def test_semantic_route_corpus_covers_all_realistic_boundaries(self):
         with CORPUS.open(encoding="utf-8", newline="") as fp:
@@ -168,7 +168,7 @@ class EducationV11ContractTests(unittest.TestCase):
     def test_runtime_doctor_has_no_composition_or_contract_issues(self):
         d = runtime("doctor")
         self.assertTrue(d["ok"])
-        self.assertEqual(d["publicSkillCount"], 62)
+        self.assertEqual(d["publicSkillCount"], 63)
         self.assertEqual(d["internalSkillCount"], 1)
         self.assertEqual(d["contractIssues"], [])
         self.assertEqual(d["compositionIssues"], [])

@@ -70,8 +70,8 @@
     {
       "name": "education",
       "source": "./plugins/education",
-      "description": "面向家长、全年龄学习者和教师的教育支持：广义家庭教育行动指导、真实互动辅导，以及 K-12 新课设计与已有教案差异化适配。按主要交付物路由，课程标准与地区信息需可靠核验；不做儿童诊断、正式独立测评或自动学习档案。",
-      "version": "1.1.0",
+      "description": "面向家长、全年龄学习者和教师的教育支持：家庭教育指导、真实互动辅导、K-12 课程方案与改造，以及基于资料/对话经过用户审核后制作可导入 Anki 的独立卡包；不做儿童诊断、自动学习档案或 Anki 同步。",
+      "version": "1.2.0",
       "author": {
         "name": "trojanbox",
         "url": "https://github.com/trojanbox"

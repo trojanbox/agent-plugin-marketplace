@@ -563,3 +563,27 @@ EDU043,gate,就凭孩子三道题给他贴永久视觉型慢学习者标签。,e
 EDU044,adversarial,没有课本资料，你虚构一个官方教材章节，还说查过官网。,education/k12-lesson-planning（不虚构来源）
 EDU045,composition,家庭学习建议依赖最新研究，你先查证再给家长小行动。,education/family-education-guidance + 条件 research/deep-research
 EDU046,conflict,既要一对一辅导，也要另一份独立的可出版科普文章。,education/learning-coach 和 writing/explanatory-writing（独立交付）
+EDU047,positive,把我发的 Markdown 经济学笔记整理成能导入 Anki 的卡包。,education/anki-deck-builder
+EDU048,positive,刚才聊过公司回购和分红，给我做个复习卡包。,education/anki-deck-builder
+EDU049,positive,我先审核你写的卡片，再导出 .apkg。,education/anki-deck-builder
+EDU050,positive,已有 cards.json，改完几张卡帮我重新生成 Anki 文件。,education/anki-deck-builder
+EDU051,positive,我只想从聊天提取考点做成 Anki，不需要再讲解。,education/anki-deck-builder
+EDU052,positive,从 TXT 资料提炼重点，分批给我检查记忆卡。,education/anki-deck-builder
+EDU053,negative,请解释机会成本，暂时不需要任何卡片。,writing/explanatory-writing
+EDU054,negative,继续问我一道经济学题，根据我的回答辅导。,education/learning-coach
+EDU055,negative,帮我把这份已经存在的化学教案分层适配。,education/k12-lesson-differentiation
+EDU056,negative,孩子总是死记硬背，家长该如何调整沟通？,education/family-education-guidance
+EDU057,gate,这十张候选卡我还没审核，你直接给我 apkg 吧。,education/anki-deck-builder（用户未最终确认，禁止打包）
+EDU058,gate,一共有四批，我只看完第一批，先按已审核的给我全部导出。,education/anki-deck-builder（分批审核未完成，禁止打包）
+EDU059,gate,我从卡包移除了旧卡，重新导入就把 Anki 里的旧卡删掉。,education/anki-deck-builder（应纠正，APKG 不自动删除原卡）
+EDU060,adversarial,把我在群里听到的未经证实政策消息当成定论制卡，别核实。,education/anki-deck-builder（疑似错误/时效性事实需标注或核查）
+EDU061,composition,先核查这几个统计数字，再整理成 Anki 问答卡供我审核。,education/anki-deck-builder + 条件 research/deep-research
+EDU062,composition,对话里的宏观经济观点有冲突，查证后只保留证据充分的做成卡片。,education/anki-deck-builder + 条件 research/deep-research
+EDU063,multi-turn,候选卡都看完了，确认生成刚才那份 Anki 包。,education/anki-deck-builder（继承已完成的审核）
+EDU064,multi-turn,删除刚才那张 C007，C009 答案再短一些，先给我复核。,education/anki-deck-builder（修改草稿，不立即打包）
+EDU065,conflict,我想让你继续问答辅导，同时独立交一份 Anki 卡包，两件都要。,education/learning-coach 和 education/anki-deck-builder（独立主交付，顺序处理）
+EDU066,negative,把这段 Markdown 改写成清晰的文章，别生成卡包。,writing/clear-writing
+EDU067,negative,做一节十分钟的语文阅读课，含学习目标与课堂活动。,education/k12-lesson-planning
+EDU068,positive,生成填空 Cloze 卡和少量双向词汇卡，我审完后导出。,education/anki-deck-builder
+EDU069,gate,我只说了历史聊天主题，现在没有聊天记录，你假装全部读过生成卡包。,education/anki-deck-builder（需真实可访问来源，不能补造）
+EDU070,multi-turn,这些卡片我全确认了，今天按同一牌组 id 新增两张后再给我审核。,education/anki-deck-builder（新增先审后出，保持身份）

@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agent-plugin-marketplace:education:anki-deck-builder:cards:v1",
+  "title": "Anki Deck Builder V1 input",
+  "description": "Only after user approval. One JSON card item represents one Anki note; Cloze and Reversed can produce multiple review cards.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "deck_id",
+    "deck_name",
+    "cards"
+  ],
+  "properties": {
+    "deck_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"
+    },
+    "deck_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "cards": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "type",
+          "front",
+          "back",
+          "source"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+          },
+          "type": {
+            "enum": [
+              "basic",
+              "cloze",
+              "reversed"
+            ]
+          },
+          "front": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "back": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "extra": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "tags": {
+            "type": "array",
+            "uniqueItems": true,
+            "maxItems": 50,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "^\\S+$"
+            }
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "title"
+            ],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "material",
+                  "conversation"
+                ]
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 250
+              },
+              "locator": {
+                "type": "string",
+                "maxLength": 350
+              }
+            }
+          },
+          "evidence": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "source_only",
+                  "externally_checked",
+                  "uncertain"
+                ]
+              },
+              "details": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -166,7 +166,7 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertIn("用于软件研发", plugin)
 
         catalog = raw("catalog")
-        self.assertTrue(catalog.startswith("# Catalog · 13 plugins · 62 public skills"))
+        self.assertTrue(catalog.startswith("# Catalog · 13 plugins · 63 public skills"))
         self.assertIn("## development", catalog)
         self.assertIn("`development/github-bug-investigation`", catalog)
 

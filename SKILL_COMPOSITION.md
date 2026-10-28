@@ -141,7 +141,8 @@ Skill Composition 只解决“一个主任务需要哪些辅助能力”。它�
 
 ## Education Composition 示例
 
-- Education 四个公开入口按**本轮主交付物**选择：`education/k12-lesson-planning` 新建教师课案（新课内自带差异化）、`education/k12-lesson-differentiation` 需要真实源教案的改造、`education/family-education-guidance` 家长广义教育决策、`education/learning-coach` 全年龄学习者的多轮互动辅导。不能因请求发起者是家长就把孩子直接互动辅导归家庭教育 Skill。
+- Education 五个公开入口按**本轮主交付物**选择：`education/k12-lesson-planning` 新建教师课案（新课内自带差异化）、`education/k12-lesson-differentiation` 需要真实源教案的改造、`education/family-education-guidance` 家长广义教育决策、`education/learning-coach` 全年龄学习者的多轮互动辅导。不能因请求发起者是家长就把孩子直接互动辅导归家庭教育 Skill。 用户明确要求把知识资料/刚才的讨论制作成 Anki 卡包（审核后导出）由 `education/anki-deck-builder` 主导；互动辅导仍归 `education/learning-coach`，单纯解释知识仍归 Writing。
+- Anki 制卡必须先展示完整候选卡供用户审核，再根据最终明确确认导出 `.apkg` 与 `cards.json`；真实核查确有必要时可条件组合 `research/deep-research`，但研究不能接管卡包交付。
 - 教师两个 Skill 保留原稳定 ID、必须的课案/原教案 Gate、共享 `pedagogy.md` 与专科学科方法；涉及中国或其他非美国课程体系时，按需加载 `education/shared/core/curriculum-localization.md`。不能以美国 ELA/NGSS/C3 框架冒充地区标准；需要精确对齐时需核实官方或真实用户教材资料。
 - 家庭教育的默认输出是“实际观察/不确定→少量可选行动→反馈/调整信号”；仅明确要求跨周计划才启用阶段尝试，不自动记录/监控。其争议性证据缺口才可选组合 `research/deep-research`，竞争性现实机制分析时才可选组合 `reasoning/scientific-reasoning`，二者不得接管家庭建议 Owner。
 - Learning Coach 的主目标是**真实互动**：根据已知起点选择提问或必要讲解、独立练习、基于回答反馈与迁移检查；静态一次性科普仍归 `writing/explanatory-writing`，陌生领域长期认知/决策地图仍归 `research/domain-knowledge-builder`。只有新的可靠外部事实必要时才可选组合 `research/deep-research`。

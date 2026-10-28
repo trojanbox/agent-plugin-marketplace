@@ -213,9 +213,11 @@ Writing 现有 7 个小说流程 Skill（讨论、冻结结论、章纲、正文
 - `writing/clear-writing` 提供普通清晰化与 Humanizer 模式；`writing/explanatory-writing` 分别提供科学原理讲解与实操指南模式。
 - 旧逻辑 ID 不支持自动别名；完整映射、迁移边界及验收见 [Writing v4.0 迁移说明](plugins/writing/MIGRATION-v4.0.md)。
 
-## Education v1.1.0：教师、家长与全年龄学习者
+## Education v1.2.0：教师、家长、学习者与 Anki 卡包
 
-Education 由 2 个公开 Skill 扩展为 **4 个**：保留 `education/k12-lesson-planning`（从零设计课程）与 `education/k12-lesson-differentiation`（必须基于可读的现有教案做分层改造），新增 `education/family-education-guidance`（广义家庭教育行动指导）和 `education/learning-coach`（儿童、青少年和成人的真实互动学习辅导）。
+Education 现有 **5 个公开 Skill**（原 4 个继续保持稳定）：保留 `education/k12-lesson-planning`（从零设计课程）与 `education/k12-lesson-differentiation`（必须基于可读的现有教案做分层改造），新增 `education/family-education-guidance`（广义家庭教育行动指导）和 `education/learning-coach`（儿童、青少年和成人的真实互动学习辅导）。
+
+新增 `education/anki-deck-builder`：从当前可访问的 Markdown/纯文本或最近一个知识对话主题提炼知识，经用户分批审核并最终确认后生成独立 `.apkg` 与 `cards.json`。Basic 为主，支持 Cloze 与确有双向意义的 Reversed。内容核查按需借助可靠外部证据，独立构建依赖 Python 3.10+、`genanki==0.13.1`，不需要运行中的 Anki，不负责 EPUB/PDF 原生解析或同步。详见 [Skill 使用说明](plugins/education/skills/anki-deck-builder/SKILL.md)。
 
 课堂设计可以按提供的中国及其他地区真实课程体系和教材适配，精确标准必须核验；不把美国州标准或 NGSS/C3 方法照搬当成本地官方课标。学习辅导按真实回答选择提示、讲解、练习与反馈，不凭静态文章宣称学会；家长建议按需提供数周尝试计划，不自动追踪儿童，不做心理/学习障碍诊断或正式考试评分。具体权限和适龄要求仍服从当前宿主。
 
