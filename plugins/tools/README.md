@@ -1,6 +1,6 @@
 # Tools Plugin
 
-`tools` 把日常邮件、媒体下载、当前用户 OneDrive 与 Linux systemd 用户级服务管理放在一个安装包，`github` 仍独立。五个公开 Skill 为 `tools/email-mail`、`tools/youtube-download`、`tools/x-download`、`tools/onedrive-files` 和 `tools/linux-systemd-user`。邮件与 OneDrive 凭据保持在用户家目录的 `~/.agent-plugin-marketplace/`，systemd 用户 unit 位于 `~/.config/systemd/user/`。
+`tools` 把日常邮件、媒体下载、当前用户 OneDrive、Linux systemd 服务/Timer 和 Linux 用户磁盘缓存清理放在一个安装包，`github` 仍独立。七个公开 Skill 为 `tools/email-mail`、`tools/youtube-download`、`tools/x-download`、`tools/onedrive-files`、`tools/linux-systemd-user`、`tools/linux-systemd-timer` 和 `tools/linux-disk-cleanup`。邮件与 OneDrive 凭据保持在用户家目录的 `~/.agent-plugin-marketplace/`，systemd 用户 unit 位于 `~/.config/systemd/user/`。
 
 ```bash
 claude plugin install tools@agent-plugin-marketplace
@@ -111,6 +111,58 @@ node plugins/tools/shared/scripts/systemd-user.mjs linger status
 此功能需要 Linux systemd、Node.js 18+ 和可用的用户 systemd/DBus。所有命令返回 JSON，`--exec` 为绝对路径，`--arg` 可重复；带有机密的环境文件应限制为当前用户拥有的 0600 权限，避免将密码直接写入启动参数。
 
 [对话引导与确认流程](skills/linux-systemd-user/references/guided-creation.md) · [命令与结果](skills/linux-systemd-user/references/operations.md) · [权限与误操作保护](skills/linux-systemd-user/references/security-and-results.md)
+
+## Linux systemd Timer（普通用户的定时任务）
+
+`tools/linux-systemd-timer` 新增了**对话式创建**：告诉 Agent「每天凌晨 3 点执行这个 Python 脚本」，它会先核对实际启动命令、目标主机时区和日历计划，只问缺失的信息，展示经过 `systemd-analyze calendar` 验证的接下来触发时刻，得到最终确认后才创建。用户无需自己编写 `.timer` 或 `.service`。
+
+```bash
+node plugins/tools/shared/scripts/systemd-timer.mjs --help
+node plugins/tools/shared/scripts/systemd-timer.mjs doctor
+node plugins/tools/shared/scripts/systemd-timer.mjs calendar '*-*-* 03:00:00'
+node plugins/tools/shared/scripts/systemd-timer.mjs create nightly-backup \
+  --exec /usr/bin/python3 \
+  --arg /home/example/scripts/backup.py \
+  --calendar '*-*-* 03:00:00'
+node plugins/tools/shared/scripts/systemd-timer.mjs enable nightly-backup --now
+node plugins/tools/shared/scripts/systemd-timer.mjs status nightly-backup
+node plugins/tools/shared/scripts/systemd-timer.mjs logs nightly-backup --lines 100
+node plugins/tools/shared/scripts/systemd-timer.mjs update nightly-backup \
+  --calendar 'Mon..Fri *-*-* 03:00:00' --confirm yes
+```
+
+这是一组同名的 `Type=oneshot` 用户 `.service` 和 `.timer`。默认只创建文件，不立即执行或启用；`Persistent=no` 默认不补执行 timer 停用期间错过的日历触发；`AccuracySec=1min` 表示存在约一分钟精度窗口。`enable --now` 会启动定时调度器，若选择 `Persistent=yes`，恢复/激活定时器时可能立即补跑一次，需用户明确确认。想在用户未登录时定时执行，必须先检查 `linger=yes`；它影响同一用户其他服务，不能擅自开启。和长期运行的 service 管理分离，定时脚本 CLI 不修改原有 systemd-user 服务配置。
+
+[对话式引导](skills/linux-systemd-timer/references/guided-creation.md) · [CLI 与结果](skills/linux-systemd-timer/references/operations.md) · [权限和副作用防护](skills/linux-systemd-timer/references/security-and-results.md)
+
+## Linux 用户磁盘检查与安全缓存清理
+
+`tools/linux-disk-cleanup` 可通过自然语言分析空间并审阅缓存维护计划。Agent 只能只读运行 `doctor/report/scan`，用户确定后**必须在目标 Linux 的本地交互终端亲自执行和确认清理**。原先 `--confirm yes` 已废弃，清理命令无控制终端时直接拒绝。`plan` 是扫描结果生成的 SHA256 计划指纹；等待人工输入期间候选变化也会拒绝执行。普通缓存会列出候选文件/大小；npm 内容寻址缓存只提供原生维护计划，不预测将回收的块和空间。
+
+```bash
+node plugins/tools/shared/scripts/linux-disk-cleanup.mjs --help
+node plugins/tools/shared/scripts/linux-disk-cleanup.mjs doctor
+node plugins/tools/shared/scripts/linux-disk-cleanup.mjs report
+node plugins/tools/shared/scripts/linux-disk-cleanup.mjs scan --scope user-cache --older-than 30
+node plugins/tools/shared/scripts/linux-disk-cleanup.mjs scan --scope npm-cache
+node plugins/tools/shared/scripts/linux-disk-cleanup.mjs scan --scope npm-logs --older-than 30
+
+# 以下命令仅供用户在本地交互终端亲自执行，Agent 不代输入：
+# 必须先取得本次 scan 的 plan SHA256 并仔细核对预览。
+node plugins/tools/shared/scripts/linux-disk-cleanup.mjs clean \
+  --scope user-cache --older-than 30 \
+  --plan SHA256_FROM_SCAN
+
+# npm 缓存只走官方 npm cache verify，不接受 --older-than。
+node plugins/tools/shared/scripts/linux-disk-cleanup.mjs clean \
+  --scope npm-cache --plan NPM_SCAN_SHA256
+```
+
+仅支持当前 Linux 普通用户的 `~/.cache`、`~/.npm/_cacache`、`~/.npm/_logs`。`~/.cache` 与 npm 历史日志默认只处理超过 30 天的普通文件；**`_cacache` 由 `npm cache verify` 原生校验/垃圾回收，完全不按文件年龄逐个删除**，与 npm 官方内容寻址缓存结构保持一致。不会修改项目 `node_modules`、Docker、数据库、系统日志或系统目录。候选文件如在等待用户输入期间发生变化，CLI 会拒绝执行。原生 npm 校验可能改变部分内部索引并回收无用数据，清理不可撤销，应先核对风险。
+
+`npm cache verify` 是 npm 官方建议的缓存校验和垃圾回收方式（[npm 官方命令文档](https://docs.npmjs.com/cli/v11/commands/npm-cache/)），会检查缓存索引和内容；该流程无法提供按文件年龄删除的承诺。`report` 是有上限的目录分析，可能 `truncated=true`；普通缓存 `estimated_bytes` 表示预计逻辑字节，npm-cache 则为 `null`（无法预估原生垃圾回收量）。执行 `clean` 时必须在目标主机 TTY 手输 `DELETE <scope> <SHA前12位>`，并再次核对缓存内容。**该检查阻止无终端自动执行，但同 UID 恶意 Agent 能模拟终端，因此不等同于可信宿主审批**；严格不可伪造的人工授权仍需额外信任边界。工具不使用 `sudo` 或 `rm -rf`。
+
+[对话引导](skills/linux-disk-cleanup/references/guided-cleanup.md) · [CLI 参数与返回状态](skills/linux-disk-cleanup/references/operations.md) · [权限与清理风险](skills/linux-disk-cleanup/references/security-and-results.md)
 
 ## 本地测试
 

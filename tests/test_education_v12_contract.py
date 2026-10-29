@@ -47,7 +47,7 @@ class EducationV12ContractTests(unittest.TestCase):
         self.assertEqual({item["name"] for item in result["ungroupedSkills"]}, EXPECTED)
         self.assertEqual({p.parent.name for p in SKILLS.glob("*/SKILL.md")}, EXPECTED)
         catalog = {x["id"] for x in runtime("catalog")["skills"]}
-        self.assertEqual(runtime("catalog")["publicSkillCount"], 64)
+        self.assertEqual(runtime("catalog")["publicSkillCount"], 66)
         for name in EXPECTED:
             self.assertIn("education/" + name, catalog)
             self.assertEqual(runtime("skill", "education/" + name)["skill"]["name"], name)
@@ -168,7 +168,7 @@ class EducationV12ContractTests(unittest.TestCase):
     def test_runtime_doctor_has_no_composition_or_contract_issues(self):
         d = runtime("doctor")
         self.assertTrue(d["ok"])
-        self.assertEqual(d["publicSkillCount"], 64)
+        self.assertEqual(d["publicSkillCount"], 66)
         self.assertEqual(d["internalSkillCount"], 1)
         self.assertEqual(d["contractIssues"], [])
         self.assertEqual(d["compositionIssues"], [])

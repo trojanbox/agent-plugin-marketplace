@@ -40,7 +40,7 @@ export class SystemdUserError extends Error {
 }
 function fail(status, message, details) { throw new SystemdUserError(status, message, details); }
 function ensure(condition, message) { if (!condition) fail('invalid_input', message); }
-function cleanLine(value, label) {
+export function cleanLine(value, label) {
   ensure(typeof value === 'string' && value.length <= 4096 && !/[\x00-\x1f\x7f]/u.test(value),
     label + ' 含控制字符或长度不合法');
   return value;
@@ -127,18 +127,18 @@ export function parseArgs(argv) {
   else ensure(values.confirm === undefined, 'create 不支持 --confirm');
   return values;
 }
-function escapeToken(value) {
+export function escapeToken(value) {
   cleanLine(value, 'systemd 参数');
   // ExecStart expands $ENV and %specifiers: double both to preserve literal argv.
   return '"' + value.replace(/\\/gu, '\\\\').replace(/"/gu, '\\"')
     .replace(/%/gu, '%%').replace(/\$/gu, () => '$$') + '"';
 }
-function escapePath(value) {
+export function escapePath(value) {
   // WorkingDirectory/EnvironmentFile do specifier expansion (%), but do not expand $ENV.
   return '"' + cleanLine(value, 'systemd 路径').replace(/\\/gu, '\\\\')
     .replace(/"/gu, '\\"').replace(/%/gu, '%%') + '"';
 }
-function escapeValue(value) {
+export function escapeValue(value) {
   return cleanLine(value, 'systemd 字段').replace(/\\/gu, '\\\\').replace(/%/gu, '%%');
 }
 export function serviceContents(request) {
@@ -160,24 +160,24 @@ export function serviceContents(request) {
   return lines.join('\n');
 }
 
-function currentUid(ctx) { return ctx.uid ?? process.getuid?.(); }
+export function currentUid(ctx) { return ctx.uid ?? process.getuid?.(); }
 function currentHome(ctx) { return ctx.home ?? os.userInfo().homedir; }
-function checkPlatform(ctx) {
+export function checkPlatform(ctx) {
   if ((ctx.platform ?? process.platform) !== 'linux') fail('unsupported_platform', '仅支持 Linux systemd');
   if (!Number.isInteger(currentUid(ctx)) || currentUid(ctx) === 0) {
     fail('unsupported_user', '请以目标普通用户身份运行，拒绝 root / 无法识别的用户');
   }
 }
-function unitPath(ctx, unit) {
+export function unitPath(ctx, unit) {
   const home = currentHome(ctx);
   ensure(path.isAbsolute(home), '用户家目录必须是绝对路径');
   return path.join(home, '.config', 'systemd', 'user', unit);
 }
-async function lstatOrNull(file) {
+export async function lstatOrNull(file) {
   try { return await fs.lstat(file); }
   catch (error) { if (error.code === 'ENOENT') return null; throw error; }
 }
-async function unitDirectory(ctx, create = false) {
+export async function unitDirectory(ctx, create = false) {
   const home = currentHome(ctx);
   ensure(path.isAbsolute(home), '用户家目录必须是绝对路径');
   let dir = home;
@@ -210,7 +210,7 @@ async function existingManaged(ctx, unit) {
   }
   return { file, content };
 }
-async function validateService(request, ctx) {
+export async function validateService(request, ctx) {
   const bin = await fs.stat(request.bin).catch(() => null);
   if (!bin?.isFile()) fail('invalid_input', '--exec 必须指向现有的普通可执行文件');
   try { await fs.access(request.bin, fsConstants.X_OK); }
@@ -236,7 +236,7 @@ function errorHint(error) {
   }
   return new SystemdUserError('command_failed', 'systemd 命令执行失败', { error: details });
 }
-async function command(ctx, program, args, soft = false) {
+export async function command(ctx, program, args, soft = false) {
   try {
     const result = await (ctx.runner ?? execFileAsync)(program, args,
       { timeout: 15000, maxBuffer: 768 * 1024, encoding: 'utf8' });
@@ -249,7 +249,7 @@ async function command(ctx, program, args, soft = false) {
     throw errorHint(error);
   }
 }
-async function manager(ctx) {
+export async function manager(ctx) {
   await command(ctx, 'systemctl', ['--user', 'show-environment']);
 }
 async function inspect(ctx, unit) {
@@ -260,7 +260,7 @@ async function inspect(ctx, unit) {
   if (!properties.LoadState) fail('verification_failed', 'systemctl 未返回 LoadState', { unit });
   return properties;
 }
-async function linger(ctx) {
+export async function linger(ctx) {
   const r = await command(ctx, 'loginctl',
     ['show-user', String(currentUid(ctx)), '--property=Linger', '--value'], true);
   return r.ok ? (r.stdout.trim() === 'yes' ? 'yes' : r.stdout.trim() === 'no' ? 'no' : 'unknown') : 'unknown';

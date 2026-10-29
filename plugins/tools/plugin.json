@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "name": "tools",
-  "version": "2.3.0",
-  "description": "日常工具：QQ 邮件、YouTube/X 公开媒体下载、OneDrive 云文件管理、Linux systemd 普通用户服务与自启。保留原凭据和本用户权限边界，GitHub 操作保持独立。",
+  "version": "2.5.0",
+  "description": "日常工具：QQ 邮件、YouTube/X 下载、OneDrive、Linux systemd 用户服务/Timer 和用户磁盘缓存诊断清理（对话引导、预览确认）。仅在当前用户权限内运行，GitHub 独立。",
   "skills": "./skills",
   "shared": "./shared"
 }
