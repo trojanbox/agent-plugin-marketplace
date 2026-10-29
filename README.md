@@ -1,6 +1,6 @@
 # Agent Plugin Marketplace
 
-一个可搬迁、可直接被 Claude Code / Codex 安装的 Agent Plugin / Skill Marketplace，同时保留独立的 `AI_USAGE.md + skill-runtime.js` 自用 Runtime。
+可被 Claude Code / Codex 直接安装的 Plugin Marketplace：13 个 Plugin、63 个 Public Skill（另有 1 个 internal Skill 只由自用 Runtime 发现），按领域分包；同时保留独立的 `AI_USAGE.md + skill-runtime.js` 自用 Runtime。
 
 ```text
 Marketplace
@@ -9,119 +9,133 @@ Marketplace
       → Internal Skills / shared resources
 ```
 
-## Claude Code 安装
+## 两种用法
+
+| 场景 | 用什么 | 入口 |
+| --- | --- | --- |
+| 只想要 Skill，交给宿主按需发现 | Claude Code / Codex 原生安装 | 下面的安装命令 |
+| 需要 Catalog、Routing、Composition 与 internal Skill | 自用 Runtime | `AI_USAGE.md` + `skill-runtime.js` |
+
+两条链互不依赖：宿主安装后直接发现 Public Skills；自用 Runtime 不参与宿主安装链。
+
+## 快速开始
+
+### Claude Code
 
 ```bash
 claude plugin marketplace add trojanbox/agent-plugin-marketplace
 claude plugin install development@agent-plugin-marketplace
 ```
 
-需要 GitHub Issue 操作的研发工作流还需安装 `github@agent-plugin-marketplace`；原生宿主不会自动安装 Composition 依赖。
+需要 GitHub Issue 写入的研发流程还要安装 `github@agent-plugin-marketplace`：原生宿主不会自动安装 Composition 依赖。其它 Plugin 把 `development` 换成下方 Plugin 一览中的名称。
 
-其它 Plugin 把 `development` 替换为 `research`、`writing`、`data`、`web-app-scaffolding` 等名称即可。
+Claude 原生分发文件：`.claude-plugin/marketplace.json`、`plugins/<plugin>/.claude-plugin/plugin.json`。
 
-Claude 原生分发文件：
-
-```text
-.claude-plugin/marketplace.json
-plugins/<plugin>/.claude-plugin/plugin.json
-```
-
-## Codex 安装
+### Codex
 
 ```bash
 codex plugin marketplace add trojanbox/agent-plugin-marketplace
 codex plugin add development@agent-plugin-marketplace
 ```
 
-Codex 原生分发文件：
+Codex 原生分发文件：`.agents/plugins/marketplace.json`、`plugins/<plugin>/.codex-plugin/plugin.json`。
 
-```text
-.agents/plugins/marketplace.json
-plugins/<plugin>/.codex-plugin/plugin.json
+### 安装后验证
+
+```bash
+claude plugin list
+codex plugin list
+node skill-runtime.js list      # 在仓库根目录执行，不依赖宿主
 ```
 
-## Tools Plugin：邮件、媒体下载与 OneDrive 云存储
+前两条需要在对应宿主里安装并登录后才有输出；第三条确认自用 Runtime 的发现结果，与宿主安装无关。
 
-`tools` 把日常邮件、媒体下载与当前用户的 OneDrive 云文件管理放在一个安装包，`github` 仍独立。四个公开 Skill 为 `tools/email-mail`、`tools/youtube-download`、`tools/x-download` 和 `tools/onedrive-files`。
+### 更新与卸载
+
+```bash
+claude plugin marketplace update agent-plugin-marketplace    # 先刷新 Marketplace 列表
+claude plugin update development@agent-plugin-marketplace
+claude plugin uninstall development@agent-plugin-marketplace
+
+codex plugin marketplace upgrade                             # 刷新 Git marketplace 快照
+codex plugin remove development
+```
+
+## Plugin 一览
+
+| Plugin | 版本 | 分类 | Public Skills | 用途 |
+| --- | --- | --- | --- | --- |
+| `development` | 2.0.1 | Development | 12（+1 internal） | 软件研发：调研/讨论/结论/实施计划 Issue、TDD 任务、测试设计、Bug 根因调查、S 级 Patch |
+| `writing` | 4.0.2 | Documents | 10 | 小说流程、清晰化与去 AI 味、管理层沟通、原理科普与操作指南 |
+| `finance` | 1.2.0 | Finance | 7 | 公司研究、财报与估值、组合风险、标的筛选、市场雷达、个人财务规划、宏观分析 |
+| `education` | 1.2.0 | Education | 5 | 家庭教育指导、学习辅导、K-12 课程方案与分层改造、Anki 卡包 |
+| `reasoning` | 1.3.0 | Research | 5 | 发散创意、科学推理、第一性原理、系统思考、结构化辩论 |
+| `data` | 1.0.0 | Data | 4 | 数据集探索、统计分析、分析结果 QA、数据可视化 |
+| `research` | 1.0.1 | Research | 4 | 外部资料检索、证据综合、领域知识构建、社区调研 |
+| `tools` | 2.2.0 | Productivity | 4 | QQ 邮件、YouTube/X 公开媒体下载、OneDrive 云文件管理 |
+| `github` | 1.0.0 | Productivity | 3 | Issue 生命周期、查重与复发判断、交接同步与远端写入恢复 |
+| `web-app-scaffolding` | 1.4.2 | Development | 3 | React+TS、Node+NestJS 与全栈脚手架创建、扩展和审查 |
+| `ai-workflow` | 1.0.0 | Development | 2 | Skill Runtime/路由/组合设计与 Agent 目标提示词 |
+| `business` | 1.0.0 | Business | 2 | 长期业务上下文与竞争战略分析 |
+| `design` | 1.0.0 | Design | 2 | UI mockup、原型、wireframe、deck 与 Design System |
+
+每个 Plugin 的完整路由边界与 Skill 列表：
+
+```bash
+node skill-runtime.js list <plugin>
+node skill-runtime.js catalog          # 跨 Plugin 发现
+```
+
+依赖与前置：
+
+- `development` 的 Issue 写入依赖 `github`；原生宿主不会自动安装。
+- `writing`、`reasoning` 可按需组合 `research`；是否组合由主 Skill 正文的条件决定。
+- `tools` 的 Node.js CLI 需要 18+；YouTube 的 JS 执行需要 Node.js 22+ 或 Deno，Linux FFmpeg TAR/XZ 解包需要 Python 3 标准库。
+- `education/anki-deck-builder` 需要 Python 3.10+ 与 `genanki==0.13.1`，不需要运行中的 Anki。
+
+## 需要细看的 Plugin
+
+### Tools：邮件、媒体下载与 OneDrive
+
+四个公开 Skill：`tools/email-mail`、`tools/youtube-download`、`tools/x-download`、`tools/onedrive-files`。凭据与配置放在用户家目录的 `~/.agent-plugin-marketplace/`，与其它 Plugin 隔离；`github` 仍独立。
 
 ```bash
 claude plugin install tools@agent-plugin-marketplace
 # 或：codex plugin add tools@agent-plugin-marketplace
-node plugins/tools/shared/scripts/email.mjs --help
-node plugins/tools/shared/scripts/youtube.mjs --help
-node plugins/tools/shared/scripts/x.mjs --help
-node plugins/tools/shared/scripts/onedrive.mjs --help
 ```
 
-### 从独立 Email Plugin 迁移
+完整命令、平台限制、从旧 `email` Plugin 的迁移步骤与安全边界见 [`plugins/tools/README.md`](plugins/tools/README.md)。
 
-升级后安装 `tools`，停用/卸载宿主中的旧 `email` Plugin；旧 `email/email-mail` ID 改为 `tools/email-mail`，不保留两个兼容 Plugin。**用户原来的 `~/.agent-plugin-marketplace/email/config.toml`、QQ 授权码、默认收件人、`email/bin/` 中的 Himalaya 及目录权限都保持原样**，新工具直接读取，不需要重新配置邮箱，也不要手动移动或删除家目录里的邮件文件。
+### Development
 
-邮件原有搜索（默认 INBOX，可指定文件夹）、读取正文、发送（含普通附件）、收到附件下载以及 Himalaya 2.2.1 自修复不变。Agent 在任务授权内可主动发送；发送结果未知时绝不自动重发。实际 QQ 收发依赖有效授权码和服务端可用性，不能从本地测试推断送达。详见 [邮件配置](plugins/tools/skills/email-mail/references/setup.md) 与 [邮件操作](plugins/tools/skills/email-mail/references/operations.md)。
+12 个公开 Skill 覆盖研发 Issue 文档、讨论、结论与交接规格、实施计划与 TDD 任务、业务测试与系统/E2E 测试设计、独立 Bug 根因调查，以及 S 级局部源码 Patch Fast Lane；另有 1 个 internal Skill（`github-incidental-bug-capture`）只由自用 Runtime 发现。只有 S 级 Patch 可直接实施源码修改，M/L 开发由下游 Coding Agent 执行；现成 Issue 的纯 GitHub 写操作走 `github` Plugin。
 
-### YouTube 单视频下载
+### Writing
 
-```bash
-node plugins/tools/shared/scripts/youtube.mjs repair
-node plugins/tools/shared/scripts/youtube.mjs video URL
-node plugins/tools/shared/scripts/youtube.mjs video URL --format mkv --max-height 2160
-node plugins/tools/shared/scripts/youtube.mjs audio URL --format m4a
-node plugins/tools/shared/scripts/youtube.mjs subtitles URL --lang zh --format srt
-```
+10 个公开 Skill = 7 个小说流程 Skill（讨论、冻结结论、章纲、正文/可写性、文笔精修、统一审查、修订验收）+ 3 个通用写作 Skill（清晰化/去 AI 味、管理层沟通、科普/使用指南）。
 
-`URL` 替换为单个公开视频链接。视频默认 **MP4 / 最高 1080p**，音频默认 **MP3**，字幕默认 **中文 SRT**（可选语言/VTT；人工优先，同语言原生自动字幕后备，无目标语言就明确不可用）。默认输出到执行用户 `~/Downloads/YouTube`，可用 `--dir` 指定绝对目录；默认不覆盖，可校验续传，必要时允许 FFmpeg 真正转码。视频文件在格式/音轨/时长/解码验证通过后才报告成功。
+- 小说人物、连续性、表达、可读性、节奏和全书终审统一通过 `writing/fiction-review` 按需选择专项模式；Full-book 仍需完整通读和版本绑定。
+- `writing/fiction-manuscript-drafting` 有 READINESS_ONLY（只查可写性）和 DRAFT（成文）两种模式，后者必须先通过同一 Readiness Gate。
+- `writing/clear-writing` 提供普通清晰化与 Humanizer 模式；`writing/explanatory-writing` 分别提供科学原理讲解与实操指南模式。
+- 旧逻辑 ID 不支持自动别名；完整映射、迁移边界及验收见 [Writing v4.0 迁移说明](plugins/writing/MIGRATION-v4.0.md)。
 
-依赖由 Agent 检查并从固定官方版本、SHA-256 校验后的资产安装到用户家目录，不修改系统软件或邮箱配置。Node.js CLI 需要 18+；YouTube JS 执行用 Node.js 22+ 或 Deno，Linux FFmpeg TAR/XZ 的安全解包需要 Python 3 标准库。**目前官方 yt-dlp FFmpeg-Builds 没有 macOS 资产**：macOS 可用既有 FFmpeg/ffprobe，缺少时会明确报告平台阻塞，不使用未经核验的包。
+### Education
 
-[参数与结果](plugins/tools/skills/youtube-download/references/operations.md) · [依赖与平台支持](plugins/tools/skills/youtube-download/references/dependencies.md) · [安全与恢复](plugins/tools/skills/youtube-download/references/security-and-results.md)
+5 个公开 Skill：`k12-lesson-planning`（从零设计课程）与 `k12-lesson-differentiation`（必须基于可读的现有教案做分层改造）保持稳定，新增 `family-education-guidance`（广义家庭教育行动指导）和 `learning-coach`（儿童、青少年和成人的真实互动学习辅导）。
 
-### X / Twitter 公开视频下载
+`anki-deck-builder` 从当前可访问的 Markdown/纯文本或最近一个知识对话主题提炼知识，经用户分批审核并最终确认后生成独立 `.apkg` 与 `cards.json`。Basic 为主，支持 Cloze 与确有双向意义的 Reversed；内容核查按需借助可靠外部证据，不负责 EPUB/PDF 原生解析或同步。
 
-```bash
-node plugins/tools/shared/scripts/x.mjs doctor
-node plugins/tools/shared/scripts/x.mjs video 'https://x.com/user/status/1234567890123456789'
-node plugins/tools/shared/scripts/x.mjs audio 'https://x.com/user/status/1234567890123456789'
-node plugins/tools/shared/scripts/x.mjs video 'https://x.com/user/status/1234567890123456789/video/2' --max-height 720
-```
+课堂设计可以按提供的中国及其他地区真实课程体系和教材适配，精确标准必须核验；不把美国州标准或 NGSS/C3 方法照搬当成本地官方课标。学习辅导按真实回答选择提示、讲解、练习与反馈，不凭静态文章宣称学会；家长建议按需提供数周尝试计划，不自动追踪儿童，不做心理/学习障碍诊断或正式考试评分。具体权限和适龄要求仍服从当前宿主。
 
-仅支持单条**公开视频**及其音轨，默认 MP4（最高 1080p）或 MP3；无声动画 GIF 保存为无声 MP4，无法提取音频。多视频帖需在 URL 中用 `/video/N` 选择一个，不下载用户主页、图片、Spaces、付费/私有内容或批量帖子。默认保存到 `~/Downloads/X`，以安全化标题命名；与 YouTube 共享已校验的 yt-dlp/FFmpeg 依赖，但锁与断点目录独立。**不会登录 X、读取 Cookie 或绕过访问限制**，实际能否下载取决于该帖子及 X 当前公开接口。
+### GitHub 与 Reasoning 边界
 
-[X 操作与返回结果](plugins/tools/skills/x-download/references/operations.md) · [依赖与平台限制](plugins/tools/skills/x-download/references/dependencies.md) · [X 安全与错误处理](plugins/tools/skills/x-download/references/security-and-results.md)
+`github` 提供 Issue 管理、查重与交接同步；三个 Skill 的 canonical ID 统一为 `github/github-issue-manager`、`github/github-issue-triage`、`github/github-issue-handoff-sync`，不保留旧 Development 实现。跨 Plugin 资源按已安装 Skill 路径定位。
 
-### OneDrive 云文件管理（微软 Graph v1.0）
+`reasoning/divergent-ideation` 负责跨领域创意发散；`scientific-reasoning` 负责事实、竞争假设、因果机制与预测；`first-principles` 负责从基本事实和约束重新构建方案；`systems-thinking` 负责反馈回路、反身性和动态演化；`structured-debate` 负责观点攻防与命题版本。选定小说后进入 Writing 的创作讨论；仅在要求 GitHub 留档时组合 github Plugin，辩论 Issue 必须使用 `【辩论】` 前缀。研发源码、决策、测试与 Patch 规则仍由 Development 持有。
 
-使用当前微软账号的委派 `Files.ReadWrite` 权限。需要用户自行注册微软 Entra **Public Client** 应用并提供公开 Client ID；应用可选择允许个人、工作/学校账号。工具不收集密码、Client Secret 或 Cookie。
+### Web App Scaffolding
 
-```bash
-node plugins/tools/shared/scripts/onedrive.mjs configure CLIENT_ID --tenant common
-node plugins/tools/shared/scripts/onedrive.mjs auth start
-# 用户在微软网页输入设备码、完成授权后：
-node plugins/tools/shared/scripts/onedrive.mjs auth complete
-node plugins/tools/shared/scripts/onedrive.mjs list /
-node plugins/tools/shared/scripts/onedrive.mjs search '笔记'
-node plugins/tools/shared/scripts/onedrive.mjs info 'Documents/笔记.txt'
-node plugins/tools/shared/scripts/onedrive.mjs download 'Documents/笔记.txt'
-node plugins/tools/shared/scripts/onedrive.mjs upload /absolute/report.pdf 'Documents'
-node plugins/tools/shared/scripts/onedrive.mjs mkdir 'Documents/备份'
-node plugins/tools/shared/scripts/onedrive.mjs trash 'Documents/旧稿.txt' --confirm yes
-```
-
-以上 `CLIENT_ID` 是占位符。所有云端路径相对于当前用户 OneDrive 根目录；默认下载到 `~/Downloads/OneDrive`，并防止未经确认覆盖。上传采用分片会话；下载校验大小和可用远端摘要后才发布。Token 存入私有 `~/.agent-plugin-marketplace/onedrive/`，与原 QQ 邮件和视频配置隔离。首版不处理共享站点、跨账号同步或永久删除。**没有用户的 Client ID/设备码授权时，只能进行模拟接口测试，不能宣称真实 OneDrive 联调成功。**
-
-[OneDrive 操作与结果](plugins/tools/skills/onedrive-files/references/operations.md) · [首次授权配置](plugins/tools/skills/onedrive-files/references/auth.md) · [安全与风险边界](plugins/tools/skills/onedrive-files/references/security-and-results.md)
-
-### 本地测试
-
-```bash
-node scripts/generate-host-manifests.mjs
-node scripts/validate-host-manifests.mjs
-node skill-runtime.js doctor
-python3 -m unittest discover -s tests -p 'test_*.py'
-node --test plugins/tools/shared/tests/*.mjs
-```
-
-真实 FFmpeg 集成测试使用本地生成媒体与下载器替身，无需 QQ 凭据或 YouTube/X 账号；可通过 `YOUTUBE_TEST_FFMPEG` / `YOUTUBE_TEST_FFPROBE` 指定可执行文件，缺少时明确标记为跳过。OneDrive 使用模拟 Microsoft Graph HTTP/OAuth 响应测试，不能替代用户授权的真实云端联调。实际 YouTube/X 网络可用性与跨平台原生执行也需要另外验证。
+`react-typescript-frontend-scaffold`、`node-nestjs-backend-scaffold`、`react-nestjs-fullstack-scaffold` 分别绑定具体技术栈；frontend/backend/fullstack 只是 Group 软分组。详见 [`plugins/web-app-scaffolding/README.md`](plugins/web-app-scaffolding/README.md)。
 
 ## 自用 Runtime
 
@@ -137,42 +151,44 @@ node skill-runtime.js doctor
 
 `list` / `list <plugin>` / `catalog` 默认输出 Markdown；需要机器解析时加 `--json`，例如 `node skill-runtime.js catalog --json`。
 
-## Canonical Source 与生成文件
+在仓库根目录执行上述命令即可；`plugins/<plugin>/shared/scripts/` 下的脚本同理，安装到宿主后位于插件安装目录，由 Agent 解析实际路径，不要照抄仓库相对路径。
 
-唯一事实源仍然是：
+## 维护与校验
 
-```text
-marketplace.json
-plugins/<plugin>/plugin.json
-```
-
-Claude / Codex manifest 都由它们确定性生成，禁止手工维护生成文件：
+修改 Marketplace / Plugin / Skill / Group metadata / 路由 / Composition 后运行：
 
 ```bash
 node scripts/generate-host-manifests.mjs
 node scripts/validate-host-manifests.mjs
 node skill-runtime.js doctor
+python3 -m unittest discover -s tests -p 'test_*.py'
+node --test plugins/tools/shared/tests/*.mjs
 ```
 
 CI 会重新生成 Host manifests，并通过 `git diff --exit-code` 阻止生成产物与 Canonical Source 漂移。
 
-## 目录
+真实 FFmpeg 集成测试使用本地生成媒体与下载器替身，无需 QQ 凭据或 YouTube/X 账号；可通过 `YOUTUBE_TEST_FFMPEG` / `YOUTUBE_TEST_FFPROBE` 指定可执行文件，缺少时明确标记为跳过。OneDrive 使用模拟 Microsoft Graph HTTP/OAuth 响应测试，不能替代用户授权的真实云端联调。实际 YouTube/X 网络可用性与跨平台原生执行也需要另外验证。
+
+## 目录结构
 
 ```text
-AI_USAGE.md
-skill-runtime.js
-marketplace.json
+AI_USAGE.md                 自用 Runtime 稳定入口
+skill-runtime.js            Catalog / Routing / Composition
+marketplace.json            Canonical Catalog
+PLUGIN_MODEL.md             Plugin 模型
+SKILL_COMPOSITION.md        Composition 规范
 scripts/
   generate-host-manifests.mjs
   validate-host-manifests.mjs
   host-manifest-lib.mjs
 .claude-plugin/
-  marketplace.json
+  marketplace.json          Claude 生成产物
 .agents/plugins/
-  marketplace.json
+  marketplace.json          Codex 生成产物
 plugins/
   <plugin>/
     plugin.json
+    README.md               （部分 Plugin 提供）
     .claude-plugin/
       plugin.json
     .codex-plugin/
@@ -187,11 +203,11 @@ plugins/
       <internal-skill>/
         SKILL.md
     shared/
-tests/
-vendor/
+tests/                      契约测试与语义路由评测
+vendor/baoyu-design/        design Plugin 的上游固定快照
 ```
 
-`internal-skills/` 仅在确有内部组合能力时存在。该目录由自用 Runtime 扫描，不进入 Claude / Codex 默认 Skill discovery。
+`internal-skills/` 仅在确有内部组合能力时存在。该目录由自用 Runtime 扫描，不进入 Claude / Codex 默认 Skill discovery。`vendor/baoyu-design/` 是 `design` Plugin 的上游源码固定快照，用于离线读取方法与素材，许可见 `vendor/baoyu-design/LICENSE`。
 
 ## 设计原则
 
@@ -202,27 +218,13 @@ vendor/
 - Claude / Codex Host Adapter 只负责分发，不复制 `uses / optional_uses / groups / phase / visibility` Composition Engine。
 - `AI_USAGE.md + skill-runtime.js` 保留为独立自用入口，不参与宿主安装链。
 
-更多设计约束见 [`PLUGIN_MODEL.md`](./PLUGIN_MODEL.md) 与 [`SKILL_COMPOSITION.md`](./SKILL_COMPOSITION.md)。
+## 文档索引
 
-## Writing v4.0：十个公开入口
-
-Writing 现有 7 个小说流程 Skill（讨论、冻结结论、章纲、正文/可写性、文笔精修、统一审查、修订验收）与 3 个通用写作 Skill（清晰化/去 AI 味、管理层沟通、科普/使用指南）。
-
-- 小说人物、连续性、表达、可读性、节奏和全书终审统一通过 `writing/fiction-review` 按需选择专项模式；Full-book 仍需完整通读和版本绑定。
-- `writing/fiction-manuscript-drafting` 现在有 READINESS_ONLY（只查可写性）和 DRAFT（成文）两种模式，后者必须先通过同一 Readiness Gate。
-- `writing/clear-writing` 提供普通清晰化与 Humanizer 模式；`writing/explanatory-writing` 分别提供科学原理讲解与实操指南模式。
-- 旧逻辑 ID 不支持自动别名；完整映射、迁移边界及验收见 [Writing v4.0 迁移说明](plugins/writing/MIGRATION-v4.0.md)。
-
-## Education v1.2.0：教师、家长、学习者与 Anki 卡包
-
-Education 现有 **5 个公开 Skill**（原 4 个继续保持稳定）：保留 `education/k12-lesson-planning`（从零设计课程）与 `education/k12-lesson-differentiation`（必须基于可读的现有教案做分层改造），新增 `education/family-education-guidance`（广义家庭教育行动指导）和 `education/learning-coach`（儿童、青少年和成人的真实互动学习辅导）。
-
-新增 `education/anki-deck-builder`：从当前可访问的 Markdown/纯文本或最近一个知识对话主题提炼知识，经用户分批审核并最终确认后生成独立 `.apkg` 与 `cards.json`。Basic 为主，支持 Cloze 与确有双向意义的 Reversed。内容核查按需借助可靠外部证据，独立构建依赖 Python 3.10+、`genanki==0.13.1`，不需要运行中的 Anki，不负责 EPUB/PDF 原生解析或同步。详见 [Skill 使用说明](plugins/education/skills/anki-deck-builder/SKILL.md)。
-
-课堂设计可以按提供的中国及其他地区真实课程体系和教材适配，精确标准必须核验；不把美国州标准或 NGSS/C3 方法照搬当成本地官方课标。学习辅导按真实回答选择提示、讲解、练习与反馈，不凭静态文章宣称学会；家长建议按需提供数周尝试计划，不自动追踪儿童，不做心理/学习障碍诊断或正式考试评分。具体权限和适龄要求仍服从当前宿主。
-
-## GitHub 与 Reasoning 边界
-
-`github` 提供 Issue 管理、查重与交接同步；这三个 Skill 的 canonical ID 统一为 `github/github-issue-manager`、`github/github-issue-triage`、`github/github-issue-handoff-sync`，不保留旧 Development 实现。跨 Plugin 资源按已安装 Skill 路径定位。
-
-`reasoning/divergent-ideation` 负责跨领域创意发散；`scientific-reasoning` 负责事实、竞争假设、因果机制与预测；`first-principles` 负责从基本事实和约束重新构建方案；`systems-thinking` 负责反馈回路、反身性和动态演化；`structured-debate` 负责观点攻防与命题版本。选定小说后进入 Writing 的创作讨论；仅在要求 GitHub 留档时组合 github Plugin，辩论 Issue 必须使用 `【辩论】` 前缀。研发源码、决策、测试与 Patch 规则仍由 Development 持有。
+- [`AI_USAGE.md`](./AI_USAGE.md)：自用 Runtime 的 bootstrap 与日常路由。
+- [`PLUGIN_MODEL.md`](./PLUGIN_MODEL.md)：Canonical 分层与 Host 分发层。
+- [`SKILL_COMPOSITION.md`](./SKILL_COMPOSITION.md)：`uses / optionalUses`、Group、phase 与 visibility 规范。
+- [`plugins/tools/README.md`](./plugins/tools/README.md)：邮件、YouTube、X、OneDrive 的完整用法与迁移。
+- [`plugins/writing/MIGRATION-v4.0.md`](./plugins/writing/MIGRATION-v4.0.md)：Writing v4.0 旧 ID 映射。
+- [`plugins/web-app-scaffolding/README.md`](./plugins/web-app-scaffolding/README.md)：脚手架模板说明。
+- [`BAOYU_DESIGN_INTEGRATION.md`](./BAOYU_DESIGN_INTEGRATION.md)：design Plugin 的上游隔离与离线交付。
+- `tests/`：契约测试，以及 `tests/*-semantic-routing-eval.md` 语义路由评测语料。
