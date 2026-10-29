@@ -17,7 +17,7 @@ def node_json(*arguments: str, check: bool = True) -> dict:
 
 
 class ToolsPluginIntegrationTests(unittest.TestCase):
-    def test_tools_is_single_plugin_with_four_public_skills(self) -> None:
+    def test_tools_is_single_plugin_with_five_public_skills(self) -> None:
         manifest = json.loads((ROOT / 'marketplace.json').read_text(encoding='utf-8'))
         names = [p['name'] for p in manifest['plugins']]
         self.assertEqual(names.count('tools'), 1)
@@ -25,8 +25,8 @@ class ToolsPluginIntegrationTests(unittest.TestCase):
         self.assertIn('github', names)
         self.assertFalse((ROOT / 'plugins' / 'email').exists())
         plugin = node_json('skill-runtime.js', 'list', 'tools', '--json')
-        self.assertEqual(plugin['publicSkillCount'], 4)
-        self.assertEqual({s['name'] for s in plugin['ungroupedSkills']}, {'email-mail', 'youtube-download', 'x-download', 'onedrive-files'})
+        self.assertEqual(plugin['publicSkillCount'], 5)
+        self.assertEqual({s['name'] for s in plugin['ungroupedSkills']}, {'email-mail', 'youtube-download', 'x-download', 'onedrive-files', 'linux-systemd-user'})
         self.assertEqual(plugin['internalSkillCount'], 0)
 
     def test_old_email_id_is_not_exposed_and_new_ids_are_discoverable(self) -> None:
@@ -38,8 +38,8 @@ class ToolsPluginIntegrationTests(unittest.TestCase):
         self.assertIn('tools/onedrive-files', ids)
         self.assertNotIn('email/email-mail', ids)
         self.assertIn('github/github-issue-manager', ids)
-        self.assertEqual(catalog['publicSkillCount'], 63)
-        for name in ('email-mail', 'youtube-download', 'x-download', 'onedrive-files'):
+        self.assertEqual(catalog['publicSkillCount'], 64)
+        for name in ('email-mail', 'youtube-download', 'x-download', 'onedrive-files', 'linux-systemd-user'):
             data = node_json('skill-runtime.js', 'skill', 'tools/' + name)
             self.assertEqual(data['skill']['phase'], 'operations')
             self.assertEqual(data['skill']['pluginRoot'], str(TOOLS))
@@ -105,7 +105,7 @@ console.log(JSON.stringify({linux:configLocation('/home/user'),windows:configLoc
         self.assertLess(len(od_skill), 5000)
         doctor = node_json('skill-runtime.js', 'doctor')
         self.assertTrue(doctor['ok'])
-        self.assertEqual(doctor['skillCount'], 64)
+        self.assertEqual(doctor['skillCount'], 65)
         self.assertEqual(doctor['contractIssues'], [])
 
     def test_email_migration_documents_do_not_change_user_data_root(self) -> None:
@@ -128,6 +128,24 @@ console.log(JSON.stringify({linux:configLocation('/home/user'),windows:configLoc
         self.assertFalse(list(TOOLS.rglob('*.exe')))
         self.assertFalse(list(TOOLS.rglob('config.toml')))
 
+
+    def test_linux_systemd_user_is_discoverable_and_cli_has_safe_entry(self) -> None:
+        skill = (TOOLS / 'skills' / 'linux-systemd-user' / 'SKILL.md').read_text(encoding='utf-8')
+        for reference in ('operations.md', 'security-and-results.md'):
+            self.assertIn('references/' + reference, skill)
+            self.assertTrue((TOOLS / 'skills' / 'linux-systemd-user' / 'references' / reference).exists())
+        self.assertIn('phase: operations', skill)
+        self.assertIn('linger', skill)
+        self.assertLess(len(skill), 5000)
+        cli = str(TOOLS / 'shared' / 'scripts' / 'systemd-user.mjs')
+        help_result = node_json(cli, '--help')
+        self.assertTrue(help_result['ok'])
+        self.assertIn('linger status', help_result['help'])
+        invalid = node_json(cli, 'remove', '../etc/passwd', '--confirm', 'yes', check=False)
+        self.assertEqual(invalid['status'], 'invalid_input')
+        invalid_confirm = node_json(cli, 'linger', 'enable', check=False)
+        self.assertEqual(invalid_confirm['status'], 'invalid_input')
+        self.assertIn('systemd', (TOOLS / 'README.md').read_text(encoding='utf-8'))
 
 if __name__ == '__main__':
     unittest.main()

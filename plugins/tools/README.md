@@ -1,6 +1,6 @@
 # Tools Plugin
 
-`tools` 把日常邮件、媒体下载与当前用户的 OneDrive 云文件管理放在一个安装包，`github` 仍独立。四个公开 Skill 为 `tools/email-mail`、`tools/youtube-download`、`tools/x-download` 和 `tools/onedrive-files`。凭据与配置放在用户家目录的 `~/.agent-plugin-marketplace/`，与其它 Plugin 隔离。
+`tools` 把日常邮件、媒体下载、当前用户 OneDrive 与 Linux systemd 用户级服务管理放在一个安装包，`github` 仍独立。五个公开 Skill 为 `tools/email-mail`、`tools/youtube-download`、`tools/x-download`、`tools/onedrive-files` 和 `tools/linux-systemd-user`。邮件与 OneDrive 凭据保持在用户家目录的 `~/.agent-plugin-marketplace/`，systemd 用户 unit 位于 `~/.config/systemd/user/`。
 
 ```bash
 claude plugin install tools@agent-plugin-marketplace
@@ -83,6 +83,34 @@ node plugins/tools/shared/scripts/onedrive.mjs trash 'Documents/旧稿.txt' --co
 以上 `CLIENT_ID` 是占位符。所有云端路径相对于当前用户 OneDrive 根目录；默认下载到 `~/Downloads/OneDrive`，并防止未经确认覆盖。上传采用分片会话；下载校验大小和可用远端摘要后才发布。Token 存入私有 `~/.agent-plugin-marketplace/onedrive/`，与原 QQ 邮件和视频配置隔离。首版不处理共享站点、跨账号同步或永久删除。**没有用户的 Client ID/设备码授权时，只能进行模拟接口测试，不能宣称真实 OneDrive 联调成功。**
 
 [OneDrive 操作与结果](skills/onedrive-files/references/operations.md) · [首次授权配置](skills/onedrive-files/references/auth.md) · [安全与风险边界](skills/onedrive-files/references/security-and-results.md)
+
+## Linux systemd 用户服务管理（仅普通用户）
+
+`tools/linux-systemd-user` 支持在 Linux 上为**当前普通用户**创建和管理 `systemctl --user` 服务，无需注册额外常驻服务。**创建服务默认采用对话引导**：你只要说「帮我把这个程序加入 systemd」，Agent 会读取已有的项目/命令信息、逐次询问真正缺少的项，展示完整配置供你确认，然后调用底层工具执行。**无需手动拼接 CLI 参数**；服务名和工作目录有依据时可预填，重启策略默认 `on-failure`，启动/自启不会偷偷开启。
+
+以下是供 Agent 自动执行或有经验用户直接调用的**原 CLI**，与对话引导兼容：
+
+```bash
+node plugins/tools/shared/scripts/systemd-user.mjs --help
+node plugins/tools/shared/scripts/systemd-user.mjs doctor
+node plugins/tools/shared/scripts/systemd-user.mjs list
+node plugins/tools/shared/scripts/systemd-user.mjs create myapp \
+  --exec /usr/bin/node \
+  --arg /home/example/apps/myapp/server.js \
+  --cwd /home/example/apps/myapp
+node plugins/tools/shared/scripts/systemd-user.mjs enable myapp --now
+node plugins/tools/shared/scripts/systemd-user.mjs status myapp
+node plugins/tools/shared/scripts/systemd-user.mjs logs myapp --lines 100
+node plugins/tools/shared/scripts/systemd-user.mjs linger status
+```
+
+生成的 unit 保存在 `~/.config/systemd/user/<name>.service`。`create` 只创建文件并刷新用户管理器，启动、自启都需要单独明确执行。`update` 只修改本 CLI 标记创建的 unit；`remove` 要求服务已停止、已禁用并附 `--confirm yes`。
+
+**开机自启区分两个层级**：`enable` 使服务在该用户管理器启动时自动运行；若需要服务器重启后**无人登录仍运行**，还必须检查 `linger=yes`。用户明确授权后可使用 `linger enable --confirm yes` 尝试配置，若系统策略要求管理员权限，工具会停止并报告所需管理员命令，不调用 `sudo`。系统级 service、root 运行、systemd timer 均不在当前范围。
+
+此功能需要 Linux systemd、Node.js 18+ 和可用的用户 systemd/DBus。所有命令返回 JSON，`--exec` 为绝对路径，`--arg` 可重复；带有机密的环境文件应限制为当前用户拥有的 0600 权限，避免将密码直接写入启动参数。
+
+[对话引导与确认流程](skills/linux-systemd-user/references/guided-creation.md) · [命令与结果](skills/linux-systemd-user/references/operations.md) · [权限与误操作保护](skills/linux-systemd-user/references/security-and-results.md)
 
 ## 本地测试
 

@@ -1,6 +1,6 @@
 # Agent Plugin Marketplace
 
-可被 Claude Code / Codex 直接安装的 Plugin Marketplace：13 个 Plugin、63 个 Public Skill（另有 1 个 internal Skill 只由自用 Runtime 发现），按领域分包；同时保留独立的 `AI_USAGE.md + skill-runtime.js` 自用 Runtime。
+可被 Claude Code / Codex 直接安装的 Plugin Marketplace：13 个 Plugin、64 个 Public Skill（另有 1 个 internal Skill 只由自用 Runtime 发现），按领域分包；同时保留独立的 `AI_USAGE.md + skill-runtime.js` 自用 Runtime。
 
 ```text
 Marketplace
@@ -72,7 +72,7 @@ codex plugin remove development
 | `reasoning` | 1.3.0 | Research | 5 | 发散创意、科学推理、第一性原理、系统思考、结构化辩论 |
 | `data` | 1.0.0 | Data | 4 | 数据集探索、统计分析、分析结果 QA、数据可视化 |
 | `research` | 1.0.1 | Research | 4 | 外部资料检索、证据综合、领域知识构建、社区调研 |
-| `tools` | 2.2.0 | Productivity | 4 | QQ 邮件、YouTube/X 公开媒体下载、OneDrive 云文件管理 |
+| `tools` | 2.3.0 | Productivity | 5 | QQ 邮件、YouTube/X 公开媒体下载、OneDrive 云文件管理、Linux systemd 用户服务（新建对话引导） |
 | `github` | 1.0.0 | Productivity | 3 | Issue 生命周期、查重与复发判断、交接同步与远端写入恢复 |
 | `web-app-scaffolding` | 1.4.2 | Development | 3 | React+TS、Node+NestJS 与全栈脚手架创建、扩展和审查 |
 | `ai-workflow` | 1.0.0 | Development | 2 | Skill Runtime/路由/组合设计与 Agent 目标提示词 |
@@ -95,9 +95,9 @@ node skill-runtime.js catalog          # 跨 Plugin 发现
 
 ## 需要细看的 Plugin
 
-### Tools：邮件、媒体下载与 OneDrive
+### Tools：邮件、媒体下载、OneDrive 与 Linux systemd
 
-四个公开 Skill：`tools/email-mail`、`tools/youtube-download`、`tools/x-download`、`tools/onedrive-files`。凭据与配置放在用户家目录的 `~/.agent-plugin-marketplace/`，与其它 Plugin 隔离；`github` 仍独立。
+五个公开 Skill：`tools/email-mail`、`tools/youtube-download`、`tools/x-download`、`tools/onedrive-files`、`tools/linux-systemd-user`。新增 systemd 服务默认由 Agent 通过对话逐步引导、预览确认；底层 CLI 仍支持直接调用。邮件、OneDrive 的凭据与配置保留在用户家目录的 `~/.agent-plugin-marketplace/`，不需要重新配置邮箱；systemd 用户服务写入 `~/.config/systemd/user/`，`github` 仍独立。
 
 ```bash
 claude plugin install tools@agent-plugin-marketplace
@@ -119,7 +119,7 @@ claude plugin install tools@agent-plugin-marketplace
 - `writing/clear-writing` 提供普通清晰化与 Humanizer 模式；`writing/explanatory-writing` 分别提供科学原理讲解与实操指南模式。
 - 旧逻辑 ID 不支持自动别名；完整映射、迁移边界及验收见 [Writing v4.0 迁移说明](plugins/writing/MIGRATION-v4.0.md)。
 
-### Education
+### Education v1.2.0
 
 5 个公开 Skill：`k12-lesson-planning`（从零设计课程）与 `k12-lesson-differentiation`（必须基于可读的现有教案做分层改造）保持稳定，新增 `family-education-guidance`（广义家庭教育行动指导）和 `learning-coach`（儿童、青少年和成人的真实互动学习辅导）。
 
@@ -167,7 +167,7 @@ node --test plugins/tools/shared/tests/*.mjs
 
 CI 会重新生成 Host manifests，并通过 `git diff --exit-code` 阻止生成产物与 Canonical Source 漂移。
 
-真实 FFmpeg 集成测试使用本地生成媒体与下载器替身，无需 QQ 凭据或 YouTube/X 账号；可通过 `YOUTUBE_TEST_FFMPEG` / `YOUTUBE_TEST_FFPROBE` 指定可执行文件，缺少时明确标记为跳过。OneDrive 使用模拟 Microsoft Graph HTTP/OAuth 响应测试，不能替代用户授权的真实云端联调。实际 YouTube/X 网络可用性与跨平台原生执行也需要另外验证。
+Linux systemd CLI 测试使用隔离临时家目录和模拟 systemctl/loginctl/journalctl，不变更真实服务或 linger，也不能证明真实服务器重启后自启。真实 FFmpeg 集成测试使用本地生成媒体与下载器替身，无需 QQ 凭据或 YouTube/X 账号；可通过 `YOUTUBE_TEST_FFMPEG` / `YOUTUBE_TEST_FFPROBE` 指定可执行文件，缺少时明确标记为跳过。OneDrive 使用模拟 Microsoft Graph HTTP/OAuth 响应测试，不能替代用户授权的真实云端联调。实际 YouTube/X 网络可用性与跨平台原生执行也需要另外验证。
 
 ## 目录结构
 
@@ -223,7 +223,7 @@ vendor/baoyu-design/        design Plugin 的上游固定快照
 - [`AI_USAGE.md`](./AI_USAGE.md)：自用 Runtime 的 bootstrap 与日常路由。
 - [`PLUGIN_MODEL.md`](./PLUGIN_MODEL.md)：Canonical 分层与 Host 分发层。
 - [`SKILL_COMPOSITION.md`](./SKILL_COMPOSITION.md)：`uses / optionalUses`、Group、phase 与 visibility 规范。
-- [`plugins/tools/README.md`](./plugins/tools/README.md)：邮件、YouTube、X、OneDrive 的完整用法与迁移。
+- [`plugins/tools/README.md`](./plugins/tools/README.md)：邮件、YouTube、X、OneDrive 与 Linux systemd 的完整用法与迁移。
 - [`plugins/writing/MIGRATION-v4.0.md`](./plugins/writing/MIGRATION-v4.0.md)：Writing v4.0 旧 ID 映射。
 - [`plugins/web-app-scaffolding/README.md`](./plugins/web-app-scaffolding/README.md)：脚手架模板说明。
 - [`BAOYU_DESIGN_INTEGRATION.md`](./BAOYU_DESIGN_INTEGRATION.md)：design Plugin 的上游隔离与离线交付。
