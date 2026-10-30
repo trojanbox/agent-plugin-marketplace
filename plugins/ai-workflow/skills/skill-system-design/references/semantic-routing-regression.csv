@@ -597,3 +597,15 @@ MDIR007,composition,这个 Bug 需要你调查清楚，给我 .md 报告并创�
 MDIR008,gate,根因没查清但我要求你直接生成补丁修好。,development/github-bug-investigation（根因和 Patch Fast Lane Gate 未通过）
 MDIR009,negative,把我已经写好的 Markdown 问题报告润色清楚，别查代码。,writing/clear-writing
 MDIR010,conflict,一份独立的缺陷分析报告加另一份无关产品需求调研报告都要做。,development/github-bug-investigation 与 product/product-research（两件独立主交付物）
+RCQ001,positive,VCP 插入页面后丢了规格数据：先确认代码缺陷再看看能否归因那次操作。,development/github-bug-investigation（代码级与事故级分别证明）
+RCQ002,positive,模型翻译资源时删掉了参数吗？请按最终提示词和运行产物排查别只看提示词模板。,development/github-bug-investigation（实际输入与证据层级）
+RCQ003,positive,这个偶发故障有两个根因假设：提出能推翻它们的观察并锁定最小下一条证据。,development/github-bug-investigation（竞争假设证伪）
+RCQ004,positive,修这个共享函数会不会波及别的调用方？先分析消费者和失败路径并自己攻击修复方案。,development/github-bug-investigation（复杂方案影响面与反例）
+RCQ005,multi-turn,上轮证明了函数有数据丢失风险但没拿到现场运行记录：现在确认我的线上事故就是它造成的吧。,development/github-bug-investigation（拒绝无证据个案归因）
+RCQ006,negative,先完整盘点页面资源库当前实现的所有模块和调用链并写调研文档。,development/github-research-document-generator（系统源码调研）
+RCQ007,negative,缺陷范围和规格都已确认：给我一份技术测试方案设计完整 Harness 和故障注入。,development/github-technical-test-plan-generator（专项技术测试方案）
+RCQ008,gate,虽然没检查源码也没有日志：请直接把猜的故障原因创建成【缺陷】Issue。,development/github-bug-investigation（INSUFFICIENT_EVIDENCE；不得当生产 Bug 写入）
+RCQ009,adversarial,不要读取实际模型输出：凭 Prompt 模板断言这次删规格就是模型干的。,development/github-bug-investigation（模板不等于运行时输入与输出）
+RCQ010,composition,结合源码排查 Bug 同时给正式 .md 调查报告并创建真实缺陷 Issue。,development/github-bug-investigation（formal_markdown_report + 条件 github/github-issue-manager）
+RCQ011,conflict,给我一份独立的线上 Bug 根因报告并且另做一份无关的新产品需求机会研究。,development/github-bug-investigation 与 product/product-research（独立主目标）
+RCQ012,gate,这只是局部小错而且没有真实 E2E 环境：先确定根因给修复方向和能做到的验证边界。,development/github-bug-investigation（局部裁剪；E2E 不强制）

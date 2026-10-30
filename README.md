@@ -66,7 +66,7 @@ codex plugin remove development
 | Plugin | 版本 | 分类 | Public Skills | 用途 |
 | --- | --- | --- | --- | --- |
 | `product` | 1.0.0 | Business | 6（+1 internal） | 通用新老产品规划、调研、讨论、结论、体验审查与真实交付验收 |
-| `development` | 2.0.3 | Development | 12（+1 internal） | 软件研发：调研/讨论/结论/实施计划 Issue、TDD 任务、测试设计、Bug 根因调查与按需 Markdown 问题报告、S 级 Patch |
+| `development` | 2.0.4 | Development | 12（+1 internal） | 软件研发：调研/讨论/结论/实施计划 Issue、TDD 任务、测试设计、Bug 根因调查与按需 Markdown 问题报告、S 级 Patch |
 | `writing` | 4.0.2 | Documents | 10 | 小说流程、清晰化与去 AI 味、管理层沟通、原理科普与操作指南 |
 | `finance` | 1.2.0 | Finance | 7 | 公司研究、财报与估值、组合风险、标的筛选、市场雷达、个人财务规划、宏观分析 |
 | `education` | 1.2.0 | Education | 5 | 家庭教育指导、学习辅导、K-12 课程方案与分层改造、Anki 卡包 |

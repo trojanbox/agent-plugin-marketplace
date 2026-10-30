@@ -72,7 +72,7 @@ class BugInvestigationReportContractTest(unittest.TestCase):
         skill = read(BUG / "SKILL.md")
         plugin = json.loads(read(DEVELOPMENT / "plugin.json"))
         research = read(RESEARCH / "SKILL.md")
-        self.assertEqual(plugin["version"], "2.0.3")
+        self.assertEqual(plugin["version"], "2.0.4")
         self.assertIn("github-bug-investigation", plugin["description"])
         self.assertIn(".md 问题报告", plugin["description"])
         self.assertIn("纯源码现状盘点归 github-research-document-generator", skill.split("---", 2)[1])

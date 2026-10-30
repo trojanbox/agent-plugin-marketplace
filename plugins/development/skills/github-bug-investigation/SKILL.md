@@ -62,6 +62,8 @@ optional_uses: "github/github-issue-manager,reasoning/scientific-reasoning"
 
 访问项目必须读取根目录及适用子目录 `AGENTS.md`。没有源码证据时不得编造文件、函数、调用链和根因。
 
+先核对仓库分支/Commit、相关运行环境和配置生效层；历史报告仅作线索，不把配置文件现值当成运行时实值。
+
 ## 三、先判断是不是 Bug
 
 至少区分：
@@ -88,6 +90,10 @@ Trigger → Entry → State / Contract → Producer / Consumer
 
 关键结论标记 `verified_fact / inference / hypothesis / unknown`。只有假设时说明支持证据、反例、区分假设所需的下一条证据，以及目前不能冻结的结论。
 
+**代码缺陷确认 ≠ 具体事故归因确认**：源码或函数级复现可证明代码缺陷；归因用户这一次故障还需关联当次输入、日志/Trace、实际产物等证据，缺失时如实说明。
+
+涉及线上个案归因、跨层/共享消费者、AI 提示词与产物或非平凡修复方案时，读取 `references/root-cause-quality-gates.md`，执行最小证伪、影响面和方案反例审查；简单局部问题按风险裁剪。
+
 ## 五、严重级别
 
 - `P0`：核心链路大面积不可用、不可逆数据破坏、活跃安全/隐私事件等灾难性影响；
@@ -110,11 +116,15 @@ Trigger → Entry → State / Contract → Producer / Consumer
 
 说明应修正的责任边界/状态/合同、受影响消费者或数据、必须保持的不变量，以及禁止的临时假修复（吞错、固定延时、无依据重试、关闭校验、硬编码、旁路数据）。临时止损必须有退出条件。
 
+非平凡方案提出前先主动找反例与副作用；审查推翻原理由时同步修正结论，不因“改动小”跳过根因。
+
 本 Skill 不展开逐文件实施手册。
 
 ## 八、测试与验收
 
 至少记录：原始复现场景、相关回归范围、关键非目标对象/不变量、适用的失败/恢复路径和业务验收结果。详细 Feature/Gherkin 或 Unit/Integration/E2E/Harness 进入对应 Testing Skill。
+
+区分源码、函数级、集成与真实消费终点证据；低层级验证不能冒称线上用户问题已恢复，不强制启动未授权的 E2E。
 
 ## 九、Issue 持久化（仅用户明确要求时）
 
@@ -127,6 +137,7 @@ Trigger → Entry → State / Contract → Producer / Consumer
 至少说明：
 
 - Bug 是否成立；
+- 代码缺陷与当次事故的归因状态，及缺少的终点证据；
 - 根因状态：confirmed / hypothesis / blocked；
 - 严重级别；
 - 复杂度与 Patch Fast Lane：eligible / blocked + 理由；
@@ -140,6 +151,7 @@ Trigger → Entry → State / Contract → Producer / Consumer
 - [ ] 已读取当前源码与适用 `AGENTS.md`；
 - [ ] 已区分真实 Bug 与未实现/未决合同/Test/Harness/Environment；
 - [ ] 根因和假设强度与证据一致；
+- [ ] 已核对调查基线、关键反例与影响面；证据不足时明确停止边界；
 - [ ] 已给出 `S/M/L` 与 Fast Lane 判定；
 - [ ] 永久解决方向不是临时遮掩；
 - [ ] 已包含测试与验收要求；
