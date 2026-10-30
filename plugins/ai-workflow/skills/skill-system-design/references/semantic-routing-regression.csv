@@ -587,3 +587,13 @@ EDU067,negative,做一节十分钟的语文阅读课，含学习目标与课堂�
 EDU068,positive,生成填空 Cloze 卡和少量双向词汇卡，我审完后导出。,education/anki-deck-builder
 EDU069,gate,我只说了历史聊天主题，现在没有聊天记录，你假装全部读过生成卡包。,education/anki-deck-builder（需真实可访问来源，不能补造）
 EDU070,multi-turn,这些卡片我全确认了，今天按同一牌组 id 新增两张后再给我审核。,education/anki-deck-builder（新增先审后出，保持身份）
+MDIR001,positive,这个资源库详情页插入后规格丢了，结合源码调查并生成一份 .md 问题报告。,development/github-bug-investigation（formal_markdown_report）
+MDIR002,positive,帮我排查这个生产报错并导出可下载的 Markdown 缺陷调查报告。,development/github-bug-investigation（formal_markdown_report）
+MDIR003,multi-turn,上下文：上一轮已经完成缺陷根因调查。当前：把刚才的两个 Bug 整理成一份 .md 问题报告。,development/github-bug-investigation（formal_markdown_report；复核旧证据有效性）
+MDIR004,regression,我点击添加区块后报错了，结合截图和源码查一下什么原因。,development/github-bug-investigation（analysis_only）
+MDIR005,negative,全面盘点 VCP 页面资源库现有接口和调用链并写一份 Markdown 调研报告。,development/github-research-document-generator（documented_research）
+MDIR006,negative,根因报告正文已经完整，直接帮我把它创建成 GitHub Bug Issue。,github/github-issue-manager（已有正文；查重与写入 Gate）
+MDIR007,composition,这个 Bug 需要你调查清楚，给我 .md 报告并创建缺陷 Issue。,development/github-bug-investigation（formal_markdown_report + 条件 github/github-issue-manager）
+MDIR008,gate,根因没查清但我要求你直接生成补丁修好。,development/github-bug-investigation（根因和 Patch Fast Lane Gate 未通过）
+MDIR009,negative,把我已经写好的 Markdown 问题报告润色清楚，别查代码。,writing/clear-writing
+MDIR010,conflict,一份独立的缺陷分析报告加另一份无关产品需求调研报告都要做。,development/github-bug-investigation 与 product/product-research（两件独立主交付物）

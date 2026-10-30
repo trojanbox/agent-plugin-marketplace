@@ -1,6 +1,6 @@
 ---
 name: github-bug-investigation
-description: "在用户提供源码、日志、复现步骤、测试、截图或补丁，需要调查软件 Bug 时使用。以当前源码和证据确定症状、影响、根因或待验证假设、严重级别、永久解决方向、复杂度和验收要求。默认完成调查而不自动创建 Issue；用户明确要求在调查后留痕时才执行查重/Issue 持久化。根因确认后若用户要直接 `.patch`，先做 S/M/L 与 Patch Fast Lane Gate；仅 S 级合格项进入 source-patch-implementation。"
+description: "在用户提供源码、日志、复现步骤或测试，需要调查独立软件 Bug、解释根因或生成缺陷/问题调查报告时使用。默认在对话中交付分析；用户明确要求详细问题报告、Markdown/.md 文件或把刚才的 Bug 调查导出报告时，生成可转发的自包含 .md 报告。不会自动创建文件或 GitHub Issue；纯源码现状盘点归 github-research-document-generator，已完成调查只要求写 Issue 归 github-issue-manager。根因确认且 S 级合格项需要补丁时才进入 source-patch-implementation。"
 phase: investigation
 optional_uses: "github/github-issue-manager,reasoning/scientific-reasoning"
 ---
@@ -21,7 +21,13 @@ optional_uses: "github/github-issue-manager,reasoning/scientific-reasoning"
 - 测试要求和验收标准；
 - 真实性边界。
 
-默认**不自动创建 GitHub Issue**，也不修改源码。用户明确要求留痕时，Issue 写入属于调查后的持久化步骤；根因已经完整、当前只剩写 Issue 时切换 `github-issue-manager`。
+默认**不自动创建 GitHub Issue**，也不修改源码或生成文件。用户明确要求 Issue 留痕时，写入属于调查后的持久化步骤；根因已经完整、当前只剩写 Issue 时切换 `github-issue-manager`。
+
+## 交付模式
+
+- `analysis_only`（默认）：对话中回答缺陷、证据与修复方向；不因普通“分析一下”“查查 Bug”自动建文件。
+- `formal_markdown_report`：明确要求“详细问题报告”“缺陷调查报告”“生成 `.md` / Markdown 文件”或“把刚才的 Bug 调查整理成可下载报告”时启用。**仅此模式**读取 `references/markdown-investigation-report.md`，按其结构与真实性门禁生成实际 `.md` 文件，验证文件存在且可读取后提供链接。已调查过的上下文直接复用仍有效的证据，不强制重复调查；若不能创建/验证文件，明确说明并提供可复制的 Markdown 正文，不伪造下载地址。
+- 文件报告与 GitHub Issue 是**两个独立授权的副作用**：只要求 `.md` 时不做 GitHub 写入；同时明确要求 Issue 时才按第九节查重和持久化。报告内容的缺陷调查所有权仍在本 Skill。
 
 ## Skill Composition
 
@@ -36,6 +42,8 @@ optional_uses: "github/github-issue-manager,reasoning/scientific-reasoning"
 - “这个报错是什么原因”；
 - “这个功能为什么有时候失效”；
 - “结合源码帮我查 Bug”；
+- “这个问题详细分析一下，给我生成一份 .md 报告”；
+- “把刚才已经查清楚的两个缺陷整理成可下载的问题调查报告”；
 - 用户给了日志、截图、复现步骤和源码，希望确定根因；
 - “分析清楚后创建 Bug Issue” → 先调查，完成后再做持久化。
 
@@ -124,6 +132,7 @@ Trigger → Entry → State / Contract → Producer / Consumer
 - 复杂度与 Patch Fast Lane：eligible / blocked + 理由；
 - 永久解决方向与验收要求；
 - 如果用户要求 Issue：真实查重/写入状态；
+- 如果要求正式 `.md` 报告：给出已验证的文件链接及报告范围；无法创建时如实说明；
 - 当前最合适的下一主 Skill（仅在确实需要下一阶段时）。
 
 ## 十一、强制检查
@@ -135,5 +144,6 @@ Trigger → Entry → State / Contract → Producer / Consumer
 - [ ] 永久解决方向不是临时遮掩；
 - [ ] 已包含测试与验收要求；
 - [ ] 默认没有擅自创建 Issue 或修改源码；
+- [ ] 仅在明确要求时生成 `.md`，已验证可读取且内容自包含；
 - [ ] 用户要求 Issue 时已真实查重，GitHub 操作有真实工具结果；
 - [ ] 没有声称未执行的修复/测试已通过。

@@ -66,7 +66,7 @@ codex plugin remove development
 | Plugin | 版本 | 分类 | Public Skills | 用途 |
 | --- | --- | --- | --- | --- |
 | `product` | 1.0.0 | Business | 6（+1 internal） | 通用新老产品规划、调研、讨论、结论、体验审查与真实交付验收 |
-| `development` | 2.0.2 | Development | 12（+1 internal） | 软件研发：调研/讨论/结论/实施计划 Issue、TDD 任务、测试设计、Bug 根因调查、S 级 Patch |
+| `development` | 2.0.3 | Development | 12（+1 internal） | 软件研发：调研/讨论/结论/实施计划 Issue、TDD 任务、测试设计、Bug 根因调查与按需 Markdown 问题报告、S 级 Patch |
 | `writing` | 4.0.2 | Documents | 10 | 小说流程、清晰化与去 AI 味、管理层沟通、原理科普与操作指南 |
 | `finance` | 1.2.0 | Finance | 7 | 公司研究、财报与估值、组合风险、标的筛选、市场雷达、个人财务规划、宏观分析 |
 | `education` | 1.2.0 | Education | 5 | 家庭教育指导、学习辅导、K-12 课程方案与分层改造、Anki 卡包 |
@@ -113,7 +113,7 @@ claude plugin install tools@agent-plugin-marketplace
 
 ### Development
 
-12 个公开 Skill 覆盖研发 Issue 文档、讨论、结论与交接规格、实施计划与 TDD 任务、业务测试与系统/E2E 测试设计、独立 Bug 根因调查，以及 S 级局部源码 Patch Fast Lane；另有 1 个 internal Skill（`github-incidental-bug-capture`）只由自用 Runtime 发现。只有 S 级 Patch 可直接实施源码修改，M/L 开发由下游 Coding Agent 执行；现成 Issue 的纯 GitHub 写操作走 `github` Plugin。
+12 个公开 Skill 覆盖研发 Issue 文档、讨论、结论与交接规格、实施计划与 TDD 任务、业务测试与系统/E2E 测试设计、独立 Bug 根因调查及用户明确要求的可下载 Markdown 问题报告，以及 S 级局部源码 Patch Fast Lane；另有 1 个 internal Skill（`github-incidental-bug-capture`）只由自用 Runtime 发现。普通 Bug 调查默认在对话中回答，不自动生成文件或 Issue；只有 S 级 Patch 可直接实施源码修改，M/L 开发由下游 Coding Agent 执行；现成 Issue 的纯 GitHub 写操作走 `github` Plugin。
 
 ### Writing
 

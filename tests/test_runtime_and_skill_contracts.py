@@ -156,11 +156,11 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertTrue(listing.startswith(f"# Plugin List · {expected_plugins} plugins"))
         for name in ("ai-workflow", "development", "writing"):
             self.assertIn(f"**{name}**", listing)
-        self.assertIn("v2.0.2", listing)
+        self.assertIn("v2.0.3", listing)
         self.assertIn("Development", listing)
 
         plugin = raw("list", "development")
-        self.assertTrue(plugin.startswith("# development · v2.0.2"))
+        self.assertTrue(plugin.startswith("# development · v2.0.3"))
         self.assertIn("12 public skills", plugin)
         self.assertIn("1 internal", plugin)
         self.assertIn("## testing", plugin)
