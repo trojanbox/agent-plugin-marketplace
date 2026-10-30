@@ -191,7 +191,7 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertLessEqual(max(len(text) for text in skill_descriptions), 414)
         # Keep the historical budget for all pre-existing Skills. New public
         # reasoning Skills each receive their own bounded description allocation.
-        tool_ids = {"tools/youtube-download", "tools/x-download", "tools/onedrive-files", "tools/linux-systemd-user", "tools/linux-systemd-timer", "tools/linux-disk-cleanup"}
+        tool_ids = {"tools/youtube-download", "tools/x-download", "tools/onedrive-files", "tools/linux-systemd-user", "tools/linux-systemd-timer", "tools/linux-disk-cleanup", "tools/linux-ops"}
         reasoning_ids = {"reasoning/first-principles", "reasoning/systems-thinking"}
         product_ids = {item["id"] for item in catalog["skills"] if item["id"].startswith("product/")}
         product_added = [item["description"] for item in catalog["skills"] if item["id"] in product_ids]
@@ -204,7 +204,7 @@ class RuntimeContractTests(unittest.TestCase):
                        if item["id"] in tool_ids]
         reasoning_added = [item["description"] for item in catalog["skills"]
                            if item["id"] in reasoning_ids]
-        self.assertEqual(len(tools_added), 6)
+        self.assertEqual(len(tools_added), 7)
         self.assertEqual(len(reasoning_added), 2)
         self.assertTrue(all(len(text) <= 200 for text in tools_added + reasoning_added))
         self.assertLessEqual(sum(len(text) for text in existing), 13861)

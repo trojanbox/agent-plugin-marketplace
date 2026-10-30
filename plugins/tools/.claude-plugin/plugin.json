@@ -1,8 +1,8 @@
 {
   "name": "tools",
   "displayName": "Tools",
-  "version": "2.5.0",
-  "description": "日常工具：QQ 邮件、YouTube/X 下载、OneDrive、Linux systemd 用户服务/Timer 和用户磁盘缓存诊断清理（对话引导、预览确认）。仅在当前用户权限内运行，GitHub 独立。",
+  "version": "2.6.0",
+  "description": "日常工具：邮件、媒体下载、OneDrive、systemd服务/Timer、磁盘清理与独立Linux运维脚本工具箱。运维脚本持久化bin、共享.env按前缀注入、完整Shell执行；既有凭据互不迁移。",
   "author": {
     "name": "trojanbox",
     "url": "https://github.com/trojanbox"

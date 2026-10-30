@@ -40,7 +40,7 @@ class DiskCleanupContractTests(unittest.TestCase):
         self.assertLessEqual(len(disk["description"]), 200)
         self.assertEqual(disk["uses"], [])
         tools = node("skill-runtime.js", "list", "tools", "--json")
-        self.assertEqual(tools["publicSkillCount"], 7)
+        self.assertEqual(tools["publicSkillCount"], 8)
         self.assertEqual(node("skill-runtime.js", "doctor")["skillCount"], total_skill_count())
 
     def test_main_skill_is_thin_with_progressive_refs_and_no_auto_delete(self):
@@ -83,7 +83,7 @@ class DiskCleanupContractTests(unittest.TestCase):
 
     def test_docs_and_plugin_release_are_aligned(self):
         plugin = json.loads((TOOLS / "plugin.json").read_text(encoding="utf8"))
-        self.assertEqual(plugin["version"], "2.5.0")
+        self.assertEqual(plugin["version"], "2.6.0")
         self.assertIn("磁盘", plugin["description"])
         root_doc = (ROOT / "README.md").read_text(encoding="utf8")
         tools_doc = (TOOLS / "README.md").read_text(encoding="utf8")
@@ -94,7 +94,7 @@ class DiskCleanupContractTests(unittest.TestCase):
             self.assertIn(phrase, tools_doc)
         for rel in ["plugins/tools/.claude-plugin/plugin.json", "plugins/tools/.codex-plugin/plugin.json"]:
             artifact = json.loads((ROOT / rel).read_text(encoding="utf8"))
-            self.assertEqual(artifact["version"], "2.5.0")
+            self.assertEqual(artifact["version"], "2.6.0")
 
     def test_routing_regression_contains_neighbor_consent_and_multi_turn(self):
         eval_text = (ROOT / "tests" / "linux-disk-cleanup-semantic-routing-eval.md").read_text(encoding="utf8")

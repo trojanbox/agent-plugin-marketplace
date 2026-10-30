@@ -1,6 +1,6 @@
 # Tools Plugin
 
-`tools` 把日常邮件、媒体下载、当前用户 OneDrive、Linux systemd 服务/Timer 和 Linux 用户磁盘缓存清理放在一个安装包，`github` 仍独立。七个公开 Skill 为 `tools/email-mail`、`tools/youtube-download`、`tools/x-download`、`tools/onedrive-files`、`tools/linux-systemd-user`、`tools/linux-systemd-timer` 和 `tools/linux-disk-cleanup`。邮件与 OneDrive 凭据保持在用户家目录的 `~/.agent-plugin-marketplace/`，systemd 用户 unit 位于 `~/.config/systemd/user/`。
+`tools` 把日常邮件、媒体下载、当前用户 OneDrive、Linux systemd 服务/Timer 和 Linux 用户磁盘缓存清理放在一个安装包，`github` 仍独立。八个公开 Skill 为 `tools/email-mail`、`tools/youtube-download`、`tools/x-download`、`tools/onedrive-files`、`tools/linux-systemd-user`、`tools/linux-systemd-timer`、`tools/linux-disk-cleanup` 和 `tools/linux-ops`。邮件与 OneDrive 凭据保持在用户家目录的 `~/.agent-plugin-marketplace/`，systemd 用户 unit 位于 `~/.config/systemd/user/`。
 
 ```bash
 claude plugin install tools@agent-plugin-marketplace
@@ -163,6 +163,30 @@ node plugins/tools/shared/scripts/linux-disk-cleanup.mjs clean \
 `npm cache verify` 是 npm 官方建议的缓存校验和垃圾回收方式（[npm 官方命令文档](https://docs.npmjs.com/cli/v11/commands/npm-cache/)），会检查缓存索引和内容；该流程无法提供按文件年龄删除的承诺。`report` 是有上限的目录分析，可能 `truncated=true`；普通缓存 `estimated_bytes` 表示预计逻辑字节，npm-cache 则为 `null`（无法预估原生垃圾回收量）。执行 `clean` 时必须在目标主机 TTY 手输 `DELETE <scope> <SHA前12位>`，并再次核对缓存内容。**该检查阻止无终端自动执行，但同 UID 恶意 Agent 能模拟终端，因此不等同于可信宿主审批**；严格不可伪造的人工授权仍需额外信任边界。工具不使用 `sudo` 或 `rm -rf`。
 
 [对话引导](skills/linux-disk-cleanup/references/guided-cleanup.md) · [CLI 参数与返回状态](skills/linux-disk-cleanup/references/operations.md) · [权限与清理风险](skills/linux-disk-cleanup/references/security-and-results.md)
+
+## Linux Ops：脚本工具箱、共享默认环境与完整 Shell
+
+`tools/linux-ops` 根据用户任务查找或编写脚本，保存到独立 `~/.linux-ops/bin/` 供后续复用；同级只有一份 `~/.linux-ops/.env`。与 Email、OneDrive 及插件安装目录完全独立，不迁移它们的配置。首版 Linux 普通用户、Node.js 20.12+、Bash，无运行时第三方 npm 依赖。
+
+```bash
+CLI=plugins/tools/shared/scripts/linux-ops.mjs
+node "$CLI" init
+node "$CLI" config list --prefix DEV_DB_
+node "$CLI" config set DEV_DB_PASSWORD       # 用户本地隐藏输入，密钥不放命令参数
+node "$CLI" config check --keys DEV_DB_HOST,DEV_DB_PASSWORD
+node "$CLI" scripts put dev-db.sh --from /tmp/dev-db.sh
+node "$CLI" scripts list
+node "$CLI" run dev-db.sh -- 'query argument'
+node "$CLI" exec --cwd /home/example/app --prefix DEV_DB_ --mode development -- 'pnpm dev'
+```
+
+Agent 可以写 Shell/Python/Node 脚本、保存到 `bin/`、检查已需的变量并引导补齐。脚本头可声明 `# linux-ops: prefixes=DEV_DB_`、`# linux-ops: requires=DEV_DB_HOST`；不自己加载项目 dotenv 的独立脚本写 `# linux-ops: project-env=off`。配置和脚本 CLI 支持创建、检查、设置/更新、删除、导入，`--replace` 才覆盖同名项。操作只在用户任务范围内执行，普通运行不增加每次确认流程。
+
+**按前缀注入，已继承环境优先**：共享配置只补缺，不覆盖父进程同名变量。为了让 Vite/Next.js 原生加载的项目 `.env` 能优先，执行器默认只内部识别项目声明的键，并对这些键避让共享注入，实际值仍由项目加载器解析。模式默认 NODE_ENV 或 development；构建需 `--mode production`，自定义目录/文件用 `--project-env FILE`，不加载 dotenv 的程序用 `--project-env off`。这不是全局环境修改，也不能自动识别 Shell 内部稍后 `cd` 的另一个项目。
+
+**完整 Bash、原始输出**：管道、重定向、复合命令都可用，stdin/stdout/stderr 直接透传，不摘要、不截断、不自动脱敏，保留退出码、支持取消信号和可选超时。默认无超时。管理接口不回显 `.env` 原值，Agent 不主动读取该文件；脚本自己打印出的密钥仍会出现在完整输出中，明确接受这个行为边界，不承诺硬隔离。
+
+[工作流与脚本示例](skills/linux-ops/references/workflow.md) · [CLI 完整用法](skills/linux-ops/references/cli.md) · [项目环境优先机制](skills/linux-ops/references/project-environment.md) · [权限与输出风险](skills/linux-ops/references/security-and-results.md)
 
 ## 本地测试
 

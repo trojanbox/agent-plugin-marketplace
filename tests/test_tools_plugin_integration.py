@@ -18,7 +18,7 @@ def node_json(*arguments: str, check: bool = True) -> dict:
 
 
 class ToolsPluginIntegrationTests(unittest.TestCase):
-    def test_tools_is_single_plugin_with_seven_public_skills(self) -> None:
+    def test_tools_is_single_plugin_with_eight_public_skills(self) -> None:
         manifest = json.loads((ROOT / 'marketplace.json').read_text(encoding='utf-8'))
         names = [p['name'] for p in manifest['plugins']]
         self.assertEqual(names.count('tools'), 1)
@@ -26,8 +26,8 @@ class ToolsPluginIntegrationTests(unittest.TestCase):
         self.assertIn('github', names)
         self.assertFalse((ROOT / 'plugins' / 'email').exists())
         plugin = node_json('skill-runtime.js', 'list', 'tools', '--json')
-        self.assertEqual(plugin['publicSkillCount'], 7)
-        self.assertEqual({s['name'] for s in plugin['ungroupedSkills']}, {'email-mail', 'youtube-download', 'x-download', 'onedrive-files', 'linux-systemd-user', 'linux-systemd-timer', 'linux-disk-cleanup'})
+        self.assertEqual(plugin['publicSkillCount'], 8)
+        self.assertEqual({s['name'] for s in plugin['ungroupedSkills']}, {'email-mail', 'youtube-download', 'x-download', 'onedrive-files', 'linux-systemd-user', 'linux-systemd-timer', 'linux-disk-cleanup', 'linux-ops'})
         self.assertEqual(plugin['internalSkillCount'], 0)
 
     def test_old_email_id_is_not_exposed_and_new_ids_are_discoverable(self) -> None:
@@ -40,7 +40,7 @@ class ToolsPluginIntegrationTests(unittest.TestCase):
         self.assertNotIn('email/email-mail', ids)
         self.assertIn('github/github-issue-manager', ids)
         self.assertEqual(catalog['publicSkillCount'], public_skill_count())
-        for name in ('email-mail', 'youtube-download', 'x-download', 'onedrive-files', 'linux-systemd-user', 'linux-systemd-timer', 'linux-disk-cleanup'):
+        for name in ('email-mail', 'youtube-download', 'x-download', 'onedrive-files', 'linux-systemd-user', 'linux-systemd-timer', 'linux-disk-cleanup', 'linux-ops'):
             data = node_json('skill-runtime.js', 'skill', 'tools/' + name)
             self.assertEqual(data['skill']['phase'], 'operations')
             self.assertEqual(data['skill']['pluginRoot'], str(TOOLS))

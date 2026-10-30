@@ -1,6 +1,6 @@
 # Agent Plugin Marketplace
 
-可被 Claude Code / Codex 直接安装的 Plugin Marketplace：14 个 Plugin、72 个 Public Skill（另有 2 个 internal Skill 只由自用 Runtime 发现），按领域分包；同时保留独立的 `AI_USAGE.md + skill-runtime.js` 自用 Runtime。
+可被 Claude Code / Codex 直接安装的 Plugin Marketplace：14 个 Plugin、73 个 Public Skill（另有 2 个 internal Skill 只由自用 Runtime 发现），按领域分包；同时保留独立的 `AI_USAGE.md + skill-runtime.js` 自用 Runtime。
 
 ```text
 Marketplace
@@ -73,7 +73,7 @@ codex plugin remove development
 | `reasoning` | 1.3.0 | Research | 5 | 发散创意、科学推理、第一性原理、系统思考、结构化辩论 |
 | `data` | 1.0.0 | Data | 4 | 数据集探索、统计分析、分析结果 QA、数据可视化 |
 | `research` | 1.0.2 | Research | 4 | 外部资料检索、证据综合、领域知识构建、社区调研 |
-| `tools` | 2.5.0 | Productivity | 7 | 邮件、媒体下载、OneDrive、systemd 服务/Timer、用户磁盘缓存诊断与安全清理 |
+| `tools` | 2.6.0 | Productivity | 8 | 邮件、媒体下载、OneDrive、systemd 服务/Timer、磁盘清理、独立 Linux 运维脚本与环境注入 |
 | `github` | 1.0.0 | Productivity | 3 | Issue 生命周期、查重与复发判断、交接同步与远端写入恢复 |
 | `web-app-scaffolding` | 1.4.2 | Development | 3 | React+TS、Node+NestJS 与全栈脚手架创建、扩展和审查 |
 | `ai-workflow` | 1.0.0 | Development | 2 | Skill Runtime/路由/组合设计与 Agent 目标提示词 |
@@ -91,14 +91,14 @@ node skill-runtime.js catalog          # 跨 Plugin 发现
 
 - `development` 的 Issue 写入依赖 `github`；原生宿主不会自动安装。
 - `writing`、`reasoning` 可按需组合 `research`；是否组合由主 Skill 正文的条件决定。
-- `tools` 的 Node.js CLI 需要 18+；YouTube 的 JS 执行需要 Node.js 22+ 或 Deno，Linux FFmpeg TAR/XZ 解包需要 Python 3 标准库。
+- `tools` 的多数 Node.js CLI 需要 18+，Linux Ops 需要 20.12+；YouTube 的 JS 执行需要 Node.js 22+ 或 Deno，Linux FFmpeg TAR/XZ 解包需要 Python 3 标准库。
 - `education/anki-deck-builder` 需要 Python 3.10+ 与 `genanki==0.13.1`，不需要运行中的 Anki。
 
 ## 需要细看的 Plugin
 
 ### Tools：邮件、媒体下载、OneDrive、systemd 服务/Timer 与用户磁盘清理
 
-七个公开 Skill：`tools/email-mail`、`tools/youtube-download`、`tools/x-download`、`tools/onedrive-files`、`tools/linux-systemd-user`、`tools/linux-systemd-timer`、`tools/linux-disk-cleanup`。systemd 服务/Timer 和用户磁盘清理采用对话引导；磁盘清理默认只读，执行需要**本地主机 TTY 计划绑定挑战确认**（无TTY拒绝），npm 内容寻址缓存统一使用原生 `npm cache verify`，不按年龄删除 `_cacache` 内部文件。TTY 并非独立可信宿主授权，无法抵御同 UID 的恶意终端模拟。邮件、OneDrive 的凭据与配置保留在用户家目录的 `~/.agent-plugin-marketplace/`，不需要重新配置邮箱；systemd 用户服务写入 `~/.config/systemd/user/`，`github` 仍独立。
+八个公开 Skill：`tools/email-mail`、`tools/youtube-download`、`tools/x-download`、`tools/onedrive-files`、`tools/linux-systemd-user`、`tools/linux-systemd-timer`、`tools/linux-disk-cleanup`、`tools/linux-ops`。systemd 服务/Timer 和用户磁盘清理采用对话引导；磁盘清理默认只读，执行需要**本地主机 TTY 计划绑定挑战确认**（无TTY拒绝），npm 内容寻址缓存统一使用原生 `npm cache verify`，不按年龄删除 `_cacache` 内部文件。TTY 并非独立可信宿主授权，无法抵御同 UID 的恶意终端模拟。新增 Linux Ops 使用独立 `~/.linux-ops/.env` 与同级 `bin/`，按需求编写/保存/复用脚本，按前缀补充环境变量并运行完整 Bash；已有进程变量与项目 dotenv 优先，原样输出 stdout/stderr，普通执行不重复授权。管理接口不回显密钥，但原始脚本日志仍可能含敏感数据，不提供同 UID 硬隔离。现有邮件、OneDrive 的凭据与配置保留在用户家目录的 `~/.agent-plugin-marketplace/`，不需要重新配置邮箱；systemd 用户服务写入 `~/.config/systemd/user/`，`github` 仍独立。
 
 ```bash
 claude plugin install tools@agent-plugin-marketplace
@@ -228,7 +228,7 @@ vendor/baoyu-design/        design Plugin 的上游固定快照
 - [`AI_USAGE.md`](./AI_USAGE.md)：自用 Runtime 的 bootstrap 与日常路由。
 - [`PLUGIN_MODEL.md`](./PLUGIN_MODEL.md)：Canonical 分层与 Host 分发层。
 - [`SKILL_COMPOSITION.md`](./SKILL_COMPOSITION.md)：`uses / optionalUses`、Group、phase 与 visibility 规范。
-- [`plugins/tools/README.md`](./plugins/tools/README.md)：邮件、YouTube、X、OneDrive、Linux systemd 服务、Timer 与用户磁盘清理的完整用法与迁移。
+- [`plugins/tools/README.md`](./plugins/tools/README.md)：邮件、YouTube、X、OneDrive、Linux systemd 服务、Timer、用户磁盘清理和独立 Linux 运维工具箱的完整用法。
 - [`plugins/writing/MIGRATION-v4.0.md`](./plugins/writing/MIGRATION-v4.0.md)：Writing v4.0 旧 ID 映射。
 - [`plugins/web-app-scaffolding/README.md`](./plugins/web-app-scaffolding/README.md)：脚手架模板说明。
 - [`BAOYU_DESIGN_INTEGRATION.md`](./BAOYU_DESIGN_INTEGRATION.md)：design Plugin 的上游隔离与离线交付。

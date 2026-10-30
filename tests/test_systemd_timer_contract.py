@@ -37,7 +37,7 @@ class SystemdTimerContractTests(unittest.TestCase):
         self.assertLess(len(direct['description']), 201)
         self.assertIn('GitHub', direct['description'])
         tool = node_json('skill-runtime.js', 'list', 'tools', '--json')
-        self.assertEqual(tool['publicSkillCount'], 7)
+        self.assertEqual(tool['publicSkillCount'], 8)
         self.assertEqual(node_json('skill-runtime.js', 'doctor')['skillCount'], total_skill_count())
 
     def test_skill_uses_progressive_references_and_explicit_dialogue(self) -> None:
@@ -73,7 +73,7 @@ class SystemdTimerContractTests(unittest.TestCase):
 
     def test_documentation_and_distribution_metadata_match(self) -> None:
         plugin = json.loads((PLUGIN / 'plugin.json').read_text(encoding='utf-8'))
-        self.assertEqual(plugin['version'], '2.5.0')
+        self.assertEqual(plugin['version'], '2.6.0')
         self.assertIn('Timer', plugin['description'])
         root_readme = (ROOT / 'README.md').read_text(encoding='utf-8')
         tool_readme = (PLUGIN / 'README.md').read_text(encoding='utf-8')
@@ -85,7 +85,7 @@ class SystemdTimerContractTests(unittest.TestCase):
         for relative in ('plugins/tools/.codex-plugin/plugin.json',
                          'plugins/tools/.claude-plugin/plugin.json'):
             artifact = json.loads((ROOT / relative).read_text(encoding='utf-8'))
-            self.assertEqual(artifact['version'], '2.5.0')
+            self.assertEqual(artifact['version'], '2.6.0')
 
     def test_semantic_eval_has_neighbor_gate_and_multiturn_cases(self) -> None:
         corpus = (ROOT / 'tests' / 'systemd-timer-semantic-routing-eval.md').read_text(encoding='utf-8')
