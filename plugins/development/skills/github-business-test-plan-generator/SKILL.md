@@ -1,6 +1,6 @@
 ---
 name: github-business-test-plan-generator
-description: "用于把已经确认或需要先与用户校准的一轮业务范围，整理成可交给下游 Test Agent 执行的业务测试方案。用户明确请求业务测试方案/业务用例时由本 Skill 先承接并执行 Spec Gate；若进入 ready_for_spec，再转入 github-spec 或按用户明确选择记录跳过。随后回显 Business Understanding，与用户或已确认结论对齐 Expected Business Contract，再建立 Feature/状态维度/跨对象不变量/Gherkin/业务 Evidence。适合‘给我业务测试方案/业务用例/按用户流程怎么测/这个功能有哪些业务场景’。不负责选择 Unit/Integration/E2E、设计 Harness/故障注入或编写测试代码；这些进入技术测试方案。"
+description: "用于把已确认业务范围转成可交给 Test Agent 的业务测试方案、业务用例和 Gherkin，定义业务应该如何验收。先执行 Spec Gate 与业务理解对齐，再建立场景、状态和不变量；测试层级/环境设计归技术测试方案。核对真实交付是否已满足产品需求归 product/product-acceptance；仅设计用例时不声称真实验收通过。"
 phase: planning
 optional_uses: "github/github-issue-manager,development/github-incidental-bug-capture"
 ---
@@ -8,6 +8,10 @@ optional_uses: "github/github-issue-manager,development/github-incidental-bug-ca
 # GitHub Business Test Plan Generator / 业务测试方案生成器
 
 公共质量合同：`../../shared/testing-core/test-plan-quality-contract.md`。
+
+## 产品阶段边界
+
+本 Skill 定义业务测试方案、场景和证据要求；对指定交付版本做真实结果核对归 `product/product-acceptance`。产品验收不会改变本 Skill 的 Spec Gate、Business Alignment 或下游技术测试所有权。
 
 ## Skill Composition
 

@@ -2,6 +2,7 @@
 from __future__ import annotations
 import json
 from pathlib import Path
+from runtime_test_helpers import public_skill_count, internal_skill_count, total_skill_count
 import subprocess
 import unittest
 
@@ -38,7 +39,7 @@ class ToolsPluginIntegrationTests(unittest.TestCase):
         self.assertIn('tools/onedrive-files', ids)
         self.assertNotIn('email/email-mail', ids)
         self.assertIn('github/github-issue-manager', ids)
-        self.assertEqual(catalog['publicSkillCount'], 66)
+        self.assertEqual(catalog['publicSkillCount'], public_skill_count())
         for name in ('email-mail', 'youtube-download', 'x-download', 'onedrive-files', 'linux-systemd-user', 'linux-systemd-timer', 'linux-disk-cleanup'):
             data = node_json('skill-runtime.js', 'skill', 'tools/' + name)
             self.assertEqual(data['skill']['phase'], 'operations')
@@ -105,7 +106,7 @@ console.log(JSON.stringify({linux:configLocation('/home/user'),windows:configLoc
         self.assertLess(len(od_skill), 5000)
         doctor = node_json('skill-runtime.js', 'doctor')
         self.assertTrue(doctor['ok'])
-        self.assertEqual(doctor['skillCount'], 67)
+        self.assertEqual(doctor['skillCount'], total_skill_count())
         self.assertEqual(doctor['contractIssues'], [])
 
     def test_email_migration_documents_do_not_change_user_data_root(self) -> None:

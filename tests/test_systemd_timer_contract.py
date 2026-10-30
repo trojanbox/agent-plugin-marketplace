@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import subprocess
 from pathlib import Path
+from runtime_test_helpers import public_skill_count, internal_skill_count, total_skill_count
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,7 +27,7 @@ class SystemdTimerContractTests(unittest.TestCase):
         ids = {entry['id'] for entry in catalog['skills']}
         self.assertIn('tools/linux-systemd-timer', ids)
         self.assertIn('tools/linux-systemd-user', ids)
-        self.assertEqual(catalog['publicSkillCount'], 66)
+        self.assertEqual(catalog['publicSkillCount'], public_skill_count())
         direct = node_json('skill-runtime.js', 'skill', 'tools/linux-systemd-timer')['skill']
         self.assertEqual(direct['phase'], 'operations')
         self.assertEqual(direct['plugin'], 'tools')
@@ -37,7 +38,7 @@ class SystemdTimerContractTests(unittest.TestCase):
         self.assertIn('GitHub', direct['description'])
         tool = node_json('skill-runtime.js', 'list', 'tools', '--json')
         self.assertEqual(tool['publicSkillCount'], 7)
-        self.assertEqual(node_json('skill-runtime.js', 'doctor')['skillCount'], 67)
+        self.assertEqual(node_json('skill-runtime.js', 'doctor')['skillCount'], total_skill_count())
 
     def test_skill_uses_progressive_references_and_explicit_dialogue(self) -> None:
         text = (SKILLS / 'SKILL.md').read_text(encoding='utf-8')

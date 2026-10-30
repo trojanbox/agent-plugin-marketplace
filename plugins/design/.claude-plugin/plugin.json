@@ -1,8 +1,8 @@
 {
   "name": "design",
   "displayName": "Design",
-  "version": "1.0.0",
-  "description": "用于创建与维护视觉设计产物：高保真 UI、交互原型、线框图、演示稿、移动端界面，以及设计系统/UI Kit。普通数据图表、纯文本写作、外部调研和生产代码实现由各自 Plugin/领域保留主路由。",
+  "version": "1.0.1",
+  "description": "用于交付高保真 UI、可点击原型、线框图、演示稿、移动端界面及设计系统/UI Kit。开放式体验和操作流程诊断归 product/product-experience-review；按需求核对真实交付归 product/product-acceptance。视觉产物保持 design 主路由，生产代码归 development。",
   "author": {
     "name": "trojanbox",
     "url": "https://github.com/trojanbox"

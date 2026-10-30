@@ -11,6 +11,7 @@ import re
 import subprocess
 import unittest
 from pathlib import Path
+from runtime_test_helpers import public_skill_count, internal_skill_count, total_skill_count
 
 ROOT = Path(__file__).resolve().parents[1]
 EDU = ROOT / "plugins/education"
@@ -47,7 +48,7 @@ class EducationV12ContractTests(unittest.TestCase):
         self.assertEqual({item["name"] for item in result["ungroupedSkills"]}, EXPECTED)
         self.assertEqual({p.parent.name for p in SKILLS.glob("*/SKILL.md")}, EXPECTED)
         catalog = {x["id"] for x in runtime("catalog")["skills"]}
-        self.assertEqual(runtime("catalog")["publicSkillCount"], 66)
+        self.assertEqual(runtime("catalog")["publicSkillCount"], public_skill_count())
         for name in EXPECTED:
             self.assertIn("education/" + name, catalog)
             self.assertEqual(runtime("skill", "education/" + name)["skill"]["name"], name)
@@ -168,8 +169,8 @@ class EducationV12ContractTests(unittest.TestCase):
     def test_runtime_doctor_has_no_composition_or_contract_issues(self):
         d = runtime("doctor")
         self.assertTrue(d["ok"])
-        self.assertEqual(d["publicSkillCount"], 66)
-        self.assertEqual(d["internalSkillCount"], 1)
+        self.assertEqual(d["publicSkillCount"], public_skill_count())
+        self.assertEqual(d["internalSkillCount"], internal_skill_count())
         self.assertEqual(d["contractIssues"], [])
         self.assertEqual(d["compositionIssues"], [])
         self.assertEqual(d["contextIssues"], [])

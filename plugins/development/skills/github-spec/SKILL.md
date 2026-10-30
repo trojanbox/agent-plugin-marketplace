@@ -1,11 +1,15 @@
 ---
 name: github-spec
-description: "当用户说生成/创建开发结论、需求定稿、规格冻结、把讨论整理成独立可交接 Issue 或【开发·结论】时使用。将已确认内容写成通俗、严谨、自包含的最终结论文档：先说明做什么和为什么，再完整列出合同、验收、边界；正文不引用原讨论 Issue/评论或跳转链接。高传播合同执行 Spec Gate；真实 E2E/外部联调未运行不能冒充通过，但通常不阻塞结论冻结。明确要实施计划/测试计划时，由对应下游 Skill 先做 Gate。"
+description: "用户明确要求生成/创建【开发·结论】、工程规格、技术需求定稿、API/数据/状态合同冻结时使用。交付通俗且技术合同完整的独立规格，正文自包含、不链接旧讨论。独立产品需求 PRD/产品结论归 product/product-conclusion；“现在创建”继承已确认阶段和明确授权，不能自动把产品决定当开发结论。实施/测试计划由对应下游 Skill 先做 Gate。"
 phase: specification
 optional_uses: "github/github-issue-manager,development/github-incidental-bug-capture"
 ---
 
 # GitHub 结论
+
+## 产品阶段边界
+
+明确【开发·结论】或技术合同冻结由本 Skill 主导；独立产品 PRD/用户场景/行为与验收的需求结论归 `product/product-conclusion`。用户只说“结论”时先用当前对话权威阶段判断，确有不同主交付物才澄清；不因新增 Product 改写已确认的研发决定。
 
 ## 唯一目标
 

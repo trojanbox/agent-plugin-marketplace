@@ -1,11 +1,15 @@
 ---
 name: github-research-document-generator
-description: "用于对当前软件项目、模块、服务、Agent、Workflow、API 或完整调用链做系统性源码调研，建立可复用的当前实现事实基线。即使用户没有明确说“调研文档/报告”，只要请求表现为完整梳理、盘点现状、分析实现到什么程度、说明系统怎么工作、梳理现有能力与缺口，并且需要跨多个源码证据形成系统认知，也应优先列为主 Skill 候选；单点事实、独立缺陷、未定方案讨论和已经明确的开发计划/测试方案请求进入对应 Skill。默认可直接在当前对话交付完整调研结论；用户明确要求创建/生成调研文档、调研报告、【开发·调研】Issue、把刚才的源码分析/调研留档到 GitHub，或其它 Markdown/Wiki/GitHub 留痕时，仍由本 Skill 主导并进入文档持久化模式，Issue 写入只是调研工作流的持久化步骤。"
+description: "用于对当前源码的模块、API、服务、Workflow 或完整调用链做系统调研，解释现有实现、能力成熟度和缺口。完整梳理、实现盘点、源码分析是高信号；创建/生成调研文档、调研报告、【开发·调研】Issue 或把刚才源码调研留档时仍保留主路由，Issue 只是持久化。围绕用户问题/产品机会的独立研究归 product/product-research；单点 API、独立缺陷、未定方案和开发/测试计划各进对应 Skill。"
 phase: research
 optional_uses: "github/github-issue-manager,development/github-incidental-bug-capture"
 ---
 
 # 源码调研与调研文档生成器
+
+## 产品阶段边界
+
+用户主要问源码如何工作、跨模块调用链和实现成熟度时，本 Skill 主导；主要问用户需求、产品使用障碍与机会且需结合源码证据时，由 `product/product-research` 主导。作为辅助调查只回传当前指定范围的源码事实，不隐式另建报告或 Issue；既有已授权的旁路缺陷规则保持不变。
 
 ## 目标与边界
 

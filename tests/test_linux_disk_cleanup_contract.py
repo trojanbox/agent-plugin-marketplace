@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 import subprocess
 from pathlib import Path
+from runtime_test_helpers import public_skill_count, internal_skill_count, total_skill_count
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,7 +30,7 @@ class DiskCleanupContractTests(unittest.TestCase):
         self.assertIn("tools/linux-disk-cleanup", ids)
         self.assertIn("tools/linux-systemd-timer", ids)
         self.assertIn("tools/linux-systemd-user", ids)
-        self.assertEqual(catalog["publicSkillCount"], 66)
+        self.assertEqual(catalog["publicSkillCount"], public_skill_count())
         disk = node("skill-runtime.js", "skill", "tools/linux-disk-cleanup")["skill"]
         self.assertEqual(disk["plugin"], "tools")
         self.assertEqual(disk["phase"], "operations")
@@ -40,7 +41,7 @@ class DiskCleanupContractTests(unittest.TestCase):
         self.assertEqual(disk["uses"], [])
         tools = node("skill-runtime.js", "list", "tools", "--json")
         self.assertEqual(tools["publicSkillCount"], 7)
-        self.assertEqual(node("skill-runtime.js", "doctor")["skillCount"], 67)
+        self.assertEqual(node("skill-runtime.js", "doctor")["skillCount"], total_skill_count())
 
     def test_main_skill_is_thin_with_progressive_refs_and_no_auto_delete(self):
         source = (SKILL / "SKILL.md").read_text(encoding="utf8")

@@ -112,6 +112,16 @@ Skill Composition 只解决“一个主任务需要哪些辅助能力”。它�
 
 
 
+## Product Composition 示例
+
+- Product 六个公开入口分别负责新产品规划、产品调研、产品讨论、产品结论、体验审查、真实交付验收；按当前主交付物路由，不强制顺次执行。
+- `product/product-context-discovery` 是内部共享事实调查。首次/切换产品/证据缺失或变化/交付复核时触发；源码可访问时必须核查相关实现，其他时候可在版本复核后复用已有事实。原生宿主由公开 Skill 相对读取同包内部实现，不要求额外公开入口。
+- 产品内部调查按条件复用 Research 的外部检索/材料综合和 Development 的只读技术调查，保持当前产品主目标；专门技术实现报告仍归 Development，专门竞争战略仍归 Business。
+- 产品体验审查诊断实际流程，明确需要的辅助示意可组合 Design；完整新视觉稿/原型由 Design 主导，不能把两个独立交付物悄悄合并。
+- 产品验收依据已确认产品合同核对真实结果；业务测试方案定义业务场景，技术测试方案定义验证方法，缺证据不得报告验收通过。单张截图/源码存在不证明部署、持久化或整体流程。
+- 产品结论冻结业务规则；开发结论冻结工程合同。正式结论创建仍需用户明确授权，阶段就绪不替代授权；用户明确跳过独立结论并开发时保存有效决定/跳过记录，由下游研发执行其 Gate。
+- 通用产品规范不绑定仓库/设备/工具，正式持久化按当前项目配置组合 GitHub Manager；查重、写后核对和失败恢复仍由通用 GitHub 能力负责。
+
 ## Development Composition 示例
 
 - `development/github-research-document-generator`、`development/github-discussion-facilitator`、`development/api-contract-audit`、`development/github-spec`、`development/github-development-plan-generator`、技术/业务测试方案生成与测试方案审计在读取当前源码/证据时，如果**旁路发现已经被证据确认的独立生产 Bug**，条件成立后必须组合 `development/github-incidental-bug-capture`。frontmatter 使用 `optional_uses` 只是为了避免在未发现 Bug 时无条件加载，并不表示确认 Bug 后可以静默跳过。原主 Skill 保留当前调研/讨论/规划/审计目标，Bug Capture 只负责查重、留痕和返回。

@@ -152,21 +152,23 @@ class RuntimeContractTests(unittest.TestCase):
             return completed.stdout
 
         listing = raw("list")
-        self.assertTrue(listing.startswith("# Plugin List · 13 plugins"))
+        expected_plugins = len(json.loads((ROOT / "marketplace.json").read_text())["plugins"])
+        self.assertTrue(listing.startswith(f"# Plugin List · {expected_plugins} plugins"))
         for name in ("ai-workflow", "development", "writing"):
             self.assertIn(f"**{name}**", listing)
-        self.assertIn("v2.0.1", listing)
+        self.assertIn("v2.0.2", listing)
         self.assertIn("Development", listing)
 
         plugin = raw("list", "development")
-        self.assertTrue(plugin.startswith("# development · v2.0.1"))
+        self.assertTrue(plugin.startswith("# development · v2.0.2"))
         self.assertIn("12 public skills", plugin)
         self.assertIn("1 internal", plugin)
         self.assertIn("## testing", plugin)
         self.assertIn("用于软件研发", plugin)
 
         catalog = raw("catalog")
-        self.assertTrue(catalog.startswith("# Catalog · 13 plugins · 66 public skills"))
+        expected_public = runtime_json("catalog")["publicSkillCount"]
+        self.assertTrue(catalog.startswith(f"# Catalog · {expected_plugins} plugins · {expected_public} public skills"))
         self.assertIn("## development", catalog)
         self.assertIn("`development/github-bug-investigation`", catalog)
 
@@ -191,8 +193,13 @@ class RuntimeContractTests(unittest.TestCase):
         # reasoning Skills each receive their own bounded description allocation.
         tool_ids = {"tools/youtube-download", "tools/x-download", "tools/onedrive-files", "tools/linux-systemd-user", "tools/linux-systemd-timer", "tools/linux-disk-cleanup"}
         reasoning_ids = {"reasoning/first-principles", "reasoning/systems-thinking"}
+        product_ids = {item["id"] for item in catalog["skills"] if item["id"].startswith("product/")}
+        product_added = [item["description"] for item in catalog["skills"] if item["id"] in product_ids]
+        self.assertEqual(len(product_added), 6)
+        self.assertTrue(all(len(value) <= 220 for value in product_added))
+        self.assertLessEqual(sum(map(len, product_added)), 1200)
         existing = [item["description"] for item in catalog["skills"]
-                    if item["id"] not in tool_ids | reasoning_ids]
+                    if item["id"] not in tool_ids | reasoning_ids | product_ids]
         tools_added = [item["description"] for item in catalog["skills"]
                        if item["id"] in tool_ids]
         reasoning_added = [item["description"] for item in catalog["skills"]
@@ -201,12 +208,16 @@ class RuntimeContractTests(unittest.TestCase):
         self.assertEqual(len(reasoning_added), 2)
         self.assertTrue(all(len(text) <= 200 for text in tools_added + reasoning_added))
         self.assertLessEqual(sum(len(text) for text in existing), 13861)
-        self.assertLessEqual(sum(len(text) for text in skill_descriptions), 14861)
+        self.assertLessEqual(sum(len(text) for text in skill_descriptions), 14861 + 1200)
 
         listing = runtime_json("list")
         plugin_descriptions = [item["description"] for item in listing["plugins"]]
         self.assertLessEqual(max(len(text) for text in plugin_descriptions), 393)
-        self.assertLessEqual(sum(len(text) for text in plugin_descriptions), 2083)
+        old_plugins = [item["description"] for item in listing["plugins"] if item["name"] != "product"]
+        product_description = next(item["description"] for item in listing["plugins"] if item["name"] == "product")
+        self.assertLessEqual(len(product_description), 220)
+        self.assertLessEqual(sum(len(value) for value in old_plugins), 2083)
+        self.assertLessEqual(sum(len(text) for text in plugin_descriptions), 2083 + 220)
 
     def test_web_app_scaffolding_has_three_stack_specific_public_skills(self) -> None:
         plugin = runtime_json("list", "web-app-scaffolding")
@@ -582,12 +593,13 @@ class DevelopmentWorkflowContractTests(unittest.TestCase):
         ):
             self.assertIn(prefix, policy)
 
-    def test_incidental_bug_capture_is_the_only_internal_skill(self) -> None:
+    def test_incidental_bug_capture_is_the_only_development_internal_skill(self) -> None:
         doctor = runtime_json("doctor")
         internal = [
             skill
             for skill in doctor["skills"]
             if skill.get("visibility") == "internal"
+            and skill.get("plugin") == "development"
         ]
         self.assertEqual(len(internal), 1)
         self.assertEqual(internal[0]["name"], "github-incidental-bug-capture")

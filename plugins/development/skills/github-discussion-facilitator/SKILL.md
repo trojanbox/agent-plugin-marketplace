@@ -1,11 +1,15 @@
 ---
 name: github-discussion-facilitator
-description: "在需要围绕技术、产品、架构或实现主题与用户进行可追踪讨论时使用。正式讨论前创建或续用一个【开发·讨论】Issue，以源码证据、当前实现/目标方案/差距、决策树、待决项和 Mermaid 图示为核心表达，按决策依赖逐步确认高杠杆问题，并在每次回答后追加可追溯的决定、理由、边界和未决项；无法写入 GitHub 时使用标准化本地交接包持续记录。"
+description: "在围绕技术、架构、实现方案或明确要求【开发·讨论】进行可追踪讨论时使用。正式讨论前创建或续用 Issue，以源码证据、当前实现/目标方案/差距、决策树和待决项逐项确认；GitHub 不可写时按恢复 Gate 交接。独立产品用户行为、需求范围和体验取舍归 product/product-discussion。"
 phase: discussion
 optional_uses: "github/github-issue-manager,development/github-incidental-bug-capture"
 ---
 
 # GitHub 讨论主持
+
+## 产品阶段边界
+
+明确要求【开发·讨论】、工程架构/API/状态归属/技术可行性时继续由本 Skill 主导；只讨论用户如何使用、产品范围和体验取舍且无工程主目标时，进入 `product/product-discussion`。继承当前有效阶段，泛指“继续讨论”不能因产品词汇重新开另一轮。
 
 ## 唯一目标
 

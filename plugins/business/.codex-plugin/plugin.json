@@ -1,7 +1,7 @@
 {
   "name": "business",
-  "version": "1.0.0",
-  "description": "用于商业与产品经营相关的长期业务上下文和竞争战略分析。资料检索和已有材料综合进入 research。",
+  "version": "1.0.1",
+  "description": "用于长期产品营销上下文和竞争战略分析。通用资料检索与材料综合归 research；新产品 MVP 规划、用户需求与产品现状机会研究归 product，单独竞争分析仍由 business 主导。",
   "author": {
     "name": "trojanbox",
     "url": "https://github.com/trojanbox"
@@ -10,8 +10,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Business",
-    "shortDescription": "用于商业与产品经营相关的长期业务上下文和竞争战略分析。资料检索和已有材料综合进入 research。",
-    "longDescription": "用于商业与产品经营相关的长期业务上下文和竞争战略分析。资料检索和已有材料综合进入 research。",
+    "shortDescription": "用于长期产品营销上下文和竞争战略分析。通用资料检索与材料综合归 research；新产品 MVP 规划、用户需求与产品现状机会研究归 product，单独竞争分析仍由 business 主导。",
+    "longDescription": "用于长期产品营销上下文和竞争战略分析。通用资料检索与材料综合归 research；新产品 MVP 规划、用户需求与产品现状机会研究归 product，单独竞争分析仍由 business 主导。",
     "developerName": "trojanbox",
     "category": "Business",
     "capabilities": [

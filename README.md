@@ -1,6 +1,6 @@
 # Agent Plugin Marketplace
 
-可被 Claude Code / Codex 直接安装的 Plugin Marketplace：13 个 Plugin、66 个 Public Skill（另有 1 个 internal Skill 只由自用 Runtime 发现），按领域分包；同时保留独立的 `AI_USAGE.md + skill-runtime.js` 自用 Runtime。
+可被 Claude Code / Codex 直接安装的 Plugin Marketplace：14 个 Plugin、72 个 Public Skill（另有 2 个 internal Skill 只由自用 Runtime 发现），按领域分包；同时保留独立的 `AI_USAGE.md + skill-runtime.js` 自用 Runtime。
 
 ```text
 Marketplace
@@ -65,19 +65,20 @@ codex plugin remove development
 
 | Plugin | 版本 | 分类 | Public Skills | 用途 |
 | --- | --- | --- | --- | --- |
-| `development` | 2.0.1 | Development | 12（+1 internal） | 软件研发：调研/讨论/结论/实施计划 Issue、TDD 任务、测试设计、Bug 根因调查、S 级 Patch |
+| `product` | 1.0.0 | Business | 6（+1 internal） | 通用新老产品规划、调研、讨论、结论、体验审查与真实交付验收 |
+| `development` | 2.0.2 | Development | 12（+1 internal） | 软件研发：调研/讨论/结论/实施计划 Issue、TDD 任务、测试设计、Bug 根因调查、S 级 Patch |
 | `writing` | 4.0.2 | Documents | 10 | 小说流程、清晰化与去 AI 味、管理层沟通、原理科普与操作指南 |
 | `finance` | 1.2.0 | Finance | 7 | 公司研究、财报与估值、组合风险、标的筛选、市场雷达、个人财务规划、宏观分析 |
 | `education` | 1.2.0 | Education | 5 | 家庭教育指导、学习辅导、K-12 课程方案与分层改造、Anki 卡包 |
 | `reasoning` | 1.3.0 | Research | 5 | 发散创意、科学推理、第一性原理、系统思考、结构化辩论 |
 | `data` | 1.0.0 | Data | 4 | 数据集探索、统计分析、分析结果 QA、数据可视化 |
-| `research` | 1.0.1 | Research | 4 | 外部资料检索、证据综合、领域知识构建、社区调研 |
+| `research` | 1.0.2 | Research | 4 | 外部资料检索、证据综合、领域知识构建、社区调研 |
 | `tools` | 2.5.0 | Productivity | 7 | 邮件、媒体下载、OneDrive、systemd 服务/Timer、用户磁盘缓存诊断与安全清理 |
 | `github` | 1.0.0 | Productivity | 3 | Issue 生命周期、查重与复发判断、交接同步与远端写入恢复 |
 | `web-app-scaffolding` | 1.4.2 | Development | 3 | React+TS、Node+NestJS 与全栈脚手架创建、扩展和审查 |
 | `ai-workflow` | 1.0.0 | Development | 2 | Skill Runtime/路由/组合设计与 Agent 目标提示词 |
-| `business` | 1.0.0 | Business | 2 | 长期业务上下文与竞争战略分析 |
-| `design` | 1.0.0 | Design | 2 | UI mockup、原型、wireframe、deck 与 Design System |
+| `business` | 1.0.1 | Business | 2 | 长期业务上下文与竞争战略分析 |
+| `design` | 1.0.1 | Design | 2 | UI mockup、原型、wireframe、deck 与 Design System |
 
 每个 Plugin 的完整路由边界与 Skill 列表：
 
@@ -105,6 +106,10 @@ claude plugin install tools@agent-plugin-marketplace
 ```
 
 完整命令、平台限制、从旧 `email` Plugin 的迁移步骤与安全边界见 [`plugins/tools/README.md`](plugins/tools/README.md)。
+
+### Product
+
+6 个公开入口覆盖产品规划、产品调研、产品讨论、产品结论、体验审查与产品验收；内部共享事实调查按影响面核对相关源码、证据和项目版本。六项按任务独立使用，产品语义与研发实现/测试方案分开，缺少真实结果不报验收通过。详见 [`plugins/product/README.md`](plugins/product/README.md)。
 
 ### Development
 

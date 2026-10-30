@@ -73,6 +73,11 @@
       "name": "tools",
       "source": "./plugins/tools",
       "category": "Productivity"
+    },
+    {
+      "name": "product",
+      "source": "./plugins/product",
+      "category": "Business"
     }
   ]
 }
