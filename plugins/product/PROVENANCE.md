@@ -40,6 +40,14 @@
 | D-013 项目隔离复用 | context-contract 的产品/版本/范围核对；无集中库 |
 | D-014 借鉴开发结构且有来源 | 本表、证据账本、决策依赖与双向覆盖审计 |
 
+## v1.1 维护修订（2026-10-31）
+
+触发原因：新产品骨架讨论反复被单模块细化打断，用户要求先横向明确整个产品功能/模块与外部交互；并明确同意新产品与既有产品迭代流程差异较大时分离 Skill。旧版表格 D-001～D-014 为当时讨论来源与实施快照，保留历史，不冒称本轮新授权替代了历史决定。
+
+本轮维护将 **新产品正式讨论**交给 `product/product-new-product-discussion`（先 `skeleton_draft → skeleton_review → skeleton_confirmed`，再模块细化），原稳定 `product/product-discussion` 专注已有产品功能迭代、源码和影响范围检查。`product/product-planning` 仍负责初期新产品规划草案与已有产品整体重规划。两份讨论 Skill 使用统一的 `shared/references/product-decision-ledger.md`；`product-skeleton-contract.md` 仅在构思任何新产品或整体重规划时加载。迁移旧的 `product-discussion/references/decision-ledger.md` 为兼容指引，避免重复事实源。
+
+独立语义回归见 `tests/product-new-existing-split-semantic-eval.md` 与 `tests/product-skeleton-breadth-semantic-eval.md`；相关变更必须分别通过宿主清单、Runtime doctor、Product 测试，以及手工语义回归检查。未涉及工程实现、PRD 冻结或自动创建其它 Issue。
+
 ## 适配与局限
 
 产品结论只冻结产品行为；开发结论的技术专用 Gate 由 Development 自身持有。产品调研不能从代码推出用户价值；产品验收依赖真实交付证据。当前交付的是 Skill 工作合同和路由集成，不包含自动研究代理、测试执行平台或资料同步服务。

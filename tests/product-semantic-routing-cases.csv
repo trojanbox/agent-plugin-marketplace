@@ -2,7 +2,7 @@ id,bucket,prompt,expected_primary,required_behavior
 PRD001,positive,我想做一个给自由职业者记账的工具，帮我规划定位和第一版，不写代码。,product/product-planning,调查现有材料；输出规划与未确认假设，不承诺商业成功
 PRD002,positive,这个老产品要整体重新规划，基于源码和现有用户反馈定 MVP。,product/product-planning,已有产品保留现状/非目标；相关源码必查
 PRD003,positive,结合访谈、工单和源码，研究用户卡在哪里、还有什么产品机会。,product/product-research,以产品问题组织报告，代码与用户证据各证其范围
-PRD004,positive,创建产品讨论，我们把收藏功能用户怎么操作和异常提示一次性聊清楚。,product/product-discussion,产品行为；同轮记录、批量问题与授权留档
+PRD004,positive,在已有产品里创建产品讨论，我们把收藏功能用户怎么操作和异常提示一次性聊清楚。,product/product-discussion,产品行为；同轮记录、批量问题与授权留档
 PRD005,positive,已确认这些产品规则，现在生成独立可转发的产品 PRD。,product/product-conclusion,明确授权；完整读来源、覆盖需求与验收
 PRD006,positive,这个结算流程操作太麻烦，请只审查体验，别改页面。,product/product-experience-review,观察界面/源码，报告体验问题，不自动创建新稿
 PRD007,positive,对照已确认产品需求，验收这次交付，失败和没测到的都列出来。,product/product-acceptance,绑定版本，按真实证据判定，未测保留unverified
@@ -20,16 +20,16 @@ PRD018,composition,帮我规划一个新产品，其中定位需要比较三种�
 PRD019,composition,做产品机会研究，先把这些相互矛盾的工单和访谈整理清楚。,product/product-research,内部调查+research/knowledge-synthesis只处理已有材料
 PRD020,composition,基于当前产品做需求研究，这个现有能力是否真的接通需要追跨模块源码。,product/product-research,内部调查+development源码analysis_only，返回证据不另建报告
 PRD021,composition,审查这个交互，附一张解释改进建议的示意，别重做整套页面。,product/product-experience-review,审查主目标+Design辅助示意；明确是建议图
-PRD022,composition,把这轮已确认的产品讨论保存到项目已配置的 GitHub。,product/product-discussion,讨论持久化副作用交github-issue-manager，先核仓库/授权
+PRD022,composition,把这轮已有产品功能已确认的讨论保存到项目已配置的 GitHub。,product/product-discussion,讨论持久化副作用交github-issue-manager，先核仓库/授权
 PRD023,conflict,同时给我一份完整产品 PRD 和一套独立的数据库迁移技术结论，顺序没定。,conflict,两个独立主产物，确认顺序/主目标；不能隐式合并
 PRD024,conflict,产品体验报告和完整可交互的新原型都要，先做什么我没想好。,conflict,审查与完整视觉稿分别独立，需确认顺序
 PRD025,gate,没有任何已确认需求，你直接给这个产品一个验收通过结论。,product/product-acceptance,blocked_missing_contract；不能从实现反推需求
 PRD026,gate,只有这一张成功截图，没有权限、持久化或恢复证据，能全验收通过吗？,product/product-acceptance,缺证据项目unverified，总体不通过门槛未满足
-PRD027,gate,产品讨论全确认了，你看看能不能收口，先别生成结论。,product/product-discussion,只评估ready_for_product_conclusion；无创建授权
+PRD027,gate,已有产品这轮功能讨论全确认了，你看看能不能收口，先别生成结论。,product/product-discussion,只评估ready_for_product_conclusion；无创建授权
 PRD028,gate,生成产品结论，但关键的权限行为还没选择。,product/product-conclusion,输入Gate拦未决高影响规则，返回讨论，不代选
 PRD029,gate,没有源码的新产品，先用我给的业务材料规划；别编访谈。,product/product-planning,可规划；区分事实/假设，不强制源码存在
 PRD030,gate,源码在私有库但当前没有读取权限，按你猜的告诉我现在已实现哪些。,development/github-research-document-generator,当前源码实现盘点归 Development；无权限必须标明未读，不能猜已实现
-PRD031,multi-turn,上轮在产品讨论确认了Q-001。这轮：A，其他问题一次性问。,product/product-discussion,先重读当前有效问题；A若没有唯一对应待决项不得虚构新决定，再按用户要求批量提问
+PRD031,multi-turn,上轮在已有产品讨论确认了Q-001。这轮：A，其他问题一次性问。,product/product-discussion,先重读当前有效问题；A若没有唯一对应待决项不得虚构新决定，再按用户要求批量提问
 PRD032,multi-turn,上轮明确是【开发·讨论】接口设计。这轮：A，继续。,development/github-discussion-facilitator,继承开发阶段，不因新增Product换主入口
 PRD033,multi-turn,产品规则都确认了。当前：现在生成产品结论，但只给我 Markdown，不写 GitHub。,product/product-conclusion,授权仅生成，不能远端写入
 PRD034,multi-turn,上轮确认产品规则。当前：不用独立结论，直接交研发开发并提交。,sequence,Product记录明确跳过结论与开发授权，再交适用Development阶段执行其Gate；不把Product当Coding执行器
@@ -47,3 +47,40 @@ PRD-R-T033,regression,完整调研发布链路，并把调研结果记录成【�
 PRD-R-T034,regression,已有【开发·结论】，给我拆实施计划并创建对应【开发·实施计划】Issue。,development/github-development-plan-generator,明确开发实施计划保持Development
 PRD-R-T035,regression,这份实施计划正文已经完成，不要再规划，只把它作为一个新 Issue 写到仓库。,github/github-issue-manager,正文已完成的纯写入；triage Gate
 PRD048,gate,当前在研究某产品用户完成任务的效果。只问这条功能现在做得怎样，不要默认开始全套产品开发流程。,product/product-research,明确产品效果上下文，沿当前主目标研究，不强制六阶段串行
+PRD-SK001,positive,我想从零构思企业内部AI平台，先给出全局模块和系统关系，暂时不要细化插件权限。,product/product-planning,先整体骨架、内外边界和跨模块关系，再讨论MVP和模块细节
+PRD-SK002,positive,我们要做一个连好几个外部服务的新产品，先把产品包含哪些模块画明白。,product/product-planning,新多模块产品先交骨架草案，不暗中冻结API设计
+PRD-SK003,positive,新产品的本地版云端版和插件能力都有，先核对全局职责分工。,product/product-planning,横向审视外部系统与运行形态
+PRD-SK004,multi-turn,上轮产品讨论一直在细化插件，先回到模块骨架和整体边界，我们已经有讨论Issue。,product/product-new-product-discussion,继承原讨论；先骨架整体审查，不继续局部深挖
+PRD-SK005,multi-turn,Q-010的局部选择先保留，当前重新盘点所有模块和依赖，骨架还没整体确认。,product/product-new-product-discussion,保留有效D记录，骨架未确认只交草案
+PRD-SK006,positive,我只做一个单功能倒计时小工具，规划第一版就行。,product/product-planning,简单新产品先做极简整体骨架再细化
+PRD-SK007,negative,已有管理台只有设置页操作很别扭，帮我审查可用性。,product/product-experience-review,局部现有产品体验审查，避免升级成全景重规划
+PRD-SK008,negative,按现有仓库源码追踪模块A到模块B的API和事务实现。,development/github-research-document-generator,完整技术实现调用链保持开发调查主路由
+PRD-SK009,composition,把这轮新产品整体骨架和未决边界写入已经创建的产品讨论Issue。,product/product-new-product-discussion,GitHub写入为持久化副作用，先复核远端决定
+PRD-SK010,gate,骨架的外部连接还没弄清楚，先帮我把插件里每个授权弹窗都定案。,product/product-new-product-discussion,先补骨架缺口，局部权限仍保持未决
+PRD-SK011,gate,还没确认模块边界，就要你生成一份全产品正式PRD。,product/product-conclusion,结论输入Gate阻塞，返回骨架讨论，不自行补全
+PRD-SK012,multi-turn,全局骨架用户已经确认，现在讨论插件如何显示一个表单。,product/product-new-product-discussion,骨架确认后可以进入单模块细化
+PRD-SK013,conflict,同时做一份完整产品骨架方案和独立的数据库及API技术结论，顺序未定。,conflict,两个独立主交付物，不能隐式合并
+PRD-SK014,multi-turn,我们新产品的骨架已确认，但增加跨模块能力会修改责任归属，先核对影响。,product/product-new-product-discussion,先回到整体骨架审查受影响模块
+PRD-SK015,negative,按照产品骨架直接开发分布式调度器，写代码测试并提交。,development/github-discussion-facilitator,技术研发任务不能让产品规划Skill直接执行
+PRD-SK016,positive,设计企业平台的能力边界和外部系统如何交互，只要高层产品骨架不需要技术实现方案。,product/product-planning,职责关系图先于局部模块规格
+PRD-SK017,positive,想做个很简单的提醒产品，先把整个功能骨架列出来。,product/product-planning,任何新产品均先整体后局部，简单产品骨架极简
+PRD-SPL001,positive,我要正式创建新产品的产品讨论，先把模块和对外连接全部聊清楚。,product/product-new-product-discussion,新产品正式讨论先骨架 Gate，不陷入单模块细节
+PRD-SPL002,positive,新做的企业 AI Agent 平台还没上线，继续之前的产品讨论，先整体审查功能骨架。,product/product-new-product-discussion,继承新产品同轮记录及当前有效决定
+PRD-SPL003,positive,我们正在做的新产品骨架已确认，现在逐项讨论插件的界面规则。,product/product-new-product-discussion,同一新产品讨论在骨架已确认后才允许局部细化
+PRD-SPL004,positive,已有产品的收藏功能要改，咱们建立讨论记录逐项确认行为。,product/product-discussion,已有产品变更按现状与影响范围讨论
+PRD-SPL005,positive,上线多年的服务有个权限设置流程要优化，讨论旧行为和新行为。,product/product-discussion,旧系统局部需求不强制重建产品骨架
+PRD-SPL006,positive,我想从零设计一个简单提醒产品，先帮我规划完整功能，再聊 MVP。,product/product-planning,首次新产品规划草案而非正式讨论，骨架可极简
+PRD-SPL007,composition,把还在构思的新产品讨论决定写回我们已建的 GitHub 产品讨论 Issue。,product/product-new-product-discussion,新产品讨论主路由＋GitHub 留档副作用
+PRD-SPL008,composition,已有产品的这轮功能讨论确认好了，更新对应产品讨论 Issue。,product/product-discussion,已有产品讨论主路由＋GitHub 留档副作用
+PRD-SPL009,gate,新产品骨架还没有整体确认，先把其中一个模块的 UI 和权限定稿。,product/product-new-product-discussion,保持 skeleton_review，局部方案只记录未决
+PRD-SPL010,gate,旧产品只改一个按钮文案，不想重新梳理整个系统。,product/product-discussion,按既有产品的直接影响范围，不反向触发新产品骨架 Gate
+PRD-SPL011,multi-turn,上轮新产品讨论已经记了 D-012，这一轮继续讨论模块分工。,product/product-new-product-discussion,保留已有 D，回到新产品整体关系
+PRD-SPL012,multi-turn,我们之前确认了已有产品支付流程的 Q-002，现在选 C 继续。,product/product-discussion,继续已有产品同轮 Q-D 不重复发新产品议题
+PRD-SPL013,negative,把现有产品用户反馈和当前源码做成机会调研报告。,product/product-research,产品调研保持独立主目标
+PRD-SPL014,negative,追踪现有项目跨模块 API 和数据库的完整真实调用链。,development/github-research-document-generator,技术事实调查在 Development，避免产品讨论抢路由
+PRD-SPL015,negative,这是现有产品整体重新规划，要从全局重新梳理所有功能和 MVP。,product/product-planning,整体重新规划走 Planning；不当作局部迭代
+PRD-SPL016,conflict,我要同时交付新产品的完整 PRD 和独立的数据库技术实施结论，先做哪个未定。,conflict,两个独立主交付物须识别冲突
+PRD-SPL017,multi-turn,新产品整个骨架还没确认，现在不要重复问我插件细节，先把所有模块依赖列出来。,product/product-new-product-discussion,骨架内的已确认选择保留，继续广度审查
+PRD-SPL018,gate,骨架未完成的新产品现在就写正式产品结论。,product/product-conclusion,产品结论被输入 Gate 拦住，返回新产品讨论
+PRD-SPL019,negative,只做现有界面操作效率和一致性的体验审查。,product/product-experience-review,已有界面体验诊断归专门审查
+PRD-SPL020,positive,已经建立了新产品产品讨论，现在 Q-010 选择 A，请更新决定账本。,product/product-new-product-discussion,新产品的决策追踪由新讨论 Skill 负责

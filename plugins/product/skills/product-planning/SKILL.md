@@ -1,6 +1,6 @@
 ---
 name: "product-planning"
-description: "用于从想法规划新产品的定位、目标用户、核心场景和 MVP，或对产品做明确的整体重新规划。适合“我想做一个产品/帮我定第一版做什么”。交付可讨论的产品规划；独立现状研究归 product-research，逐项取舍归 product-discussion，竞争战略归 business，架构与开发计划归 development。"
+description: "用于新产品定位、整体骨架、核心场景与 MVP 规划，或已有产品整体重规划。适合“构思产品/规划第一版”。交付可讨论的产品规划；研究归 product-research，新产品正式讨论归 product-new-product-discussion，已有产品局部迭代归 product-discussion，竞争战略归 business，技术实现归 development。"
 visibility: "workflow"
 phase: "planning"
 optional_uses: "product/product-context-discovery,github/github-issue-manager,business/competitive-analysis"
@@ -30,14 +30,15 @@ optional_uses: "product/product-context-discovery,github/github-issue-manager,bu
 
 1. 回显用户问题、产品阶段、已确认限制与非目标；由内部调查取得事实基线。
 2. 规划定位、场景和 MVP 前读取 `references/planning-contract.md`；把现状、假设、建议分开。
-3. 以用户完成任务的完整闭环列候选范围、依赖、优先级依据、延期与失败边界。
-4. 对影响范围或用户行为的重要取舍提供选项和推荐依据，保留未决；用户开始逐项决策时衔接产品讨论。
-5. 形成有可观察验证信号的规划，记录会使方案失效的假设；交付前重新核对来源与约束。
+3. **任何新产品或已有产品的整体重规划**先读 `../../shared/references/product-skeleton-contract.md`，完成广度优先的功能/模块全貌、使用路径、外部边界及依赖；简单单功能产品也用极简骨架。先整体讨论并获得用户对骨架的确认，未经确认不连续深挖单模块。
+4. 骨架确认后再以用户完成任务的完整闭环列候选范围、依赖、优先级依据、延期与失败边界；用户明确只要骨架时停在骨架交付。
+5. 对重要取舍提供选项和依据，保留未决；新产品逐项决策时衔接 product-new-product-discussion；已有产品整体重规划后的局部需求衔接 product-discussion，不重复要求已给出的决定。
+6. 形成可观察的验证信号和失效假设；交付前重新核对来源与约束。
 
 ## 交付与完成
 
-默认输出 Markdown 产品规划与明确未决项。完成表示规划可讨论，不能称需求已冻结、市场已验证或产品已经落地。来源不足的商业收益/用户规模保持未知。
+默认输出 Markdown 产品规划与明确未决项；全景骨架阶段先交模块/边界/交互图和整体待确认项，标注草案状态。完成表示规划可讨论，不能称需求已冻结、市场已验证或产品已经落地。来源不足的商业收益/用户规模保持未知。
 
 ## 停止条件
 
-高影响定位、业务可行性或关键现有能力未验证时，只交付带边界的规划草案。新增基础设施或超出用户范围的功能先暂停对应设计；用户要技术实施时按真实授权交接 Development。
+任何新产品的骨架尚未整体确认时，停止按单模块细化或冻结局部方案，允许继续只读事实核查和整体讨论。高影响定位、业务可行性或关键现有能力未验证时，只交付带边界的规划草案。新增基础设施或超出用户范围的功能先暂停对应设计；用户要技术实施时按真实授权交接 Development。

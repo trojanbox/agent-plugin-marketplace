@@ -19,7 +19,8 @@ ROOT = Path(__file__).resolve().parents[1]
 PRODUCT = ROOT / 'plugins/product'
 PUBLIC = {
     'product-planning': 'planning', 'product-research': 'research',
-    'product-discussion': 'discussion', 'product-conclusion': 'specification',
+    'product-discussion': 'discussion', 'product-new-product-discussion': 'discussion',
+    'product-conclusion': 'specification',
     'product-experience-review': 'verification', 'product-acceptance': 'verification',
 }
 INTERNAL = 'product-context-discovery'
@@ -36,9 +37,9 @@ def text(relative: str) -> str:
 
 
 class ProductDiscoveryTests(unittest.TestCase):
-    def test_separate_registered_plugin_with_six_public_one_internal(self):
+    def test_separate_registered_plugin_with_seven_public_one_internal(self):
         listing = run_json('list', 'product')
-        self.assertEqual(listing['publicSkillCount'], 6)
+        self.assertEqual(listing['publicSkillCount'], 7)
         self.assertEqual(listing['internalSkillCount'], 1)
         catalog = run_json('catalog')['skills']
         self.assertEqual({s['id'] for s in catalog if s['id'].startswith('product/')},
@@ -78,7 +79,7 @@ class ProductDiscoveryTests(unittest.TestCase):
             self.assertTrue(Path(info['path']).is_relative_to(target))
             host_fallback = Path(info['path']).parent / '../../internal-skills/product-context-discovery/SKILL.md'
             self.assertTrue(host_fallback.resolve().is_file())
-            self.assertEqual(run_json('list', 'product', root=target)['publicSkillCount'], 6)
+            self.assertEqual(run_json('list', 'product', root=target)['publicSkillCount'], 7)
 
     def test_all_local_markdown_links_and_progressive_refs_exist(self):
         for path in PRODUCT.rglob('*.md'):
@@ -105,7 +106,7 @@ class ProductDiscoveryTests(unittest.TestCase):
 
 
 class ProductQualityContractTests(unittest.TestCase):
-    def test_six_skills_have_full_lifecycle_and_native_shared_fallback(self):
+    def test_all_skills_have_full_lifecycle_and_native_shared_fallback(self):
         for name in PUBLIC:
             s = text(f'skills/{name}/SKILL.md')
             with self.subTest(name=name):
@@ -130,11 +131,81 @@ class ProductQualityContractTests(unittest.TestCase):
             self.assertIn(item, s)
 
     def test_discussion_ledger_dependencies_and_authorization(self):
-        s = text('skills/product-discussion/references/decision-ledger.md')
+        ledger = text('shared/references/product-decision-ledger.md')
         for item in ('Q-', 'D-', 'depends_on', 'supersedes', '批量',
                      'ready_for_product_conclusion', '授权', '冲突'):
-            self.assertIn(item, s)
-        self.assertIn('不自动', text('skills/product-discussion/SKILL.md'))
+            self.assertIn(item, ledger)
+        old_ref = text('skills/product-discussion/references/decision-ledger.md')
+        self.assertIn('product-decision-ledger.md', old_ref)
+        for discussion in ('product-discussion', 'product-new-product-discussion'):
+            s = text(f'skills/{discussion}/SKILL.md')
+            self.assertIn('../../shared/references/product-decision-ledger.md', s)
+            self.assertIn('不自动', s)
+
+    def test_new_and_existing_discussion_own_separate_phase_gates(self):
+        planning = text('skills/product-planning/SKILL.md')
+        new_discussion = text('skills/product-new-product-discussion/SKILL.md')
+        existing_discussion = text('skills/product-discussion/SKILL.md')
+        policy = text('shared/references/product-policy.md')
+        contract = text('shared/references/product-skeleton-contract.md')
+        for value in (planning, new_discussion):
+            self.assertIn('../../shared/references/product-skeleton-contract.md', value)
+            self.assertIn('骨架', value)
+        self.assertNotIn('product-skeleton-contract.md', existing_discussion)
+        self.assertIn('任何新产品', planning)
+        self.assertIn('简单单功能', new_discussion)
+        self.assertIn('已有产品', existing_discussion)
+        self.assertIn('源码', existing_discussion)
+        self.assertIn('先广度', policy)
+        self.assertIn('skeleton_draft', new_discussion)
+        self.assertIn('skeleton_review', contract)
+        self.assertIn('skeleton_confirmed', contract)
+        for concept in ('模块清单', '交互关系', '外部服务', '本地 vs 云端',
+                        '跨场景覆盖', '不提前冻结', '整体骨架审查', '简单单功能'):
+            self.assertIn(concept, (contract + policy
+                                     + text('skills/product-planning/references/planning-contract.md')))
+        self.assertIn('未获得整体确认', contract)
+
+    def test_split_discussion_has_unique_user_intents_and_keeps_stable_id(self):
+        catalog = {x['id']: x for x in run_json('catalog')['skills']}
+        self.assertIn('product/product-discussion', catalog)
+        self.assertIn('product/product-new-product-discussion', catalog)
+        old = run_json('skill', 'product/product-discussion')['skill']
+        new = run_json('skill', 'product/product-new-product-discussion')['skill']
+        self.assertEqual(old['phase'], new['phase'])
+        self.assertEqual(set(old['optionalUses']), set(new['optionalUses']))
+        self.assertIn('已有产品', old['description'])
+        self.assertIn('新产品', new['description'])
+        self.assertIn('product-new-product-discussion', old['description'])
+        self.assertIn('product-discussion', new['description'])
+
+    def test_skeleton_semantic_regression_cases_cover_scope_and_neighbor(self):
+        with (ROOT / 'tests/product-semantic-routing-cases.csv').open(encoding='utf-8') as f:
+            cases = [r for r in csv.DictReader(f) if r['id'].startswith('PRD-SK')]
+        self.assertGreaterEqual(len(cases), 17)
+        self.assertEqual(len({r['id'] for r in cases}), len(cases))
+        self.assertTrue({'positive', 'negative', 'composition', 'gate',
+                         'multi-turn', 'conflict'} <= {r['bucket'] for r in cases})
+        report=(ROOT / 'tests/product-skeleton-breadth-semantic-eval.md').read_text(encoding='utf-8')
+        self.assertIn('没有调用独立模型批量路由器', report)
+        self.assertIn('PASS_CONFLICT', report)
+        self.assertIn('skeleton_review', report)
+
+    def test_split_semantic_eval_includes_existing_and_new_intents(self):
+        with (ROOT / 'tests/product-semantic-routing-cases.csv').open(encoding='utf-8') as f:
+            cases = [r for r in csv.DictReader(f) if r['id'].startswith('PRD-SPL')]
+        self.assertGreaterEqual(len(cases), 16)
+        self.assertEqual(len({x['id'] for x in cases}), len(cases))
+        expected = {x['expected_primary'] for x in cases}
+        self.assertIn('product/product-new-product-discussion', expected)
+        self.assertIn('product/product-discussion', expected)
+        self.assertIn('product/product-planning', expected)
+        self.assertIn('conflict', expected)
+        report=(ROOT/'tests/product-new-existing-split-semantic-eval.md').read_text(encoding='utf8')
+        self.assertIn('人工逐条', report)
+        self.assertIn('PASS_CONFLICT', report)
+        self.assertIn('新产品', report)
+        self.assertIn('已有产品', report)
 
     def test_conclusion_traceability_without_history_dependency(self):
         s = text('skills/product-conclusion/references/conclusion-contract.md')

@@ -1,6 +1,6 @@
 ---
 name: "product-research"
-description: "用于围绕一个新/老产品的用户问题、需求、现状能力与机会形成独立产品调研。适合“用户卡在哪里/现有功能是否解决了需求/梳理产品机会”。有相关源码必须核查；完整技术调用链归 development，纯外部资料检索归 research，纯竞争战略归 business，未定方案决策归 product-discussion。"
+description: "用于围绕一个新/老产品的用户问题、需求、现状能力与机会形成独立产品调研。适合“用户卡在哪里/现有功能是否解决了需求/梳理产品机会”。有相关源码必须核查；完整技术调用链归 development，纯外部资料检索归 research，纯竞争战略归 business，已有产品未定方案归 product-discussion，新产品尚在构思的正式讨论归 product-new-product-discussion。"
 visibility: "workflow"
 phase: "research"
 optional_uses: "product/product-context-discovery,github/github-issue-manager,business/competitive-analysis"

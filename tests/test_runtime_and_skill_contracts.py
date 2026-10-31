@@ -195,7 +195,7 @@ class RuntimeContractTests(unittest.TestCase):
         reasoning_ids = {"reasoning/first-principles", "reasoning/systems-thinking"}
         product_ids = {item["id"] for item in catalog["skills"] if item["id"].startswith("product/")}
         product_added = [item["description"] for item in catalog["skills"] if item["id"] in product_ids]
-        self.assertEqual(len(product_added), 6)
+        self.assertEqual(len(product_added), 7)
         self.assertTrue(all(len(value) <= 220 for value in product_added))
         self.assertLessEqual(sum(map(len, product_added)), 1200)
         existing = [item["description"] for item in catalog["skills"]

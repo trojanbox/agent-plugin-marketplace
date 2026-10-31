@@ -1,16 +1,16 @@
 ---
 name: "product-discussion"
-description: "用于讨论新/老产品的用户行为、场景、需求范围和体验取舍，并记录编号决定与依赖。适合“这个功能该怎么给用户用/创建产品讨论/这些选项我选 A”。技术架构/API/开发讨论归 development；产品结论创建须另有明确授权，已完成正文的纯 Issue 写入归 github。"
+description: "用于已有产品的单功能/跨功能迭代讨论，核查当前实现与受影响范围、对比方案并记录编号决定。适合“这个已有功能怎么调整/继续现有产品讨论/这轮我选 A”。新产品的骨架讨论及未上市产品的后续完整产品讨论归 product-new-product-discussion；整体产品重新规划归 product-planning；技术方案归 development。"
 visibility: "workflow"
 phase: "discussion"
 optional_uses: "product/product-context-discovery,github/github-issue-manager"
 ---
 
-# 产品讨论
+# 已有产品迭代讨论
 
 ## 目标与边界
 
-把未定案的产品问题推进为可追溯决定，维护事实、目标、差距和依赖。主目标是产品行为与范围；开发技术方案及明确指定【开发·讨论】交 Development。
+处理**已存在产品**的功能、流程、权限及体验变更；先理解现有业务/源码和影响面，再形成可追溯的产品行为决定。讨论范围可跨模块，但以真实的现有产品为基线，不强制每次重建新产品骨架。新产品初始构思与同轮新产品方案决策交 `product/product-new-product-discussion`，技术合同归 Development。
 
 ## 输入与前置
 
@@ -28,15 +28,15 @@ optional_uses: "product/product-context-discovery,github/github-issue-manager"
 
 ## 工作流
 
-1. 正式讨论/记录决定前读取 `references/decision-ledger.md`；建立或续用同轮记录，无法写入时先明确本地/会话状态。
-2. 用事实表达当前能力、已确认目标和差距，建立 Q-xxx 依赖与当前可决策问题。
-3. 提供具体选项、代价、推荐及来源；默认先高影响项，用户要一次性提问时集中列出并说明条件依赖。
-4. 用户回答后逐条记录 D-xxx、理由/边界、depends_on/supersedes，核对批量答案是否冲突并刷新状态。
-5. 关键节点处理完后复核目标、图文、非目标、异常边界与决定覆盖；只评估结论就绪，不自动生成结论。
+1. 正式讨论或记录决定前读取 `../../shared/references/product-decision-ledger.md`；先重读同轮讨论、有效评论与当前产品事实。
+2. 围绕现有用户任务和相关源码建立**当前行为 → 期望变化 → 影响范围**，标记其它模块与外部系统的直接/间接依赖；范围不清先补事实。
+3. 提供选项、代价、推荐与依据，只有**变更影响整体产品骨架**时才核对受影响的全局边界；日常局部迭代不强制重新规划整套产品。
+4. 用户确认后记录 D-xxx、对应 Q-xxx、理由/边界、depends_on/supersedes；保持未确认方案为建议，不改变已确认旧需求的适用范围。
+5. 复核当前流程、目标、权限、失败与边界影响及状态；仅评估是否可生成产品结论，不自动创建结论或开发任务。
 
 ## 交付与完成
 
-交付当前有效决策、未决/阻塞、证据、依赖与讨论状态。`ready_for_product_conclusion` 仅代表可整理正式产品结论，未经授权不创建、不关闭讨论或启动开发。
+交付当前有效决策、未决/阻塞、证据及跨功能影响清单与讨论状态。`ready_for_product_conclusion` 仅代表可整理正式产品结论，未经授权不创建、不关闭讨论或启动开发。
 
 ## 停止条件
 

@@ -1,6 +1,6 @@
 ---
 name: "product-conclusion"
-description: "用于用户明确要求把已确认产品决定写成独立、自包含的产品结论/PRD/产品需求定稿，覆盖用户、场景、行为、边界和验收。只问能否收口不生成结论；有高影响未决先回产品讨论。【开发·结论】及技术合同冻结归 development，实施计划和测试方案也归 development。"
+description: "用于用户明确要求把已确认产品决定写成独立、自包含的产品结论/PRD/产品需求定稿，覆盖用户、场景、行为、边界和验收。只问能否收口不生成结论；高影响未决应返回对应阶段的新产品讨论或已有产品迭代讨论。【开发·结论】及技术合同冻结归 development，实施计划和测试方案也归 development。"
 visibility: "workflow"
 phase: "specification"
 optional_uses: "product/product-context-discovery,github/github-issue-manager"
@@ -40,4 +40,4 @@ optional_uses: "product/product-context-discovery,github/github-issue-manager"
 
 ## 停止条件
 
-无创建授权只回报就绪状态；有效来源冲突或关键需求未决时返回讨论。被替代决定不能混入现行目标，不能为了补齐模板自己新增方案。
+无创建授权只回报就绪状态；有效来源冲突或关键需求未决时返回对应讨论入口：新产品为 `product/product-new-product-discussion`，已有产品迭代为 `product/product-discussion`。被替代决定不能混入现行目标，不能为了补齐模板自己新增方案。

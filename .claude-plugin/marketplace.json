@@ -166,8 +166,8 @@
     {
       "name": "product",
       "source": "./plugins/product",
-      "description": "通用产品研发：新产品定位与 MVP、已有产品需求与机会调研、产品行为讨论、自包含产品结论、体验审查、真实交付验收。按影响面共享事实调查，有相关源码必须核查；技术调用链/开发结论/测试方案归 development，竞争战略归 business，视觉产物归 design。",
-      "version": "1.0.0",
+      "description": "通用产品研发：新产品整体规划与骨架讨论、已有产品功能迭代讨论，及证据调研、产品结论、体验审查和真实交付验收。新产品先广度后深度，已有产品迭代按影响范围推进；源码与技术工程设计仍归 development。",
+      "version": "1.1.0",
       "author": {
         "name": "trojanbox",
         "url": "https://github.com/trojanbox"
