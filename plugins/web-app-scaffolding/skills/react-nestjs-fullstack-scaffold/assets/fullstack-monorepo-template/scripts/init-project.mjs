@@ -84,7 +84,6 @@ export async function initialize(
   const testEnvExamplePath = resolve(projectRoot, 'apps/api/.env.test.example')
   const composePath = resolve(projectRoot, 'compose.yaml')
   const sqlPath = resolve(projectRoot, 'scripts/postgres/init-test-databases.sql')
-  const ciPath = resolve(projectRoot, '.github/workflows/ci.yml')
   const readmePath = resolve(projectRoot, 'README.md')
   const testingDocPath = resolve(projectRoot, 'docs/testing-strategy.md')
   const pkg = JSON.parse(await readFile(packagePath, 'utf8'))
@@ -102,7 +101,6 @@ export async function initialize(
     testEnvExamplePath,
     composePath,
     sqlPath,
-    ciPath,
     readmePath,
     testingDocPath,
   ]
@@ -112,7 +110,6 @@ export async function initialize(
     ['fullstack_dev', 'fullstack_integration_test', 'fullstack_e2e_test', 'TEST_REDIS_URL'],
     ['fullstack_dev', 'redis:7.4-alpine'],
     ['fullstack_integration_test', 'fullstack_e2e_test'],
-    ['fullstack_dev', 'fullstack_integration_test', 'fullstack_e2e_test'],
     ['fullstack_dev'],
     ['fullstack_dev'],
   ]
@@ -130,17 +127,13 @@ export async function initialize(
     translations.push({ path, values })
   }
   const dbPrefix = name.replace(/[^a-z0-9_]/g, '_')
-  const transform = (content, localPort = true) => {
-    const renamed = content
+  const transform = (content) =>
+    content
       .replaceAll('fullstack_integration_test', dbPrefix + '_integration_test')
       .replaceAll('fullstack_e2e_test', dbPrefix + '_e2e_test')
       .replaceAll('fullstack_dev', dbPrefix + '_dev')
-    return localPort
-      ? renamed
-          .replaceAll('127.0.0.1:5432', '127.0.0.1:' + dbPort)
-          .replaceAll('127.0.0.1:6379', '127.0.0.1:' + redisPort)
-      : renamed
-  }
+      .replaceAll('127.0.0.1:5432', '127.0.0.1:' + dbPort)
+      .replaceAll('127.0.0.1:6379', '127.0.0.1:' + redisPort)
 
   pkg.name = name
   await writeFile(packagePath, JSON.stringify(pkg, null, 2) + '\n')
@@ -153,7 +146,7 @@ export async function initialize(
     await writeFile(path, JSON.stringify(values, null, 2) + '\n')
   }
   for (let i = 0; i < files.length; i++) {
-    await writeFile(files[i], transform(contents[i], files[i] !== ciPath))
+    await writeFile(files[i], transform(contents[i]))
   }
   await writeFile(envPath, transform(contents[0]), { flag: 'wx' })
   await removeScaffolding(projectRoot)

@@ -24,7 +24,6 @@ test('initializes a copied project once without overwriting existing data', asyn
       'scripts/postgres/init-test-databases.sql',
       'scripts/init-project.mjs',
       'scripts/init-project.test.mjs',
-      '.github/workflows/ci.yml',
       'AGENTS.md',
       'README.md',
       'docs/testing-strategy.md',
@@ -42,20 +41,8 @@ test('initializes a copied project once without overwriting existing data', asyn
     assert.match(await readFile(join(root, 'apps/api/.env'), 'utf8'), /:6380\/14/)
     assert.match(await readFile(join(root, 'compose.yaml'), 'utf8'), /127.0.0.1:6380:6379/)
     assert.match(
-      await readFile(join(root, '.github/workflows/ci.yml'), 'utf8'),
-      /127.0.0.1:6379\/14/,
-    )
-    assert.match(
       await readFile(join(root, 'apps/api/.env.test.example'), 'utf8'),
       /new_product_integration_test/,
-    )
-    assert.match(
-      await readFile(join(root, '.github/workflows/ci.yml'), 'utf8'),
-      /new_product_e2e_test/,
-    )
-    assert.match(
-      await readFile(join(root, '.github/workflows/ci.yml'), 'utf8'),
-      /127\.0\.0\.1:5432\/new_product_e2e_test/,
     )
     assert.match(await readFile(join(root, 'compose.yaml'), 'utf8'), /new_product_dev/)
     assert.match(await readFile(join(root, 'README.md'), 'utf8'), /new_product_dev/)
