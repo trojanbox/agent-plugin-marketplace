@@ -32,12 +32,14 @@ pnpm dev
 
 ```text
 Web:    http://localhost:5173
-API:    http://localhost:3001/api/v1
-Health: http://localhost:3001/api/v1/health
-Ready:  http://localhost:3001/api/v1/ready
+API:    http://localhost:3101/api/v1
+Health: http://localhost:3101/api/v1/health
+Ready:  http://localhost:3101/api/v1/ready
 PostgreSQL: 127.0.0.1:5432/fullstack_dev
 Redis: 127.0.0.1:6379（开发 DB 0，Integration DB 14，E2E DB 15）
 ```
+
+Web 与 API 都监听 `0.0.0.0`，可从局域网用本机 IP 访问；浏览器仍通过 Vite 的同源代理访问 API。
 
 API 启动时不会自动执行 Migration。新项目请先运行 `pnpm scaffold:init`，自动生成名称、界面标题、独立数据库名称和 .env；多个项目共用一台机器时可以指定 `--db-port 5543 --redis-port 6380`。示例 app/app 凭据只用于本地开发；生产必须使用独立账号和机密。
 
