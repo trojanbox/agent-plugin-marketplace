@@ -13,7 +13,7 @@
 - `activeRecord(table)` 统一软删除条件，列表、详情、更新、删除范围以及列表总数使用相同过滤。
 - 认证限流使用 Redis Lua 原子计数及 TTL，客户端 IP 仅来自可信代理边界；Redis 不可用时认证必须失败，不降级到无限制访问。
 - 前端所有 HTTP 经过 ApiClient，重用错误、Session Cookie、CSRF、AbortSignal；分页查询由 Route loader 提交参数和消费服务端页信息。
-- 运行 `pnpm scaffold:init <name> --display-name "Name"` 完成工程名称与示例环境初始化；初始化命令自动衍生数据库名称，可使用 --db-port 和 --redis-port 分别设置本机端口（CI 不继承本地端口）；必须在首次启动数据库前执行。
+- 运行 `pnpm scaffold:init <name> --display-name "Name"` 完成工程名称与示例环境初始化；初始化命令自动衍生数据库名称，可使用 --db-port 和 --redis-port 分别设置本机端口（CI 不继承本地端口）；必须在首次启动数据库前执行。初始化成功后该命令与模板自检脚本会自动从新项目删除，派生项目的 `verify` 不再包含模板自检。
 - 真实集成测试使用独立 PostgreSQL Integration 数据库与 Redis 测试 DB 14，E2E 使用独立 PG 库和 Redis DB 15，关键浏览器流程连真实前后端。未知是否通过的验证必须明确标出。
 
 ## 交付

@@ -61,7 +61,7 @@ Compose 首次初始化会创建 fullstack_dev、fullstack_integration_test、fu
 - **业务例子**：`POST /api/v1/items` 完整演示从受保护 HTTP 请求自动注入 createdBy/updatedBy 到数据库。
 
 复制模板后的唯一初始化命令：
-`pnpm scaffold:init <project-name> [--display-name "Name"] [--db-port 5432] [--redis-port 6379]`。项目名称最多 46 个小写 npm 安全字符，以兼容 PostgreSQL 的标识符长度；重复初始化会被拒绝，不覆盖已有 `.env`。
+`pnpm scaffold:init <project-name> [--display-name "Name"] [--db-port 5432] [--redis-port 6379]`。项目名称最多 46 个小写 npm 安全字符，以兼容 PostgreSQL 的标识符长度；重复初始化会被拒绝，不覆盖已有 `.env`。初始化成功后，该命令、模板自检脚本以及 README/AGENTS 中的模板说明会自动从新项目移除。
 
 默认的 PostgreSQL 连接池最大 10 个连接，连接/空闲/语句超时可通过 DB_POOL_MAX、DB_CONNECTION_TIMEOUT_MS、DB_IDLE_TIMEOUT_MS、DB_STATEMENT_TIMEOUT_MS 配置；TRUSTED_PROXY_IPS 为明确可信代理的 IP 列表（默认空）。Redis 用原生 TTL 自动清理 Session 与限流键，无需专门的清理任务。生产应开启合适持久化、备份和 noeviction 策略；Redis 故障时认证失败、Readiness 返回 503。
 

@@ -1,5 +1,5 @@
 import { strict as assert } from 'node:assert'
-import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
+import { access, mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { test } from 'node:test'
@@ -22,7 +22,10 @@ test('initializes a copied project once without overwriting existing data', asyn
       'apps/api/.env.test.example',
       'compose.yaml',
       'scripts/postgres/init-test-databases.sql',
+      'scripts/init-project.mjs',
+      'scripts/init-project.test.mjs',
       '.github/workflows/ci.yml',
+      'AGENTS.md',
       'README.md',
       'docs/testing-strategy.md',
       'packages/i18n/src/locales/zh-CN/common.json',
@@ -68,6 +71,17 @@ test('initializes a copied project once without overwriting existing data', asyn
         'New Product',
       )
     }
+    for (const path of ['scripts/init-project.mjs', 'scripts/init-project.test.mjs']) {
+      await assert.rejects(access(join(root, path)), /ENOENT/)
+    }
+    assert.equal(pkg.scripts['scaffold:init'], undefined)
+    assert.equal(pkg.scripts['test:scaffold'], undefined)
+    assert.doesNotMatch(pkg.scripts.verify, /test:scaffold/)
+    const readme = await readFile(join(root, 'README.md'), 'utf8')
+    const agents = await readFile(join(root, 'AGENTS.md'), 'utf8')
+    assert.doesNotMatch(readme, /scaffold:init/)
+    assert.doesNotMatch(readme, /作为新项目模板/)
+    assert.doesNotMatch(agents, /scaffold:init/)
     await assert.rejects(initialize(root, 'again'), /already been initialized/)
   } finally {
     await rm(root, { recursive: true, force: true })

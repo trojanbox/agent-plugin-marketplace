@@ -1,10 +1,60 @@
 import { existsSync } from 'node:fs'
-import { readFile, writeFile } from 'node:fs/promises'
+import { readFile, rm, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const baseName = 'fullstack-monorepo-template'
+
+const readmeTemplateSections = [
+  ['pnpm scaffold:init my-project --display-name "My Project"\n', ''],
+  [
+    'API 启动时不会自动执行 Migration。新项目请先运行 `pnpm scaffold:init`，自动生成名称、界面标题、独立数据库名称和 .env；多个项目共用一台机器时可以指定 `--db-port 5543 --redis-port 6380`。示例 app/app 凭据只用于本地开发；生产必须使用独立账号和机密。',
+    'API 启动时不会自动执行 Migration。首次启动前先运行 `pnpm db:setup` 完成迁移与种子数据；名称、界面标题、独立数据库名称和 `.env` 已由初始化步骤生成。示例 app/app 凭据只用于本地开发；生产必须使用独立账号和机密。',
+  ],
+  [
+    '复制模板后的唯一初始化命令：\n`pnpm scaffold:init <project-name> [--display-name "Name"] [--db-port 5432] [--redis-port 6379]`。项目名称最多 46 个小写 npm 安全字符，以兼容 PostgreSQL 的标识符长度；重复初始化会被拒绝，不覆盖已有 `.env`。初始化成功后，该命令、模板自检脚本以及 README/AGENTS 中的模板说明会自动从新项目移除。',
+    '项目名称、界面标题、数据库名称与 `.env` 已由初始化步骤生成；数据库迁移与种子数据由 `pnpm db:setup` 执行。',
+  ],
+  [
+    '## 作为新项目模板\n\n复制后优先替换项目名称、`@repo/*` 包名、示例 `items` 领域、示例文案和 Design Token。保留现有架构、认证、Migration、测试和文档管理边界，直到真实业务需求要求调整。',
+    '## 复杂度边界',
+  ],
+]
+
+const agentsTemplateSections = [
+  ['- 模板唯一来源为本目录；复制后使用 scaffold:init 生成新项目的名称、数据库和环境配置。\n', ''],
+]
+
+const baselineMessage = 'Template documentation no longer matches the expected baseline: '
+
+async function replaceSections(path, replacements) {
+  let content = await readFile(path, 'utf8')
+  for (const [from, to] of replacements) {
+    if (!content.includes(from)) {
+      throw new Error(baselineMessage + path)
+    }
+    content = content.replace(from, to)
+  }
+  await writeFile(path, content)
+}
+
+export async function removeScaffolding(projectRoot) {
+  for (const file of ['scripts/init-project.mjs', 'scripts/init-project.test.mjs']) {
+    await rm(resolve(projectRoot, file), { force: true })
+  }
+  const packagePath = resolve(projectRoot, 'package.json')
+  const pkg = JSON.parse(await readFile(packagePath, 'utf8'))
+  delete pkg.scripts['scaffold:init']
+  delete pkg.scripts['test:scaffold']
+  pkg.scripts.verify = pkg.scripts.verify.replace(' && pnpm test:scaffold', '')
+  if (pkg.scripts.verify.includes('test:scaffold')) {
+    throw new Error(baselineMessage + packagePath)
+  }
+  await writeFile(packagePath, JSON.stringify(pkg, null, 2) + '\n')
+  await replaceSections(resolve(projectRoot, 'README.md'), readmeTemplateSections)
+  await replaceSections(resolve(projectRoot, 'AGENTS.md'), agentsTemplateSections)
+}
 
 export async function initialize(
   projectRoot,
@@ -106,6 +156,7 @@ export async function initialize(
     await writeFile(files[i], transform(contents[i], files[i] !== ciPath))
   }
   await writeFile(envPath, transform(contents[0]), { flag: 'wx' })
+  await removeScaffolding(projectRoot)
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
