@@ -187,6 +187,29 @@ test('Agent selection + partial success + resume only failed page', async t => {
   assert.ok(manifest.failures.some(x => x.url === 'https://example.com/contact'));
 });
 
+test('all selected pages failing yields failed and ok false', async t => {
+  const root = await dir();
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  const mock = providerMock([
+    { endpoint: '/map', response: asJson({ success: true, links: ['https://example.com/about'] }) },
+    { endpoint: '/fetch', response: asJson({ error: 'blocked' }, 403) },
+  ]);
+  const discovered = await execute(['discover', '--url', 'example.com', '--out', root],
+    { config: cfg, fetchImpl: mock, sleep: async () => {} });
+  assert.equal(discovered.status, 'needs_agent_selection');
+  const input = path.join(root, 'selection.json');
+  await fs.writeFile(input, JSON.stringify({
+    selected_urls: ['https://example.com/about'], primary_language: 'en', homogeneous_groups: [],
+  }));
+  await execute(['select', '--run', discovered.run, '--input', input], { config: cfg });
+  const result = await execute(['fetch', '--run', discovered.run],
+    { config: cfg, fetchImpl: mock, sleep: async () => {} });
+  assert.equal(result.status, 'failed');
+  assert.equal(result.ok, false);
+  assert.equal(result.success_count, 0);
+  assert.equal(result.failed_count, 2);
+});
+
 test('repair of corrupted saved content re-fetches and retains evidence', async t => {
   const root = await dir();
   t.after(() => fs.rm(root, { recursive: true, force: true }));

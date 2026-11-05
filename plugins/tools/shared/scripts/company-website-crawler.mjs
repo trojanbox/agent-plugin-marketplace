@@ -435,7 +435,8 @@ export async function fetchSelected(run, cfg, { resume = false, ...options } = {
       await recordFailure(run, 'fetch', url, e, e.details?.attempts || 1);
     }
   }
-  return { ok: true, run: run.dir, ...(await finalStatus(run)) };
+  const result = await finalStatus(run);
+  return { ok: result.status !== 'failed', run: run.dir, ...result };
 }
 export async function resumeFlow(run, cfg, options = {}) {
   const m = run.manifest;
