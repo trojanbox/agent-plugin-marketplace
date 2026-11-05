@@ -35,7 +35,7 @@ class LinuxOpsContractTests(unittest.TestCase):
         names = {s['name'] for s in listing['ungroupedSkills']}
         self.assertIn('linux-ops', names)
         self.assertNotIn('environment-preparation', names)
-        self.assertEqual(listing['publicSkillCount'], 8)
+        self.assertEqual(listing['publicSkillCount'], 9)
         for neighbor in ('email-mail', 'onedrive-files', 'linux-disk-cleanup', 'linux-systemd-user', 'linux-systemd-timer'):
             self.assertIn(neighbor, names)
         d = node_json('skill-runtime.js', 'doctor')

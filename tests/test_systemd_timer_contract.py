@@ -37,7 +37,7 @@ class SystemdTimerContractTests(unittest.TestCase):
         self.assertLess(len(direct['description']), 201)
         self.assertIn('GitHub', direct['description'])
         tool = node_json('skill-runtime.js', 'list', 'tools', '--json')
-        self.assertEqual(tool['publicSkillCount'], 8)
+        self.assertEqual(tool['publicSkillCount'], 9)
         self.assertEqual(node_json('skill-runtime.js', 'doctor')['skillCount'], total_skill_count())
 
     def test_skill_uses_progressive_references_and_explicit_dialogue(self) -> None:

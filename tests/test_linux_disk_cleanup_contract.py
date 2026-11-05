@@ -40,7 +40,7 @@ class DiskCleanupContractTests(unittest.TestCase):
         self.assertLessEqual(len(disk["description"]), 200)
         self.assertEqual(disk["uses"], [])
         tools = node("skill-runtime.js", "list", "tools", "--json")
-        self.assertEqual(tools["publicSkillCount"], 8)
+        self.assertEqual(tools["publicSkillCount"], 9)
         self.assertEqual(node("skill-runtime.js", "doctor")["skillCount"], total_skill_count())
 
     def test_main_skill_is_thin_with_progressive_refs_and_no_auto_delete(self):

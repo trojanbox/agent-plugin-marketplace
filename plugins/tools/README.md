@@ -1,6 +1,6 @@
 # Tools Plugin
 
-`tools` 把日常邮件、媒体下载、当前用户 OneDrive、Linux systemd 服务/Timer 和 Linux 用户磁盘缓存清理放在一个安装包，`github` 仍独立。八个公开 Skill 为 `tools/email-mail`、`tools/youtube-download`、`tools/x-download`、`tools/onedrive-files`、`tools/linux-systemd-user`、`tools/linux-systemd-timer`、`tools/linux-disk-cleanup` 和 `tools/linux-ops`。邮件与 OneDrive 凭据保持在用户家目录的 `~/.agent-plugin-marketplace/`，systemd 用户 unit 位于 `~/.config/systemd/user/`。
+`tools` 把日常邮件、媒体下载、当前用户 OneDrive、Linux systemd 服务/Timer 和 Linux 用户磁盘缓存清理放在一个安装包，`github` 仍独立。九个公开 Skill 为 `tools/email-mail`、`tools/youtube-download`、`tools/x-download`、`tools/onedrive-files`、`tools/linux-systemd-user`、`tools/linux-systemd-timer`、`tools/linux-disk-cleanup` 、`tools/linux-ops` 和 `tools/company-website-crawler`。邮件与 OneDrive 凭据保持在用户家目录的 `~/.agent-plugin-marketplace/`，systemd 用户 unit 位于 `~/.config/systemd/user/`。
 
 ```bash
 claude plugin install tools@agent-plugin-marketplace
@@ -8,6 +8,24 @@ claude plugin install tools@agent-plugin-marketplace
 ```
 
 本文件中的 `node plugins/tools/shared/scripts/*.mjs` 是在**仓库根目录**执行的形式。安装到宿主后，脚本位于插件安装目录的 `shared/scripts/`，由 Agent 解析实际路径（例如 Claude Code 的 `${CLAUDE_PLUGIN_ROOT}/shared/scripts/`），不要照抄仓库相对路径。
+
+## 企业网站抓取（Firecrawl + DeepSeek Fetch）
+
+输入企业域名，从 Sitemap（缺失时从首页）发现候选 URL，通过 Agent 对疑似重复结构确认同质性并选择最多 20 页（首页必选），调用 DeepSeek Fetch 将原始正文保存为可恢复的独立文件包。每次新运行不覆盖历史运行，支持明确指定已有 run 恢复损坏/失败页。
+
+首次初始化两个 Key（在本地交互终端中输入，**不会回显，也不能作为命令参数**）：
+
+    node plugins/tools/shared/scripts/company-website-crawler.mjs init
+    node plugins/tools/shared/scripts/company-website-crawler.mjs doctor
+
+配置保存于当前用户家目录 ~/.agent-plugin-marketplace/company-website-crawler/config.json，Linux/macOS 权限为 0600。随后按 Agent 分阶段执行：
+
+    node plugins/tools/shared/scripts/company-website-crawler.mjs discover --url https://example.com --out /absolute/results
+    node plugins/tools/shared/scripts/company-website-crawler.mjs select --run /absolute/results/run-UUID --input /tmp/selection.json
+    node plugins/tools/shared/scripts/company-website-crawler.mjs fetch --run /absolute/results/run-UUID
+    node plugins/tools/shared/scripts/company-website-crawler.mjs resume --run /absolute/results/run-UUID
+
+用 Agent 对真实候选进行语义选择，CLI 不能自行替代模型判断。[安全配置](skills/company-website-crawler/references/setup.md) · [Agent 输入/输出和恢复说明](skills/company-website-crawler/references/workflow.md)。设计来源：[讨论 #331](https://github.com/trojanbox/project-documents/issues/331)。
 
 ## 邮件（QQ 邮箱 / Himalaya 2.2.1）
 
