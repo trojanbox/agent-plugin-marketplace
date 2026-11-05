@@ -190,7 +190,7 @@ export function aggregateStatus(selected, verifiedPages, discoveryIncomplete, bl
 }
 
 export function retryAllowed(error) {
-  const status = Number(error?.http_status || 0);
+  const status = Number(error?.http_status ?? error?.details?.http_status ?? 0);
   if ([408, 429, 500, 502, 503, 504].includes(status)) return true;
   return ['network_error', 'request_timeout'].includes(error?.code);
 }
