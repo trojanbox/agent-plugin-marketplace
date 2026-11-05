@@ -110,6 +110,21 @@ test('retryable provider HTTP 503 attempts exactly 3, permanent 401 exactly 1', 
   assert.equal(attempts, 1);
 });
 
+test('non-JSON transient 503 remains retryable, but excessive Retry-After exits', async () => {
+  let attempts = 0;
+  await assert.rejects(() => callProvider('https://api.firecrawl.dev/v2/map', 'fake', {}, {
+    fetchImpl: async () => { attempts++; return new Response('<html>busy</html>', { status: 503 }); },
+    sleep: async () => {},
+  }), /无法解析/);
+  assert.equal(attempts, 3);
+  attempts = 0;
+  await assert.rejects(() => callProvider('https://api.firecrawl.dev/v2/map', 'fake', {}, {
+    fetchImpl: async () => { attempts++; return asJson({ error: 'limit' }, 429, { 'retry-after': '60' }); },
+    sleep: async () => {},
+  }), /等待时间超过/);
+  assert.equal(attempts, 1);
+});
+
 test('Map technical failure exits failed, never silently Scrape homepage', async t => {
   const root = await dir();
   t.after(() => fs.rm(root, { recursive: true, force: true }));
@@ -131,7 +146,7 @@ test('no sitemap + homepage link scrape failure still Fetches homepage, partial_
   const calls = [];
   const mock = providerMock([
     { endpoint: '/map', response: asJson({ success: true, links: [] }) },
-    { endpoint: '/scrape', response: asJson({ error: 'unavailable' }, 503) },
+    { endpoint: '/scrape', response: () => asJson({ error: 'unavailable' }, 503) },
     { endpoint: '/fetch', response: asJson({ title: 'Company', content: 'Welcome to example.com company services.' }) },
   ], calls);
   const result = await execute(['discover', '--url', 'example.com', '--out', root],

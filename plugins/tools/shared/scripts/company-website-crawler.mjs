@@ -277,7 +277,16 @@ export async function callProvider(endpoint, key, body, {
     const size = Number(response.headers?.get?.('content-length') || 0);
     if (size > MAX_RESPONSE_BYTES) throw new CrawlerError('response_too_large', '抓取响应超过最大字节数');
     try { data = await response.json(); }
-    catch { throw new CrawlerError('provider_response', '抓取服务返回无法解析的 JSON'); }
+    catch {
+      // Providers occasionally send an HTML body on transient 5xx responses.
+      // HTTP status remains authoritative for bounded retry classification.
+      if (!response.ok && retryAllowed({ http_status: response.status }) && attempt < maxAttempts) {
+        await sleep(Math.min(1000 * (2 ** (attempt - 1)), 8000));
+        continue;
+      }
+      throw new CrawlerError('provider_response', '抓取服务返回无法解析的 JSON',
+        { http_status: response.status, attempts: attempt });
+    }
     if (response.ok && data?.success !== false) return { data, attempts: attempt };
     const err = new CrawlerError('provider_error', '抓取服务返回错误', { http_status: response.status, attempts: attempt });
     if (!retryAllowed(err) || attempt === maxAttempts) throw err;
@@ -285,10 +294,18 @@ export async function callProvider(endpoint, key, body, {
     let delay = Math.min(1000 * (2 ** (attempt - 1)), 8000);
     if (retryAfter) {
       const seconds = Number(retryAfter);
-      if (Number.isFinite(seconds) && seconds >= 0) delay = Math.min(seconds * 1000, 10_000);
+      let requiredWait = NaN;
+      if (Number.isFinite(seconds) && seconds >= 0) requiredWait = seconds * 1000;
       else {
         const secondsToDate = Date.parse(retryAfter) - Date.now();
-        if (Number.isFinite(secondsToDate) && secondsToDate > 0) delay = Math.min(secondsToDate, 10_000);
+        if (Number.isFinite(secondsToDate) && secondsToDate > 0) requiredWait = secondsToDate;
+      }
+      if (Number.isFinite(requiredWait)) {
+        if (requiredWait > 10_000) {
+          throw new CrawlerError('retry_wait_exceeded', '服务商重试等待时间超过本次请求预算',
+            { http_status: response.status, attempts: attempt });
+        }
+        delay = requiredWait;
       }
     }
     await sleep(delay);
